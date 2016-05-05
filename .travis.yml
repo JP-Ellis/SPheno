@@ -1,11 +1,12 @@
 addons:
   apt:
     packages:
-      - gfortran-5
+      - gfortran
       - binutils
       - cmake
 
 script:
+  - gfortran --version
   - mkdir build
   - cd build
   - cmake ..
