@@ -1,0 +1,19 @@
+addons:
+  apt:
+    packages:
+      - gfortran-5
+      - binutils
+      - cmake
+
+script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
+  - make build
+  - cd ..
+  - for f in input/LesHouches.in.*;
+  -   do ./bin/SPheno $f;
+  -   sed -i '1,5d' SPheno.spc
+  -   diff -q SPheno.spc output/SPheno.spc.${f/input\/LesHouches.in./}
+  - done
