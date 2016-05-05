@@ -33,8 +33,10 @@ version 3.1.10 also parts of the Flavour Les Houches Accord have been
 implemented.
 
 If you use SPheno to write a paper, please cite the SPheno manuals:
-- W. Porod, Comput. Phys. Commun. 153 (2003) 275 [arXiv:hep-ph/0301101]; and
-- W. Porod and F. Staub, Comput. Phys. Commun. 183 (2012) 2458 [arXiv:1104.1573]
+- W. Porod, Comput. Phys. Commun. 153 (2003) 275
+  [arXiv:hep-ph/0301101](http://de.arxiv.org/abs/hep-ph/0301101); and
+- W. Porod and F. Staub, Comput. Phys. Commun. 183 (2012) 2458
+  [arXiv:1104.1573](http://arxiv.org/abs/1104.1573)
 
 More information is provided in the manuals in the `doc/` folder.
 
@@ -48,7 +50,7 @@ I can try to repeat the run and to decect the source of the problem.
 Installation
 ------------
 
-SPheno can be download from [Hepforce](https://spheno.hepforge.org/).  After
+SPheno can be download from [Hepforge](https://spheno.hepforge.org/).  After
 download and extracting the archive, it can be compiled with:
 
 ```sh
@@ -69,7 +71,7 @@ Running
 
 To run SPheno, it simply needs to be given an input file:
 ```sh
-./bin/SPheno-3.4.0 input/LesHouches.in
+./bin/SPheno input/LesHouches.in
 ```
 This will generate two files:
 - `SPheno.spc`: contains all information about masses, mixing matrices, decay
@@ -159,4 +161,4 @@ In addition the following set of input files are provided:
 The package includes also sample output data corresponding to the
 input files specified above, denoted by `SPheno.out.xyz` and
 `SPheno.spc.xyz`, where `xyz` stands for any of the models above in the
-directory `SPheno3.1.0/input`.
+directory `input/`.
