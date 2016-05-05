@@ -1,8 +1,3 @@
-# SUSY Les Houches Accord 2 - MSSM spectrum + Decays
-# SPheno v3.3.8  
-# W. Porod, Comput. Phys. Commun. 153 (2003) 275-315, hep-ph/0301101
-# in case of problems send email to porod@physik.uni-wuerzburg.de
-# Created: 02.11.2015,  14:26
 Block SPINFO         # Program information
      1   SPheno      # spectrum calculator
      2   v3.3.8      # version number
@@ -39,7 +34,7 @@ Block gauge Q=  1.01641761E+03  # (SUSY scale)
    2    6.44022502E-01  # g(Q)^DRbar
    3    1.05769231E+00  # g3(Q)^DRbar
 Block Yu Q=  1.01641761E+03  # (SUSY scale)
-  1  1     7.04249588E-06   # Y_u(Q)^DRbar
+  1  1     7.04249578E-06   # Y_u(Q)^DRbar
   2  2     3.57758797E-03   # Y_c(Q)^DRbar
   3  3     8.60902822E-01   # Y_t(Q)^DRbar
 Block Yd Q=  1.01641761E+03  # (SUSY scale)
@@ -193,10 +188,10 @@ Block SPhenoLowEnergy  # low energy observables
     9    6.48436752E-07   # BR(Bs -> tau+ tau-)
    10    9.64238812E-05   # BR(B_u -> tau nu)
    11    9.96171507E-01   # BR(B_u -> tau nu)/BR(B_u -> tau nu)_SM
-   12    5.43123188E-01   # |Delta(M_Bd)| [ps^-1] 
+   12    5.43123178E-01   # |Delta(M_Bd)| [ps^-1] 
    13    1.94056463E+01   # |Delta(M_Bs)| [ps^-1] 
    16    2.16182816E-03   # epsilon_K
-   17    2.28592900E-15   # Delta(M_K)
+   17    2.28448019E-15   # Delta(M_K)
    18    2.47891437E-11   # BR(K^0 -> pi^0 nu nu)
    19    8.28568784E-11   # BR(K^+ -> pi^+ nu nu)
    20    1.58691750E-14   # Delta(g-2)_electron/2
@@ -253,7 +248,7 @@ Block IMFWCOEF Q=  1.60000000E+02  # Im(Wilson coefficients) at scale Q
      0305 6421   00   2     7.43309791E-06   # C8
      0305 6321   00   2    -2.56884957E-06   # C8'
  03051111 4133   00   2    -2.24091100E-06   # C9 e+e-
- 03051111 4233   00   2     2.45496423E-08   # C9' e+e-
+ 03051111 4233   00   2     2.45496422E-08   # C9' e+e-
  03051111 4137   00   2     3.71205203E-05   # C10 e+e-
  03051111 4237   00   2    -4.52389048E-07   # C10' e+e-
  03051313 4133   00   2    -2.24101845E-06   # C9 mu+mu-
