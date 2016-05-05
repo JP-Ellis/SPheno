@@ -27,8 +27,8 @@ set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/mods)
 ## Get the Fortran compiler and set its flags
 get_filename_component(Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
 if(Fortran_COMPILER_NAME MATCHES "gfortran")
-  set(CMAKE_Fortran_FLAGS_RELEASE "-funroll-all-loops -O3 -Wall -pedantic")
-  set(CMAKE_Fortran_FLAGS_DEBUG   "-O0 -g -Wall -pedantic")
+  set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -Wall -pedantic -funroll-all-loops -ffree-line-length-none -ffixed-line-length-none")
+  set(CMAKE_Fortran_FLAGS_DEBUG   "-O0 -g -Wall -pedantic -ffree-line-length=999 -ffree-line-length-none -ffixed-line-length-none")
 # elseif (Fortran_COMPILER_NAME MATCHES "ifort")
 #   set (CMAKE_Fortran_FLAGS_RELEASE "")
 #   set (CMAKE_Fortran_FLAGS_DEBUG   "")
@@ -39,11 +39,16 @@ endif(Fortran_COMPILER_NAME MATCHES "gfortran")
 ## Add definitions
 add_definitions(-DGENERATIONMIXING -DONLYDOUBLE -DSEESAWIII)
 
+## Change the default installation directory to be where project's root.
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}")
+endif(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
 ################################################################################
-## Create Targets
+## Main target
 ################################################################################
-set(SRCS
+set(SPHENOSRCEXE src/SPheno3.f90)
+set(SPHENOSRCS
   src/BranchingRatios.f90
   src/Chargino3.f90
   src/Control.F90
@@ -76,28 +81,75 @@ set(SRCS
   src/TwoLoopHiggsMass.f90
   )
 
-add_library(${PROJECT_NAME}-lib ${SRCS})
+add_library(${PROJECT_NAME}-lib ${SPHENOSRCS})
 set_target_properties(${PROJECT_NAME}-lib
   PROPERTIES OUTPUT_NAME ${PROJECT_NAME}
   )
 
-add_executable(${PROJECT_NAME}-exe src/SPheno3.f90)
+add_executable(${PROJECT_NAME}-exe ${SPHENOSRCEXE})
 target_link_libraries(${PROJECT_NAME}-exe ${PROJECT_NAME}-lib)
 set_target_properties(${PROJECT_NAME}-exe
   PROPERTIES OUTPUT_NAME ${PROJECT_NAME}
   )
 
-################################################################################
-## Install
-################################################################################
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}")
-endif(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+install(TARGETS ${PROJECT_NAME}-lib ${PROJECT_NAME}-exe
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        )
 
-install(
-  TARGETS ${PROJECT_NAME}-lib ${PROJECT_NAME}-exe
-  RUNTIME DESTINATION "bin"
-  LIBRARY DESTINATION "lib"
-  ARCHIVE DESTINATION "lib"
-  )
+message(STATUS "Added main SPheno target.")
 
+################################################################################
+## Generate models too
+################################################################################
+## The models are passed in as comma-separated list.
+if(MODELS)
+  string(REPLACE "," ";" MODELS ${MODELS})
+  foreach(MODEL ${MODELS})
+    ## Generate the sanitised model name.
+    string(REPLACE "-" "" MODEL_SNT ${MODELS})
+    ## First make sure the model directory exists.
+    if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/models/${MODEL})
+
+      ## If the model defines its own CMakeLists, then use that
+      if(EXISTS ${CMAKE_SOURCE_DIR}/models/${MODEL}/CMakeLists.txt)
+        add_subdirectory(models/${MODEL})
+
+        message(STATUS "Added model '${MODEL}'.")
+
+      else(EXISTS ${CMAKE_SOURCE_DIR}/models/${MODEL}/CMakeLists.txt)
+        ## Otherwise, we expect that SPheno${MODEL}.f90 is the main file for the
+        ## executable and all other files in the directory are for destined for
+        ## the library.
+        set(SRCEXE ${CMAKE_SOURCE_DIR}/models/${MODEL}/SPheno${MODEL_SNT}.f90)
+        file(GLOB SRCS ${CMAKE_SOURCE_DIR}/models/${MODEL}/*.f90 models/${MODEL}/*.F90)
+        list(REMOVE_ITEM SRCS ${SRCEXE})
+
+        add_library(${MODEL}-lib ${SRCS} ${SPHENOSRCS})
+        set_target_properties(${MODEL}-lib
+          PROPERTIES OUTPUT_NAME ${MODEL}
+          )
+
+        add_executable(${MODEL}-exe ${SRCEXE})
+        target_link_libraries(${MODEL}-exe ${MODEL}-lib)
+        set_target_properties(${MODEL}-exe
+          PROPERTIES OUTPUT_NAME ${MODEL}
+          )
+
+        install(TARGETS ${MODEL}-lib ${MODEL}-exe
+                RUNTIME DESTINATION bin
+                LIBRARY DESTINATION lib
+                ARCHIVE DESTINATION lib
+                )
+
+        message(STATUS "Added model '${MODEL}'.")
+
+      endif(EXISTS ${CMAKE_SOURCE_DIR}/models/${MODEL}/CMakeLists.txt)
+
+    ## If the model directory doesn't exist, issue a warning
+    else(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/models/${MODEL})
+      message(WARNING "These is no directory '${MODEL}' in models/.  This model will be ignored.")
+    endif(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/models/${MODEL})
+  endforeach(MODEL)
+endif(MODELS)

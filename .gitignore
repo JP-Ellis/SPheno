@@ -33,3 +33,7 @@ bin/
 build/
 incllude/
 lib/
+
+## Ignore models files except for the README
+models/*
+!models/README.md
