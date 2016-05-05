@@ -1,6 +1,6 @@
 Block SPINFO         # Program information
      1   SPheno      # spectrum calculator
-     2   v3.3.8      # version number
+     2   v3.4.0      # version number
 #
 Block SPhenoINFO     # SPheno specific information
     1      2         # using 2-loop RGEs

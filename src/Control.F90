@@ -51,7 +51,7 @@ Integer, Parameter :: qp = Selected_real_kind(25,450)
  !------------------------------------
  ! version number
  !------------------------------------
- Character(len=8), Save :: version="v3.3.8"
+ Character(len=8), Save :: version="v3.4.0"
  !------------------------------------
  ! variables for spectrum calculation
  !------------------------------------
