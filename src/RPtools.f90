@@ -48,9 +48,9 @@ Contains
      sumC = sumC - Conjg( eps(i1) ) * eps(i2) * vevL(i2)
      If (i1.Ne.i2) sumC = sumC - vevL(i2) * M2_L(i2,i1)
     End Do
-    B(i1) = sumC / vevSM(2) 
+    B(i1) = sumC / vevSM(2)
   End Do
-   
+
  End Subroutine Calculate_Bi
 
 
@@ -98,23 +98,23 @@ Contains
   Ue3_opt = 0.5_dp * (Ue32_max + Ue32_min)
 
   !-------------------------------------------------
-  ! evolve the parameters down to m_Z if necessary 
+  ! evolve the parameters down to m_Z if necessary
   !-------------------------------------------------
   mudim = GetRenormalizationScale()
   Call ParametersToG(gauge, Y_l, Y_d, Y_u, Mi, A_l, A_d, A_u &
                     &,M2_E, M2_L, M2_D, M2_Q, M2_U, M2_H, mu, B, g0)
 
   If (mudim.Ne.mZ2) Then
- 
+
    tz = 0.5_dp * Log(mZ2/mudim)
    dt = tz / 100._dp
    g0(1) = Sqrt(5._dp / 3._dp ) * g0(1)
- 
+
    Call odeint(g0, 213, 0._dp, tz, delta, dt, 0._dp, rge213, kont)
    g0(1) = Sqrt(3._dp / 5._dp ) * g0(1)
- 
+
   End If
-  
+
   Call GToParameters(g0,gauge_mZ, y_l_mZ,  y_d_mZ, y_u_mZ, Mi_mZ, Al_mZ, Ad_mZ &
           &, Au_mZ,M2E_mZ, M2L_mZ, M2D_mZ, M2Q_mZ, M2U_mZ, M2H_mZ, mu_mZ, B_mZ)
 
@@ -145,7 +145,7 @@ Contains
    Iname = Iname -1
    return
   End If
-  mu_mZ = Sqrt(abs_mu)* phase_mu 
+  mu_mZ = Sqrt(abs_mu)* phase_mu
   B_mZ = (M2H_mZ(1) + M2H_mZ(2) + 2._dp *  Abs_Mu) * tb / (1+tb**2)
 
   !--------------------------
@@ -208,7 +208,7 @@ Contains
    If (0.1_dp*AbsLam.Lt.AbsEps) eps = Sqrt(0.1_dp * AbsLam/AbsEps) * eps
 
    bi(2:4) = eps
-   vevL = (Lambda - eps*vevSM(1)) / mu_mZ 
+   vevL = (Lambda - eps*vevSM(1)) / mu_mZ
    !-------------------------------------------------------------
    ! recalculating B_i to fulfill tadpoles
    !-------------------------------------------------------------
@@ -234,7 +234,7 @@ Contains
    Write(ErrCan,*) "vevL",vevL
    Write(ErrCan,*) "Lambda",real(lambda)
    Write(ErrCan,*) "B_i",real(B_4(2:4))
-  End If 
+  End If
   isol=100
   Do count = 0,isol
    If (WriteOut) Write(Errcan,*) " "
@@ -257,7 +257,7 @@ Contains
    !------------------------------------------------
    ! checking experimental data, first the masses
    !------------------------------------------------
-   check = .True. 
+   check = .True.
    If ((m2_atm_rp.Lt.m2_atm_min).Or.(m2_atm_rp.Gt.m2_atm_max)) Then
     check = .False.
 
@@ -271,7 +271,7 @@ Contains
    End If
 
    If (.Not.check) Then
-    vevL = (Lambda - eps*vevSM(1)) / mu_mZ 
+    vevL = (Lambda - eps*vevSM(1)) / mu_mZ
     Call Calculate_Bi(mu_mZ, eps, vevL, vevSM, g0(1), g0(2), M2L_mZ, B_4(2:4))
     If (WriteOut) then
      Write(ErrCan,*) "recalculated paramters"
@@ -279,7 +279,7 @@ Contains
      Write(ErrCan,*) "vevL",vevL
      Write(ErrCan,*) "Lambda",real(lambda)
      Write(ErrCan,*) "B_i",real(B_4(2:4))
-    End If 
+    End If
     Call TreeMassesEps3(g0(1), g0(2), vevSM, vevL, Mi_mZ(1), Mi_mZ(2), Mi_mZ(3) &
                      &, bi, B_4, M2E_mZ, M2L_mZ, Al_mZ, Y_l_mZ                  &
                      &, M2D_mZ, M2U_mZ, M2Q_mZ, Ad_mZ, Au_mZ, Y_d_mZ, Y_u_mZ    &
@@ -302,7 +302,7 @@ Contains
     Lambda(2) = Sqrt(tan2_atm_opt/(tan2_atm+tan2_atm_opt)) * Lambda(2)
     Lambda(3) = Sqrt(tan2_atm/(tan2_atm+tan2_atm_opt)) * Lambda(3)
     Lam_sq = Lam_sq / (Lambda(2)**2 + Lambda(3)**2)
-    Lambda(2:3) =  Lambda(2:3) * Sqrt(Lam_sq) 
+    Lambda(2:3) =  Lambda(2:3) * Sqrt(Lam_sq)
 
    End If
 
@@ -315,7 +315,7 @@ Contains
 
     epsT(1) = Sqrt(tan2_sol_opt/(tan2_sol+tan2_sol_opt)) * epsT(1)
     epsT(2) = Sqrt(tan2_sol/(tan2_sol+tan2_sol_opt)) * epsT(2)
- 
+
     epsT12 = epsT12 / (Abs(epsT(1))**2 + Abs(epsT(2))**2)
     epsT(1:2) = epsT(1:2) * Sqrt(epsT12)
 
@@ -325,7 +325,7 @@ Contains
    End If
 
    If (.Not.check) Then
-    vevL = (Lambda - eps*vevSM(1)) / mu_mZ 
+    vevL = (Lambda - eps*vevSM(1)) / mu_mZ
     Call Calculate_Bi(mu_mZ, eps, vevL, vevSM, g0(1), g0(2), M2L_mZ, B_4(2:4))
     If (WriteOut) then
      Write(ErrCan,*) "recalculated paramters"
@@ -333,7 +333,7 @@ Contains
      Write(ErrCan,*) "vevL",vevL
      Write(ErrCan,*) "Lambda",real(lambda)
      Write(ErrCan,*) "B_i",real(B_4(2:4))
-    End If 
+    End If
     Call TreeMassesEps3(g0(1), g0(2), vevSM, vevL, Mi_mZ(1), Mi_mZ(2), Mi_mZ(3) &
                      &, bi, B_4, M2E_mZ, M2L_mZ, Al_mZ, Y_l_mZ                  &
                      &, M2D_mZ, M2U_mZ, M2Q_mZ, Ad_mZ, Au_mZ, Y_d_mZ, Y_u_mZ    &
@@ -353,7 +353,7 @@ Contains
     Lambda(1) = Lambda(1) / 2._dp
     Lam_Sq = Dot_product(Lambda, lambda)
 
-    vevL = (Lambda - eps*vevSM(1)) / mu_mZ 
+    vevL = (Lambda - eps*vevSM(1)) / mu_mZ
     Call Calculate_Bi(mu_mZ, eps, vevL, vevSM, g0(1), g0(2), M2L_mZ, B_4(2:4))
    End If
    !-----------------------------------
@@ -373,12 +373,12 @@ Contains
 
   End Do
 
-  If(.Not.check)Then 
+  If(.Not.check)Then
     Write(ErrCan,*)'Error, no solution found',isol
     kont = -isol
 !    Write(*,*)'Error, no solution found',isol
 !  Else
-!    Write(*,*)'solution found after:',count,Sqrt(Sum(Abs(eps)**2))/Real(mu_mZ,dp) 
+!    Write(*,*)'solution found after:',count,Sqrt(Sum(Abs(eps)**2))/Real(mu_mZ,dp)
   End If
 
   mN7 = mN1L
@@ -438,23 +438,23 @@ Contains
       & m2_sol = 0.5_dp * (m2_sol_min +m2_sol_max)
   Ue3_opt = 0.5_dp * (Ue32_max + Ue32_min)
  !-------------------------------------------------
- ! evolve the parameters down to m_Z if necessary 
+ ! evolve the parameters down to m_Z if necessary
  !-------------------------------------------------
   mudim = GetRenormalizationScale()
   Call ParametersToG(gauge, Y_l, Y_d, Y_u, Mi, A_l, A_d, A_u &
                     &,M2_E, M2_L, M2_D, M2_Q, M2_U, M2_H, mu, B, g0)
 
   If (mudim.Ne.mZ2) Then
- 
+
    tz = 0.5_dp * Log(mZ2/mudim)
    dt = tz / 100._dp
    g0(1) = Sqrt(5._dp / 3._dp ) * g0(1)
- 
+
    Call odeint(g0, 213, 0._dp, tz, delta, dt, 0._dp, rge213, kont)
    g0(1) = Sqrt(3._dp / 5._dp ) * g0(1)
- 
+
   End If
-  
+
   Call GToParameters(g0,gauge_mZ, y_l_mZ,  y_d_mZ, y_u_mZ, Mi_mZ, Al_mZ, Ad_mZ &
           &, Au_mZ,M2E_mZ, M2L_mZ, M2D_mZ, M2Q_mZ, M2U_mZ, M2H_mZ, mu_mZ, B_mZ)
 
@@ -496,7 +496,7 @@ Contains
          &    -0.5*vevSM(1)*vevSM(2)*Mi_mZ(2)*mu_mZ*(g0(1)**2+g0(2)**2),dp)   &
          &       / (g0(1)**2*Real(Mi_mZ(2),dp) + g0(2)**2*Real(Mi_mZ(1),dp))
   Lam_Sq = Abs(Lam_Sq)
-  
+
   If (l_phases) Then
    Call my_vi(mu_mZ, vevSM(1), eps(1), Ue3_opt * Lam_sq, vevL(1), Lambda(1) &
       &      , kont)
@@ -621,7 +621,7 @@ Contains
    !------------------------------------------------
    ! checking experimental data, first the masses
    !------------------------------------------------
-   check = .True. 
+   check = .True.
    If ((m2_atm_rp.Lt.m2_atm_min).Or.(m2_atm_rp.Gt.m2_atm_max)) Then
     check = .False.
 
@@ -657,7 +657,7 @@ Contains
      End If
     Else ! old procedure
      Lam_sq = Dot_product(Lambda,Lambda)
-     vevL = (Lambda - eps*vevSM(1)) / mu_mZ 
+     vevL = (Lambda - eps*vevSM(1)) / mu_mZ
     End If
 
     Call Calculate_Bi(mu_mZ, eps, vevL, vevSM, g0(1), g0(2), M2L_mZ, B_4(2:4))
@@ -683,7 +683,7 @@ Contains
     Lambda(2) = Sqrt(tan2_atm_opt/(tan2_atm+tan2_atm_opt)) * Lambda(2)
     Lambda(3) = Sqrt(tan2_atm/(tan2_atm+tan2_atm_opt)) * Lambda(3)
     Lam_sq = Lam_sq / (Abs(Lambda(2))**2 + Abs(Lambda(3))**2)
-    Lambda(2:3) =  Lambda(2:3) * Sqrt(Lam_sq) 
+    Lambda(2:3) =  Lambda(2:3) * Sqrt(Lam_sq)
 
    End If
 
@@ -695,7 +695,7 @@ Contains
 
     epsT(1) = Sqrt(tan2_sol_opt/(tan2_sol+tan2_sol_opt)) * epsT(1)
     epsT(2) = Sqrt(tan2_sol/(tan2_sol+tan2_sol_opt)) * epsT(2)
- 
+
     epsT12 = epsT12 / (Abs(epsT(1))**2 + Abs(epsT(2))**2)
     epsT(1:2) = epsT(1:2) * Sqrt(epsT12)
 
@@ -727,7 +727,7 @@ Contains
      End If
     Else ! old procedure
      Lam_sq = Dot_product(Lambda,Lambda)
-     vevL = (Lambda - eps*vevSM(1)) / mu_mZ 
+     vevL = (Lambda - eps*vevSM(1)) / mu_mZ
     End If
 
     Call Calculate_Bi(mu_mZ, eps, vevL, vevSM, g0(1), g0(2), M2L_mZ, B_4(2:4))
@@ -772,7 +772,7 @@ Contains
      Lam_sq = Dot_product(Lambda,Lambda)
     Else ! old procedure
      Lam_sq = Dot_product(Lambda,Lambda)
-     vevL = (Lambda - eps*vevSM(1)) / mu_mZ 
+     vevL = (Lambda - eps*vevSM(1)) / mu_mZ
     End If
 
     Call Calculate_Bi(mu_mZ, eps, vevL, vevSM, g0(1), g0(2), M2L_mZ, B_4(2:4))
@@ -797,12 +797,12 @@ Contains
 
   End Do
 
-  If(.Not.check)Then 
+  If(.Not.check)Then
     Write(ErrCan,*)'Error, no solution found',isol
     kont = -isol
 !    Write(*,*)'Error, no solution found',isol
 !  Else
-!    Write(*,*)'solution found after:',count,Sqrt(Sum(Abs(eps)**2))/Real(mu_mZ,dp) 
+!    Write(*,*)'solution found after:',count,Sqrt(Sum(Abs(eps)**2))/Real(mu_mZ,dp)
   End If
 
   mN7 = mN1L
@@ -817,13 +817,13 @@ Contains
    Complex(dp), Intent(in) :: mu, eps
    Real(dp), Intent(in) :: vd, lam_sq
    Integer, Intent(inout) :: kont
-  
+
    Real(dp), Intent(out) :: v_i
    Complex(dp), Intent(out) :: lam_i
 
    ! local variables
    Real(dp) :: alpha, beta2
- 
+
    ! initialisation
    kont = 0
    v_i = 0._dp
@@ -849,7 +849,7 @@ Contains
 
  Subroutine CalculateEpsTilde_from_Eps(epsT, eps, Lambda)
  Implicit None
-  Complex(dp), Intent(in), Dimension(3) :: eps, Lambda 
+  Complex(dp), Intent(in), Dimension(3) :: eps, Lambda
   Complex(dp), Intent(out), Dimension(3) :: epsT
 
   Real(dp) :: AbsLam2, Abs23, AbsLam22, Abs232
@@ -871,7 +871,7 @@ Contains
 
  Subroutine CalculateEps_from_EpsTilde(eps, epsT, Lambda)
  Implicit None
-  Complex(dp), Intent(in), Dimension(3) :: epsT, Lambda 
+  Complex(dp), Intent(in), Dimension(3) :: epsT, Lambda
   Complex(dp), Intent(out), Dimension(3) :: eps
 
   Real(dp) :: AbsLam2, Abs23, AbsLam22, Abs232
@@ -892,7 +892,7 @@ Contains
 
  End Subroutine CalculateEps_from_EpsTilde
 
-  
+
  Subroutine Fit_Neutrino_Data_sp(Nfit, m2_atm_min, m2_atm_max, tan2_atm_min   &
        & , tan2_atm_max, m2_sol_min, m2_sol_max, tan2_sol_min, tan2_sol_max   &
        & , Ue32_max, g, gp, rh0, hpncs, lmbd, vevSM, vR, vS, vP, mPhi, MR, mu &
@@ -935,7 +935,7 @@ Contains
    !----------------------------------------------
    ! no adjustment if Nfit < 0
    !----------------------------------------------
-   if (Nfit.lt.0) return 
+   if (Nfit.lt.0) return
 
    Iname = Iname + 1
    NameOfUnit(Iname) = "Fit_Neutrino_Data_sp"
@@ -979,9 +979,9 @@ Contains
     lambda=10.0_dp**(1.0_dp - 4.0_dp*vec8(1))
     epssq =10.0_dp**(0.0_dp - 6.0_dp*vec8(2))
     lam = vec8(3:5)
-    lam = lam * lambda / Sqrt(Dot_product(lam,lam)) 
+    lam = lam * lambda / Sqrt(Dot_product(lam,lam))
     eps = vec8(6:8)
-    eps = eps * Sqrt(epssq/Dot_product(eps,eps)) 
+    eps = eps * Sqrt(epssq/Dot_product(eps,eps))
 
    Case(1)
     Call Random_Number(vec13)
@@ -1038,7 +1038,7 @@ Contains
     hnu = sqrt2 * eps / vR
 
     Iname = Iname - 1
- 
+
  End Subroutine Fit_Neutrino_Data_sp
 
 
@@ -1121,13 +1121,13 @@ Contains
   !-------------------------------------------------------------------------
   ! Iterative procedure to get the 1-loop masses and mixing matrices;
   ! delta is the relative precision required for the masses after two runs
-  ! The procedure is stopped after the i-th iteration 
+  ! The procedure is stopped after the i-th iteration
   ! if delta > |m(i) - m(i-1)|/m(i) for all SUSY. In the case that more than
-  ! 20 iterations are necessary the iteration loop is left and a warning is 
+  ! 20 iterations are necessary the iteration loop is left and a warning is
   ! given.
   !--------------------------------------------------------------------------
    ! In the SPA convention the the renormalization scale is fixed with 1 TeV
-   If (SPA_Convention) Call SetRGEScale(1.e3_dp**2) ! 
+   If (SPA_Convention) Call SetRGEScale(1.e3_dp**2) !
    Scale_Q = Sqrt(GetRenormalizationScale())
 
    If (Scale_Q.Eq.1._dp) Then ! in this case no scale has been set and one
@@ -1160,9 +1160,9 @@ Contains
 
     i1 = GetYukawaScheme()
     If (i1.Eq.1) Then
-     Y_u = Matmul(Transpose(CKM),Y_u) 
+     Y_u = Matmul(Transpose(CKM),Y_u)
     Else
-     Y_d = Matmul(Conjg(CKM),Y_d) 
+     Y_d = Matmul(Conjg(CKM),Y_d)
     End If
     Call Switch_from_superCKM(Y_d, Y_u, Ad_sckm, Au_sckm, M2D_sckm, M2Q_sckm &
               & , M2U_sckm, A_d, A_u, M2_D, M2_Q, M2_U, .False. )
@@ -1198,7 +1198,7 @@ Contains
    P0(1)%m2 = mZ2
    mP0 = P0%m
    mP02 = P0%m2
-   
+
    mSpm = Spm%m    ! short cut to solve a problem with arrays in type variables
    mass_old(1) = Abs(glu%m)
    mass_old(2:3) = Abs(ChiPm%m)
@@ -1206,10 +1206,10 @@ Contains
    mass_old(8:9) = S0%m
    mass_old(10) = mP0_T(2)
    mass_old(11) = mSpm(2)
-   mass_old(12:17) = Sup%m   
-   mass_old(18:23) = Sdown%m    
-   mass_old(24:29) = Slepton%m  
-   mass_old(30:32) = Sneut%m 
+   mass_old(12:17) = Sup%m
+   mass_old(18:23) = Sdown%m
+   mass_old(24:29) = Slepton%m
+   mass_old(30:32) = Sneut%m
    ! calculate first gauge and Yukawa in DR-scheme at m_Z
    Call BoundaryEW(1, vevSM, ChiPm%m, U, V, Chi0%m, N, S0%m2, RS0, mP02, RP0 &
     & , Spm%m, Spm%m2, RSpm, Sdown%m, Sdown%m2, RSdown, Sup%m, Sup%m2, RSup  &
@@ -1305,11 +1305,11 @@ Contains
     mass_new(2:3) = Abs(mC)
     mass_new(4:7) = Abs(mN)
     mass_new(8:9) = mS0
-    mass_new(10) = mP0(2)  
-    mass_new(11) = mSpm(2)  
-    mass_new(12:17) = mSup   
-    mass_new(18:23) = mSdown   
-    mass_new(24:29) = mSlepton 
+    mass_new(10) = mP0(2)
+    mass_new(11) = mSpm(2)
+    mass_new(12:17) = mSup
+    mass_new(18:23) = mSdown
+    mass_new(24:29) = mSlepton
     mass_new(30:32) = mSneut
     diff_m = Abs(mass_new - mass_old)
     Where (mass_old.Ne.0._dp) diff_m = diff_m / mass_old
@@ -1347,13 +1347,13 @@ Contains
 
     gauge(1) = Sqrt(5._dp/3._dp) * gauge(1)
 
-    Y_l = Transpose(Y_l) 
-    Y_d = Transpose(Y_d) 
-    Y_u = Transpose(Y_u) 
-    A_l = Transpose(A_l) 
-    A_d = Transpose(A_d) 
-    A_u = Transpose(A_u) 
-  
+    Y_l = Transpose(Y_l)
+    Y_d = Transpose(Y_d)
+    Y_u = Transpose(Y_u)
+    A_l = Transpose(A_l)
+    A_d = Transpose(A_d)
+    A_u = Transpose(A_u)
+
     Call ParametersToG(gauge, y_l, y_d, y_u, Mi, A_l, A_d, A_u       &
                   & , M2_E, M2_L, M2_D, M2_Q, M2_U, M2_H, mu, B, g2)
     !------------------------------
@@ -1382,11 +1382,11 @@ Contains
     A_d = Transpose(A_d)
     A_u = Transpose(A_u)
 
-    Y_l_mZ = Transpose(Y_l_mZ) 
-    Y_d_mZ = Transpose(Y_d_mZ) 
-    Y_u_mZ = Transpose(Y_u_mZ) 
-    A_l_mZ = Transpose(A_l_mZ) 
-    A_d_mZ = Transpose(A_d_mZ) 
+    Y_l_mZ = Transpose(Y_l_mZ)
+    Y_d_mZ = Transpose(Y_d_mZ)
+    Y_u_mZ = Transpose(Y_u_mZ)
+    A_l_mZ = Transpose(A_l_mZ)
+    A_d_mZ = Transpose(A_d_mZ)
     a_u_mZ = Transpose(A_u_mZ)
     !-----------------------------------------
     ! use consistently running parameters
@@ -1396,7 +1396,7 @@ Contains
     vev =  2._dp * Sqrt(mZ2_t / (g2(1)**2 +g2(2)**2))
     vevSM(1) = vev / Sqrt(1._dp + tanb_mZ**2)
     vevSM(2) = tanb_mZ * vevSM(1)
- 
+
     If (.Not.UseFixedScale) Then
      If (GenerationMixing) Then
       Scale_Q = 1._dp
@@ -1434,7 +1434,7 @@ Contains
      Iname = Iname - 1
      Return
     End If
-     
+
     If (Min(Minval(mSup2_T), Minval(mSdown2_T), Minval(mSlepton2_T)   &
        &   , Minval(mSneut2_T), Minval(mS02_T), Minval(mP02_T)       &
        &   , Minval(mSpm2_T)).Gt. 0._dp ) Then
@@ -1469,7 +1469,7 @@ Contains
      mglu_T = mglu
      mP0_T = mP0
      mP02_T = mP02
-     RP0_T = RP0     
+     RP0_T = RP0
     End If
 
     kont = 0
@@ -1531,7 +1531,7 @@ Contains
     Call Calculate_RP_Parameters(delta_mass, eps, vevL, Beps, Lam_ex, RSpm8 &
                      & , RS05, RP05, U5, V5, Chi07%m, N7, kont)
 
-   
+
     If (kont.Ne.0) then
      Iname = Iname - 1
      Return
@@ -1539,23 +1539,23 @@ Contains
 
    Else ! .not.l_fit_RP_parameters
    !-------------------------------------------------
-   ! evolve the parameters down to m_Z if necessary 
+   ! evolve the parameters down to m_Z if necessary
    !-------------------------------------------------
     mudim = GetRenormalizationScale()
     Call ParametersToG(gauge, Y_l, Y_d, Y_u, Mi, A_l, A_d, A_u &
                     &,M2_E, M2_L, M2_D, M2_Q, M2_U, M2_H, mu, B, g0)
 
     If (mudim.Ne.mZ2) Then
- 
+
      tz = 0.5_dp * Log(mZ2/mudim)
      dt = tz / 100._dp
      g0(1) = Sqrt(5._dp / 3._dp ) * g0(1)
- 
+
      Call odeint(g0, 213, 0._dp, tz, delta, dt, 0._dp, rge213, kont)
      g0(1) = Sqrt(3._dp / 5._dp ) * g0(1)
- 
+
     End If
-  
+
     Call GToParameters(g0, gauge_mZ, y_l_mZ,  y_d_mZ, y_u_mZ, Mi_mZ, Al_mZ  &
           & , Ad_mZ, Au_mZ,M2E_mZ, M2L_mZ, M2D_mZ, M2Q_mZ, M2U_mZ, M2H_mZ   &
           & , mu_mZ, B_mZ)
@@ -1572,7 +1572,7 @@ Contains
     BiEpsi(2:4) = Beps
     bi(1) = mu_mZ
     bi(2:4) = eps
- 
+
     Call TreeMassesEps3(g0(1), g0(2), vevSM, vevL, Mi_mZ(1), Mi_mZ(2)        &
            & , Mi_mZ(3), bi, BiEpsi, M2E_mZ, M2L_mZ, Al_mZ, Y_l_mZ           &
            & , M2D_mZ, M2U_mZ, M2Q_mZ, Ad_mZ, Au_mZ, Y_d_mZ, Y_u_mZ          &
@@ -1585,7 +1585,7 @@ Contains
      Iname = Iname - 1
      Return
     End If
-  
+
     Call NeutralinoMass_Loop_RP(g0(1), g0(2), Y_d_mZ, Y_l_mZ, Y_u_mZ, vevSM    &
          & , vevL, Mi_mZ(1), Mi_mZ(2), mu_mZ, eps, ChiPm5%m, ChiPm5%m2, U5, V5 &
          & , mSup2_T, RSup_T, mSdown2_T, RSdown_T, S05%m2, RS05, P05%m2, RP05  &
@@ -1683,16 +1683,16 @@ Contains
    If (GenerationMixing) Then
     i1 = GetYukawaScheme()
     If (i1.Eq.1) Then
-     Y_u = Matmul(Transpose(CKM),Y_u) 
+     Y_u = Matmul(Transpose(CKM),Y_u)
     Else
-     Y_d = Matmul(Conjg(CKM),Y_d) 
+     Y_d = Matmul(Conjg(CKM),Y_d)
     End If
    End If
    Call Calculate_Bi(mu, eps, vevL, vevSM, gp, g, M2L_pmns, BiEpsi(2:4))
    bi(1) = mu
    bi(2:4) = eps
    BiEpsi(1) = B * mu
-!   BiEpsi(2:4) = Beps * eps 
+!   BiEpsi(2:4) = Beps * eps
    Beps = BiEpsi(2:4) / eps
 
    Call TreeMassesEps3(gp, g, vevSM, vevL, Mi(1), Mi(2), Mi(3), bi, BiEpsi     &
@@ -1713,21 +1713,21 @@ Contains
    ! reorder state identification if necessary
    !----------------------------------------------
    If (.Not.GenerationMixing) Then
-    Call Swap_Order_Sf(RSdown(1,1), Sdown(1)%id, Sdown(2)%id, id_p, c_name)    
-    Call Swap_Order_Sf(RSdown(3,3), Sdown(3)%id, Sdown(4)%id, id_p, c_name)    
-    Call Swap_Order_Sf(RSup(1,1), Sup(1)%id, Sup(2)%id, id_p, c_name)    
-    Call Swap_Order_Sf(RSup(3,3), Sup(3)%id, Sup(4)%id, id_p, c_name)    
+    Call Swap_Order_Sf(RSdown(1,1), Sdown(1)%id, Sdown(2)%id, id_p, c_name)
+    Call Swap_Order_Sf(RSdown(3,3), Sdown(3)%id, Sdown(4)%id, id_p, c_name)
+    Call Swap_Order_Sf(RSup(1,1), Sup(1)%id, Sup(2)%id, id_p, c_name)
+    Call Swap_Order_Sf(RSup(3,3), Sup(3)%id, Sup(4)%id, id_p, c_name)
    End If
   !-----------------------------------------------------------------------
   ! as there is a large hierachy between m_nu and m_chi, there might have
   ! been numerical problems. However, in all known cases this has been
   ! the mass of the lightest neutrino, which is of no importance for the
-  ! following. Therefore, the error flag is reset to zero. 
+  ! following. Therefore, the error flag is reset to zero.
   ! This is of course dangerous and has to be improved.
   !-----------------------------------------------------------------------
   If (kont.Eq.-14) kont = 0
 
-  
+
   If ((L_BR).And.(kont.Eq.0)) Then
 
    Call CalculateBR(0, id_nu, 0, id_l, 3, id_d, 3, id_u, 1, id_Z, 1, id_W, 0   &
@@ -1743,8 +1743,8 @@ Contains
  !---------------------------------------------------------------------------
  ! Calculation of the cross sections in e+ e- annihilation provided L_Cs is
  ! set .TRUE. (default) and that the routine Sugra has finished
- ! correctly (kont.eq.0) 
- ! The following input quantities can be specified in the file 
+ ! correctly (kont.eq.0)
+ ! The following input quantities can be specified in the file
  ! CrossSections.in: Ecms .... c.m.s enerergy in GeV
  !                   Pm ...... degree of longitudinal polarization of incoming
  !                             electron
@@ -1884,9 +1884,9 @@ Contains
   If (GenerationMixing) Then
    i1 = GetYukawaScheme()
    If (i1.Eq.1) Then
-    Y_u = Matmul(Transpose(CKM),Y_u) 
+    Y_u = Matmul(Transpose(CKM),Y_u)
    Else
-    Y_d = Matmul(Conjg(CKM),Y_d) 
+    Y_d = Matmul(Conjg(CKM),Y_d)
    End If
   End If
   !-------------------------------------
@@ -1914,7 +1914,7 @@ Contains
   M2_H = - Abs(mu)**2 - 0.5_dp * mZ2 * (1._dp-tanb**2)/(1._dp+tanb**2)
   M2_H(1) = M2_H(1) + Real(B,dp)*tanb
   M2_H(2) = M2_H(2) + Real(B,dp)/tanb
- 
+
   Call TreeMassesLam3(gp, g, vevSM, vevL, Mi(1), Mi(2), Mi(3), bi, BiEpsi     &
       & , M2_E, M2_L, A_l, Y_l, Rp_lam, RP_Alam, M2_D, M2_U, M2_Q, A_d, A_u   &
       & , Y_d, Y_u, Rp_lamp, RP_Alamp                                         &
@@ -1927,7 +1927,7 @@ Contains
    Return
   End if
 
-  Call SetRGEscale(mZ2)  
+  Call SetRGEscale(mZ2)
   Call NeutralinoMass_Loop_RPtri(gp, g, Y_d, Y_l, Y_u, RP_lam, RP_lamp        &
          & , vevSM, vevL, Mi(1), Mi(2), mu, eps, ChiPm5%m, ChiPm5%m2, U5, V5  &
          & , Sup%m2, RSup, Sdown%m2, RSdown, S05%m2, RS05, P05%m2, RP05 &
@@ -1942,26 +1942,26 @@ Contains
    Chi07%m = mN1L
    Chi07%m2 = mN1L2
    N7 = N1L
- 
+
    !----------------------------------------------
    ! reorder state identification if necessary
    !----------------------------------------------
    If (.Not.GenerationMixing) Then
-    Call Swap_Order_Sf(RSdown(1,1), Sdown(1)%id, Sdown(2)%id, id_p, c_name)    
-    Call Swap_Order_Sf(RSdown(3,3), Sdown(3)%id, Sdown(4)%id, id_p, c_name)    
-    Call Swap_Order_Sf(RSup(1,1), Sup(1)%id, Sup(2)%id, id_p, c_name)    
-    Call Swap_Order_Sf(RSup(3,3), Sup(3)%id, Sup(4)%id, id_p, c_name)    
+    Call Swap_Order_Sf(RSdown(1,1), Sdown(1)%id, Sdown(2)%id, id_p, c_name)
+    Call Swap_Order_Sf(RSdown(3,3), Sdown(3)%id, Sdown(4)%id, id_p, c_name)
+    Call Swap_Order_Sf(RSup(1,1), Sup(1)%id, Sup(2)%id, id_p, c_name)
+    Call Swap_Order_Sf(RSup(3,3), Sup(3)%id, Sup(4)%id, id_p, c_name)
    End If
   !-----------------------------------------------------------------------
   ! as there is a large hierachy between m_nu and m_chi, there might have
   ! been numerical problems. However, in all known cases this has been
   ! the mass of the lightest neutrino, which is of no importance for the
-  ! following. Therefore, the error flag is reset to zero. 
+  ! following. Therefore, the error flag is reset to zero.
   ! This is of course dangerous and has to be improved.
   !-----------------------------------------------------------------------
   If (kont.Eq.-14) kont = 0
 
-  
+
   If ((L_BR).And.(kont.Eq.0)) Then
 
    Call CalculateBR(0, id_nu, 0, id_l, 3, id_d, 3, id_u, 1, id_Z, 1, id_W, 0   &
@@ -1977,8 +1977,8 @@ Contains
  !---------------------------------------------------------------------------
  ! Calculation of the cross sections in e+ e- annihilation provided L_Cs is
  ! set .TRUE. (default) and that the routine Sugra has finished
- ! correctly (kont.eq.0) 
- ! The following input quantities can be specified in the file 
+ ! correctly (kont.eq.0)
+ ! The following input quantities can be specified in the file
  ! CrossSections.in: Ecms .... c.m.s enerergy in GeV
  !                   Pm ...... degree of longitudinal polarization of incoming
  !                             electron
@@ -2060,7 +2060,7 @@ Contains
   gp2=gp*gp
   vd = vevSM(1)
   vu = vevSM(2)
-  
+
   mH2(1)=(B*vu+rh0*vu*( (lmbd*vp**2)/4._dp+(h*vR*vS)/2._dp        &
     & -(rh0*vd*vu)/2._dp+(Mphi*vp)/sqrt2)+(RAh0*vp*vu)/sqrt2           &
     & +(gp2*vd*(-vd**2/2._dp+vu**2/2._dp-vL(1)**2/2._dp-vL(2)**2/2._dp  &

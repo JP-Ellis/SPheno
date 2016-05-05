@@ -2,7 +2,7 @@ Module ThreeBodyPhaseSpaceS
 ! comments
 !-----------------------------------------------------------
 ! contains the phase space function needed for 3-body decays
-! involving fermions and bosons in intial and/or final state 
+! involving fermions and bosons in intial and/or final state
 ! 16.08.2012: adding contributions by Lukas Mitzka
 !-----------------------------------------------------------
 
@@ -15,8 +15,8 @@ Real(dp), Private ::  rmt2, rjt2, rat2, rbt2, rkt2, Rsquared
 
 Contains
 
- 
-!!!!! 
+
+!!!!!
 !Integration Routine for the Slepton charge chaning channel
  Subroutine ChiChiInterfIntegrands(s, erg)
  Implicit None
@@ -27,7 +27,7 @@ Contains
   Integer :: i1
 
   Real(dp) :: x, x2, yplus, yminus, fOnexrarb, fTwoxrarb, l1abbr, kabbr
- 
+
   erg = 0._dp
 
   Do i1=1,2
@@ -36,13 +36,13 @@ Contains
 
    yplus = 1._dp / ( 2._dp * ( 1 - x + rkt2 ) )                               &
       &    * ( (2._dp-x) * (Rsquared - x) + Sqrt(x2-4._dp*rkt2)               &
-      &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) ) 
+      &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) )
    yminus = 1._dp / ( 2._dp * ( 1._dp - x + rkt2 ) )                          &
       &    * ( (2._dp-x) * (Rsquared - x) - Sqrt(x2-4._dp*rkt2)               &
-      &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) ) 
-   
+      &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) )
+
    l1abbr =      Log( Abs(  ( yplus  + rbt2 - 1._dp - rmt2 )         &
-            &             / ( yminus + rbt2 - 1._dp - rmt2 )   ) )   
+            &             / ( yminus + rbt2 - 1._dp - rmt2 )   ) )
 
    kabbr = (   yplus - yminus  ) / ( 1._dp - x + rkt2 -rat2 )
 
@@ -55,26 +55,26 @@ Contains
    erg(2) = erg(2) + (-rkt2 + x - 1._dp )*fTwoxrarb                           &
                 &  + (-rjt2 + rkt2*(2._dp*rmt2 + 1._dp)                       &
                 &  -  (rmt2 + 1._dp)*(x - 1._dp)    )*fOnexrarb
-   
+
    erg(3) = erg(3) + (-rjt2 + rkt2 + rmt2 + 1._dp - x)*fOnexrarb
-   
+
    erg(4) = erg(4) + (2._dp*rkt2 - x )*fOnexrarb
-   
-   erg(5) = erg(5) + fTwoxrarb + (rjt2 - rkt2 - rmt2 - 1._dp)*fOnexrarb 
-   
+
+   erg(5) = erg(5) + fTwoxrarb + (rjt2 - rkt2 - rmt2 - 1._dp)*fOnexrarb
+
    erg(6) = erg(6) + fTwoxrarb - 2._dp*rmt2*fOnexrarb
-   
+
    erg(7) = erg(7) + ( rjt2 - rkt2 - rmt2 - 1._dp + x)*fOnexrarb + fTwoxrarb
-   
+
    erg(8) = erg(8) + fOnexrarb
-   
-  End Do  
+
+  End Do
 
  End Subroutine ChiChiInterfIntegrands
-  
+
 
  Subroutine IntegrateChiChiInterference(mass,m_in,r_out,coup,smin,smax,eps,gam)
- Implicit None  
+ Implicit None
 
   Real(dp), Intent(in)    :: mass(:)
   Real(dp), Intent(in)    :: m_in
@@ -86,15 +86,15 @@ Contains
   Complex(dp), Intent(out)   :: gam
 
   Real(dp) :: I_ChiaChibInterf(8)
-  
+
   rjt2 = r_out(1)
   rkt2 = r_out(2)
   rmt2 = r_out(3)
-  
+
   rat2 = ( mass(1) / m_in )**2
   rbt2 = ( mass(2) / m_in )**2
-  Rsquared = 1._dp - rjt2 + rkt2 + rmt2  
-   
+  Rsquared = 1._dp - rjt2 + rkt2 + rmt2
+
   Call DGaussInt(ChiChiInterfIntegrands,8,smin,smax,I_ChiaChibInterf(:),eps)
   I_ChiaChibInterf(1) = Sqrt(rkt2*rmt2)*I_ChiaChibInterf(1)
   I_ChiaChibInterf(3) = Sqrt(rkt2*rbt2)*I_ChiaChibInterf(3)
@@ -103,8 +103,8 @@ Contains
   I_ChiaChibInterf(6) = Sqrt(rkt2*rat2)*I_ChiaChibInterf(6)
   I_ChiaChibInterf(7) = Sqrt(rat2*rbt2)*I_ChiaChibInterf(7)
   I_ChiaChibInterf(8) = - 2._dp*Sqrt(rat2*rbt2*rkt2*rmt2)*I_ChiaChibInterf(8)
-  
-  
+
+
   gam = ( coup(1) * coup(4) * Conjg(coup(7) * coup(6))                         &
     &   + coup(2) * coup(3) * Conjg(coup(8) * coup(5)) ) * I_ChiaChibInterf(1) &
     & + ( coup(1) * coup(4) * Conjg(coup(8) * coup(5))                         &
@@ -122,7 +122,7 @@ Contains
     & + ( coup(1) * coup(3) * Conjg(coup(8) * coup(6))                         &
     &   + coup(2) * coup(4) * Conjg(coup(7) * coup(5)) ) * I_ChiaChibInterf(8)
 
-  gam = 2._dp  *  oo512pi3  *  m_in  *  gam  
+  gam = 2._dp  *  oo512pi3  *  m_in  *  gam
 
  End Subroutine IntegrateChiChiInterference
 
@@ -144,20 +144,20 @@ Contains
 
    fxrarb = Sqrt(x2-4._dp*rkt2) * kappa(1._dp-x+rkt2,rmt2,rjt2)               &
      & / ( (1._dp - x + rkt2 - rat2)                                          &
-     &   * (1._dp - x + rkt2 - rbt2) * (1._dp - x + rkt2)**2  ) 
-     
+     &   * (1._dp - x + rkt2 - rbt2) * (1._dp - x + rkt2)**2  )
+
    erg(2) = erg(2) + (x - 2._dp * rkt2) * (Rsquared - x ) * fxrarb
-   fxrarb = (1._dp - x + rkt2) * fxrarb 
+   fxrarb = (1._dp - x + rkt2) * fxrarb
    erg(1) = erg(1) + (x - 2._dp * rkt2) * (Rsquared - x ) * fxrarb
    erg(3) = erg(3) + (x - 2._dp * rkt2) * fxrarb
    erg(4) = erg(4) + (Rsquared - x) * fxrarb
    erg(5) = erg(5) + fxrarb
-   erg(6) = erg(6) + (1._dp - x + rkt2) * fxrarb 
+   erg(6) = erg(6) + (1._dp - x + rkt2) * fxrarb
                           !^^the square gets lost in the redefinition of fxrarb
   End Do
 
  End Subroutine FFIntegrands
-  
+
 
  Subroutine IntegrateFF(mass , m_in, r_out, coup, smin, smax, eps, gam)
  Implicit None
@@ -169,17 +169,17 @@ Contains
   Real(dp), Intent(in)    :: smax
   Real(dp), Intent(in)    :: eps
   Complex(dp), Intent(out)   :: gam
-  
+
   Real(dp) :: I_FaFb(6),I_FaFbm(6)
 
   rjt2 = r_out(1)
   rkt2 = r_out(2)
-  rmt2 = r_out(3) 
+  rmt2 = r_out(3)
 
   rat2 = (mass(1) / m_in )**2
   rbt2 = (mass(2) / m_in )**2
 
-  Rsquared = 1._dp - rjt2 + rkt2 + rmt2   
+  Rsquared = 1._dp - rjt2 + rkt2 + rmt2
 
   Call DgaussInt(FFIntegrands,6,smin,smax,I_FaFb(:),eps)
 
@@ -226,17 +226,17 @@ Contains
    yplus = ( (2-x) * (Rsquared - x)                            &
        &   + Sqrt(x2-4._dp*rkt2) * kappa(1-x+rkt2,rmt2,rjt2) ) &
        & / ( 2._dp * ( 1._dp - x + rkt2 ) )
-      
+
    yminus = ( (2-x) * (Rsquared - x)                            &
         &   - Sqrt(x2-4._dp*rkt2) * kappa(1-x+rkt2,rmt2,rjt2) ) &
         & / ( 2._dp * ( 1._dp - x + rkt2 ) )
-     
+
    fxrarb =      (yplus - yminus)   &
       &     /  ( (1._dp - x + rkt2 - rat2) * (1._dp - x + rkt2 - rbt2)   )
-   
+
    gxrarb =       (yplus**2 - yminus**2)   &
       &      /( 2._dp * (1._dp - x + rkt2 - rat2) * (1._dp - x + rkt2 - rbt2) )
-   
+
    erg(1) = erg(1) + (rkt2 - 1._dp)*(rjt2- rkt2 -rmt2 + x - 1._dp)*fxrarb &
         & + (x-rkt2-1._dp)*gxrarb
    erg(2) = erg(2) + (rjt2 - rkt2 - rmt2 + x - 1._dp) * fxrarb + gxrarb
@@ -244,12 +244,12 @@ Contains
    erg(4) = erg(4) + (rjt2-rkt2-rmt2+x-1)*fxrarb
    erg(5) = erg(5) + fxrarb
    erg(6) = erg(6) + (rkt2 - x + 1._dp)*fxrarb
-  
+
   End Do
 
  End Subroutine FFIntegrandsLM
-  
-  
+
+
  Subroutine IntegrateFFLM( mass , m_in, r_out, coup, smin,smax,eps,gam)
   Implicit None
   Real(dp), Intent(in)    :: mass(:)
@@ -260,12 +260,12 @@ Contains
   Real(dp), Intent(in)    :: smax
   Real(dp), Intent(in)    :: eps
   Complex(dp), Intent(out)   :: gam
-  
+
   Real(dp) :: I_FaFbs(8), I_FaFb(6)
 
   rjt2 = r_out(1)
   rkt2 = r_out(2)
-  rmt2 = r_out(3) 
+  rmt2 = r_out(3)
 
   rat2 = (mass(1) / m_in )**2
   rbt2 = (mass(2) / m_in )**2
@@ -280,8 +280,8 @@ Contains
    I_FaFbs(6) = Sqrt(rbt2 * rkt2) * I_FaFb(4)
    I_FaFbs(7) = - 2._dp * Sqrt(rkt2 * rmt2 * rat2 * rbt2) * I_FaFb(5)
    I_FaFbs(8) = - 2._dp * Sqrt(rkt2 * rmt2) * I_FaFb(6)
- 
- 
+
+
   gam = ( coup(1) * coup(4) * Conjg(coup(8) * coup(5))                 &
     &   + coup(2) * coup(3) * Conjg(coup(7) * coup(6)) ) * I_FaFbs(1)  &
     & + ( coup(1) * coup(3) * Conjg(coup(7) * coup(5))                 &
@@ -291,9 +291,9 @@ Contains
     & + ( coup(1) * coup(4) * Conjg(coup(7) * coup(5))                 &
     &   + coup(2) * coup(3) * Conjg(coup(8) * coup(6)) ) * I_FaFbs(4)  &
     & + ( coup(1) * coup(3) * Conjg(coup(7) * coup(6))                 &
-    &   + coup(2) * coup(4) * Conjg(coup(8) * coup(5)) ) * I_FaFbs(5)  &  
+    &   + coup(2) * coup(4) * Conjg(coup(8) * coup(5)) ) * I_FaFbs(5)  &
     & + ( coup(1) * coup(4) * Conjg(coup(8) * coup(6))                 &
-    &   + coup(2) * coup(3) * Conjg(coup(7) * coup(5)) ) * I_FaFbs(6)  &  
+    &   + coup(2) * coup(3) * Conjg(coup(7) * coup(5)) ) * I_FaFbs(6)  &
     & + ( coup(1) * coup(3) * Conjg(coup(8) * coup(6))                 &
     &   + coup(2) * coup(4) * Conjg(coup(7) * coup(5)) ) * I_FaFbs(7)  &
     & + ( coup(1) * coup(4) * Conjg(coup(7) * coup(6))                 &
@@ -303,23 +303,23 @@ Contains
 
  End Subroutine IntegrateFFLM
 
- 
+
  Subroutine SaSaIntegrands(s,erg)
-  Implicit None  
-  
+  Implicit None
+
   Real(dp), Intent(in) :: s(2)
   Real(dp), Intent(out) :: erg(2)
 
-  Integer :: i1 
- 
+  Integer :: i1
+
   Real(dp) :: x, x2, yplus, yminus, iOnexra, iTwoxra, l1abbr
- 
+
   erg = 0._dp
 
   Do i1=1,2
    x = s(i1)
    x2 = x**2
-   
+
    yplus = 1._dp / ( 2._dp * ( 1._dp - x + rkt2 ) )                           &
       &    * ( (2._dp-x) * (Rsquared - x) + Sqrt(x2-4._dp*rkt2)               &
       &                                     * kappa(1._dp -x+rkt2,rmt2,rjt2))
@@ -333,13 +333,13 @@ Contains
    iOnexra =  (yplus - yminus)                            &
            & / ( (yplus + x - 1._dp + rjt2 - rat2 )       &
            &   * (yminus + x - 1._dp + rjt2 - rat2 ) )
-      
+
    iTwoxra = l1abbr + (1._dp - x - rjt2 + rat2)* iOnexra
 
    erg(1) = erg(1) + iTwoxra + (x - 1._dp +rjt2 - rmt2 - rkt2)*iOnexra
    erg(2) = erg(2) + iOnexra
 
-  End Do 
+  End Do
 
  End Subroutine SaSaIntegrands
 
@@ -354,7 +354,7 @@ Contains
   Real(dp), Intent(in)    :: smax
   Real(dp), Intent(in)    :: eps
   Complex(dp), Intent(out)   :: gam
-  
+
   Real(dp) :: I_SaSa(2)
 
   rjt2 = r_out(1)
@@ -363,7 +363,7 @@ Contains
 
   rat2 = (mass(1) / m_in)**2
   rbt2 = (mass(2) / m_in)**2
-  
+
   Rsquared = 1._dp - rjt2 + rkt2 + rmt2
 
   Call DgaussInt(SaSaIntegrands,2,smin,smax,I_SaSa(:),eps)
@@ -378,42 +378,42 @@ Contains
 
 
  Subroutine SaSbIntegrands (s,erg)
-  Implicit None  
-  
+  Implicit None
+
    Real(dp), Intent(in) :: s(2)
    Real(dp), Intent(out) :: erg(2)
 
-   Integer :: i1 
- 
+   Integer :: i1
+
    Real(dp) :: x, x2, yplus, yminus, hOnexrarb, hTwoxrarb, l1abbr, l2abbr
- 
+
    erg = 0._dp
 
    Do i1=1,2
     x = s(i1)
     x2 = x**2
-   
+
     yplus = 1._dp / ( 2._dp * ( 1._dp - x + rkt2 ) )                         &
     &    * ( (2._dp-x) * (Rsquared - x) + Sqrt(x2-4._dp*rkt2)                &
-    &                                 * kappa(1._dp-x+rkt2,rmt2,rjt2) ) 
+    &                                 * kappa(1._dp-x+rkt2,rmt2,rjt2) )
    yminus = 1._dp / ( 2._dp * ( 1._dp - x + rkt2 ) )                         &
     &    * ( (2._dp-x) * (Rsquared - x) - Sqrt(x2-4._dp*rkt2)                &
     &                                 * kappa(1._dp-x+rkt2,rmt2,rjt2) )
-      
+
    l1abbr = Log( Abs( ( yplus  + x - 1._dp + rjt2 - rat2 )         &
-          &           / ( yminus + x - 1._dp + rjt2 - rat2 )   ) ) 
- 
+          &           / ( yminus + x - 1._dp + rjt2 - rat2 )   ) )
+
    l2abbr = Log( Abs( ( yplus  + x - 1._dp + rjt2 - rbt2 )         &
-           &          / ( yminus + x - 1._dp + rjt2 - rbt2 )   ) )  
-            
+           &          / ( yminus + x - 1._dp + rjt2 - rbt2 )   ) )
+
    hOnexrarb =  ( l1abbr - l2abbr  ) / (rat2 - rbt2)
-   
+
    hTwoxrarb =   l2abbr + (1._dp - x -rjt2 + rat2 )*hOnexrarb
-      
+
    erg(1) = erg(1) +  hTwoxrarb + (x - 1._dp +rjt2 - rmt2 - rkt2)*hOnexrarb
    erg(2) = erg(2) +  hOnexrarb
-   
-  End Do 
+
+  End Do
 
  End Subroutine SaSbIntegrands
 
@@ -428,55 +428,55 @@ Contains
   Real(dp), Intent(in)    :: smax
   Real(dp), Intent(in)    :: eps
   Complex(dp), Intent(out)   :: gam
-  
+
   Real(dp) :: I_SaSb(2)
-  
+
   rjt2 = r_out(1)
   rkt2 = r_out(2)
   rmt2 = r_out(3)
 
   rat2 = (mass(1) / m_in)**2
   rbt2 = (mass(2) / m_in)**2
-  
-  Rsquared = 1._dp - rjt2 + rkt2 + rmt2  
+
+  Rsquared = 1._dp - rjt2 + rkt2 + rmt2
 
   Call DgaussInt(SaSbIntegrands,2,smin,smax,I_SaSb(:),eps)
 
   gam = (coup(2)*Conjg(coup(5)) + coup(3)*Conjg(coup(6))) * I_SaSb(1)  &
     & - (coup(2)*Conjg(coup(6)) + coup(3)*Conjg(coup(5)))              &
     &   * 2._dp * Sqrt(rmt2*rkt2) * I_SaSb(2)
-  
+
   gam = 2._dp * oo512pi3 / m_in * coup(1) * Conjg(coup(4)) * gam
- 
+
  End Subroutine IntegrateSaSb
- 
- 
+
+
  Subroutine SFIntegrands(s,erg)
- Implicit None  
-  
+ Implicit None
+
   Real(dp), Intent(in) :: s(2)
   Real(dp), Intent(out) :: erg(4)
 
-  Integer :: i1 
+  Integer :: i1
 
   Real(dp) :: x, x2, yplus, yminus, gOnexrarb, gTwoxrarb, l1abbr, kabbr
- 
+
   erg = 0._dp
 
   Do i1=1,2
    x = s(i1)
    x2 = x**2
- 
+
    yplus = 1._dp / ( 2._dp * ( 1 - x + rkt2 ) )                               &
-      &    * ( (2._dp-x) * (Rsquared - x) + Sqrt(x2-4._dp*rkt2)               & 
-      &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) ) 
-   yminus = 1._dp / ( 2._dp * ( 1._dp - x + rkt2 ) )                          & 
-      &    * ( (2._dp-x) * (Rsquared - x) - Sqrt(x2-4._dp*rkt2)               & 
+      &    * ( (2._dp-x) * (Rsquared - x) + Sqrt(x2-4._dp*rkt2)               &
+      &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) )
+   yminus = 1._dp / ( 2._dp * ( 1._dp - x + rkt2 ) )                          &
+      &    * ( (2._dp-x) * (Rsquared - x) - Sqrt(x2-4._dp*rkt2)               &
       &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) )
 
    l1abbr =      Log( Abs(  ( yplus  + x - 1._dp + rjt2 - rbt2 )         &
-            &             / ( yminus + x - 1._dp + rjt2 - rbt2 )   ) ) 
-            
+            &             / ( yminus + x - 1._dp + rjt2 - rbt2 )   ) )
+
    kabbr = (   yplus - yminus  ) / ( 1._dp - x + rkt2 -rat2 )
 
    gOnexrarb =  l1abbr / ( 1._dp - x + rkt2 - rat2  )
@@ -487,8 +487,8 @@ Contains
    erg(2) = erg(2) + (-x + 2._dp*rkt2)*gOnexrarb
    erg(3) = erg(3) + gOnexrarb
    erg(4) = erg(4) + gTwoxrarb + (rjt2 - rkt2 - rmt2 + x - 1._dp)*gOnexrarb
-   
-  End Do  
+
+  End Do
 
  End Subroutine SFIntegrands
 
@@ -511,18 +511,18 @@ Contains
   rjt2 = r_out(1)
   rkt2 = r_out(2)
   rmt2 = r_out(3)
-  
+
   rat2 = ( mass(1) / m_in )**2
   rbt2 = ( mass(2) / m_in )**2
-  Rsquared = 1._dp - rjt2 + rkt2 + rmt2  
-   
+  Rsquared = 1._dp - rjt2 + rkt2 + rmt2
+
   Call DGaussInt(SFIntegrands,4,smin,smax,I_SF(:),eps)
 
   I_SF(1) = I_SF(1)
   I_SF(2) = I_SF(2)
-  I_SF(3) = - I_SF(3)  
-  I_SF(4) = I_SF(4)  
-  
+  I_SF(3) = - I_SF(3)
+  I_SF(4) = I_SF(4)
+
   gam = ( coup(1) * coup(4) * Conjg(coup(7))                          &
     &   + coup(2) * coup(3) * Conjg(coup(6)) ) * Sqrt(rkt2) * I_SF(1) &
     & + ( coup(1) * coup(4) * Conjg(coup(6))                          &
@@ -536,33 +536,33 @@ Contains
   gam = 2._dp * oo512pi3 * Conjg(coup(5)) * gam
 
  End Subroutine IntegrateSF
- 
+
  Subroutine VFIntegrands(s,erg)
- Implicit None  
-  
+ Implicit None
+
   Real(dp), Intent(in) :: s(2)
   Real(dp), Intent(out) :: erg(4)
 
-  Integer :: i1 
- 
+  Integer :: i1
+
   Real(dp) :: x, x2, yplus, yminus, gOnexrarb, gTwoxrarb, l1abbr, kabbr
-  
+
   erg = 0._dp
 
   Do i1=1,2
    x = s(i1)
    x2 = x**2
-   
+
    yplus = 1._dp / ( 2._dp * ( 1 - x + rkt2 ) )                               &
       &    * ( (2._dp-x) * (Rsquared - x) + Sqrt(x2-4._dp*rkt2)               &
       &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) )
    yminus = 1._dp / ( 2._dp * ( 1._dp - x + rkt2 ) ) &
-      &    * ( (2._dp-x) * (Rsquared - x) - Sqrt(x2-4._dp*rkt2)               & 
-      &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) ) 
-   
+      &    * ( (2._dp-x) * (Rsquared - x) - Sqrt(x2-4._dp*rkt2)               &
+      &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) )
+
    l1abbr =      Log( Abs(  ( yplus  + x - 1._dp + rjt2 - rbt2 )         &
-            &             / ( yminus + x - 1._dp + rjt2 - rbt2 )   ) ) 
-            
+            &             / ( yminus + x - 1._dp + rjt2 - rbt2 )   ) )
+
    kabbr = (   yplus - yminus  ) / ( 1._dp - x + rkt2 -rat2  )
 
    gOnexrarb =  l1abbr / ( 1._dp - x + rkt2 - rat2  )
@@ -575,15 +575,15 @@ Contains
          &         -   rmt2*(x - 2._dp) -2._dp*x  +2._dp   )*gOnexrarb
    erg(2) = erg(2) + gTwoxrarb + (rjt2 + rkt2 - rmt2 - x - 1._dp)*gOnexrarb
    erg(3) = erg(3) + (rjt2 + rkt2 - rmt2 -2._dp*x + 3._dp)*gOnexrarb
-   erg(4) = erg(4) + gTwoxrarb + (1._dp - rjt2 + rkt2 - rmt2 - x)*gOnexrarb   
+   erg(4) = erg(4) + gTwoxrarb + (1._dp - rjt2 + rkt2 - rmt2 - x)*gOnexrarb
 
-  End Do  
+  End Do
 
  End Subroutine VFIntegrands
- 
- 
+
+
  Subroutine IntegrateVF(mass,m_in, r_out, coup,smin,smax,eps,gam)
- Implicit None  
+ Implicit None
 
   Real(dp), Intent(in)    :: mass(:)
   Real(dp), Intent(in)    :: m_in
@@ -602,12 +602,12 @@ Contains
 
   rat2 = ( mass(1) / m_in )**2
   rbt2 = ( mass(2) / m_in )**2
-  Rsquared = 1._dp - rjt2 + rkt2 + rmt2   
+  Rsquared = 1._dp - rjt2 + rkt2 + rmt2
 
   Call DGaussInt(VFIntegrands,4,smin,smax,I_VF(:),eps)
 
   I_VF(2)=I_VF(2)
-  I_VF(3)=-I_VF(3)  
+  I_VF(3)=-I_VF(3)
   I_VF(4)=I_VF(4)
 
   gam = ( coup(1) * coup(4) * Conjg(coup(7))                               &
@@ -617,55 +617,55 @@ Contains
     & - ( coup(1) * coup(4) * Conjg(coup(6))                               &
     &   + coup(2) * coup(3) * Conjg(coup(7)) ) * Sqrt(rkt2*rmt2) * I_VF(3) &
     & + ( coup(1) * coup(3) * Conjg(coup(6))                               &
-        + coup(2) * coup(4) * Conjg(coup(7)) ) * Sqrt(rkt2*rat2) * I_VF(4)      
+        + coup(2) * coup(4) * Conjg(coup(7)) ) * Sqrt(rkt2*rat2) * I_VF(4)
 
-  gam = - 2._dp * oo512pi3 * Conjg(coup(5)) * m_in * gam  
+  gam = - 2._dp * oo512pi3 * Conjg(coup(5)) * m_in * gam
 
  End Subroutine IntegrateVF
- 
+
  Subroutine VSIntegrands(s,erg)
-  Implicit None  
-  
+  Implicit None
+
   Real(dp), Intent(in) :: s(2)
   Real(dp), Intent(out) :: erg(2)
 
-  Integer :: i1 
- 
+  Integer :: i1
+
   Real(dp) :: x, x2, yplus, yminus, hOnexrarb, hTwoxrarb, l1abbr, l2abbr
- 
+
   erg = 0._dp
 
   Do i1=1,2
    x = s(i1)
    x2 = x**2
-   
+
    yplus = 1._dp / ( 2._dp * ( 1._dp - x + rkt2 ) )                           &
       &    * ( (2._dp-x) * (Rsquared - x) + Sqrt(x2-4._dp*rkt2)               &
       &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) )
    yminus = 1._dp / ( 2._dp * ( 1._dp - x + rkt2 ) )                          &
       &    * ( (2._dp-x) * (Rsquared - x) - Sqrt(x2-4._dp*rkt2)               &
       &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) )
- 
+
    l1abbr =      Log( Abs(  ( yplus  + x - 1._dp + rjt2 - rat2 )         &
-            &             / ( yminus + x - 1._dp + rjt2 - rat2 )   ) ) 
- 
+            &             / ( yminus + x - 1._dp + rjt2 - rat2 )   ) )
+
    l2abbr =      Log( Abs(  ( yplus  + x - 1._dp + rjt2 - rbt2 )         &
-            &             / ( yminus + x - 1._dp + rjt2 - rbt2 )   ) )  
-            
+            &             / ( yminus + x - 1._dp + rjt2 - rbt2 )   ) )
+
    hOnexrarb = ( l1abbr - l2abbr )  / (rat2 - rbt2)
-   
+
    hTwoxrarb = l2abbr + (1._dp - x -rjt2 + rat2 )*hOnexrarb
- 
+
    erg(1) = erg(1) + hTwoxrarb + (rkt2 - rjt2 - rmt2 - x +1._dp)*hOnexrarb
    erg(2) = erg(2) + hTwoxrarb + (rjt2 - rmt2 - x - 1._dp +rkt2)*hOnexrarb
- 
-  End Do 
+
+  End Do
 
  End Subroutine VSIntegrands
-  
- 
+
+
  Subroutine IntegrateVS(mass,m_in, r_out, coup,smin,smax,eps,gam)
- Implicit None  
+ Implicit None
   Real(dp), Intent(in)    :: mass(:)
   Real(dp), Intent(in)    :: m_in
   Real(dp), Intent(in)    :: r_out(:)
@@ -676,66 +676,66 @@ Contains
   Complex(dp), Intent(out)   :: gam
 
   Real(dp) :: I_VS(2)
-  
+
   rjt2 = r_out(1)
   rkt2 = r_out(2)
-  rmt2 = r_out(3)  
-  
+  rmt2 = r_out(3)
+
   rat2 = ( mass(1) / m_in )**2
   rbt2 = ( mass(2) / m_in)**2
-  Rsquared = 1._dp - rjt2 + rkt2 + rmt2   
+  Rsquared = 1._dp - rjt2 + rkt2 + rmt2
 
   Call DGaussInt(VSIntegrands,2,smin,smax,I_VS(:),eps)
 
   gam = (coup(2)*Conjg(coup(5)) + coup(3)*Conjg(coup(6)))*Sqrt(rkt2)*I_VS(1) &
-    & + (coup(2)*Conjg(coup(6)) + coup(3)*Conjg(coup(5)))*Sqrt(rmt2)*I_VS(2)         
+    & + (coup(2)*Conjg(coup(6)) + coup(3)*Conjg(coup(5)))*Sqrt(rmt2)*I_VS(2)
 
   gam = 2._dp * oo512pi3 * coup(1) * Conjg(coup(4)) * gam
 
  End Subroutine IntegrateVS
- 
+
 
  Subroutine VSIntegrandsGoldstone(s,erg)
- Implicit None  
-  
+ Implicit None
+
   Real(dp), Intent(in) :: s(2)
   Real(dp), Intent(out) :: erg(2)
 
-  Integer :: i1 
+  Integer :: i1
 
   Real(dp) :: x, x2, yplus, yminus, iOnexra, iTwoxra, l1abbr
- 
+
   erg = 0._dp
 
   Do i1=1,2
    x = s(i1)
    x2 = x**2
-   
+
    yplus = 1._dp / ( 2._dp * ( 1._dp - x + rkt2 ) )                           &
       &    * ( (2._dp-x) * (Rsquared - x) + Sqrt(x2-4._dp*rkt2)               &
-      &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) ) 
+      &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) )
    yminus = 1._dp / ( 2._dp * ( 1._dp - x + rkt2 ) )                          &
       &    * ( (2._dp-x) * (Rsquared - x) - Sqrt(x2-4._dp*rkt2)               &
       &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) )
- 
+
    l1abbr =      Log( Abs(  ( yplus  + x - 1._dp + rjt2 - rat2 )         &
-            &             / ( yminus + x - 1._dp + rjt2 - rat2 )   ) ) 
-          
+            &             / ( yminus + x - 1._dp + rjt2 - rat2 )   ) )
+
    iOnexra =                           (yplus - yminus)                       &
     & / ((yplus + x - 1._dp + rjt2 - rat2)*(yminus + x - 1._dp + rjt2 - rat2))
-      
-   iTwoxra = l1abbr + (1._dp - x - rjt2 + rat2)* iOnexra   
-  
+
+   iTwoxra = l1abbr + (1._dp - x - rjt2 + rat2)* iOnexra
+
    erg(1) = erg(1) + iTwoxra + (rkt2 - rjt2 - rmt2 - x +1._dp)*iOnexra
    erg(2) = erg(2) + iTwoxra + (rjt2 - rmt2 - x - 1._dp +rkt2)*iOnexra
 
-  End Do 
+  End Do
 
  End Subroutine VSIntegrandsGoldstone
- 
-  
+
+
  Subroutine IntegrateVSGoldstone(mass,m_in, r_out, coup,smin,smax,eps,gam)
- Implicit None  
+ Implicit None
 
   Real(dp), Intent(in)    :: mass(:)
   Real(dp), Intent(in)    :: m_in
@@ -748,14 +748,14 @@ Contains
 
   Real(dp) :: I_VS(2)
 
-  
+
   rjt2 = r_out(1)
   rkt2 = r_out(2)
-  rmt2 = r_out(3)  
-  
+  rmt2 = r_out(3)
+
   rat2 = ( mass(1) / m_in )**2
   rbt2 = ( mass(2) / m_in)**2
-  Rsquared = 1._dp - rjt2 + rkt2 + rmt2  
+  Rsquared = 1._dp - rjt2 + rkt2 + rmt2
 
   Call DGaussInt(VSIntegrandsGoldstone,2,smin,smax,I_VS(:),eps)
 
@@ -765,37 +765,37 @@ Contains
   gam = 2._dp * oo512pi3 * coup(1) * Conjg(coup(4)) * gam
 
  End Subroutine IntegrateVSGoldstone
- 
+
  Subroutine VVIntegrands (s,erg)
-  Implicit None  
-  
+  Implicit None
+
   Real(dp), Intent(in) :: s(2)
   Real(dp), Intent(out) :: erg(2)
 
   Integer :: i1
   Real(dp) :: x, x2, yplus, yminus, iOnexra, iTwoxra, l1abbr
- 
+
   erg = 0._dp
 
   Do i1=1,2
    x = s(i1)
    x2 = x**2
-   
+
    yplus = 1._dp / ( 2._dp * ( 1._dp - x + rkt2 ) )                           &
       &    * ( (2._dp-x) * (Rsquared - x) + Sqrt(x2-4._dp*rkt2)               &
       &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) )
    yminus = 1._dp / ( 2._dp * ( 1._dp - x + rkt2 ) )                          &
       &    * ( (2._dp-x) * (Rsquared - x) - Sqrt(x2-4._dp*rkt2)               &
-      &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) ) 
-    
+      &                                     * kappa(1._dp-x+rkt2,rmt2,rjt2) )
+
    l1abbr = Log( Abs( ( yplus  + x - 1._dp + rjt2 - rat2 )         &
-          &         / ( yminus + x - 1._dp + rjt2 - rat2 )   ) ) 
-          
+          &         / ( yminus + x - 1._dp + rjt2 - rat2 )   ) )
+
    iOnexra = (yplus - yminus)                                 &
            & / ( (yplus  + x - 1._dp + rjt2 - rat2 )          &
            &   *  (yminus + x - 1._dp + rjt2 - rat2 ) )
-      
-   iTwoxra = l1abbr + (1._dp - x - rjt2 + rat2)* iOnexra   
+
+   iTwoxra = l1abbr + (1._dp - x - rjt2 + rat2)* iOnexra
 
    erg(1) = erg(1) +   ( -3._dp * rkt2 + rmt2 + 4._dp * x - 4._dp) *iTwoxra   &
                 &  +   (  rjt2 * (rkt2 + rmt2 - 4._dp)                        &
@@ -803,16 +803,16 @@ Contains
                 &  +      rkt2 * (2._dp * rmt2 + x + 3._dp)                   &
                 &  -      rmt2 * (rmt2 + 3._dp * x - 3._dp)                   &
                 &  -       4._dp * x + 4._dp                      )*iOnexra
-                
+
    erg(2) = erg(2) + iTwoxra + (x - rjt2 - 3._dp)*iOnexra
-   
+
   End Do
- 
+
  End Subroutine VVIntegrands
- 
- 
+
+
  Subroutine IntegrateVV(mass,m_in, r_out, coup,smin,smax,eps,gam)
- Implicit None  
+ Implicit None
 
   Real(dp), Intent(in)    :: mass(:)
   Real(dp), Intent(in)    :: m_in
@@ -830,18 +830,18 @@ Contains
   rmt2 = r_out(3)
 
   rat2 = ( mass(1) / m_in )**2
-  Rsquared = 1._dp - rjt2 + rkt2 + rmt2 
+  Rsquared = 1._dp - rjt2 + rkt2 + rmt2
 
   Call DGaussInt(VVIntegrands,2,smin,smax,I_VV(:),eps)
-  
+
   gam = (coup(2)*Conjg(coup(2)) + coup(3)*Conjg(coup(3)) ) * I_VV(1)  &
-    & + Real(coup(2)*coup(3))  * 4._dp*Sqrt( rmt2 * rkt2 )*I_VV(2) 
-  
+    & + Real(coup(2)*coup(3))  * 4._dp*Sqrt( rmt2 * rkt2 )*I_VV(2)
+
   gam = 2._dp * oo512pi3 * m_in * coup(1) *Conjg(coup(1)) *gam
 
 
  End Subroutine IntegrateVV
- 
+
  Complex(dp) Function I2dsmg1tmg2(s, tmin, tmax, m12, g1, m22, g2)
  !--------------------------------------------------------------------
  ! Computes the following integral:
@@ -883,7 +883,7 @@ Contains
     ImT = Pi + Atan( (fa(1) - fa(2)) / (1+fa(3)) )
    Else
     ImT = -Pi + Atan( (fa(1) - fa(2)) / (1+fa(3)) )
-   End If 
+   End If
   End If
 
   I2dsmg1tmg2 = Cmplx(ReS * ReT - ImS * ImT , ReT * ImS + ReS * ImT,dp)
@@ -1016,7 +1016,7 @@ Contains
     fa(2) = Pi + Atan( (fa(1) - fa(2)) / (1+fa(3)) )
    Else
     fa(2) = -Pi + Atan( (fa(1) - fa(2)) / (1+fa(3)) )
-   End If 
+   End If
    ReT = ReT + 2._dp * g2 * m22 * fa(2)
    ImT = ImT + (m22**2 - g2**2) * fa(2)
   End If
@@ -1210,7 +1210,7 @@ Contains
     fa(2) = Pi + Atan( (fa(1) - fa(2)) / (1+fa(3)) )
    Else
     fa(2) = -Pi + Atan( (fa(1) - fa(2)) / (1+fa(3)) )
-   End If 
+   End If
    ReT = ReT + g2 * fa(2)
    ImT = ImT + m22 * fa(2)
   End If

@@ -12,7 +12,7 @@ Use Control
  End Interface
 
  Interface CompareMatrices
-  Module Procedure CompareMatricesC, CompareMatricesI, CompareMatricesR 
+  Module Procedure CompareMatricesC, CompareMatricesI, CompareMatricesR
  End Interface
 
  Interface Diag2
@@ -173,7 +173,7 @@ Contains
     Where (h4.Eq.0.0_dp) h4 = EPS4
     xph4 = xsav4+h4
     h4 = xph4-xsav4
-        
+
     Do i1 = 1,n
      x(i1) = xph4(i1)
      r(:,i1) = (funcv(x)-fvec)/h4(i1)
@@ -213,7 +213,7 @@ Contains
     End do
 
     Do k = 1,n-1
-     If (c(k).Ne.0.0_dp) & 
+     If (c(k).Ne.0.0_dp) &
       & qt(k:n,:) = qt(k:n,:)-outerprod(r(k:n,k),Matmul(r(k:n,k),qt(k:n,:)))/c(k)
     End Do
 
@@ -223,7 +223,7 @@ Contains
      r(i1,i1) = d(i1)
     End Do
 
-   Else ! .not.restrt 
+   Else ! .not.restrt
     s = x - xold
     Do i = 1,n
      t(i) = Dot_product(r(i,i:n),s(i:n))
@@ -512,7 +512,7 @@ Contains
   NameOfUnit(Iname) = "bsstep"
 
   kont = 0
-  len1 = Size(y) 
+  len1 = Size(y)
   If ((len1.Ne.Size(dydx)).Or.(len1.Ne.Size(yscal))) Then
    Write(ErrCan,*) "Problem in routine bsstep, size of vectors"
    Write(ErrCan,*) "does not conincide:",len1,Size(dydx),Size(yscal)
@@ -523,7 +523,7 @@ Contains
    hnext = -1.0e29_dp     ! 'impossible' values
    xnew = -1.0e29_dp
    eps1 = SAFE1*eps
-   
+
    a(1) = nseq(1) + 1     ! working coefficients A_k
    Do i1=1,kmaxx
     a(i1+1) = a(i1) + nseq(i1+1)
@@ -586,7 +586,7 @@ Contains
      Iname = Iname - 1
      Return
     End If
-    
+
     If (k /= 1) Then
      errmax=Maxval(Abs(yerr / yscal ))
      errmax=Max(my_tiny,errmax)/eps
@@ -596,7 +596,7 @@ Contains
 
     If (k /= 1 .And. (k >= kopt-1 .Or. first)) Then  ! in order window
      If (errmax < 1.0) Exit main_loop          ! converged
-     If (k == kmax .Or. k == kopt+1) Then      ! check for possible stepsize reduction    
+     If (k == kmax .Or. k == kopt+1) Then      ! check for possible stepsize reduction
       red=SAFE2/err(km)
       Exit
      Else If (k == kopt) Then
@@ -689,7 +689,7 @@ Contains
  !--------------------------------------------------------------
  !     routine for the complex dilogarithm function
  !--------------------------------------------------------------
- Implicit None      
+ Implicit None
   !-------
   ! input
   !-------
@@ -807,11 +807,11 @@ Contains
  !---------------------------------------------------------------------
  Implicit None
   Complex(dp), Intent(inout) :: vec(:)
-  
+
   Integer :: len, i1
   Real(dp) :: re, im, max1
   Real(dp), Parameter :: eps = 100._dp * Epsilon(1._dp)
-  
+
   max1 = eps * Maxval( Abs(vec) )
 
   len = Size(vec)
@@ -832,11 +832,11 @@ Contains
  !---------------------------------------------------------------------
  Implicit None
   Complex(dp), Intent(inout) :: mat(:,:)
-  
+
   Integer :: len1, len2, i1 ,i2
   Real(dp) :: re, im, max1
   Real(dp), Parameter :: eps = 100._dp * Epsilon(1._dp)
-  
+
   max1 = eps * Maxval( Abs(mat) )
 
   len1 = Size(mat,dim=1)
@@ -886,7 +886,7 @@ Contains
 
   CompareMatricesC = .True.
 
-  diff1 = Abs( diff )  ! to be sure 
+  diff1 = Abs( diff )  ! to be sure
 
   Do i1 = 1, N1
    Do i2 = 1, N2
@@ -971,7 +971,7 @@ Contains
 
   CompareMatricesR = .True.
 
-  diff1 = Abs( diff )  ! to be sure 
+  diff1 = Abs( diff )  ! to be sure
 
   Do i1 = 1, N1
    Do i2 = 1, N2
@@ -1032,17 +1032,17 @@ Contains
    Return
   End If
 
-  If (Is_NaN(Real(Matrix,dp)).or.Is_NaN(Aimag(Matrix))) Then !  
+  If (Is_NaN(Real(Matrix,dp)).or.Is_NaN(Aimag(Matrix))) Then !
    Write(ErrCan,*) 'Error in Subroutine '//NameOfUnit(Iname)
    Write(ErrCan,*) 'matrix contains NaN'
    If (ErrorLevel.Ge.-1) Call TerminateProgram
    kont = -31
    Call AddError(31)
    Iname = Iname - 1
-   Return 
+   Return
   End If
 
-  Allocate(AR(N1,N1)) 
+  Allocate(AR(N1,N1))
   Allocate(AI(N1,N1))
   Allocate(Ctest(N1,N1))
   Allocate(Ctest2(N1,N1))
@@ -1068,7 +1068,7 @@ Contains
    Do n2=1,n1-1
     Do n3=n2+1,n1
      If (wr(n2).Gt.wr(n3)) Then
-      work(1) = wr(n2) 
+      work(1) = wr(n2)
       wr(n2) = wr(n3)
       wr(n3) = work(1)
       work = ar(:,n2)
@@ -1080,7 +1080,7 @@ Contains
 
    EigenValues = WR
    Ctest = Ar
-   EigenVectors = Transpose(AR) 
+   EigenVectors = Transpose(AR)
 
   Else ! complex matrix
    l_complex = .True.
@@ -1104,12 +1104,12 @@ Contains
     Return
    End If
    Call HTRIBK(AR, AI, WORK2, ZR, ZI)
-   
+
 
    Do n2=1,n1-1
     Do n3=n2+1,n1
      If (wr(n2).Gt.wr(n3)) Then
-      work(1) = wr(n2) 
+      work(1) = wr(n2)
       wr(n2) = wr(n3)
       wr(n3) = work(1)
       work = zr(:,n2)
@@ -1154,7 +1154,7 @@ Contains
      kont = -14
      Call AddError(14)
     End If
-   Else 
+   Else
     If ( (test(2)/test(1)).Gt.MinimalPrecision) then
      kont = -14
      Call AddError(14)
@@ -1207,12 +1207,12 @@ Contains
   If ((x.eq.z).and.(y.eq.z)) then
    delt = -3._dp * Z**2
   Else If (x.eq.y) then
-   delt = z * (z - 4._dp * y) 
+   delt = z * (z - 4._dp * y)
   Else If (x.eq.z) then
-   delt = y * (y - 4._dp * z) 
+   delt = y * (y - 4._dp * z)
   Else If (y.eq.z) then
-   delt = x * (x - 4._dp * z) 
-  Else 
+   delt = x * (x - 4._dp * z)
+  Else
    delt = x**2 + y**2 + z**2 - 2._dp*(x*y + x*z + y*z)
   End If
 
@@ -1231,7 +1231,7 @@ Contains
  ! 1.10.2000: porting it to f90
  !----------------------------------------------------------------------
   Implicit None
-      
+
   Interface
    Function f(pt)
    Use Control
@@ -1273,7 +1273,7 @@ Contains
   DGAUSS=0._dp
 
   If(B.Eq.A) Return
-      
+
   CONST=0.005_dp/(B-A)
   BB=A
   !----------------------
@@ -1310,8 +1310,8 @@ Contains
       End If
       Return
     Endif
-   End Do ! while ( 1._dp+ABS(CONST*C2) .NE. 1._dp) 
-    
+   End Do ! while ( 1._dp+ABS(CONST*C2) .NE. 1._dp)
+
   DGAUSS=DGAUSS+S16
  End Do ! while (BB.NE.B)
 
@@ -1382,7 +1382,7 @@ Contains
        &         0.2816035507792589132304605015_dp,       &
        &         0.09501250983763744018531933543_dp  /)
 
-   erg = 0._dp 
+   erg = 0._dp
 
    If(B.Eq.A) Return
 
@@ -1438,13 +1438,13 @@ Contains
       Deallocate(work,s8,s16)
       Return
     Endif
-   End Do ! while ( 1._dp+Abs(CONST*C2) .NE. 1._dp) 
-    
+   End Do ! while ( 1._dp+Abs(CONST*C2) .NE. 1._dp)
+
    erg = erg + S16
 
   End Do ! while (BB.NE.B)
 
- 
+
   Deallocate(work,s8,s16)
 
  End Subroutine DgaussInt
@@ -1458,7 +1458,7 @@ Contains
   Real(dp) :: sumI, det, ct, st
   Complex(dp) :: phase
 
-  sumI = Real(mat(1,1) + mat(2,2),dp) 
+  sumI = Real(mat(1,1) + mat(2,2),dp)
   det = Sqrt( Abs(mat(1,1) - mat(2,2))**2 + 4._dp * Abs(mat(1,2))**2 )
   eig(1) = 0.5_dp * (sumI - det)
   eig(2) = 0.5_dp * (sumI + det)
@@ -1480,7 +1480,7 @@ Contains
   rsf(2,2) = Conjg(phase) * ct
 
  End Subroutine Diag2_C
- 
+
  Real(dp) Function dTrace(A)
  Implicit None
 
@@ -1586,7 +1586,7 @@ Contains
     F=F*U
    End Do
   End If
-     
+
   H=U+U-7
   ALFA=H+H
   B1=0
@@ -1604,7 +1604,7 @@ Contains
 
  Subroutine gaussj(kont, a,n,np,b,m)
  Implicit None
- 
+
  Integer :: n,np,NMAX,kont
   Integer, Optional :: m
   Complex(dP) :: a(np,np)
@@ -1629,7 +1629,7 @@ Contains
               icol=k
             Endif
           Else If (ipiv(k)>1) Then
-          ! singular matrix 
+          ! singular matrix
             kont = -24
             Call AddError(24)
             Return
@@ -1655,7 +1655,7 @@ Contains
     indxr(i)=irow
     indxc(i)=icol
     If (a(icol,icol)==0._dp) Then
-        ! singular matrix 
+        ! singular matrix
         kont = -24
         Call AddError(24)
         Return
@@ -1696,7 +1696,7 @@ Contains
   Enddo
 
   End Subroutine gaussj
-  
+
   Subroutine HTRIBK(AR, AI, TAU, ZR, ZI)
   Implicit None
    Real(dp) :: AR(:,:), AI(:,:), TAU(:,:), ZR(:,:), ZI(:,:)
@@ -2197,7 +2197,7 @@ Contains
   Iname = Iname + 1
   NameOfUnit(Iname) = "mmid"
 
-  len1 = Size(y) 
+  len1 = Size(y)
   If ((len1.Ne.Size(dydx)).Or.(len1.Ne.Size(yout))) Then
    Write(ErrCan,*) "Problem in routine mmid, size of vectors"
    Write(ErrCan,*) "does not conincide:",len1,Size(dydx),Size(yout)
@@ -2675,7 +2675,7 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
     xout = x
     Iname = Iname - 1
     Return
-   !Else If (y(1).Gt.y(2)) Then 
+   !Else If (y(1).Gt.y(2)) Then
    Else If (greater) Then
     y = y_old
     x = x_old
@@ -3022,7 +3022,7 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
  ! polynomial interpolation
  ! written by Werner Porod, 23.05.2001
  !---------------------------------------------------------------------------
- Use Control 
+ Use Control
  Implicit None
   Real(dp), Dimension(:), Intent(IN) :: xa, ya
   Real(dp), Intent(IN) :: x
@@ -3104,7 +3104,7 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
    Iname = Iname - 1
    Return
   End If
-   
+
   If (nv /= nvold) Then
    If (Allocated(qcol)) Deallocate(qcol)
    Allocate(qcol(nv,IEST_MAX))
@@ -3144,7 +3144,7 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
  ! Output
  !  EigenValues ..... n sorted EigenValues: |m_1| < |m_2| < .. < |m_n|
  !  EigenVectors .... n times n matrix with the eigenvectors
- ! written by Werner Porod, 11.11.2000 
+ ! written by Werner Porod, 11.11.2000
  !---------------------------------------------------------------------
  Implicit None
   Real(Dp), Intent(in) :: Matrix(:,:)
@@ -3167,17 +3167,17 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
    kont = -15
    Call AddError(15)
    Iname = Iname - 1
-   Return 
+   Return
   End If
-  
-  If (Is_NaN(Matrix)) then !  
+
+  If (Is_NaN(Matrix)) then !
    Write(ErrCan,*) 'Error in Subroutine '//NameOfUnit(Iname)
    Write(ErrCan,*) 'matrix contains NaN'
    If (ErrorLevel.Ge.-1) Call TerminateProgram
    kont = -30
    Call AddError(30)
    Iname = Iname - 1
-   Return 
+   Return
   End If
 
   Allocate(AR(N1,N1))
@@ -3186,14 +3186,14 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
   Allocate(Work(N1))
 
   AR = Matrix
- 
+
   Call Tred2A(AR, WR, Work)
   Call TQLi(KONT,WR,WORK,AR)
 
   Do n2=1,n1-1
    Do n3=n2+1,n1
     If (wr(n2).Gt.wr(n3)) Then
-     work(1) = wr(n2) 
+     work(1) = wr(n2)
      wr(n2) = wr(n3)
      wr(n3) = work(1)
      work = ar(:,n2)
@@ -3204,12 +3204,12 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
   End Do
 
   EigenValues = WR
-  EigenVectors = Transpose(AR) 
+  EigenVectors = Transpose(AR)
 
   !-------------------------
   ! test of diagonalisation
   !-------------------------
-  AR2 = Matmul(Matrix, AR) 
+  AR2 = Matmul(Matrix, AR)
   Ar = Matmul(Eigenvectors, AR2 )
 
   test = 0._dp
@@ -3669,11 +3669,11 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
   Real(dp), Dimension(NDMX,MXDIM), Save :: d, di, xi
   Real(dp), Dimension(MXDIM), Save :: dt, dx, x
   Real(dp), Dimension(NDMX), Save :: r, xin
-  Real(dp), Save :: schi, si, si2, swgt 
+  Real(dp), Save :: schi, si, si2, swgt
 
   If (.Not.Present(sd)) sd = 0
   If (.Not.Present(chi2a)) chi2a = 0
- 
+
   ndim = Size(region)/2
   !-------------------------------------------------------------------
   ! Normal entry, enter here on a cold start. Change mds=0 to disable
@@ -3785,7 +3785,7 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
      kg(k) = Mod(kg(k),ng)+1
      If (kg(k) /=  1) Cycle iterate
     End Do
-    Exit iterate 
+    Exit iterate
    End Do iterate
    !------------------------------------------
    ! Compute final result for this iteration
@@ -3867,7 +3867,7 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
     Real(dp), Dimension(:), Intent(INOUT) :: xi
 
     Integer :: i,k
-    Real(dp) :: dr,xn,xo   
+    Real(dp) :: dr,xn,xo
 
     k = 0
     xo = 0._dp

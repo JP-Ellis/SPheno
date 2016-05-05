@@ -23,7 +23,7 @@ Module Control
 !           -creating new array i_errors containing the information
 !            how often a warning and/or error has been produced
 !           -new routines to add 1 in array errors, to clean errors
-!            and to write the corresponding numbers 
+!            and to write the corresponding numbers
 !-------------------------------------------------------------------
 
  Interface Is_NaN
@@ -95,8 +95,8 @@ Integer, Parameter :: qp = Selected_real_kind(25,450)
  Logical, save :: UseNewBoundaryEW = .True.
  !-------------------------------------------------------------------
  ! in case one still wants to check results using the on-shell stop
- ! masses to get the renormalisation scale, 
- ! use entry 10 in SPhenoInput to set value to 1 
+ ! masses to get the renormalisation scale,
+ ! use entry 10 in SPhenoInput to set value to 1
  !-------------------------------------------------------------------
  Logical, save :: UseNewScale = .True.
  !------------------------------------------
@@ -107,7 +107,7 @@ Integer, Parameter :: qp = Selected_real_kind(25,450)
  Logical, Save :: Non_Zero_Exit = .False.
  Logical, Save :: Write_warning_to_screen = .False.
  !-------------------------
- ! for the error system 
+ ! for the error system
  !-------------------------
  Character(len=60) :: Math_Error(31) =                                &
   & (/ "Routine OdeInt, stepsize smaller than minimum:              " &
@@ -291,7 +291,7 @@ Real(dp), Parameter :: Pi = 3.1415926535897932384626433832795029_dp           &
    & , oo32pi2 = 0.5_dp * oo16pi2, oo48pi2 = oo16pi2 / 3._dp                  &
    & , oo36pi3 = 1._dp / (36._dp * Pi3)                                       &
    & , oo128pi3 = 1._dp / (128._dp * Pi3)                                     &
-   & , oo256pi3 = 1._dp / (256._dp * Pi3), oo512pi3 = 0.5_dp * oo256pi3    
+   & , oo256pi3 = 1._dp / (256._dp * Pi3), oo512pi3 = 0.5_dp * oo256pi3
 !----------------------------------------------
 ! special values of Logs
 !----------------------------------------------
@@ -299,7 +299,7 @@ Real(dp), Parameter :: Log2 = 0.6931471805599453094172321214581765680755_dp
 !----------------------------------------------
 ! special values of the Rieman zeta function
 !----------------------------------------------
-Real(dp), Parameter :: Zeta2 = Pi2 / 6._dp                    &   
+Real(dp), Parameter :: Zeta2 = Pi2 / 6._dp                    &
    & , zeta3 = 1.202056903159594285399738161511449990765_dp   &
    & , zeta4 = 1.082323233711138191516003696541167902775_dp   &
    & , zeta5 = 1.036927755143369926331365486457034168057_dp
@@ -323,14 +323,14 @@ Real(dp), Parameter :: &
  Complex(dp), Parameter :: ZeroC=(0._dp,0._dp), Ic = (0._dp, 1._dp)
  Real(dp), Parameter :: NearlyZero = 10._dp * Epsilon(1._dp)
 !------------------------------
-! matrices 
+! matrices
 !------------------------------
  Real(dp), Parameter :: id2R(2,2) = &
     & Reshape( Source = (/ 1, 0, 0, 1 /), shape = (/2, 2/) )
  Complex(dp), Parameter :: id2C(2,2) = &
     & Reshape( Source = (/ 1, 0, 0, 1 /), shape = (/2, 2/) )
  Complex(dp), Parameter :: id3C(3,3) = &
-    & Reshape( Source = (/ 1, 0, 0, & 
+    & Reshape( Source = (/ 1, 0, 0, &
     &                      0, 1, 0, &
     &                      0, 0, 1 /), shape = (/3, 3/) )
  Complex(dp), Parameter :: id4C(4,4) = &
@@ -373,7 +373,7 @@ Real(dp), Parameter :: &
 
 ! global variables
 
-Contains 
+Contains
 
 
  Subroutine AddError(i)
@@ -399,11 +399,11 @@ Contains
 
  Subroutine CheckIndex(i,range,name1,name2)
  !--------------------------------------------------------------------
- ! checks if the index i is between 1 and range 
+ ! checks if the index i is between 1 and range
  ! in case that it is out range, the following actions happen:
  !    ErrorLevel >= 0, termination of program after error message is
  !                     written
- !    ErroLevel = -1, only warning, this can lead to side effects  
+ !    ErroLevel = -1, only warning, this can lead to side effects
  ! written by Werner Porod, 20.9.2000
  !--------------------------------------------------------------------
  Implicit None
@@ -475,9 +475,9 @@ Contains
   ! output
   !--------
   Integer, Intent(out) :: ii, jj   ! position mat(ii,jj) corresponding to wert
- 
+
   Integer :: i1, i2
- 
+
   Do i1=1,n
    Do i2=1,n
     If (wert.Eq.mat(i1,i2)) Then
@@ -541,7 +541,7 @@ Contains
 
  Logical Function IsNaN_v(x)
  !---------------------------------------------------------------------
- ! tests if at least one element of x is NaN. 
+ ! tests if at least one element of x is NaN.
  ! Comparison of NaN with any number gives FALSE
  !---------------------------------------------------------------------
  Real(dp), Intent(in) :: x(:)
@@ -551,7 +551,7 @@ Contains
  l1 = Size(x)
 
  IsNaN_v = .False.
- 
+
  Do i1=1,l1
   IsNaN_v = .Not. ((x(i1).Gt.0._dp).Or.(x(i1).Lt.0._dp).Or.(x(i1).Eq.0._dp))
   If (IsNaN_v) Exit
@@ -561,7 +561,7 @@ Contains
 
  Logical Function IsNaN_m(x)
  !---------------------------------------------------------------------
- ! tests if at least one element of x is NaN. 
+ ! tests if at least one element of x is NaN.
  ! Comparison of NaN with any number gives FALSE
  !---------------------------------------------------------------------
  Real(dp), Intent(in) :: x(:,:)
@@ -572,7 +572,7 @@ Contains
  l2 = Size(x,dim=2)
 
  IsNaN_m = .False.
- 
+
  Do i1=1,l1
   Do i2=1,l2
    IsNaN_m = .Not. ((x(i1,i2).Gt.0._dp).Or.(x(i1,i2).Lt.0._dp).Or.(x(i1,i2).Eq.0._dp))
@@ -588,7 +588,7 @@ Contains
  ! written by Werner Porod, 20.9.2000
  !-------------------------------------------------------------------
  Implicit None
-  
+
   Integer, Intent(In) :: i1,i2,i3,i4
 
   If (ErrorLevel.Le.0) Then

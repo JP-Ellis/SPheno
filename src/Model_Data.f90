@@ -107,7 +107,7 @@ Use LoopFunctions
  !--------------------------------------------
  Complex(dp), Dimension(3,3) :: MnuL5, MatNu
  !----------------------------
- ! mass of L- and R-neutrinos 
+ ! mass of L- and R-neutrinos
  !----------------------------
  Real(dp), Dimension(3) :: MnuR
  !-------------------------------------------------------------------
@@ -126,19 +126,19 @@ Use LoopFunctions
 ! masses and mixing angles
 !------------------------------
 ! MSSM
-!----------------------------- 
+!-----------------------------
  !------------------------------------------------------------------
- ! scalar masses (h,H), masses squared, corresponding mixing matrix, 
+ ! scalar masses (h,H), masses squared, corresponding mixing matrix,
  ! total decay widths, partial decay widths, branching ratios
  !------------------------------------------------------------------
  Real(dp) :: mS0(2), mS02(2), gT_S0(2), gP_S0(2,200), BR_S0(2,200)
  !------------------------------------------------------------------------
- ! pseudoscalar masses (G,A), masses squared, corresponding mixing matrix 
+ ! pseudoscalar masses (G,A), masses squared, corresponding mixing matrix
  ! total decay widths, partial decay widths, branching ratios
  !------------------------------------------------------------------------
  Real(dp) :: mP0(2), mP02(2), RP0(2,2), gT_P0(2), gP_P0(2,200), BR_P0(2,200)
  !---------------------------------------------------------------------------
- ! charged scalar masses (G+,H+), masses squared, corresponding mixing matrix 
+ ! charged scalar masses (G+,H+), masses squared, corresponding mixing matrix
  ! total decay widths, partial decay widths, branching ratios
  !---------------------------------------------------------------------------
  Real(dp) :: mSpm(2), mSpm2(2)
@@ -202,7 +202,7 @@ Use LoopFunctions
 ! NMSSM
 !-----------------------------
  !------------------------------------------------------------------
- ! scalar masses (h,H,Re(snu)), masses squared, corresponding mixing matrix, 
+ ! scalar masses (h,H,Re(snu)), masses squared, corresponding mixing matrix,
  ! total decay widths, partial decay widths, branching ratios
  !------------------------------------------------------------------
  Real(dp) :: mS03(3), mS032(3), RS03(3,3), gT_S03(3)  &
@@ -218,12 +218,12 @@ Use LoopFunctions
  !---------------------------------------------------------------------------
  Real(dp) ::  mN5(5), mN52(5)
  Complex(dp) :: N5(5,5)
-  
+
 !------------------------------
 ! explicit R-parity violation
-!----------------------------- 
+!-----------------------------
  !------------------------------------------------------------------
- ! scalar masses (h,H,Re(snu)), masses squared, corresponding mixing matrix, 
+ ! scalar masses (h,H,Re(snu)), masses squared, corresponding mixing matrix,
  ! total decay widths, partial decay widths, branching ratios
  !------------------------------------------------------------------
  Real(dp) :: mS05(5), mS052(5), RS05(5,5), gT_S05(5)  &
@@ -266,7 +266,7 @@ Use LoopFunctions
  Complex(dp) :: Amue, MassB_H24, MassWB_H24, MassG_H24, mu_H24, mu_h15
  Complex(dp), Dimension(3) ::  mi_h24
  Complex(dp), Dimension(3,3) :: Ye_H24, Yd_H24,Yu_H24, &
-  & AYe_H24,AYd_H24,AYu_H24,Ye0_H24, Yd0_H24,Yu0_H24 
+  & AYe_H24,AYd_H24,AYu_H24,Ye0_H24, Yd0_H24,Yu0_H24
  Complex(dp), Dimension(3,3) :: mq2_h24, md2_h24,mu2_h24,ml2_h24,me2_h24
  Complex(dp), Dimension(3) :: Yb0_H24, Yw0_H24, Yx0_H24
  Real(dp) :: g1_H24, g2_H24, g3_H24,gauge_H24(3), Mnu1_H24, Mnu2_H24, &
@@ -274,12 +274,12 @@ Use LoopFunctions
  Complex(dp), Dimension(3,3) :: mHw32, mHg32, mHb32, mHx32, mHxb32, MXM3 &
   & , MWM3, MWM30,MWM3_gut, MGM3, MBM3, AMXM3, AMWM3, AMGM3, AMBM3
  Complex(dp), Dimension(3,3) :: Yb3_H24, Yb3_H24_gut,Yw3_H24, Yx3_H24 &
-  & , AYb3_H24, AYw3_H24, AYx3_H24, mi3_h24 
+  & , AYb3_H24, AYw3_H24, AYx3_H24, mi3_h24
  Complex(dp), Dimension(3,3,3) :: Yb30_H24, Yw30_H24, Yx30_H24
  Complex(dp) :: MBM3running(3,3,3),MGM3running(3,3,3),MWM3running(3,3,3) &
   &  ,MXM3running(3,3,3)
  Real(dp) :: MassMXM3(3), MassMWM3(3), MassMGM3(3), MassMBM3(3)
- ! Seesaw II 
+ ! Seesaw II
  Complex(dp), Dimension(3,3) :: YT0_H15, YZ0_H15, YS0_15, YT_H15_GUT, AYT_h15  &
   & , AYZ_H15, AYS_H15, Ye_h15, Yd_h15, Yu_h15, Yd0_h15, Yu0_h15, Ye0_h15, AYz &
   & , Ys0_h15, YT_h15, YZ_h15, YS_h15
@@ -311,7 +311,7 @@ Contains
  Implicit None
   Complex(dp), Intent(in) :: Y, T, mu
   Real(dp), Intent(in) :: M2U, M2Q, vevs(2), g, gp
-  
+
   Real(dp) :: diag(2), det, vev2
   Complex(dp) :: offdiag
 
@@ -391,7 +391,7 @@ Contains
   gauge_mZ = 0._dp
   gauge_0 = 0._dp
   gauge_mR = 0._dp
-  
+
   Y_l = 0._dp
   Y_d = 0._dp
   Y_u = 0._dp
@@ -422,12 +422,12 @@ Contains
   B_mR = 0._dp
   mu_0 = 0._dp
   B_0 = 0._dp
-  
+
   eps = 0._dp
   Beps = 0._dp
   vevL = 0._dp
   lam_ex = 0._dp
-  
+
   Rp_lam = 0._dp
   Rp_lamp = 0._dp
   Rp_Alam = 0._dp
@@ -439,7 +439,7 @@ Contains
   Mi_mZ = 0._dp
   Mi_mR = 0._dp
   Mi_0 = 0._dp
-  
+
   A_l = 0._dp
   A_d = 0._dp
   A_u = 0._dp
@@ -497,7 +497,7 @@ Contains
   Ao_lam = 0._dp
 
   vP = 0._dp
-  
+
   h02 = 0._dp
   lam2 = 0._dp
   lam112 = 0._dp
@@ -563,7 +563,7 @@ Contains
   vevSM_mZ = 0._dp
   M2_H_mR = 0._dp
   M2_H_0 = 0._dp
-  
+
   MnuL5 = 0._dp
   MnuR = 0._dp
 
@@ -588,7 +588,7 @@ Contains
   RSdown = 0._dp
   RSneut = 0._dp
   RSlepton = 0._dp
-  
+
  !------------------------------------------------
  ! Seesaw II + III a la Florian Staub
  !------------------------------------------------
@@ -601,7 +601,7 @@ Contains
   mi_h24 = 0._dp
   Ye_H24 = 0._dp
   Yd_H24 = 0._dp
-  Yu_H24 = 0._dp 
+  Yu_H24 = 0._dp
   AYe_H24 = 0._dp
   AYd_H24 = 0._dp
   AYu_H24 = 0._dp
@@ -629,7 +629,7 @@ Contains
   mHd2_h24 = 0._dp
   mHu2_h24 = 0._dp
   mh2_H24 = 0._dp
-  mHw32 = 0._dp 
+  mHw32 = 0._dp
   mHg32 = 0._dp
   mHb32 = 0._dp
   mHx32 = 0._dp
@@ -651,7 +651,7 @@ Contains
   AYb3_H24 = 0._dp
   AYw3_H24 = 0._dp
   AYx3_H24 = 0._dp
-  mi3_h24 = 0._dp  
+  mi3_h24 = 0._dp
   Yb30_H24 = 0._dp
   Yw30_H24 = 0._dp
   Yx30_H24 = 0._dp
@@ -671,11 +671,11 @@ Contains
   AYz = 0._dp
   Ys0_h15 = 0._dp
   YT_h15 = 0._dp
-  YZ_h15 = 0._dp 
+  YZ_h15 = 0._dp
   YS_h15 = 0._dp
   Lambda1 = 0._dp
   Lambda2 = 0._dp
-  MTM = 0._dp 
+  MTM = 0._dp
   MSM = 0._dp
   MZM = 0._dp
   AMTM = 0._dp
@@ -714,7 +714,7 @@ Contains
   md2_h15 = 0._dp
   mu2_h15 = 0._dp
   ml2_h15 = 0._dp
-  me2_h15 = 0._dp  
+  me2_h15 = 0._dp
   AYe_h15 = 0._dp
   AYd_h15 = 0._dp
   AYu_h15 = 0._dp
@@ -743,7 +743,7 @@ Contains
    max_stop = Maxval(v)
    count = 0
    product_stop_masses = 1._dp
- 
+
    Do i1=1,6
     If (max_stop.Eq.v(i1)) Then
      product_stop_masses = mSup(i1)
@@ -791,7 +791,7 @@ Contains
   Complex(dp), Intent(in), Dimension(3,3) :: Y_d, Y_u, Au_in, Ad_in, MD_in &
         & , MQ_in, MU_in
   Complex(dp), Optional, Intent(in), Dimension(6,6) :: RSu_in, RSd_in
-  Logical, Intent(in) :: tr  ! if true, then the matrices are transposed 
+  Logical, Intent(in) :: tr  ! if true, then the matrices are transposed
                              ! compared to low energy definition
   Complex(dp), Intent(out), Dimension(3,3) :: Au_out, Ad_out, MD_out, MQ_out &
         & , MU_out
@@ -912,7 +912,7 @@ Contains
   Complex(dp), Intent(in), Dimension(3,3) :: Y_d, Y_u, Au_in, Ad_in, MD_in &
         & , MQ_in, MU_in
   Complex(dp), Optional, Intent(in), Dimension(6,6) :: RSu_in, RSd_in
-  Logical, Intent(in) :: tr  ! if true, then the matrices are transposed 
+  Logical, Intent(in) :: tr  ! if true, then the matrices are transposed
                              ! compared to low energy definition
   Complex(dp), Intent(out), Dimension(3,3) :: Au_out, Ad_out, MD_out, MQ_out &
         & , MU_out
@@ -1031,7 +1031,7 @@ Contains
  Implicit None
   Complex(dp), Intent(in), Dimension(3,3) :: Y_l, M5_nu, Al_in, ME_in, ML_in
   Complex(dp), Optional, Intent(in) :: RSl_in(6,6), RSn_in(3,3)
-  Logical, Intent(in) :: tr  ! if true, then the matrices are transposed 
+  Logical, Intent(in) :: tr  ! if true, then the matrices are transposed
                              ! compared to low energy definition
   Complex(dp), Intent(out), Dimension(3,3) :: Al_out, ME_out, ML_out
   Complex(dp), Optional, Intent(out) :: RSl_out(6,6)
@@ -1107,7 +1107,7 @@ Contains
  Implicit None
   Complex(dp), Intent(in), Dimension(3,3) :: Y_l, M5_nu, Al_in, ME_in, ML_in
   Complex(dp), Optional, Intent(in) :: RSl_in(6,6), RSn_in(3,3)
-  Logical, Intent(in) :: tr  ! if true, then the matrices are transposed 
+  Logical, Intent(in) :: tr  ! if true, then the matrices are transposed
                              ! compared to low energy definition
   Complex(dp), Intent(out), Dimension(3,3) :: Al_out, ME_out, ML_out
   Complex(dp), Optional, Intent(out) :: RSl_out(6,6)
@@ -1177,7 +1177,7 @@ End Module Model_Data
 
 Module MSSM_data
 !-----------------------------------------------------------
-! in this modul all basic information concerning the MSSM are 
+! in this modul all basic information concerning the MSSM are
 ! stored
 ! by Werner Porod, 15.09.2010
 !-----------------------------------------------------------
@@ -1192,25 +1192,25 @@ Use Control
  Integer :: n_snu=3, n_sle=6, n_sd=6, n_su = 6 ! number of sfermions
  Integer :: n_n=4, n_c=2, n_g=1         ! number of neutralinos, charginos
                                         ! and gluinos
- Integer :: n_s0=2, n_P0=2, n_Spm=2     ! number of scalar Higgs bosons, 
+ Integer :: n_s0=2, n_P0=2, n_Spm=2     ! number of scalar Higgs bosons,
                                         ! pseudoscalars and charged scalars
                                         ! including Goldstone bosons
  !------------------------------------------------------------------
- ! scalar masses (h,H), masses squared, corresponding mixing matrix, 
+ ! scalar masses (h,H), masses squared, corresponding mixing matrix,
  ! total decay widths, partial decay widths, branching ratios
  !------------------------------------------------------------------
  Real(dp) :: RS0(2,2)
  Type(particle23) :: S0(2)
  Real(dp) :: r_GlGlS0(2) ! ratio of h-g-g over SM values squared
  !------------------------------------------------------------------------
- ! pseudoscalar masses (G,A), masses squared, corresponding mixing matrix 
+ ! pseudoscalar masses (G,A), masses squared, corresponding mixing matrix
  ! total decay widths, partial decay widths, branching ratios
  !------------------------------------------------------------------------
 ! Real(dp) :: RP0(2,2)
  Type(particle2) :: P0(2)
  Real(dp) :: r_GlGlP0 ! ratio of A-g-g over SM values squared
  !---------------------------------------------------------------------------
- ! charged scalar masses (G+,H+), masses squared, corresponding mixing matrix 
+ ! charged scalar masses (G+,H+), masses squared, corresponding mixing matrix
  ! total decay widths, partial decay widths, branching ratios
  !---------------------------------------------------------------------------
 ! Complex(dp) :: RSpm(2,2)
@@ -1333,7 +1333,7 @@ Contains
    End Do
 
   End If
-  
+
   Iname = Iname - 1
 
  End Subroutine Check_Charge
@@ -1347,9 +1347,9 @@ Contains
 
   Select Case(id)
    ! W-, H-,~e_L,~e_R,~mu_L,~mu_R,~tau_i,~chi+_i, e, mu, tau
-   Case(24,37,-1000011,-2000011,-1000013,-2000013,-1000015,-2000015,1000024,1000037,-11,-13,-15) 
+   Case(24,37,-1000011,-2000011,-1000013,-2000013,-1000015,-2000015,1000024,1000037,-11,-13,-15)
     find_charge = 3
-   Case(-24,-37,1000011,2000011,1000013,2000013,1000015,2000015,-1000024,-1000037,11,13,15) 
+   Case(-24,-37,1000011,2000011,1000013,2000013,1000015,2000015,-1000024,-1000037,11,13,15)
     find_charge = -3
 
    ! ~d_L,~d_R,~s_L,~s_R,~b_1,~b_2, d,s,b
@@ -1401,7 +1401,7 @@ Contains
   ! gauge and vector bosons
   !---------------------------------------
   c_name(1) = "g"
-  id_gl = 1 
+  id_gl = 1
   id_p(1) = id_gluon
   c_name(2) = "photon"
   id_ph = 2
@@ -1415,7 +1415,7 @@ Contains
   c_name(5) = "W^-"
   id_p(5) = -id_Wboson
   !--------------------------
-  ! neutrinos 
+  ! neutrinos
   !--------------------------
   id_nu = (/6,8,10/)
   Do i1=1,3
@@ -1480,7 +1480,7 @@ Contains
   c_name(28) = "b"
   c_name(29) = "b_bar"
   !--------------------------
-  ! sneutrinos 
+  ! sneutrinos
   !--------------------------
   Sneut%id = (/30,32,34/)
   Do i1=1,3
@@ -1629,7 +1629,7 @@ Contains
   !-----------------------------
   ! charginos
   !-----------------------------
-  ChiPm%id = (/ 81, 83 /) 
+  ChiPm%id = (/ 81, 83 /)
   Do i1=1,2
    id_p(79+2*i1) = id_chargino(i1)
    id_p(80+2*i1) = - id_chargino(i1)
@@ -1666,20 +1666,20 @@ End Module MSSM_data
 
 Module NMSSM_data
 !---------------------------------------------------------------------
-! in this modul all basic information concerning the NMSSM are 
+! in this modul all basic information concerning the NMSSM are
 ! stored, using MSSM_data and give only the additional information
 ! by Werner Porod, 23.09.2010
 !---------------------------------------------------------------------
 Use Control
 Use MSSM_data ! most of the paramters are the same
  !------------------------------------------------------------------
- ! scalar masses (h,H,Re(S)), masses squared, corresponding mixing matrix, 
+ ! scalar masses (h,H,Re(S)), masses squared, corresponding mixing matrix,
  ! total decay widths, partial decay widths, branching ratios
  !------------------------------------------------------------------
 ! Real(dp) :: RS03(3,3)
  Type(particle23) :: S03(3)
  !------------------------------------------------------------------------
- ! pseudoscalar masses (G,A,Im(S)), masses squared, corresponding mixing matrix 
+ ! pseudoscalar masses (G,A,Im(S)), masses squared, corresponding mixing matrix
  ! total decay widths, partial decay widths, branching ratios
  !------------------------------------------------------------------------
 ! Real(dp) :: RP03(3,3)
@@ -1694,7 +1694,7 @@ Use MSSM_data ! most of the paramters are the same
  ! PDG codes
  !------------
  Integer, Parameter ::id_A02(2) = (/ id_A0, 46 /), id_h03(3) = (/ id_h0, 45 /) &
-    & , id_neutralino5(5) = (/id_neutralino, 1000045 /) 
+    & , id_neutralino5(5) = (/id_neutralino, 1000045 /)
 Contains
 
  Subroutine Initialize_NMSSM(GenerationMixing, id_gl, id_ph, id_Z, id_Wp &
@@ -1721,7 +1721,7 @@ Contains
   ! gauge and vector bosons
   !---------------------------------------
   c_name(1) = "g"
-  id_gl = 1 
+  id_gl = 1
   id_p(1) = id_gluon
   c_name(2) = "photon"
   id_ph = 2
@@ -1735,7 +1735,7 @@ Contains
   c_name(5) = "W^-"
   id_p(5) = -id_Wboson
   !--------------------------
-  ! neutrinos 
+  ! neutrinos
   !--------------------------
   id_nu = (/6,8,10/)
   Do i1=1,3
@@ -1800,7 +1800,7 @@ Contains
   c_name(28) = "b"
   c_name(29) = "b_bar"
   !--------------------------
-  ! sneutrinos 
+  ! sneutrinos
   !--------------------------
   Sneut%id = (/30,32,34/)
   Do i1=1,3
@@ -1951,7 +1951,7 @@ Contains
   !-----------------------------
   ! charginos
   !-----------------------------
-  ChiPm%id = (/ 84, 86 /) 
+  ChiPm%id = (/ 84, 86 /)
   Do i1=1,2
    id_p(82+2*i1) = id_chargino(i1)
    id_p(83+2*i1) = - id_chargino(i1)
@@ -1976,27 +1976,27 @@ Contains
 End Module NMSSM_data
 Module RP_data
 !---------------------------------------------------------------------
-! in this modul all basic information concerning the NMSSM are 
+! in this modul all basic information concerning the NMSSM are
 ! stored, using MSSM_data and give only the additional information
 ! by Werner Porod, 23.09.2010
 !---------------------------------------------------------------------
 Use Control
 Use MSSM_data ! most of the paramters are the same
  !------------------------------------------------------------------
- ! scalar masses (h,H), masses squared, corresponding mixing matrix, 
+ ! scalar masses (h,H), masses squared, corresponding mixing matrix,
  ! total decay widths, partial decay widths, branching ratios
  !------------------------------------------------------------------
 ! Real(dp) :: RS05(5,5)
  Type(particle23) :: S05(5)
  !------------------------------------------------------------------------
- ! pseudoscalar masses (G,A), masses squared, corresponding mixing matrix 
+ ! pseudoscalar masses (G,A), masses squared, corresponding mixing matrix
  ! total decay widths, partial decay widths, branching ratios
  !------------------------------------------------------------------------
 ! Real(dp) :: RP05(5,5)
  Type(particle2) :: P05(5)
  !---------------------------------------------------------------------------
  ! charged scalar masses (G+,H+.~l_L,~l_R), masses squared,
- ! corresponding mixing matrix 
+ ! corresponding mixing matrix
  ! total decay widths, partial decay widths, branching ratios
  !---------------------------------------------------------------------------
 ! Complex(dp) :: RSpm8(8,8)
@@ -2050,7 +2050,7 @@ Contains
   ! gauge and vector bosons
   !---------------------------------------
   c_name(1) = "g"
-  id_gl = 1 
+  id_gl = 1
   id_p(1) = id_gluon
   c_name(2) = "photon"
   id_ph = 2
@@ -2196,7 +2196,7 @@ Contains
   !-----------------------------
   ! leptons/charginos
   !-----------------------------
-  ChiPm5%id = (/ 72, 74, 76, 78, 80 /) 
+  ChiPm5%id = (/ 72, 74, 76, 78, 80 /)
   id_l = ChiPm5(1:3)%id
   c_name(73) = "e^-"
   c_name(72) = "e^+"

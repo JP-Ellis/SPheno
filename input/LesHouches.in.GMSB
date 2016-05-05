@@ -19,7 +19,7 @@ Block SPhenoInput       # SPheno specific input
  2   0                  # if =1, then SPA conventions are used
 11   0                  # calculate branching ratios
 12   1.00000000E-04     # write only branching ratios larger than this value
-21   0                  # calculate cross section 
+21   0                  # calculate cross section
 22   5.00000000E+02     # cms energy in GeV
 23   0.00000000E+00     # polarisation of incoming e- beam
 24   0.00000000E+00     # polarisation of incoming e+ beam

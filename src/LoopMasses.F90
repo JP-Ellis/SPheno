@@ -1,7 +1,7 @@
 Module LoopMasses
 ! In this Module all 1-loop self energies are collected including the
-! tad-poles. Starting point is the paper by Bagger et al., NPB 491, 3, (1997). 
-! porting routines for two-loop contributions to Higgs masses provided 
+! tad-poles. Starting point is the paper by Bagger et al., NPB 491, 3, (1997).
+! porting routines for two-loop contributions to Higgs masses provided
 ! by Pietro Slavich
 
 ! load modules
@@ -37,7 +37,7 @@ Logical :: test_write
     & , mS02_1L(2), mP02_1L(2), mSpm2_1L(2), mglu_1L, mSpm_1L(2), RS0_1L(2,2) &
     & , mC2_1L(2), mN2_1L(4)
  Real(dp), Private :: mudim, WriteWert=0
- Real(dp), Private, Dimension(3) :: mf_d_save, mf_u_save, mf_l_save 
+ Real(dp), Private, Dimension(3) :: mf_d_save, mf_u_save, mf_l_save
  Complex(dp), Private :: U_1L(2,2), V_1L(2,2), N_1L(4,4), RUSquark_1L(6,6)    &
     &  , RDSquark_1L(6,6), RSlepton_1L(6,6), RSneutrino_1L(3,3)
 
@@ -100,7 +100,7 @@ Contains
   Complex(dp) :: dmZ2, PiA0, dmW2, PiSpm, M1, M2, dmglu, B_T, mu_T
   Complex(dp), Dimension(3,3) :: CKM_Q
   Integer :: i1, i2, i_count
- 
+
   Iname = Iname + 1
   NameOfUnit(Iname) = 'LoopMassesMSSM'
 
@@ -151,7 +151,7 @@ Contains
    !------------------------------------
    tz = Log(Q/mZ)
    dt = - tz / 50._dp
-   
+
    Call odeint(g57, 57, tz, 0._dp,  delta1, dt, 0._dp, rge57, kont)
    !---------------------------------------
    ! and now back to Q including Tan(beta)
@@ -506,13 +506,13 @@ Contains
 #ifdef GENERATIONMIXING
   Call PiPseudoScalar(p2, g(1), g(2), vevs_DR, mP02, RP0                   &
      & , Y_d, uD_L, uD_R, Y_u, uU_L, uU_R, Y_l, uL_L, uL_R                 &
-     & , A_d, A_u, A_l, mu_T                                               & 
+     & , A_d, A_u, A_l, mu_T                                               &
      & , mUSquark2, RUSquark, mDSquark2, RDSquark, mSlepton2, RSlepton     &
      & , mSneutrino2, RSneutrino, mSpm2, RSpm, mC, mC2, U, V, mS02, RS0    &
      & , mN, mN2, N, mZ2_mZ, mW2_run, PiA0)
 #else
   Call PiPseudoScalar(p2, g(1), g(2), vevs_DR, mP02, RP0, Y_d, Y_u, Y_l     &
-     & , A_d, A_u, A_l, mu_T, mUSquark2, RUSquark, mDSquark2, RDSquark      & 
+     & , A_d, A_u, A_l, mu_T, mUSquark2, RUSquark, mDSquark2, RDSquark      &
      & , mSlepton2, RSlepton, mSneutrino2, mSpm2, RSpm, mC, mC2, U, V, mS02 &
      & , RS0, mN, mN2, N, mZ2_mZ, mW2_run, PiA0)
 #endif
@@ -529,7 +529,7 @@ Contains
    kont = 0
    Pi2A0 = 0._dp
   End If
-  
+
   mP02_1L(2) = (M2_H_1L(2) - M2_H_1L(1)) / cos2b - mZ2_mZ - Real(PiA0,dp) &
       & + Pi2A0 + b_a
   !--------------------------------------------
@@ -548,7 +548,7 @@ Contains
      & , mN, mN2, N, mZ2_mZ, mW2_run, PiA0)
 #else
    Call PiPseudoScalar(p2, g(1), g(2), vevs_DR, mP02, RP0, Y_d, Y_u, Y_l    &
-     & , A_d, A_u, A_l, mu_T , mUSquark2, RUSquark, mDSquark2, RDSquark     & 
+     & , A_d, A_u, A_l, mu_T , mUSquark2, RUSquark, mDSquark2, RDSquark     &
      & , mSlepton2, RSlepton, mSneutrino2, mSpm2, RSpm, mC, mC2, U, V, mS02 &
      & , RS0, mN, mN2, N, mZ2_mZ, mW2_run, PiA0)
 #endif
@@ -624,7 +624,7 @@ Contains
   !  iteration using on-shell mass for p^2
   !--------------------------------------------
   i_count = 0
-  Do 
+  Do
    i_count = i_count + 1
    p2 = mSpm2_1L(2)
 #ifdef GENERATIONMIXING
@@ -663,7 +663,7 @@ Contains
   Else
    mSpm_1L(2) = Sqrt( mSpm2_1L(2) )
   End If
-  mA2_mA = mP02_1L(2) + Real( PiA0,dp ) 
+  mA2_mA = mP02_1L(2) + Real( PiA0,dp )
   !---------------
   ! neutral Higgs
   !---------------
@@ -697,7 +697,7 @@ Contains
   ! iteration using on-shell mass for p^2
   !--------------------------------------------
   i_count = 0
-  Do 
+  Do
    i_count = i_count + 1
    comp2 = mS02_1L
 #ifdef GENERATIONMIXING
@@ -743,7 +743,7 @@ Contains
   End Do
 
   !-----------
-  ! Charginos 
+  ! Charginos
   !-----------
 #ifdef GENERATIONMIXING
   Call CharginoMass_Loop(mC, mC2, U, V, g(1), g(2), Y_D, Y_L, Y_U, M2, mu &
@@ -767,7 +767,7 @@ Contains
    mf_u2 = mf_u**2
    Return
   End If
-  !------------- 
+  !-------------
   ! Neutralinos
   !-------------
 #ifdef GENERATIONMIXING
@@ -807,7 +807,7 @@ Contains
 
   ! recalculation with improved mass
   i_count = 0
-  Do 
+  Do
    i_count = i_count + 1
    comp2(1) = mglu_1L**2
 #ifdef GENERATIONMIXING
@@ -822,8 +822,8 @@ Contains
    If (comp2(1).Ne. 0._dp) Then
     comp2(1) = Abs( Sqrt(comp2(1)) -  mglu_1L) / Sqrt(comp2(1))
    Else
-    comp2(1) = mglu_1L 
-   End If 
+    comp2(1) = mglu_1L
+   End If
    If (comp2(1).Lt. delta1) Exit
 
    If (i_count.Gt.30) Then
@@ -1046,7 +1046,7 @@ Contains
   Complex(dp), Intent(in) :: Y_l(3,3), Y_d(3,3), Y_u(3,3), A_l(3,3)   &
       , A_d(3,3), A_u(3,3), M2_E(3,3), M2_L(3,3), M2_D(3,3), M2_Q(3,3)       &
       , M2_U(3,3), mu, Mi(3)
-  Real(dp), Intent(in) :: delta, g(3), mP02(2) 
+  Real(dp), Intent(in) :: delta, g(3), mP02(2)
   Real(dp), Intent(inout) :: tanb_mZ, tanb_Q
 
   Real(dp), Intent(out) :: mC(2), mN(4), mS0(2), mSpm(2), mglu   &
@@ -1054,8 +1054,8 @@ Contains
     , mUsquark2(6), mDsquark2(6), mSlepton2(6), mSneutrino2(3)   &
     , mS02(2), mSpm2(2), RP0(2,2), mC2(2), mN2(4), RS0(2,2), M2_H(2)
   Complex(dp), Intent(out) :: U(2,2), V(2,2), N(4,4), RSpm(2,2), phase_Glu  &
-        , RDsquark(6,6), RUsquark(6,6), RSlepton(6,6), RSneutrino(3,3), B 
- 
+        , RDsquark(6,6), RUsquark(6,6), RSlepton(6,6), RSneutrino(3,3), B
+
 
   Real(dp) :: vevSM(2), tanbQ, cosb2, cos2b, sinb2, g57(57), g58(58) , Q, dt &
     & , tz, vev2, sinW2_DR, mZ2_mZ, vevs_DR(2), tadpoles_1L(2), p2, b_A      &
@@ -1065,7 +1065,7 @@ Contains
   Complex(dp) :: dmZ2, PiA0, dmW2, PiSpm, dmglu, M1, M2, mu_T, B_T
   Complex(dp), Dimension(3,3) :: uL_L, uL_R, uD_L, uD_R, uU_L, uU_R, CKM_Q
   Integer :: i1, i_loop, i2, i_count
- 
+
   Iname = Iname + 1
   NameOfUnit(Iname) = 'LoopMassesMSSM_2'
 
@@ -1123,7 +1123,7 @@ Contains
    !------------------------------------
    tz = Log(Q/mZ)
    dt = - tz / 50._dp
-   
+
    Call odeint(g57, 57, tz, 0._dp,  delta1, dt, 0._dp, rge57, kont)
    !---------------------------------------
    ! and now back to Q including Tan(beta)
@@ -1356,7 +1356,7 @@ Contains
    End If
 
    !--------------------
-   ! pseudoscalar Higgs 
+   ! pseudoscalar Higgs
    !--------------------
    b_a = tadpoles_1L(1) * sinb2 + tadpoles_1L(2) * cosb2
 
@@ -1365,13 +1365,13 @@ Contains
 #ifdef GENERATIONMIXING
   Call PiPseudoScalar(p2, g(1), g(2), vevs_DR, mP02_T, RP0              &
      & , Y_d, uD_L, uD_R, Y_u, uU_L, uU_R, Y_l, uL_L, uL_R              &
-     & , A_d, A_u, A_l, mu_T                                            & 
+     & , A_d, A_u, A_l, mu_T                                            &
      & , mUSquark2, RUSquark, mDSquark2, RDSquark, mSlepton2, RSlepton  &
      & , mSneutrino2, RSneutrino, mSpm2, RSpm, mC, mC2, U, V, mS02, RS0 &
      & , mN, mN2, N, mZ2_mZ, mW2_run, PiA0)
 #else
   Call PiPseudoScalar(p2, g(1), g(2), vevs_DR, mP02_T, RP0, Y_d, Y_u, Y_l   &
-     & , A_d, A_u, A_l, mu_T , mUSquark2, RUSquark, mDSquark2, RDSquark     & 
+     & , A_d, A_u, A_l, mu_T , mUSquark2, RUSquark, mDSquark2, RDSquark     &
      & , mSlepton2, RSlepton, mSneutrino2, mSpm2, RSpm, mC, mC2, U, V, mS02 &
      & , RS0, mN, mN2, N, mZ2_mZ, mW2_run, PiA0)
 #endif
@@ -1384,7 +1384,7 @@ Contains
      & , Y_u(3,3), Y_l(3,3), mu_T, Pi2A0, kont)
   End If
 
-   mA2_mA = -Pi2A0+ PiA0 + mP02(2) - b_a 
+   mA2_mA = -Pi2A0+ PiA0 + mP02(2) - b_a
    M2_H_1L(1) = 0.5_dp * ( mA2_mA - 2._dp * Abs(mu)**2    &
               &          - (mZ2_mZ + mA2_mA) * cos2b )
    M2_H_1L(2) = 0.5_dp * ( mA2_mA - 2._dp * Abs(mu)**2    &
@@ -1423,7 +1423,7 @@ Contains
   !--------------------
   ! charged Higgs
   !--------------------
-  mA2_mA = mP02(2) + Real( PiA0,dp ) 
+  mA2_mA = mP02(2) + Real( PiA0,dp )
 
   mSpm_1L = 0._dp
   mSpm2_1L = 0._dp
@@ -1446,7 +1446,7 @@ Contains
 
 
   mSpm2_1L(2) = mW2_mW + mA2_mA - Real( PiSpm,dp )
-  
+
 
   If (mSpm2_1L(2).Le.0._dp) Then
    Call WriteLoopMassesError(-8, "LoopMasses_2", kont)
@@ -1460,7 +1460,7 @@ Contains
   !  iteration using on-shell mass for p^2
   !--------------------------------------------
   i_count = 0
-  Do 
+  Do
    i_count = i_count + 1
    p2 = mSpm2_1L(2)
 #ifdef GENERATIONMIXING
@@ -1499,7 +1499,7 @@ Contains
   !---------------
   ! neutral Higgs
   !---------------
-  mA2_mA = mP02(2) + Real( PiA0,dp ) 
+  mA2_mA = mP02(2) + Real( PiA0,dp )
 
 #ifdef GENERATIONMIXING
   Call ScalarMass_Loop_MSSM(mS02, mS02, RS0, Q2, tanbQ, tadpoles_1L, mZ2_mZ      &
@@ -1531,7 +1531,7 @@ Contains
   ! iteration using on-shell mass for p^2
   !--------------------------------------------
   i_count = 0
-  Do 
+  Do
    i_count = i_count + 1
    comp2 = mS02_1L
 #ifdef GENERATIONMIXING
@@ -1578,7 +1578,7 @@ Contains
   End Do
 
   !-----------
-  ! Charginos 
+  ! Charginos
   !-----------
 #ifdef GENERATIONMIXING
   Call CharginoMass_Loop(mC, mC2, U, V, g(1), g(2), Y_D, Y_L, Y_U, M2, mu &
@@ -1603,7 +1603,7 @@ Contains
    mf_u2 = mf_u**2
    Return
   End If
-  !------------- 
+  !-------------
   ! Neutralinos
   !-------------
 #ifdef GENERATIONMIXING
@@ -1644,7 +1644,7 @@ Contains
 
   ! recalculation with improved mass
   i_count = 0
-  Do 
+  Do
    i_count = i_count + 1
    comp2(1) = mglu_1L**2
 #ifdef GENERATIONMIXING
@@ -1659,8 +1659,8 @@ Contains
    If (comp2(1).Ne. 0._dp) Then
     comp2(1) = Abs( Sqrt(comp2(1)) -  mglu_1L) / Sqrt(comp2(1))
    Else
-    comp2(1) = mglu_1L 
-   End If 
+    comp2(1) = mglu_1L
+   End If
    If (comp2(1).Lt. delta1) Exit
 
    If (i_count.Gt.30) Then
@@ -1886,7 +1886,7 @@ Contains
     , mS02(2), mSpm2(2), RP0(2,2), mC2(2), mN2(4), RS0(2,2), M2_H(2), mglu
   Complex(dp), Intent(out) :: U(2,2), V(2,2), N(4,4), RSpm(2,2), phase_Glu   &
         , RDsquark(6,6), RUsquark(6,6), RSlepton(6,6), RSneutrino(3,3)
- 
+
 
   Real(dp) :: vevSM(2), tanbQ, cosb2, cos2b, sinb2, Q, vev2, sinW2_DR    &
     & , mZ2_mZ, vevs_DR(2), tadpoles_1L(2), p2, b_A, mW2_mW, mA2_mA      &
@@ -1896,7 +1896,7 @@ Contains
   Complex(dp) :: dmZ2, PiA0, dmW2, PiSpm, M1, M2, dmglu, mu_T, B_T
   Complex(dp), Dimension(3,3) :: uL_L, uL_R, uD_L, uD_R, uU_L, uU_R, CKM_Q
   Integer :: i1, i2, i_loop, i_count
- 
+
   Iname = Iname + 1
   NameOfUnit(Iname) = 'LoopMassesMSSM_3'
 
@@ -1951,7 +1951,7 @@ Contains
    !------------------------------------
    tz = Log(Q/mZ)
    dt = - tz / 50._dp
-   
+
    Call odeint(g57, 57, tz, 0._dp,  delta1, dt, 0._dp, rge57, kont)
    !---------------------------------------
    ! and now back to Q including Tan(beta)
@@ -2194,7 +2194,7 @@ Contains
    B_T = (M2_H(1) + M2_H(2) + 2._dp *  Abs(Mu_T)**2) * tanbQ / (1+tanbQ**2)
 
    !--------------------
-   ! pseudoscalar Higgs 
+   ! pseudoscalar Higgs
    !--------------------
    b_a = tadpoles_1L(1) * sinb2 + tadpoles_1L(2) * cosb2
 
@@ -2205,13 +2205,13 @@ Contains
 #ifdef GENERATIONMIXING
    Call PiPseudoScalar(p2, g(1), g(2), vevs_DR, mP02, RP0                &
      & , Y_d, uD_L, uD_R, Y_u, uU_L, uU_R, Y_l, uL_L, uL_R               &
-     & , A_d, A_u, A_l, mu_T                                             & 
+     & , A_d, A_u, A_l, mu_T                                             &
      & , mUSquark2, RUSquark, mDSquark2, RDSquark, mSlepton2, RSlepton   &
      & , mSneutrino2, RSneutrino, mSpm2, RSpm, mC, mC2, U, V, mS02, RS0  &
      & , mN, mN2, N, mZ2_mZ, mW2_run, PiA0)
 #else
    Call PiPseudoScalar(p2, g(1), g(2), vevs_DR, mP02, RP0, Y_d, Y_u, Y_l    &
-     & , A_d, A_u, A_l, mu_T, mUSquark2, RUSquark, mDSquark2, RDSquark      & 
+     & , A_d, A_u, A_l, mu_T, mUSquark2, RUSquark, mDSquark2, RDSquark      &
      & , mSlepton2, RSlepton, mSneutrino2, mSpm2, RSpm, mC, mC2, U, V, mS02 &
      & , RS0, mN, mN2, N, mZ2_mZ, mW2_run, PiA0)
 #endif
@@ -2248,10 +2248,10 @@ Contains
     comp2(1) = mP02_1L(2)
     comp2(2) = mZ2_mZ
     i_count = i_count + 1
-   End If 
+   End If
   End Do ! i_loop
   vev_Q = Sqrt(vev2)
-  
+
 !------------------------
 ! mW(mW)
 !------------------------
@@ -2289,7 +2289,7 @@ Contains
   !  iteration using on-shell mass for p^2
   !--------------------------------------------
   i_count = 0
-  Do 
+  Do
    i_count = i_count + 1
    p2 = mSpm2_1L(2)
 #ifdef GENERATIONMIXING
@@ -2361,7 +2361,7 @@ Contains
   ! iteration using on-shell mass for p^2
   !--------------------------------------------
   i_count = 0
-  Do 
+  Do
    i_count = i_count + 1
    comp2 = mS02_1L
 #ifdef GENERATIONMIXING
@@ -2417,7 +2417,7 @@ Contains
    Return
   End If
   !-----------
-  ! Charginos 
+  ! Charginos
   !-----------
 #ifdef GENERATIONMIXING
   Call CharginoMass_Loop(mC, mC2, U, V, g(1), g(2), Y_D, Y_L, Y_U, M2, mu &
@@ -2442,7 +2442,7 @@ Contains
    mf_u2 = mf_u**2
    Return
   End If
-  !------------- 
+  !-------------
   ! Neutralinos
   !-------------
 #ifdef GENERATIONMIXING
@@ -2483,7 +2483,7 @@ Contains
 
   ! recalculation with improved mass
   i_count = 0
-  Do 
+  Do
    i_count = i_count + 1
    comp2(1) = mglu_1L**2
 #ifdef GENERATIONMIXING
@@ -2498,8 +2498,8 @@ Contains
    If (comp2(1).Ne. 0._dp) Then
     comp2(1) = Abs( Sqrt(comp2(1)) -  mglu_1L) / Sqrt(comp2(1))
    Else
-    comp2(1) = mglu_1L 
-   End If 
+    comp2(1) = mglu_1L
+   End If
    If (comp2(1).Lt. delta1) Exit
 
    If (i_count.Gt.30) Then
@@ -2693,8 +2693,8 @@ Contains
   Real(dp), Intent(in) :: delta, tanbQ, g(3), mA2, Q
   Logical, Intent(in) :: IsOnShellMass
   Real(dp), Intent(out) :: M2_H(2)
-  Complex(dp), Intent(out) :: B 
- 
+  Complex(dp), Intent(out) :: B
+
 
   Real(dp) :: mC(2), mN(4), mS0(2), mSpm(2), mglu, mUsquark(6), mDsquark(6)  &
     & , mSlepton(6), mSneutrino(3), mUsquark2(6), mDsquark2(6), mSlepton2(6) &
@@ -2709,7 +2709,7 @@ Contains
   Complex(dp) :: dmZ2, PiA0
   Complex(dp), Dimension(3,3) :: uL_L, uL_R, uD_L, uD_R, uU_L, uU_R, CKM_Q
   Integer :: i1, i_loop
- 
+
   Iname = Iname + 1
   NameOfUnit(Iname) = 'Calcualte_MH2'
 
@@ -2929,22 +2929,22 @@ Contains
 
    b_a = tadpoles_1L(1) * sinb2 + tadpoles_1L(2) * cosb2
 
-   If (IsOnShellMass) Then  
+   If (IsOnShellMass) Then
    !--------------------
-   ! pseudoscalar Higgs 
+   ! pseudoscalar Higgs
    !--------------------
     p2 =  mP02(2)
 
 #ifdef GENERATIONMIXING
     Call PiPseudoScalar(p2, g(1), g(2), vevs_DR, mP02_T, RP0               &
        & , Y_d, uD_L, uD_R, Y_u, uU_L, uU_R, Y_l, uL_L, uL_R               &
-       & , A_d, A_u, A_l, mu                                               & 
+       & , A_d, A_u, A_l, mu                                               &
        & , mUSquark2, RUSquark, mDSquark2, RDSquark, mSlepton2, RSlepton   &
        & , mSneutrino2, RSneutrino, mSpm2, RSpm, mC, mC2, U, V, mS02, RS0  &
        & , mN, mN2, N, mZ2_mZ, mW2_run, PiA0)
 #else
     Call PiPseudoScalar(p2, g(1), g(2), vevs_DR, mP02_T, RP0, Y_d, Y_u, Y_l   &
-       & , A_d, A_u, A_l, mu , mUSquark2, RUSquark, mDSquark2, RDSquark       & 
+       & , A_d, A_u, A_l, mu , mUSquark2, RUSquark, mDSquark2, RDSquark       &
        & , mSlepton2, RSlepton, mSneutrino2, mSpm2, RSpm, mC, mC2, U, V, mS02 &
        & , RS0, mN, mN2, N, mZ2_mZ, mW2_run, PiA0)
 #endif
@@ -2957,7 +2957,7 @@ Contains
       & , Y_u(3,3), Y_l(3,3), mu, Pi2A0, kont)
     End If
 
-    mA2_mA = -Pi2A0+ PiA0 + mA2 - b_a 
+    mA2_mA = -Pi2A0+ PiA0 + mA2 - b_a
 
     mA2_Q = -Pi2A0+ PiA0 + mA2  ! for output
    Else  ! I have already the running mass
@@ -3268,13 +3268,13 @@ Contains
     Iname = Iname - 1
     Return
    End If
- 
+
    !---------------------------------------
-   ! redoing calculation using 1-loop mass 
+   ! redoing calculation using 1-loop mass
    !---------------------------------------
    i_count = 0
    p2_loop: Do
-    i_count = i_count + 1 
+    i_count = i_count + 1
     p2 = mC2_L(i_l)
     Call Sigma_Chargino(p2, mC, mC2, mSdown2, c_CUSd_L, c_CUSd_R            &
           , mSup2, c_CDSu_L, c_CDSu_R, mSlepton2, c_CNuSl_L, c_CNuSl_R      &
@@ -3397,7 +3397,7 @@ Contains
  !-----------------------------------------------------------------------
  ! Calculates the the nonuniversal corrections to delta_r
  ! The formula of J. Bagger et al, Nucl.Phys.B is used. The renormalization
- ! scale has to be set in the main program due to the structure of LoopTools. 
+ ! scale has to be set in the main program due to the structure of LoopTools.
  ! the input is:
  ! - gSU2 ....... the SU(2) gauge coupling at p2
  ! - sinW2 ...... sin(theta_W) squared
@@ -3417,7 +3417,7 @@ Contains
  ! - RSneut ..... mixing matrix of the sneutrinos
  ! - UNu_L ...... neutrino mixing matrix
  ! output
- !  res    
+ !  res
  ! written by Werner Porod, 30.11.01
  !-----------------------------------------------------------------------
  Implicit None
@@ -3447,14 +3447,14 @@ Contains
 !  WriteOut = .True.
   If ( (WriteOneLoopContributions.Eq.9).Or.(WriteOneLoopContributions.Lt.0)) &
    &  WriteOut = .True.
-  
+
   !----------------------------------------------------------------------------
   ! phase conventions, only needed for neutrinos and charged leptons
   ! is not needed for sfermions as an overall phase change cancels in the loops
   !----------------------------------------------------------------------------
   Do i1=1,3
    phase = (1._dp,0._dp) ! in case none of the conditions below apply, do nothing
-   
+
    If (Abs(UNu_Lin(i1,i1)).Ne.0._dp) Then ! first diagonal, then potentially the others
     phase = Conjg(UNu_Lin(i1,i1))/Abs(UNu_Lin(i1,i1))
    Else If (Abs(UNu_Lin(i1,1)).Ne.0._dp) Then
@@ -3487,7 +3487,7 @@ Contains
   res = sumI
   !------------------------------------------------------------------------
   !  some preperations, attention, Pierce et al. define B1 with
-  !  a relative minus sign 
+  !  a relative minus sign
   !-----------------------------------------------------------------------
   mat3 = 0._dp ! zero matrix, needed in case of sneutrinos
   gp = gSU2 * Sqrt(sinW2_DR/cosW2_DR)
@@ -3522,8 +3522,8 @@ Contains
      Do i2=1,4
       Call CoupNeutralinoSlepton(i3, i2, i1, gp, gSU2, RSlept, UL_L, UL_R  &
                   &, Y_l, N, c_LNSl_L(i3, i2, i1), c_LNSl_R(i3, i2, i1) )
-     End Do    
-    End Do 
+     End Do
+    End Do
     Do i1=1,3
      Do i2=1,2
       Call CoupCharginoSfermion(i2, i3, i1, gSU2, -0.5_dp, RSneut, Y_l, mat3 &
@@ -3534,7 +3534,7 @@ Contains
                                  &, c_NuNSn_R(i3,i2,i1) )
      End Do
     End Do
-   End Do 
+   End Do
    Do i1=1,6
     Do i2=1,2
      B1_C_Sl(i2,i1) = B1(0._dp, mC2(i2), mSlept2(i1) )
@@ -3786,7 +3786,7 @@ Contains
      End Do
      sumI = sumI + sumIJ(i5) * (Unu_L(i5,1)+Unu_L(i5,2))
     End Do
-    If (WriteOut) Write(ErrCan,*) "Z_snu nu",i1,sumI 
+    If (WriteOut) Write(ErrCan,*) "Z_snu nu",i1,sumI
     res = res + sumI
    End Do
 
@@ -3813,7 +3813,7 @@ Contains
   End If
 #endif
   !------------------------------------------------------
-  !  vertex, see also 
+  !  vertex, see also
   ! P.H.Chankowski et al, Nucl. Phys. B417, 101 (1994)
   !------------------------------------------------------
 #ifdef GENERATIONMIXING
@@ -3902,12 +3902,12 @@ Contains
 #endif
 
   !------------------------------------------------------
-  ! Box-diagrams, see also 
+  ! Box-diagrams, see also
   ! P.H.Chankowski et al, Nucl. Phys. B417, 101 (1994)
   !------------------------------------------------------
 #ifdef GENERATIONMIXING
   If (GenerationMixing) Then
-   teil = 0._dp 
+   teil = 0._dp
    Do i1=1,2
     Do i2=1,4
      Do i3=1,6     ! sleptons
@@ -3929,7 +3929,7 @@ Contains
         End Do ! i4
        End Do ! i6
       End Do ! i5
-      
+
      End Do ! i3
      Do i3=1,3     ! sneutrinos
       Do i4=1,3    ! sneutrinos
@@ -3981,7 +3981,7 @@ Contains
   Else ! .not.GenerationMixing
 #endif
 
-   teil = 0._dp 
+   teil = 0._dp
    Do i1=1,2
     Do i2=1,4
      Do i3=1,2     ! sleptons
@@ -4025,14 +4025,14 @@ Contains
  !-----------------------------------------------------------------------
  ! Calculates the the nonuniversal corrections to delta_r in the SM
  ! The formula of J. Bagger et al, Nucl.Phys.B is used. The renormalization
- ! scale has to be set in the main program due to the structure of LoopTools. 
+ ! scale has to be set in the main program due to the structure of LoopTools.
  ! the input is:
  ! - gSU2 ....... the SU(2) gauge coupling at p2
  ! - sinW2 ...... sin(theta_W) squared
  ! - sinW2_DR ... sin(theta_W) squared, DR-scheme
  ! - rho ........ Rho parameter
  ! output
- !  res    
+ !  res
  ! written by Werner Porod, 07.01.09
  !-----------------------------------------------------------------------
  Implicit None
@@ -4104,7 +4104,7 @@ Contains
   Real(dp), Intent(out) :: mN1L(4), mN1L2(4)
   Complex(dp), Intent(out) :: N1L(4,4)
 
-  Integer :: i1, i2, i3, i_l, i_count 
+  Integer :: i1, i2, i3, i_l, i_count
   Complex(dp) :: mat4(4,4), mat42(4,4), phaseM, mat4a(4,4), E4(4) &
      & , SigL(4,4), SigR(4,4), SigS(4,4), c_NNZ_L(4,4), c_NNZ_R(4,4)        &
      & , c_NNS0_L(4,4,2), c_NNS0_R(4,4,2), c_NNP0_L(4,4,2), c_NNP0_R(4,4,2) &
@@ -4121,7 +4121,7 @@ Contains
   !---------------
   ! Initialzation
   !---------------
-  g1 = 0.5_dp * gSU2 
+  g1 = 0.5_dp * gSU2
   gp1 = 0.5_dp * gU1
   mN1L = 0._dp
   mN1L2 = 0._dp
@@ -4133,7 +4133,7 @@ Contains
   Else
    WriteOut = .False.
   End If
-  
+
   !-----------
   ! Tree-level
   !-----------
@@ -4391,8 +4391,8 @@ Contains
    ! redoing calculation using refined p2
    !------------------------------------------
    i_count = 0
-   p2_loop: Do 
-    i_count = i_count + 1 
+   p2_loop: Do
+    i_count = i_count + 1
     p2 = mN1L2(i_l)
     sigL = 0._dp
     sigR = 0._dp
@@ -4489,7 +4489,7 @@ Contains
     End If
 
    End Do p2_loop
-   
+
   End Do !  i_l
 
   Iname = Iname - 1
@@ -4556,7 +4556,7 @@ Contains
   !---------------
   ! Initialzation
   !---------------
-  g1 = 0.5_dp * gSU2 
+  g1 = 0.5_dp * gSU2
   gp1 = 0.5_dp * gU1
   mN1L = 0._dp
   mN1L2 = 0._dp
@@ -4570,7 +4570,7 @@ Contains
   n_Spm = 8
   Do i1=1,3
    Ylep(i1) = Y_l(i1,i1)
-  End Do 
+  End Do
 
   !-----------
   ! Tree-level
@@ -4632,7 +4632,7 @@ Contains
     phaseM =   Sqrt( mat72(i1,i1)   / Abs( mat72(i1,i1) ) )
     N(i1,:) = phaseM * N(i1,:)
    End Do
-   mN2 = mN**2 
+   mN2 = mN**2
 
   End If
 
@@ -4812,7 +4812,7 @@ Contains
        MinvR(i1,i2) = MinvR(i1,i2) + N4R(i3,i1) * N4R(i3,i2)  / mN4(i3)
       End Do
      End Do
-    End Do  
+    End Do
     mat3R = mat7(1:3,1:3) - Matmul( XiR, Matmul(MinvR, Transpose(XiR) ) )
     Call EigenSystem(mat3R, mnu, VnuR, kont, test)
     Do i1=1,3
@@ -4830,7 +4830,7 @@ Contains
 
     R1 = 0._dp
     R1(1:3,1:3) = VnuR
-    R1(4:7,4:7) = N4R 
+    R1(4:7,4:7) = N4R
     XiR = Matmul(XiR,MinvR)
     R2(1:3,1:3) = - 0.5_dp * Matmul(XiR, Transpose(XiR))
     R2(4:7,4:7) = - 0.5_dp * Matmul(Transpose(XiR), XiR)
@@ -4839,13 +4839,13 @@ Contains
     End Do
     R2(1:3,4:7) = - XiR
     R2(4:7,1:3) = Transpose(XiR)
-    
+
     N1L = Matmul(R1,R2)
     mn1l(1:3) = mnu
     mn1l(4:7) = mn4
     mN1L2 = mN1L**2
    End If  ! seesaw approximation
- 
+
   Else
    mat72 = Matmul( Transpose(Conjg( mat7)),  mat7)
    Call EigenSystemQP(mat72, mN1L2, N1L, kont, test)
@@ -4861,7 +4861,7 @@ Contains
 !-------------------------------------------------------------------------
    If (kont.Eq.-1006) Then
     kont = 0
-    mat4 = mat7(4:7,4:7) 
+    mat4 = mat7(4:7,4:7)
     mat42 = Matmul( Transpose(Conjg( mat4)),  mat4)
     Call EigenSystem(mat42, mN4, N4, kont, test)
     mat42 = Matmul(Conjg(N4), Matmul( mat4, Transpose( Conjg( N4 ) ) ) )
@@ -4879,7 +4879,7 @@ Contains
        Minv(i1,i2) = Minv(i1,i2) + Conjg(N4(i3,i1) * N4(i3,i2) ) / mN4(i3)
       End Do
      End Do
-    End Do  
+    End Do
     mat3 = mat7(1:3,1:3) - Matmul( Xi, Matmul(Minv, Transpose(Xi) ) )
 
     mat32 = Matmul( Transpose(Conjg( mat3)),  mat3)
@@ -4893,7 +4893,7 @@ Contains
 
     R1 = 0._dp
     R1(1:3,1:3) = Conjg(Vnu)
-    R1(4:7,4:7) = Conjg(N4) 
+    R1(4:7,4:7) = Conjg(N4)
     Xi = Matmul(Xi,Minv)
     R2(1:3,1:3) = - 0.5_dp * Matmul(Xi, Transpose(Conjg(Xi)))
     R2(4:7,4:7) = - 0.5_dp * Matmul(Transpose(Conjg(Xi)), Xi)
@@ -4902,13 +4902,13 @@ Contains
     End Do
     R2(1:3,4:7) = - Xi
     R2(4:7,1:3) = Transpose(Conjg(Xi))
-    
+
     N1L = Matmul(R1,R2)
     mn1l(1:3) = mnu
     mn1l(4:7) = mn4
     mN1l2 = mN1L**2
    End If  ! seesaw approximation
- 
+
   End If
 
   N1L = Matmul(N1L, N)
@@ -5006,7 +5006,7 @@ Contains
   !---------------
   ! Initialzation
   !---------------
-  g1 = 0.5_dp * gSU2 
+  g1 = 0.5_dp * gSU2
   gp1 = 0.5_dp * gU1
   mN1L = 0._dp
   mN1L2 = 0._dp
@@ -5079,7 +5079,7 @@ Contains
     phaseM =   Sqrt( mat72(i1,i1)   / Abs( mat72(i1,i1) ) )
     N(i1,:) = phaseM * N(i1,:)
    End Do
-   mN2 = mN**2 
+   mN2 = mN**2
 
   End If
 
@@ -5289,7 +5289,7 @@ Contains
        MinvR(i1,i2) = MinvR(i1,i2) + N4R(i3,i1) * N4R(i3,i2)  / mN4(i3)
       End Do
      End Do
-    End Do  
+    End Do
     mat3R = mat7(1:3,1:3) - Matmul( XiR, Matmul(MinvR, Transpose(XiR) ) )
     Call EigenSystem(mat3R, mnu, VnuR, kont, test)
     Do i1=1,3
@@ -5307,7 +5307,7 @@ Contains
 
     R1 = 0._dp
     R1(1:3,1:3) = VnuR
-    R1(4:7,4:7) = N4R 
+    R1(4:7,4:7) = N4R
     XiR = Matmul(XiR,MinvR)
     R2(1:3,1:3) = - 0.5_dp * Matmul(XiR, Transpose(XiR))
     R2(4:7,4:7) = - 0.5_dp * Matmul(Transpose(XiR), XiR)
@@ -5316,13 +5316,13 @@ Contains
     End Do
     R2(1:3,4:7) = - XiR
     R2(4:7,1:3) = Transpose(XiR)
-    
+
     N1L = Matmul(R1,R2)
     mn1l(1:3) = mnu
     mn1l(4:7) = mn4
     mN1L2 = mN1L**2
    End If  ! seesaw approximation
- 
+
   Else
    mat72 = Matmul( Transpose(Conjg( mat7)),  mat7)
    Call EigenSystemQP(mat72, mN1L2, N1L, kont, test)
@@ -5338,7 +5338,7 @@ Contains
 !-------------------------------------------------------------------------
    If (kont.Eq.-1006) Then
     kont = 0
-    mat4 = mat7(4:7,4:7) 
+    mat4 = mat7(4:7,4:7)
     mat42 = Matmul( Transpose(Conjg( mat4)),  mat4)
     Call EigenSystem(mat42, mN4, N4, kont, test)
     mat42 = Matmul(Conjg(N4), Matmul( mat4, Transpose( Conjg( N4 ) ) ) )
@@ -5356,7 +5356,7 @@ Contains
        Minv(i1,i2) = Minv(i1,i2) + Conjg(N4(i3,i1) * N4(i3,i2) ) / mN4(i3)
       End Do
      End Do
-    End Do  
+    End Do
     mat3 = mat7(1:3,1:3) - Matmul( Xi, Matmul(Minv, Transpose(Xi) ) )
 
     mat32 = Matmul( Transpose(Conjg( mat3)),  mat3)
@@ -5370,7 +5370,7 @@ Contains
 
     R1 = 0._dp
     R1(1:3,1:3) = Conjg(Vnu)
-    R1(4:7,4:7) = Conjg(N4) 
+    R1(4:7,4:7) = Conjg(N4)
     Xi = Matmul(Xi,Minv)
     R2(1:3,1:3) = - 0.5_dp * Matmul(Xi, Transpose(Conjg(Xi)))
     R2(4:7,4:7) = - 0.5_dp * Matmul(Transpose(Conjg(Xi)), Xi)
@@ -5379,13 +5379,13 @@ Contains
     End Do
     R2(1:3,4:7) = - Xi
     R2(4:7,1:3) = Transpose(Conjg(Xi))
-    
+
     N1L = Matmul(R1,R2)
     mn1l(1:3) = mnu
     mn1l(4:7) = mn4
     mN1l2 = mN1L**2
    End If  ! seesaw approximation
- 
+
   End If
 
   N1L = Matmul(N1L, N)
@@ -5442,7 +5442,7 @@ Contains
  !  Rsl ............ slepton mixing matrix
  !  mSnu2 .......... sneutrino masses squared
  !  Rsn ............ sneutrino mixing matrix
- ! output 
+ ! output
  !  mNu(i) ........... neutrino mass_i
  !  Nnu(i,j) ......... neutrino mixing matrix
  ! written by Werner Porod, 09.01.2006
@@ -5451,7 +5451,7 @@ Contains
  !----------------------------------------------------------------------
  Implicit None
 
-  Integer, Intent(inout) :: kont 
+  Integer, Intent(inout) :: kont
   Complex(dp), Intent(in) :: MnuL5(3,3), Y_l(3,3), U(2,2), V(2,2), N(4,4) &
                           & , Rsl(6,6), Rsn(3,3)
   Real(dp), Intent(in) :: gp, g, mC2(2), mN2(4), mSle2(6), mSnu2(3)
@@ -5475,7 +5475,7 @@ Contains
   N42 = Abs(N(:,4))**2
 
   c_CNuSl = 0._dp
-   
+
   Do i2 = 1,3
    Do i3 = 1,6
     w1 = 0._dp
@@ -5532,7 +5532,7 @@ Contains
    End Do
   End Do
 
-  del = oo16pi2 * del 
+  del = oo16pi2 * del
   mat3 = 0.5_dp * (MnuL5 + Matmul(Transpose(del),MnuL5) + Matmul(MnuL5,del))
 
 
@@ -5584,7 +5584,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-  
+
   If (ierr.Ne.0) Then
    Write (Errcan,*) 'Warning in subroutine NeutrinoMasses, ierr =',ierr
    Write (Errcan,*) 'MnuL5:',Cmplx(MnuL5(1,:))
@@ -5602,16 +5602,16 @@ Contains
 
   Iname = Iname - 1
 
- Contains 
+ Contains
 
   Real(dp) Function C00(m02, m12, m22)
   Implicit None
    Real(dp), Intent(in) :: m02, m12, m22
-  
+
    Real(dp), Parameter :: eps=1.e-6_dp, r38 = 3._dp / 8._dp
    Real(dp) :: r1, r2, dr1, dr2
 
-   r1 = m12 / m02 
+   r1 = m12 / m02
    r2 = m22 / m02
 
    dr1 = r1 - 1._dp
@@ -5672,7 +5672,7 @@ Contains
  ! The formulae of J. Bagger et al, Nucl. Phys. B491 are used.
  ! input:
  !  - gU1 ........ the U(1) gauge coupling
- !  - gSU2 ....... the SU(2) gauge coupling 
+ !  - gSU2 ....... the SU(2) gauge coupling
  !  - vevs_DR .... MSSM vevs
  !  - Y_l ........ lepton Yukawa couplings
  !  - Y_d ........ d-quark Yukawa couplings
@@ -5684,7 +5684,7 @@ Contains
  !  - mSneutrino2  masses of the sneutrinos squared
  !  - RSneut ..... mixing matrix of the sneutrinos
  !  - mSlepton2 .. masses of the sleptons squared
- !  - RSlepton ... mixing matrix of the sleptons  
+ !  - RSlepton ... mixing matrix of the sleptons
  !  - mSdown2 .... masses of the s-downs squared
  !  - RSdown ..... mixing matrix of the s-downs
  !  - mSup2 ...... masses of the s-ups squared
@@ -5708,7 +5708,7 @@ Contains
  ! 10.10.01: including flavour mixing in quark sector
  ! 12.12.03: - taking mW and mZ as input instead of assuming that
  !             they are taking from the module StandardModel
- !           - scalar Higgs contribution has been a factor 2 too large 
+ !           - scalar Higgs contribution has been a factor 2 too large
  !----------------------------------------------------------------
  Implicit None
 #ifdef GENERATIONMIXING
@@ -5749,7 +5749,7 @@ Contains
   End If
 
   sumI = 0._dp
-  tadpole = 0._dp  
+  tadpole = 0._dp
   id2R = 0._dp
   id2R(1,1) = 1._dp
   id2R(2,2) = 1._dp
@@ -5770,7 +5770,7 @@ Contains
     sumI(2) = 3._dp * mf_u(i1) * Real( coupC,dp ) * A0(mf_u2(i1))
     sumI = 4.d0 * sumI
     If (WriteOut) Write(ErrCan,*) "fermions",i1,sumI
-    tadpole = tadpole + sumI 
+    tadpole = tadpole + sumI
    End Do
   Else ! .not. GenerationMixing
 #endif
@@ -5808,7 +5808,7 @@ Contains
                           &, ZeroC, mu, vevs_DR, gU1, gSU2, coupC)
    Call CoupScalarSfermion3(2, 1, 1, id2R, 0.5_dp, 0._dp, ZeroC, id2C &
                           &, ZeroC, mu, vevs_DR, gU1, gSU2, coupRC)
-   
+
    Do i1=1,3
     A0m = A0( mSneutrino2(i1) )
     sumI(1) =  - coupC * A0m
@@ -5911,7 +5911,7 @@ Contains
   ! gauge bosons
   !----------------------
   sumI = 1.5_dp *  gSU2**2 * A0(mW2) + 0.75_dp * (gSU2**2 + gU1**2) * A0(mZ2)
-  sumI = sumI * vevs_DR 
+  sumI = sumI * vevs_DR
   If (WriteOut) Write(ErrCan,*) "gauge bosons",sumI
   tadpole = tadpole + sumI
   !---------------------------------------------------------
@@ -6008,7 +6008,7 @@ Contains
  ! The formulae of J. Bagger et al, Nucl. Phys. B491 are used.
  ! Note, that gSU3 has to be set to 0 for sleptons
  ! the input is:
- !  - p2 ......... the outer momentum squared 
+ !  - p2 ......... the outer momentum squared
  !  - gU1 ........ the U(1) gauge coupling
  !  - gSU2 ....... the SU(2) gauge coupling
  !  - Y_d ........ d-quark Yukawa couplings
@@ -6021,9 +6021,9 @@ Contains
  !  - A_u ........ u-squark trilinear couplings
  !  - A_l ........ slepton trilinear couplings
  !  - mu ......... higgsino parameter
- ! 
+ !
  ! the output is:
- !  res  
+ !  res
  ! written by Werner Porod, 30.11.99
  ! 10.10.01: portation to f90
  !-----------------------------------------------------------------------
@@ -6111,8 +6111,8 @@ Contains
      SumI = 3._dp *  Abs(coupC)**2*Real(B0(p2,mUSquark2(i1), mDSquark2(i1)),dp)
      If (WriteOut) Write(ErrCan,*) "d-, u-squarks ",i1,i2,i3,sumI
      res = res + SumI
-    End Do 
-   End Do 
+    End Do
+   End Do
    !---------------
    ! leptons
    !---------------
@@ -6151,7 +6151,7 @@ Contains
      SumI = Abs( coupC )**2 * B0m2
      If (WriteOut) Write(ErrCan,*) "sneutrinos, sleptons ",i1,i2,sumI
      res = res + SumI
-    End Do 
+    End Do
    End Do
 
   Else ! .not. GenerationMixing
@@ -6183,14 +6183,14 @@ Contains
     yuku = Y_u(i1,i1)
     yukd = Y_d(i1,i1)
     Do i2=1,2
-     A0m2 = - A0( mUSquark2(i_gen + i2) ) 
+     A0m2 = - A0( mUSquark2(i_gen + i2) )
      Call CoupChargedScalarSfermion4(2, 2, i2, i2, RSpm, 0.5_dp, e_u  &
                                    & , yuku, yukd, Rsf, gU1, gSU2, coupC)
      SumI =  3._dp * coupC * A0m2
      If (WriteOut) Write(ErrCan,*) "u-squarks ",i1,i2,sumI
      res = res + SumI
 
-     A0m2 = - A0( mDSquark2(i_gen + i2) ) 
+     A0m2 = - A0( mDSquark2(i_gen + i2) )
      Call CoupChargedScalarSfermion4(2, 2, i2, i2, RSpm, -0.5_dp, e_d  &
                                    & , yukd, yuku, Rsfp, gU1, gSU2, coupC)
      SumI =  3._dp * coupC * A0m2
@@ -6205,8 +6205,8 @@ Contains
       If (WriteOut) Write(ErrCan,*) "d-, u-squarks ",i1,i2,i3,sumI,coupc
       res = res + SumI
      End Do
-    End Do 
-   End Do 
+    End Do
+   End Do
    !---------------
    ! leptons
    !---------------
@@ -6215,7 +6215,7 @@ Contains
     yukd = Y_l(i1,i1)
     G0m2 = Real( Gloop(p2, 0._dp,mf_L2(i1)),dp )
     Call CoupChargedScalarFermion(2, RSpm, yukD, yukU, coupCL, coupCR)
-    sumI = Abs( coupCL )**2 * G0m2 
+    sumI = Abs( coupCL )**2 * G0m2
     If (WriteOut) Write(ErrCan,*) "leptons ",i1,sumI
     res = res + sumI
    End Do
@@ -6229,7 +6229,7 @@ Contains
     i_gen = 2 * i1 - 1
     Rsf = RSlepton( i_gen:i_gen+1, i_gen:i_gen+1)
     Ad = A_l(i1,i1)
-    
+
     A0m2 = - A0(  mSneutrino2(i1) )
     Call CoupChargedScalarSfermion4(2, 2, 1, 1, RSpm, 0.5_dp, 0._dp  &
                                   &, yuku, yukd, Rsfp, gU1, gSU2, coupC)
@@ -6245,19 +6245,19 @@ Contains
      SumI = coupC * A0m2
      If (WriteOut) Write(ErrCan,*) "sleptons ",i1,i2,sumI
      res = res + SumI
-  
+
      B0m2 = Real( B0(p2, mSneutrino2(i1), mSlepton2(i_gen + i2)),dp )
      Call CoupChargedScalarSfermion3(2, i2, 1, RSpm, gSU2, vevs_DR  &
                                  &, mu, yukd, Ad, Rsf, yuku, Au, Rsfp, coupC)
      SumI = Abs( coupC )**2 * B0m2
      If (WriteOut) Write(ErrCan,*) "sneutrinos, sleptons ",i1,i2,sumI
      res = res + SumI
-    End Do 
+    End Do
    End Do
 #ifdef GENERATIONMIXING
   End If
 #endif
- 
+
  !-------------------
  ! gauge bosons
  !-------------------
@@ -6300,7 +6300,7 @@ Contains
    sumI = 0.5_dp * coupC * A0( mP02(i1) )
    If (WriteOut) Write(ErrCan,*) "P0 ",i1,sumI
    res = res + sumI
-  End Do      
+  End Do
   !-------------------------
   ! neutral Higgs
   !-------------------------
@@ -6338,7 +6338,7 @@ Contains
    End Do
   End Do
 
-  res = oo16pi2 * res 
+  res = oo16pi2 * res
 
   Iname = Iname - 1
 
@@ -6363,12 +6363,12 @@ Contains
  ! The formulae of J. Bagger et al, Nucl. Phys. B491 are used.
  ! Note, that gSU3 has to be set to 0 for sleptons
  ! the input is:
- ! - p2 ......... the outer momentum squared 
+ ! - p2 ......... the outer momentum squared
  ! - gU1 ........ the U(1) gauge coupling
  ! - gSU2 ....... the SU(2) gauge coupling
- ! 
+ !
  ! the output is:
- !  res  
+ !  res
  ! written by Werner Porod, 30.11.99
  ! last change: 30.11.99
  !-----------------------------------------------------------------------
@@ -6408,7 +6408,7 @@ Contains
  !-----------------------
  ! intialisation
  !-----------------------
-  res = (0._dp, 0._dp) 
+  res = (0._dp, 0._dp)
 
   e_u = 2._dp / 3._dp
   e_d = -1._dp / 3._dp
@@ -6497,7 +6497,7 @@ Contains
      If (i1.Ne.i2) sumI = 2._dp * sumI
      If (WriteOut) Write(ErrCan,*) "u-squarks ",i1,i2,sumI
      res = res + sumI
-    End Do 
+    End Do
    !-------------
    ! d-squarks
    !-------------
@@ -6516,7 +6516,7 @@ Contains
      If (i1.Ne.i2) sumI = 2._dp * sumI
      If (WriteOut) Write(ErrCan,*) "d-squarks ",i1,i2,sumI
      res = res + sumI
-    End Do 
+    End Do
    !-------------
    ! sleptons
    !-------------
@@ -6536,7 +6536,7 @@ Contains
       If (i1.Ne.i2) sumI = 2._dp * sumI
       If (WriteOut) Write(ErrCan,*) "sleptons ",i1,i2,sumI
       res = res + sumI
-     End Do 
+     End Do
     End If
    !-------------
    ! sneutrino
@@ -6583,7 +6583,7 @@ Contains
       If (WriteOut) Write(ErrCan,*) "u-squarks ",i1,i2,i3,sumI
       res = res + sumI
      End Do
-    End Do 
+    End Do
    !-------------
    ! d-squarks
    !-------------
@@ -6611,7 +6611,7 @@ Contains
       If (WriteOut) Write(ErrCan,*) "d-squarks ",i1,i2,i3,sumI
       res = res + sumI
      End Do
-    End Do 
+    End Do
    !-------------
    ! sleptons
    !-------------
@@ -6640,7 +6640,7 @@ Contains
        If (WriteOut) Write(ErrCan,*) "sleptons ",i1,i2,i3,sumI
        res = res + sumI
       End Do
-     End Do 
+     End Do
     End If
    !-------------
    ! sneutrino
@@ -6706,14 +6706,14 @@ Contains
  !--------------------
  ! pseudoscalar Higgs
  !--------------------
-  A0m2 = A0( mP02(1) ) 
+  A0m2 = A0( mP02(1) )
   coup = (gSU2**2 + gU1**2) * ( 1.5_dp * (RP0(1,1)*RP0(1,2))**2 - 0.125_dp )
   sumI = coup * A0m2
   If (WriteOut) Write(ErrCan,*) "G0 ",sumI
   res = res + sumI
 
-  A0m2 = A0( mP02(2) ) 
-  coup = 0.375_dp * (gSU2**2 + gU1**2) * (RP0(1,1)**2 - RP0(1,2)**2 )**2 
+  A0m2 = A0( mP02(2) )
+  coup = 0.375_dp * (gSU2**2 + gU1**2) * (RP0(1,1)**2 - RP0(1,2)**2 )**2
   sumI = coup * A0m2
   If (WriteOut) Write(ErrCan,*) "A0 ",sumI
   res = res + sumI
@@ -6725,21 +6725,21 @@ Contains
    Call CoupPseudoscalarScalarZ(2, i1, gSU2, cosW_DR, RP0, RS0, coupC)
    sumI = Abs( coupC )**2 * F0m2
    If (WriteOut) Write(ErrCan,*) "S0, Z ",i1,sumI
-   res = res + sumI 
+   res = res + sumI
 
    Do i2=1,n_P0
     B0m2 = 2._dp * Real( B0(p2, mP02(i2), mS02(i1)),dp )
     Call CoupPseudoScalarScalar3(i2, 2, i1, RP0, RS0, gU1, gSU2, vevs_DR, coup)
     sumI = coup**2 * B0m2
     If (WriteOut) Write(ErrCan,*) "S0, P0 ",i1,i2,sumI
-    res = res + sumI 
+    res = res + sumI
    End Do
 
-   A0m2 = A0( mS02(i1) ) 
+   A0m2 = A0( mS02(i1) )
    Call CoupPseudoScalarScalar4(2, 2, i1, i1, RP0, RS0, gU1, gSU2, coup)
    sumI = -  coup * A0m2
    If (WriteOut) Write(ErrCan,*) "S0, P0 ",i1,sumI
-   res = res + sumI 
+   res = res + sumI
   End Do
  !------------------
  ! neutralinos
@@ -6763,7 +6763,7 @@ Contains
    End Do
   End Do
 
-  res = oo16pi2 * res 
+  res = oo16pi2 * res
 
   Iname = Iname - 1
 
@@ -6781,7 +6781,7 @@ Contains
  ! The formulae of J. Bagger et al, Nucl. Phys. B491 are used.
  ! Note, that gSU3 has to be set to 0 for sleptons
  ! the input is:
- ! - p2 ......... the outer momentum squared 
+ ! - p2 ......... the outer momentum squared
  ! - gU1 ........ the U(1) gauge coupling
  ! - gSU2 ....... the SU(2) gauge coupling
  ! the output is:
@@ -6843,7 +6843,7 @@ Contains
     Do i3=i2,n_P0
        sumI(i2,i3) = c_SdSdP0P0(i1,i2,i3) * A0m2
     End Do
-   End Do 
+   End Do
    res = res + sumI
 If (WriteOut) Write(ErrCan,*) "Sd Sd P0 P0",i1,sumI(1,1),sumI(1,2)&
       &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
@@ -6852,7 +6852,7 @@ If (WriteOut) Write(ErrCan,*) "Sd Sd P0 P0",i1,sumI(1,1),sumI(1,2)&
   sumI = 0._dp
   Do i1=1,6
    A0m2 = -6._dp * A0( mUsquark2(i1) )
-   Do i2=1,n_P0 
+   Do i2=1,n_P0
     Do i3=i2,n_P0
       sumI(i2,i3) = c_SuSuP0P0(i1,i2,i3) * A0m2
     End Do
@@ -6865,7 +6865,7 @@ If (WriteOut) Write(ErrCan,*) "Su Su P0 P0",i1,sumI(1,1),sumI(1,2)&
   sumI = 0._dp
   Do i1=1,n_Slept
    A0m2 = -2._dp * A0( mSlepton2(i1) )
-   Do i2=1,n_P0 
+   Do i2=1,n_P0
     Do i3=i2,n_P0
      sumI(i2,i3) = c_SlSlP0P0(i1,i2,i3) * A0m2
     End Do
@@ -6913,7 +6913,7 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl P0 P0",i1,sumI(1,1),sumI(1,2)&
       End Do ! i4
       res = res + sumI
       If (WriteOut) Write(ErrCan,*) "Su Su P0",i_sf1,i_sf2 &
-          & ,sumI(1,1),sumI(1,2),sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)  
+          & ,sumI(1,1),sumI(1,2),sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
    End Do
 
    sumI = 0._dp
@@ -6945,7 +6945,7 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl P0 P0",i1,sumI(1,1),sumI(1,2)&
    If (WriteOut) Write(ErrCan,*) "S+ P0 W",i2 ,sumI(1,1),sumI(1,2),sumI(2,2)
    res = res + sumI
   End Do
-  
+
   sumI = 0._dp
   F0m2 = Real( Floop(p2,mW2,mW2),dp ) + 7._dp * mW2 * Real( B0(p2,mW2,mW2),dp )
   If (WriteOut) Write(ErrCan,*) "P0 W+ W-",sumI(1,1),sumI(1,2),sumI(2,2)
@@ -7006,7 +7006,7 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl P0 P0",i1,sumI(1,1),sumI(1,2)&
     End Do
    End Do
    If (WriteOut) Write(ErrCan,*) "C C P0",i1,i1,sumI(1,1),sumI(1,2),sumI(1,3) &
-       &,sumI(2,2),sumI(2,3),sumI(3,3) 
+       &,sumI(2,2),sumI(2,3),sumI(3,3)
    res = res + sumI
 
    sumI = 0._dp
@@ -7018,7 +7018,7 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl P0 P0",i1,sumI(1,1),sumI(1,2)&
      sumI(i3,i3) =                                                           &
           &  (Abs(c_CCP0_L(i1,i2,i3))**2 +Abs(c_CCP0_R(i1,i2,i3))**2) * G0m2 &
           & - Real( Conjg(c_CCP0_R(i1,i2,i3)) * c_CCP0_L(i1,i2,i3),dp ) * B0m2
-    Do i4=i3+1,n_P0     
+    Do i4=i3+1,n_P0
      sumI(i3,i4) = ( Conjg(c_CCP0_L(i1,i2,i3))*c_CCP0_L(i1,i2,i4)          &
             &   + Conjg(c_CCP0_R(i1,i2,i3))* c_CCP0_R(i1,i2,i4) ) * G0m2   &
             & - 0.5_dp *( Conjg(c_CCP0_R(i1,i2,i3)) * c_CCP0_L(i1,i2,i4)   &
@@ -7026,7 +7026,7 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl P0 P0",i1,sumI(1,1),sumI(1,2)&
      End Do ! i4
     End Do ! i3
     If (WriteOut) Write(ErrCan,*) "C C P0",i1,i2,sumI(1,1),sumI(1,2),sumI(1,3)&
-       &,sumI(2,2),sumI(2,3),sumI(3,3) 
+       &,sumI(2,2),sumI(2,3),sumI(3,3)
     res = res + sumI
    End Do
   End Do
@@ -7045,7 +7045,7 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl P0 P0",i1,sumI(1,1),sumI(1,2)&
    End Do
    res = res + sumI
  If (WriteOut) Write(ErrCan,*) "P0 P0 P0 P0",i1,sumI(1,1),sumI(1,2),sumI(1,3)&
-       &,sumI(2,2),sumI(2,3),sumI(3,3) 
+       &,sumI(2,2),sumI(2,3),sumI(3,3)
   End Do
 
  !--------------------
@@ -7076,7 +7076,7 @@ If (WriteOut) Write(ErrCan,*) "P0 P0 S0 S0",i1,i2,sumI(1,1),sumI(1,2)&
      sumI(i3,i3) = c_S0P0P0(i3,i1,i2)**2 * B0m2
      Do i4=i3+1,n_S0
       sumI(i3,i4) = c_S0P0P0(i3,i1,i2) * c_S0P0P0(i4,i1,i2) * B0m2
-     End Do ! i4 
+     End Do ! i4
     End Do ! i3
     res = res + sumI
 If (WriteOut) Write(ErrCan,*) "P0 P0 S0",i1,i2,sumI(1,1),sumI(1,2)&
@@ -7111,7 +7111,7 @@ If (WriteOut) Write(ErrCan,*) "P0 P0 S0",i1,i2,sumI(1,1),sumI(1,2)&
 If (WriteOut) Write(ErrCan,*) "N N P0",i1,i2,sumI(1,1),sumI(1,2)&
            &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
    End Do ! i2
-  End Do ! i1 
+  End Do ! i1
 
   Do i2=1,n_S0
    Do i1=2,n_S0
@@ -7135,10 +7135,10 @@ If (WriteOut) Write(ErrCan,*) "N N P0",i1,i2,sumI(1,1),sumI(1,2)&
  ! The formulae of J. Bagger et al, Nucl. Phys. B491 are used.
  ! Note, that gSU3 has to be set to 0 for sleptons
  ! the input is:
- ! - p2 ......... the outer momentum squared 
- ! 
+ ! - p2 ......... the outer momentum squared
+ !
  ! the output is:
- !  res(i,j) 
+ !  res(i,j)
  ! written by Werner Porod, 1.12.99
  ! 10.10.01: portation to f90
  ! 11.06.03: implementing alpha_b alpha_t + alpha^2_b corrections
@@ -7179,7 +7179,7 @@ If (WriteOut) Write(ErrCan,*) "N N P0",i1,i2,sumI(1,1),sumI(1,2)&
            & +  2._dp * Abs( c_LLS0_L(i1) )**2                             &
            &   * ( (p2 - 4._dp * mf_l2(i1) )                               &
            &            * Real( B0(p2, mf_l2(i1), mf_l2(i1)),dp)           &
-           &     - 2._dp * Real( A0( mf_l2(i1) ),dp ) )         
+           &     - 2._dp * Real( A0( mf_l2(i1) ),dp ) )
    sumI(2,2) = 6._dp * Abs( c_UUS0_L(i1) )**2                              &
            &   * ( (p2 - 4._dp * mf_u2(i1) )                               &
            &         * Real(B0(p2, mf_u2(i1), mf_u2(i1)),dp)               &
@@ -7241,7 +7241,7 @@ If (WriteOut) Write(ErrCan,*) "N N P0",i1,i2,sumI(1,1),sumI(1,2)&
              &  "Su Su S0",i1,i2,sumI(1,1),sumI(1,2),sumI(2,2)
      res = res + sumI
     End Do
-   End Do  
+   End Do
 
    Do i1=1,n_Slept
     Do i2=1,n_Slept
@@ -7255,7 +7255,7 @@ If (WriteOut) Write(ErrCan,*) "N N P0",i1,i2,sumI(1,1),sumI(1,2)&
            & "Sl Sl S0",i1,i2,sumI(1,1),sumI(1,2),sumI(2,2)
      res = res + sumI
     End Do
-   End Do  
+   End Do
 
    Do i1=1,n_Sneut
     Do i2=1,n_Sneut
@@ -7269,7 +7269,7 @@ If (WriteOut) Write(ErrCan,*) "N N P0",i1,i2,sumI(1,1),sumI(1,2)&
             & "Sn Sn S0",i1,i2,sumI(1,1),sumI(1,2),sumI(2,2)
      res = res + sumI
     End Do
-   End Do  
+   End Do
 
   Else ! .not.GenerationMixing
 #endif
@@ -7301,7 +7301,7 @@ If (WriteOut) Write(ErrCan,*) "N N P0",i1,i2,sumI(1,1),sumI(1,2)&
                               & ,sumI(1,1),sumI(1,2),sumI(2,2)
       res = res + sumI
      End Do
-    End Do  
+    End Do
    End Do
 
    Do i1=1,n_sneut
@@ -7429,7 +7429,7 @@ If (WriteOut) Write(ErrCan,*) "N N P0",i1,i2,sumI(1,1),sumI(1,2)&
      sumI(i3,i3) =                                                           &
           &  (Abs(c_CCS0_L(i1,i2,i3))**2 +Abs(c_CCS0_R(i1,i2,i3))**2) * G0m2 &
           & - Real( Conjg(c_CCS0_R(i1,i2,i3)) * c_CCS0_L(i1,i2,i3), dp ) * B0m2
-    Do i4=i3+1,n_S0     
+    Do i4=i3+1,n_S0
      sumI(i3,i4) = ( Conjg(c_CCS0_L(i1,i2,i3))*c_CCS0_L(i1,i2,i4)          &
             &   + Conjg(c_CCS0_R(i1,i2,i3))* c_CCS0_R(i1,i2,i4) ) * G0m2   &
             & - 0.5_dp *( Conjg(c_CCS0_R(i1,i2,i3)) * c_CCS0_L(i1,i2,i4)   &
@@ -7480,7 +7480,7 @@ If (WriteOut) Write(ErrCan,*) "N N P0",i1,i2,sumI(1,1),sumI(1,2)&
      sumI(i3,i3) = c_S03(i3,i1,i2)**2 * B0m2
      Do i4=i3+1,n_S0
       sumI(i3,i4) = c_S03(i3,i1,i2) * c_S03(i4,i1,i2) * B0m2
-     End Do 
+     End Do
      If (WriteOut) Write(ErrCan,*) "S0 S0 S0",i1,i2,i3,sumI(i3,i3:n_S0)
      res(i3,i3:n_S0) = res(i3,i3:n_S0) + sumI(i3,i3:n_S0)
     End Do
@@ -7535,10 +7535,10 @@ If (WriteOut) Write(ErrCan,*) "N N P0",i1,i2,sumI(1,1),sumI(1,2)&
  ! The formulae of J. Bagger et al, Nucl. Phys. B491 are used.
  ! Note, that gSU3 has to be set to 0 for sleptons
  ! the input is:
- ! - p2 ......... the outer momentum squared 
- ! 
+ ! - p2 ......... the outer momentum squared
+ !
  ! the output is:
- !  res(i,j) 
+ !  res(i,j)
  ! written 03.11.2008
  ! 10.10.01: portation to f90
  ! 11.06.03: implementing alpha_b alpha_t + alpha^2_b corrections
@@ -7551,7 +7551,7 @@ If (WriteOut) Write(ErrCan,*) "N N P0",i1,i2,sumI(1,1),sumI(1,2)&
      & , c_P0P0S0S0(:,:,:), c_S0P0P0(:,:,:), c_S03(:,:,:), c_S04(:,:,:) &
      & , mN(:), mN2(:), mZ2, mW2
   Complex(dp), Intent(in) :: c_DDS0_L(:), c_UUS0_L(:), c_LLS0_L(:)           &
-     & , c_SdSdS0S0(:,:,:), c_SuSuS0S0(:,:,:), c_SlSlS0S0(:,:,:)             & 
+     & , c_SdSdS0S0(:,:,:), c_SuSuS0S0(:,:,:), c_SlSlS0S0(:,:,:)             &
      & , c_SnSnS0S0(:,:,:)                                                   &
      & , c_SdSdS0(:,:,:), c_SuSuS0(:,:,:), c_SlSlS0(:,:,:), c_SnSnS0(:,:,:)  &
      & , c_SpmS0W(:,:), c_SpSmS0S0(:,:,:), c_SpSmS0(:,:,:), c_CCS0_L(:,:,:)&
@@ -7582,7 +7582,7 @@ If (WriteOut) Write(ErrCan,*) "N N P0",i1,i2,sumI(1,1),sumI(1,2)&
            & +  2._dp * Abs( c_LLS0_L(i1) )**2                             &
            &   * ( (p2 - 4._dp * mf_l2(i1) )                               &
            &            * Real( B0(p2, mf_l2(i1), mf_l2(i1)),dp)           &
-           &     - 2._dp * Real( A0( mf_l2(i1) ),dp ) )         
+           &     - 2._dp * Real( A0( mf_l2(i1) ),dp ) )
    sumI(2,2) = 6._dp * Abs( c_UUS0_L(i1) )**2                              &
            &   * ( (p2 - 4._dp * mf_u2(i1) )                               &
            &         * Real(B0(p2, mf_u2(i1), mf_u2(i1)),dp)               &
@@ -7603,17 +7603,17 @@ If (WriteOut) Write(ErrCan,*) "N N P0",i1,i2,sumI(1,1),sumI(1,2)&
        sumI(i2,i3) = c_SdSdS0S0(i1,i2,i3) * A0m2
     End Do
    End Do
-    res = res + sumI 
+    res = res + sumI
 If (WriteOut) Write(ErrCan,*) "Sd Sd S0 S0",i1,sumI(1,1),sumI(1,2)&
       &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
 !  print*, "Sd Sd S0 S0",i1,sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
   End Do
 
   sumI = 0._dp
   Do i1=1,6
    A0m2 = -6._dp * A0( mUsquark2(i1) )
-   Do i2=1,n_S0 
+   Do i2=1,n_S0
     Do i3=i2,n_S0
       sumI(i2,i3) = c_SuSuS0S0(i1,i2,i3) * A0m2
     End Do
@@ -7622,13 +7622,13 @@ If (WriteOut) Write(ErrCan,*) "Sd Sd S0 S0",i1,sumI(1,1),sumI(1,2)&
 If (WriteOut) Write(ErrCan,*) "Su Su S0 S0",i1,sumI(1,1),sumI(1,2)&
       &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
 ! print*, "Su Su S0 S0",i1,sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
   End Do
 
   sumI = 0._dp
   Do i1=1,n_Slept
    A0m2 = -2._dp * A0( mSlepton2(i1) )
-   Do i2=1,n_S0 
+   Do i2=1,n_S0
     Do i3=i2,n_S0
      sumI(i2,i3) = c_SlSlS0S0(i1,i2,i3) * A0m2
     End Do
@@ -7637,7 +7637,7 @@ If (WriteOut) Write(ErrCan,*) "Su Su S0 S0",i1,sumI(1,1),sumI(1,2)&
 If (WriteOut) Write(ErrCan,*) "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
       &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
 ! print*, "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
   End Do
 
   sumI = 0._dp
@@ -7652,7 +7652,7 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
  If (WriteOut) Write(ErrCan,*) "Sn Sn S0 S0",i1,sumI(1,1),sumI(1,2)&
       &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
 ! print*, "Sn Sn S0 S0",i1,sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
   End Do
 
  ! .not.GenerationMixing
@@ -7675,7 +7675,7 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
      End Do ! i3
     End Do ! i2
    End Do ! i1
-   
+
    sumI = 0._dp
    Do i1=1,3
     Do i2=1,2
@@ -7692,7 +7692,7 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
       If (WriteOut) Write(ErrCan,*) "Su Su S0",i_sf1,i_sf2 &
           & ,sumI(1,1),sumI(1,2),sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
 ! print*, "Su Su S0 ",i_sf1,i_sf2,sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
      res = res + sumI
      End Do ! i3
     End Do ! i2
@@ -7714,7 +7714,7 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
       If (WriteOut) Write(ErrCan,*) "Sl Sl S0",i_sf1,i_sf2 &
           & ,sumI(1,1),sumI(1,2),sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
 ! print*, "Sl Sl S0 ",i_sf1,i_sf2,sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
       res = res + sumI
      End Do
     End Do
@@ -7736,7 +7736,7 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
      If (WriteOut) Write(ErrCan,*) "Sn Sn S0",i_sf1,i_sf2&
           &,sumI(1,1),sumI(1,2),sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
 ! print*, "Sn Sn S0 ",i_sf1,i_sf2,sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
      res = res + sumI
     End Do
    End Do
@@ -7753,7 +7753,7 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
    sumI(2,2) = Abs(c_SpmS0W(i2,2))**2 * F0m2
    If (WriteOut) Write(ErrCan,*) "S+ S0 W",i2 ,sumI(1,1),sumI(1,2),sumI(2,2)
 ! print*, "Spm S0 W ",i2,sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
   res = res + sumI
   End Do
 
@@ -7764,7 +7764,7 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
   sumI(2,2) = Abs(c_S0WW(2))**2 * F0m2
   If (WriteOut) Write(ErrCan,*) "S0 W+ W-",sumI(1,1),sumI(1,2),sumI(2,2)
 ! print*, "S0 W W ",sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
   res = res + sumI
 
   sumI = 0._dp
@@ -7777,10 +7777,10 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
    sumI(2,3) = c_P0S0Z(i2,2) * c_P0S0Z(i2,3) * F0m2
    If (WriteOut) Write(ErrCan,*) "P0 S0 Z",i2 ,sumI(1,1),sumI(1,2),sumI(2,2)
 ! print*, "P0 S0 Z ",i2, sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
    res = res + sumI
   End Do
-  
+
   sumI = 0._dp
   F0m2 = Real(Floop(p2, mP02(1), mZ2),dp) + 7._dp * mZ2 * Real(B0(p2,mZ2,mZ2),dp)
   sumI(1,1) = Abs(c_S0ZZ(1))**2 * F0m2
@@ -7788,7 +7788,7 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
   sumI(2,2) = Abs(c_S0ZZ(2))**2 * F0m2
   If (WriteOut) Write(ErrCan,*) "S0 Z Z",sumI(1,1),sumI(1,2),sumI(2,2)
 ! print*, "S0 Z Z", sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
   res = res + sumI
 
   sumI = 0._dp
@@ -7814,9 +7814,9 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
            & "Sp Sm S0 S0",i1,sumI(1,1),sumI(1,2)&
            &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
 ! print*, "Sp Sm S0 S0", i1, sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
     res = res + sumI
-  
+
    Do i2=1,n_Spm
     B0m2 = Real(B0(p2, mSpm2(i1), mSpm2(i2)),dp)
     Do i3=1,n_s0
@@ -7828,7 +7828,7 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
             & "Sp Sm S0",i1,i2,sumI(1,1),sumI(1,2),sumI(1,3)&
             &,sumI(2,2),sumI(2,3),sumI(3,3)
 ! print*, "Sp Sm S0", i1, i2, sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
     res = res + sumI
    End Do
   End Do
@@ -7852,9 +7852,9 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
     End Do
    End Do
    If (WriteOut) Write(ErrCan,*) "C C S0",i1,i1,sumI(1,1),sumI(1,2),sumI(1,3) &
-       &,sumI(2,2),sumI(2,3),sumI(3,3) 
+       &,sumI(2,2),sumI(2,3),sumI(3,3)
 ! print*, "C C S0", i1,i1, sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
     res = res + sumI
 
    sumI = 0._dp
@@ -7874,9 +7874,9 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
      End Do ! i4
     End Do ! i3
     If (WriteOut) Write(ErrCan,*) "C C S0",i1,i2,sumI(1,1),sumI(1,2),sumI(1,3)&
-       &,sumI(2,2),sumI(2,3),sumI(3,3) 
+       &,sumI(2,2),sumI(2,3),sumI(3,3)
 ! print*, "C C S0", i1,i2, sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
     res = res + sumI
    End Do
   End Do
@@ -7894,9 +7894,9 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
    End Do
    res = res + sumI
  If (WriteOut) Write(ErrCan,*) "P0 P0 S0 S0",i1,sumI(1,1),sumI(1,2),sumI(1,3)&
-       &,sumI(2,2),sumI(2,3),sumI(3,3) 
+       &,sumI(2,2),sumI(2,3),sumI(3,3)
 ! print*, "P0 P0 S0 S0",i1, sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
   End Do
 
   sumI = 0._dp
@@ -7913,8 +7913,8 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
  If (WriteOut) Write(ErrCan,*) "S0 P0 P0",i1,i2,sumI(1,1),sumI(1,2),sumI(1,3)&
        &,sumI(2,2),sumI(2,3),sumI(3,3)
 ! print*, "S0 P0 P0",i1, i2, sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
-   End Do 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
+   End Do
   End Do
 
  !-----------------
@@ -7932,7 +7932,7 @@ If (WriteOut) Write(ErrCan,*) "Sl Sl S0 S0",i1,sumI(1,1),sumI(1,2)&
 If (WriteOut) Write(ErrCan,*) "S0 S0 S0 S0",i1,i2,sumI(1,1),sumI(1,2)&
            &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
 ! print*, "S0 S0 S0 S0",i1, sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
   End Do
 
 
@@ -7944,13 +7944,13 @@ If (WriteOut) Write(ErrCan,*) "S0 S0 S0 S0",i1,i2,sumI(1,1),sumI(1,2)&
      sumI(i3,i3) = c_S03(i3,i1,i2)**2 * B0m2
      Do i4=i3+1,n_S0
       sumI(i3,i4) = c_S03(i3,i1,i2) * c_S03(i4,i1,i2) * B0m2
-     End Do ! i4 
+     End Do ! i4
     End Do ! i3
     res = res + sumI
 If (WriteOut) Write(ErrCan,*) "S0 S0 S0",i1,i2,sumI(1,1),sumI(1,2)&
            &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
 ! print*, "S0 S0 S0",i1,i2, sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
    End Do
   End Do
 
@@ -7980,9 +7980,9 @@ If (WriteOut) Write(ErrCan,*) "S0 S0 S0",i1,i2,sumI(1,1),sumI(1,2)&
 If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
            &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
 ! print*, "N N S0",i1, i2, sumI(1,1),sumI(1,2)&
-!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3) 
+!        &,sumI(1,3),sumI(2,2),sumI(2,3),sumI(3,3)
    End Do ! i2
-  End Do ! i1 
+  End Do ! i1
 
   Do i2=1,n_S0
    Do i1=2,n_S0
@@ -8002,8 +8002,8 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  ! calculates the 1-loop self energies of sleptons
  ! The formulae of J. Bagger et al, Nucl. Phys. B491 are used.
  ! the input is:
- ! - p2 ......... the outer momentum squared 
- ! 
+ ! - p2 ......... the outer momentum squared
+ !
  ! the output is:
  !  res(i,j)
  ! written by Werner Porod, 31.12.01
@@ -8205,7 +8205,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,n_slept
      Do i3=1,n_slept
-      SumI(i2,i3) = - c_SuSf4(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_SuSf4(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -8215,7 +8215,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
    Else ! .not. GenerationMixing
     SumI = ZeroC
     Do i2=1,n_sneut ! number of effective slepton generations
@@ -8252,7 +8252,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,n_slept
      Do i3=1,n_slept
-      SumI(i2,i3) = - c_SdSf4(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_SdSf4(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -8262,7 +8262,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
    Else ! .not. GenerationMixing
     SumI = ZeroC
     Do i2=1,n_sneut ! number of effective slepton generations
@@ -8299,7 +8299,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,n_slept
      Do i3=1,n_slept
-      SumI(i2,i3) = - c_SlSf4(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_SlSf4(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -8309,7 +8309,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
    Else ! .not. GenerationMixing
     SumI = ZeroC
     Do i2=1,n_sneut ! number of effective slepton generations
@@ -8346,7 +8346,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,n_slept
      Do i3=1,n_slept
-      SumI(i2,i3) = - c_SnSf4(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_SnSf4(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -8356,7 +8356,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
    Else ! .not. GenerationMixing
     SumI = ZeroC
     Do i2=1,n_sneut ! number of effective slepton generations
@@ -8393,7 +8393,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,n_slept
      Do i3=1,n_slept
-      SumI(i2,i3) = - c_P0P0SfSf(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_P0P0SfSf(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -8403,13 +8403,13 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
     Do i2=1,n_slept
      SumI = ZeroC
      B0m2 = B0(p2, mP02(i1), mSlepton2(i2) )
      Do i3=1,n_slept
       Do i4=1,n_slept
-       SumI(i3,i4) = Conjg(c_P0SfSf(i1,i3,i2)) * c_P0SfSf(i1,i4,i2) * B0m2 
+       SumI(i3,i4) = Conjg(c_P0SfSf(i1,i3,i2)) * c_P0SfSf(i1,i4,i2) * B0m2
       End Do
      End Do
      If (WriteOut) Then
@@ -8428,7 +8428,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       ind_1 = 2*(i2-1)+i3
       Do i4=1,2
        ind_2 = 2*(i2-1)+i4
-       SumI(ind_1,ind_2) = - c_P0P0SfSf(i1,ind_1,ind_2) * A0m2 
+       SumI(ind_1,ind_2) = - c_P0P0SfSf(i1,ind_1,ind_2) * A0m2
       End Do
      End Do
     End Do
@@ -8445,7 +8445,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
     Do i2=1,n_slept
      SumI = ZeroC
      B0m2 = B0(p2, mP02(i1), mSlepton2(i2) )
@@ -8453,7 +8453,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       i3_min=1
      Else If (i2.Le.4) Then
       i3_min=3
-     Else 
+     Else
       i3_min=5
      End If
      i3_max = i3_min + 1
@@ -8461,7 +8461,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      i4_max = i3_max
      Do i3=i3_min, i3_max
       Do i4=i4_min, i4_max
-       SumI(i3,i4) = Conjg(c_P0SfSf(i1,i3,i2)) * c_P0SfSf(i1,i4,i2) * B0m2 
+       SumI(i3,i4) = Conjg(c_P0SfSf(i1,i3,i2)) * c_P0SfSf(i1,i4,i2) * B0m2
       End Do
      End Do
      If (WriteOut) Then
@@ -8484,7 +8484,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,n_slept
      Do i3=1,n_slept
-      SumI(i2,i3) = - c_S0S0SfSf(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_S0S0SfSf(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -8494,13 +8494,13 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
     Do i2=1,n_slept
      SumI = ZeroC
      B0m2 = B0(p2, mS02(i1), mSlepton2(i2) )
      Do i3=1,n_slept
       Do i4=1,n_slept
-       SumI(i3,i4) = Conjg(c_S0SfSf(i1,i3,i2)) * c_S0SfSf(i1,i4,i2) * B0m2 
+       SumI(i3,i4) = Conjg(c_S0SfSf(i1,i3,i2)) * c_S0SfSf(i1,i4,i2) * B0m2
       End Do
      End Do
      If (WriteOut) Then
@@ -8519,7 +8519,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       ind_1 = 2*(i2-1)+i3
       Do i4=1,2
        ind_2 = 2*(i2-1)+i4
-       SumI(ind_1,ind_2) = - c_S0S0SfSf(i1,ind_1,ind_2) * A0m2 
+       SumI(ind_1,ind_2) = - c_S0S0SfSf(i1,ind_1,ind_2) * A0m2
       End Do
      End Do
     End Do
@@ -8536,7 +8536,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
     Do i2=1,n_slept
      SumI = ZeroC
      B0m2 = B0(p2, mS02(i1), mSlepton2(i2) )
@@ -8544,7 +8544,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       i3_min=1
      Else If (i2.Le.4) Then
       i3_min=3
-     Else 
+     Else
       i3_min=5
      End If
      i3_max = i3_min + 1
@@ -8552,7 +8552,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      i4_max = i3_max
      Do i3=i3_min, i3_max
       Do i4=i4_min, i4_max
-       SumI(i3,i4) = Conjg(c_S0SfSf(i1,i3,i2)) * c_S0SfSf(i1,i4,i2) * B0m2 
+       SumI(i3,i4) = Conjg(c_S0SfSf(i1,i3,i2)) * c_S0SfSf(i1,i4,i2) * B0m2
       End Do
      End Do
      If (WriteOut) Then
@@ -8575,7 +8575,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,n_slept
      Do i3=1,n_slept
-      SumI(i2,i3) = - c_SpmSpmSfSfp(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_SpmSpmSfSfp(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -8585,13 +8585,13 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
     Do i2=1,n_sneut
      SumI = ZeroC
      B0m2 = B0(p2, mSpm2(i1), mSneut2(i2) )
      Do i3=1,n_slept
       Do i4=1,n_slept
-       SumI(i3,i4) = Conjg(c_SpmSfSfp(i1,i3,i2)) * c_SpmSfSfp(i1,i4,i2) * B0m2 
+       SumI(i3,i4) = Conjg(c_SpmSfSfp(i1,i3,i2)) * c_SpmSfSfp(i1,i4,i2) * B0m2
       End Do
      End Do
      If (WriteOut) Then
@@ -8610,7 +8610,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       Do i4=1,2
       ind_1 = 2*(i2-1)+i3
       ind_2 = 2*(i2-1)+i4
-      SumI(ind_1,ind_2) = - c_SpmSpmSfSfp(i1,ind_1,ind_2) * A0m2 
+      SumI(ind_1,ind_2) = - c_SpmSpmSfSfp(i1,ind_1,ind_2) * A0m2
       End Do
      End Do
     End Do
@@ -8627,7 +8627,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
     Do i2=1,n_sneut
      SumI = ZeroC
      B0m2 = B0(p2, mSpm2(i1), mSneut2(i2) )
@@ -8637,7 +8637,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      i4_max = i3_max
      Do i3=i3_min, i3_max
       Do i4=i4_min, i4_max
-       SumI(i3,i4) = Conjg(c_SpmSfSfp(i1,i3,i2)) * c_SpmSfSfp(i1,i4,i2) * B0m2 
+       SumI(i3,i4) = Conjg(c_SpmSfSfp(i1,i3,i2)) * c_SpmSfSfp(i1,i4,i2) * B0m2
       End Do
      End Do
      If (WriteOut) Then
@@ -8651,11 +8651,11 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
    End If !
   End Do
 
-  res = oo16pi2 * res  
+  res = oo16pi2 * res
 
   Iname = Iname - 1
-   
- End Subroutine PiSlepton 
+
+ End Subroutine PiSlepton
 
 
  Subroutine PiSneutrino(p2, mSneut2, c_Sq4Z, mSlepton2, c_Sq4W, c_Sq2Z        &
@@ -8667,8 +8667,8 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  ! calculates the 1-loop self energies of sneutrinos
  ! The formulae of J. Bagger et al, Nucl. Phys. B491 are used.
  ! the input is:
- ! - p2 ......... the outer momentum squared 
- ! 
+ ! - p2 ......... the outer momentum squared
+ !
  ! the output is:
  !  res(i,j)
  ! written by Werner Porod, 05.01.02
@@ -8838,7 +8838,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,n_sneut
      Do i3=1,n_sneut
-      SumI(i2,i3) = - c_SuSf4(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_SuSf4(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -8848,7 +8848,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
    Else ! .not. GenerationMixing
     SumI = ZeroC
     Do i2=1,3
@@ -8867,7 +8867,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,n_sneut
      Do i3=1,n_sneut
-      SumI(i2,i3) = - c_SdSf4(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_SdSf4(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -8877,7 +8877,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
    Else ! .not. GenerationMixing
     SumI = ZeroC
     Do i2=1,n_sneut
@@ -8896,7 +8896,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,n_sneut
      Do i3=1,n_sneut
-      SumI(i2,i3) = - c_SlSf4(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_SlSf4(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -8906,7 +8906,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
    Else ! .not. GenerationMixing
     SumI = ZeroC
     Do i2=1,n_sneut
@@ -8925,7 +8925,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,n_sneut
      Do i3=1,n_sneut
-      SumI(i2,i3) = - c_SnSf4(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_SnSf4(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -8935,7 +8935,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
    Else ! .not. GenerationMixing
     SumI = ZeroC
     Do i2=1,n_sneut
@@ -8955,7 +8955,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,n_sneut
      Do i3=1,n_sneut
-      SumI(i2,i3) = - c_P0P0SfSf(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_P0P0SfSf(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -8965,15 +8965,15 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
    Else ! .not. GenerationMixing
     SumI = ZeroC
     Do i2=1,n_sneut
-     SumI(i2,i2) = - c_P0P0SfSf(i1,i2,i2) * A0m2 
+     SumI(i2,i2) = - c_P0P0SfSf(i1,i2,i2) * A0m2
      If (WriteOut) Write(ErrCan,*) "P0 P0 Sf Sf",i1,i2,sumI(i2,i2)
     End Do
     res = res + sumI
- 
+
    End If !
   End Do
   !---------------------
@@ -8985,7 +8985,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,n_sneut
      Do i3=1,n_sneut
-      SumI(i2,i3) = - c_S0S0SfSf(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_S0S0SfSf(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -8995,13 +8995,13 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
     Do i2=1,n_sneut
      SumI = ZeroC
      B0m2 = B0(p2, mS02(i1), mSneut2(i2) )
      Do i3=1,n_sneut
       Do i4=1,n_sneut
-       SumI(i3,i4) = Conjg(c_S0SfSf(i1,i3,i2)) * c_S0SfSf(i1,i4,i2) * B0m2 
+       SumI(i3,i4) = Conjg(c_S0SfSf(i1,i3,i2)) * c_S0SfSf(i1,i4,i2) * B0m2
       End Do
      End Do
      If (WriteOut) Then
@@ -9016,15 +9016,15 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
    Else ! .not. GenerationMixing
     SumI = ZeroC
     Do i2=1,3
-     SumI(i2,i2) = - c_S0S0SfSf(i1,i2,i2) * A0m2 
+     SumI(i2,i2) = - c_S0S0SfSf(i1,i2,i2) * A0m2
      If (WriteOut) Write(ErrCan,*) "S0 S0 Sf Sf",i1,i2,sumI(i2,i2)
     End Do
     res = res + sumI
- 
+
     Do i2=1,n_sneut
      SumI = ZeroC
      B0m2 = B0(p2, mS02(i1), mSneut2(i2) )
-     SumI(i2,i2) = Conjg(c_S0SfSf(i1,i2,i2)) * c_S0SfSf(i1,i2,i2) * B0m2 
+     SumI(i2,i2) = Conjg(c_S0SfSf(i1,i2,i2)) * c_S0SfSf(i1,i2,i2) * B0m2
      If (WriteOut) Write(ErrCan,*) "S0 Sf Sf",i1,i2,sumI(i2,i2)
      res = res + sumI
     End Do
@@ -9039,7 +9039,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,n_sneut
      Do i3=1,n_sneut
-      SumI(i2,i3) = - c_SpmSpmSfSfp(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_SpmSpmSfSfp(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -9049,13 +9049,13 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
     Do i2=1,n_slept
      SumI = ZeroC
      B0m2 = B0(p2, mSpm2(i1), mSlepton2(i2) )
      Do i3=1,n_sneut
       Do i4=1,n_sneut
-       SumI(i3,i4) = Conjg(c_SpmSfSfp(i1,i3,i2)) * c_SpmSfSfp(i1,i4,i2) * B0m2 
+       SumI(i3,i4) = Conjg(c_SpmSfSfp(i1,i3,i2)) * c_SpmSfSfp(i1,i4,i2) * B0m2
       End Do
      End Do
      If (WriteOut) Then
@@ -9070,27 +9070,27 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
    Else ! .not. GenerationMixing
     SumI = ZeroC
     Do i2=1,3
-     SumI(i2,i2) = - c_SpmSpmSfSfp(i1,i2,i2) * A0m2 
+     SumI(i2,i2) = - c_SpmSpmSfSfp(i1,i2,i2) * A0m2
      If (WriteOut) Write(ErrCan,*) "Spm Spm Sf Sf",i1,i2,sumI(i2,i2)
     End Do
     res = res + sumI
- 
+
     Do i2=1,6
      SumI = ZeroC
      B0m2 = B0(p2, mSpm2(i1), mSlepton2(i2) )
      i3 = (i2+1)/2
-     SumI(i3,i3) = Abs(c_SpmSfSfp(i1,i3,i2))**2 * B0m2 
+     SumI(i3,i3) = Abs(c_SpmSfSfp(i1,i3,i2))**2 * B0m2
      If (WriteOut) Write(ErrCan,*) "Spm Sf Sfp",i1,i3,i2,sumI(i3,i3)
      res = res + sumI
     End Do
    End If !
   End Do
 
-  res = oo16pi2 * res  
+  res = oo16pi2 * res
 
   Iname = Iname - 1
-   
- End Subroutine PiSneutrino 
+
+ End Subroutine PiSneutrino
 
 
  Subroutine PiSquark(p2, mSf2, mf, mf2, mglu, c_GQSq, c_Sq4g3, c_Sq4e, c_Sq4Z &
@@ -9105,8 +9105,8 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  ! The formulae of J. Bagger et al, Nucl. Phys. B491 are used.
  ! Note, that gSU3 has to be set to 0 for sleptons
  ! the input is:
- ! - p2 ......... the outer momentum squared 
- ! 
+ ! - p2 ......... the outer momentum squared
+ !
  ! the output is:
  !  res(i,j)
  ! written by Werner Porod, 31.12.01
@@ -9137,7 +9137,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   Iname = Iname + 1
   NameOfUnit(Iname) = "PiSquark"
 
-  mglu2 = mglu**2 
+  mglu2 = mglu**2
 
   res = ZeroC
   !------------------------
@@ -9158,7 +9158,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       sumI(i2+3,i3) = c_GQSq(i1,i2+3,i3) * B0m2
      End Do
     End Do
-    i2_min = 1 
+    i2_min = 1
     i2_max = 6
     i3_min = i2_min
     i3_max = i2_max
@@ -9418,7 +9418,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,6
      Do i3=1,6
-      SumI(i2,i3) = - c_SuSf4(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_SuSf4(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -9470,7 +9470,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,6
      Do i3=1,6
-      SumI(i2,i3) = - c_SdSf4(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_SdSf4(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -9484,7 +9484,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       Call terminateprogram
      End If
     res = res + sumI
- 
+
    Else ! .not. GenerationMixing
     SumI = ZeroC
     Do i2=1,3
@@ -9521,7 +9521,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,6
      Do i3=1,6
-      SumI(i2,i3) = - c_SlSf4(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_SlSf4(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -9535,7 +9535,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       Write(errcan,*) "Sl Sl Sf Sf",i1,i2
       Call terminateprogram
      End If
- 
+
    Else ! .not. GenerationMixing
     SumI = ZeroC
     Do i2=1,3
@@ -9572,7 +9572,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,6
      Do i3=1,6
-      SumI(i2,i3) = - c_SnSf4(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_SnSf4(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -9586,7 +9586,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       Write(errcan,*) "Sn sn Sf Sf",i1,i2
       Call terminateprogram
      End If
- 
+
    Else ! .not. GenerationMixing
     SumI = ZeroC
     Do i2=1,3
@@ -9623,7 +9623,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,6
      Do i3=1,6
-      SumI(i2,i3) = - c_P0P0SqSq(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_P0P0SqSq(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -9634,13 +9634,13 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End If
     Call CheckHermitian(sumI,"P0 P0 Sf Sf "//Bu(i1) )
     res = res + sumI
- 
+
     Do i2=1,6
      SumI = ZeroC
      B0m2 = B0(p2, mP02(i1), mSf2(i2) )
      Do i3=1,6
       Do i4=1,6
-       SumI(i3,i4) = Conjg(c_P0SqSq(i1,i3,i2)) * c_P0SqSq(i1,i4,i2) * B0m2 
+       SumI(i3,i4) = Conjg(c_P0SqSq(i1,i3,i2)) * c_P0SqSq(i1,i4,i2) * B0m2
       End Do
      End Do
      If (WriteOut) Then
@@ -9664,7 +9664,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       ind_1 = 2*(i2-1)+i3
       Do i4=1,2
        ind_2 = 2*(i2-1)+i4
-       SumI(ind_1,ind_2) = - c_P0P0SqSq(i1,ind_1,ind_2) * A0m2 
+       SumI(ind_1,ind_2) = - c_P0P0SqSq(i1,ind_1,ind_2) * A0m2
       End Do
      End Do
     End Do
@@ -9681,7 +9681,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
     Do i2=1,6
      SumI = ZeroC
      B0m2 = B0(p2, mP02(i1), mSf2(i2) )
@@ -9689,7 +9689,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       i3_min=1
      Else If (i2.Le.4) Then
       i3_min=3
-     Else 
+     Else
       i3_min=5
      End If
      i3_max = i3_min + 1
@@ -9697,7 +9697,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      i4_max = i3_max
      Do i3=i3_min, i3_max
       Do i4=i4_min, i4_max
-       SumI(i3,i4) = Conjg(c_P0SqSq(i1,i3,i2)) * c_P0SqSq(i1,i4,i2) * B0m2 
+       SumI(i3,i4) = Conjg(c_P0SqSq(i1,i3,i2)) * c_P0SqSq(i1,i4,i2) * B0m2
       End Do
      End Do
      If (WriteOut) Then
@@ -9719,7 +9719,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,6
      Do i3=1,6
-      SumI(i2,i3) = - c_S0S0SqSq(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_S0S0SqSq(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -9730,13 +9730,13 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End If
     Call CheckHermitian(sumI,"S0 S0 Sf Sf "//Bu(i1) )
     res = res + sumI
- 
+
     Do i2=1,6
      SumI = ZeroC
      B0m2 = B0(p2, mS02(i1), mSf2(i2) )
      Do i3=1,6
       Do i4=1,6
-       SumI(i3,i4) = Conjg(c_S0SqSq(i1,i3,i2)) * c_S0SqSq(i1,i4,i2) * B0m2 
+       SumI(i3,i4) = Conjg(c_S0SqSq(i1,i3,i2)) * c_S0SqSq(i1,i4,i2) * B0m2
       End Do
      End Do
      If (WriteOut) Then
@@ -9760,7 +9760,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       ind_1 = 2*(i2-1)+i3
       Do i4=1,2
        ind_2 = 2*(i2-1)+i4
-       SumI(ind_1,ind_2) = - c_S0S0SqSq(i1,ind_1,ind_2) * A0m2 
+       SumI(ind_1,ind_2) = - c_S0S0SqSq(i1,ind_1,ind_2) * A0m2
       End Do
      End Do
     End Do
@@ -9777,7 +9777,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
     Do i2=1,6
      SumI = ZeroC
      B0m2 = B0(p2, mS02(i1), mSf2(i2) )
@@ -9785,7 +9785,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       i3_min=1
      Else If (i2.Le.4) Then
       i3_min=3
-     Else 
+     Else
       i3_min=5
      End If
      i3_max = i3_min + 1
@@ -9793,7 +9793,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      i4_max = i3_max
      Do i3=i3_min, i3_max
       Do i4=i4_min, i4_max
-       SumI(i3,i4) = Conjg(c_S0SqSq(i1,i3,i2)) * c_S0SqSq(i1,i4,i2) * B0m2 
+       SumI(i3,i4) = Conjg(c_S0SqSq(i1,i3,i2)) * c_S0SqSq(i1,i4,i2) * B0m2
       End Do
      End Do
      If (WriteOut) Then
@@ -9815,7 +9815,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SumI = ZeroC
     Do i2=1,6
      Do i3=1,6
-      SumI(i2,i3) = - c_SpmSpmSqSqp(i1,i2,i3) * A0m2 
+      SumI(i2,i3) = - c_SpmSpmSqSqp(i1,i2,i3) * A0m2
      End Do
     End Do
     If (WriteOut) Then
@@ -9826,13 +9826,13 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End If
     Call CheckHermitian(sumI,"Spm Spm Sf Sf "//Bu(i1) )
     res = res + sumI
- 
+
     Do i2=1,6
      SumI = ZeroC
      B0m2 = B0(p2, mSpm2(i1), mSfp2(i2) )
      Do i3=1,6
       Do i4=1,6
-       SumI(i3,i4) = Conjg(c_SpmSqSqp(i1,i3,i2)) * c_SpmSqSqp(i1,i4,i2) * B0m2 
+       SumI(i3,i4) = Conjg(c_SpmSqSqp(i1,i3,i2)) * c_SpmSqSqp(i1,i4,i2) * B0m2
       End Do
      End Do
      If (WriteOut) Then
@@ -9856,7 +9856,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       ind_1 = 2*(i2-1)+i3
       Do i4=1,2
        ind_2 = 2*(i2-1)+i4
-       SumI(ind_1,ind_2) = - c_SpmSpmSqSqp(i1,ind_1,ind_2) * A0m2 
+       SumI(ind_1,ind_2) = - c_SpmSpmSqSqp(i1,ind_1,ind_2) * A0m2
       End Do
      End Do
     End Do
@@ -9873,7 +9873,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End If
     res = res + sumI
- 
+
     Do i2=1,6
      SumI = ZeroC
      B0m2 = B0(p2, mSpm2(i1), mSfp2(i2) )
@@ -9881,7 +9881,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       i3_min=1
      Else If (i2.Le.4) Then
       i3_min=3
-     Else 
+     Else
       i3_min=5
      End If
      i3_max = i3_min + 1
@@ -9889,7 +9889,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      i4_max = i3_max
      Do i3=i3_min, i3_max
       Do i4=i4_min, i4_max
-       SumI(i3,i4) = Conjg(c_SpmSqSqp(i1,i3,i2)) * c_SpmSqSqp(i1,i4,i2) * B0m2 
+       SumI(i3,i4) = Conjg(c_SpmSqSqp(i1,i3,i2)) * c_SpmSqSqp(i1,i4,i2) * B0m2
       End Do
      End Do
      If (WriteOut) Then
@@ -9902,11 +9902,11 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End Do
    End If !
   End Do
-  res = oo16pi2 * res  
+  res = oo16pi2 * res
 
   Iname = Iname - 1
-   
- End Subroutine PiSquark 
+
+ End Subroutine PiSquark
 
 
  Subroutine PiWWT1(p2, gSU2, sinW2, mS02, RS0, mSpm2, RSpm, vevs            &
@@ -9914,11 +9914,11 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
          & , mUSquark2, RUSquark, mDSquark2, RDSquark, mf_l2, mf_u2, mf_d2  &
          & , CKM, mN, mN2, N, mC, mC2, U, V, mZ2, mW2, res)
  !-----------------------------------------------------------------------
- ! Calculates the 1-loop self energy of Z-boson. 
+ ! Calculates the 1-loop self energy of Z-boson.
  ! The formula of J. Bagger et al, Nucl.Phys.B is used. The renormalization
- ! scale has to be set in the main program due to the structure of LoopTools. 
+ ! scale has to be set in the main program due to the structure of LoopTools.
  ! the input is:
- ! - p2 ...... the outer momentum squared 
+ ! - p2 ...... the outer momentum squared
  ! - gSU2 .... the SU(2) gauge coupling
  ! - sinW2 ... sin(theta_W) squared
  ! - mZ2 ..... Z-boson mass
@@ -9947,7 +9947,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   Complex(dp), Intent(in) :: N(:,:), U(:,:), V(:,:), RSpm(:,:)         &
     &  , RUSquark(6,6), RDSquark(6,6), RSlepton(:,:), RSneutrino(:,:)  &
     &  , CKM(3,3)
-  Complex(dp), Intent(out) :: res 
+  Complex(dp), Intent(out) :: res
 
   Integer :: i1, i2, i3
   Real(dp) :: cosW2, g2, coup
@@ -10027,7 +10027,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End Do
    End Do
 
-  Else 
+  Else
 #endif
    Do i1 = 1, n_Sneut ! number of sneutrinos/sleptons depend on model
     Do i2 =1,2
@@ -10054,7 +10054,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End Do
    End Do
 
-  Else 
+  Else
 #endif
    Do i1 = 1,3
     Do i2 = 1,2
@@ -10085,15 +10085,15 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   If (GenerationMixing) Then
    Do i1 = 1,3
     Do i2 = 1,3
-     sumI = 1.5_dp * g2 * Abs(CKM(i1,i2))**2 * HLoop(p2, mf_u2(i1), mf_d2(i2)) 
+     sumI = 1.5_dp * g2 * Abs(CKM(i1,i2))**2 * HLoop(p2, mf_u2(i1), mf_d2(i2))
      If (WriteOut) Write(ErrCan,*) "U D",i1,i2,sumI
      res = res + sumI
     End Do
    End Do
-  Else 
+  Else
 #endif
    Do i1 = 1,3
-    sumI = 1.5_dp * g2 * HLoop(p2, mf_u2(i1), mf_d2(i1)) 
+    sumI = 1.5_dp * g2 * HLoop(p2, mf_u2(i1), mf_d2(i1))
     If (WriteOut) Write(ErrCan,*) "U D",i1,sumI
     res = res + sumI
    End Do
@@ -10123,11 +10123,11 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  Subroutine PiWWT1_SM(p2, gSU2, sinW2, mS02, vev, mf_l2, mf_u2, mf_d2  &
          & , CKM, mZ2, mW2, res)
  !-----------------------------------------------------------------------
- ! Calculates the 1-loop self energy of W-boson. 
+ ! Calculates the 1-loop self energy of W-boson.
  ! The formula of J. Bagger et al, Nucl.Phys.B is used. The renormalization
- ! scale has to be set in the main program due to the structure of LoopTools. 
+ ! scale has to be set in the main program due to the structure of LoopTools.
  ! the input is:
- ! - p2 ...... the outer momentum squared 
+ ! - p2 ...... the outer momentum squared
  ! - gSU2 .... the SU(2) gauge coupling
  ! - sinW2 ... sin(theta_W) squared
  ! - mZ2 ..... Z-boson mass
@@ -10143,7 +10143,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   Real(dp), Intent(in) :: p2, gSU2, sinW2, mS02, vev, mZ2, mW2, mf_l2(3) &
                       & , mf_d2(3), mf_u2(3)
   Complex(dp), Intent(in) :: CKM(3,3)
-  Complex(dp), Intent(out) :: res 
+  Complex(dp), Intent(out) :: res
 
   Integer :: i1, i2, i3
   Real(dp) :: cosW2, g2, coup
@@ -10205,15 +10205,15 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   If (GenerationMixing) Then
    Do i1 = 1,3
     Do i2 = 1,3
-     sumI = 1.5_dp * g2 * Abs(CKM(i1,i2))**2 * HLoop(p2, mf_u2(i1), mf_d2(i2)) 
+     sumI = 1.5_dp * g2 * Abs(CKM(i1,i2))**2 * HLoop(p2, mf_u2(i1), mf_d2(i2))
      If (WriteOut) Write(ErrCan,*) "U D",i1,i2,sumI
      res = res + sumI
     End Do
    End Do
-  Else 
+  Else
 #endif
    Do i1 = 1,3
-    sumI = 1.5_dp * g2 * HLoop(p2, mf_u2(i1), mf_d2(i1)) 
+    sumI = 1.5_dp * g2 * HLoop(p2, mf_u2(i1), mf_d2(i1))
     If (WriteOut) Write(ErrCan,*) "U D",i1,sumI
     res = res + sumI
    End Do
@@ -10232,12 +10232,12 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
    &    , mSdown2, RSdown, mf_l2, mf_u2, mf_d2, mC, mC2, U, V, mN, mN2, N  &
    &    , res, NMSSM)
  !-----------------------------------------------------------------------
- ! Calculates the 1-loop self energy of Z-boson. 
+ ! Calculates the 1-loop self energy of Z-boson.
  ! The formula of J. Bagger et al, Nucl.Phys.B is used. The renormalization
  ! scale has to be set in the calling routine due to the structure of
- ! LoopTools. 
+ ! LoopTools.
  ! the input is:
- !  - p2 ......... the outer momentum squared 
+ !  - p2 ......... the outer momentum squared
  !  - gSU2 ....... the SU(2) gauge coupling at p2
  !  - sinW2 ...... sin(theta_W) squared
  !  - vevSM(2) ... MSSM vevs
@@ -10252,7 +10252,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  !  - mSneut2 .... masses of the sneutrinos squared
  !  - RSneut ..... mixing matrix of the sneutrinos
  !  - mSlepton2 .. masses of the sleptons squared
- !  - RSlepton ... mixing matrix of the sleptons  
+ !  - RSlepton ... mixing matrix of the sleptons
  !  - mSup2 ...... masses of the s-ups squared
  !  - RSup ....... mixing matrix of the s-ups
  !  - mSdown2 .... masses of the s-downs squared
@@ -10264,10 +10264,10 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  !  - mN2 ........ masses of the neutralinos squared
  !  - N .......... mixing matrix of neutralinos
  !  - NMSSM ...... logical variable, has to be set true in case of the NMSSM
- !                 so that the correct routine for the couplings of the 
+ !                 so that the correct routine for the couplings of the
  !                 Z-bosons to neutralinos is used.
  ! The output:
- !  - res    
+ !  - res
  ! written by Werner Porod, 19.7.99
  ! 08.10.01: portation to f90, changing interface
  ! 14.01.02: adding a factor 3 in case of squarks
@@ -10340,7 +10340,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   Do i1=2,n_Spm
    Do i2=2,n_Spm
     Call CoupChargedScalarZ(i1, i2, gSU2, sinW2, RSpm, coupC )
-    sumI = - 4._dp * Abs(coupC)**2 * B22(p2, mSpm2(i1), mSpm2(i2)) 
+    sumI = - 4._dp * Abs(coupC)**2 * B22(p2, mSpm2(i1), mSpm2(i2))
     If (WriteOut) Write(ErrCan,*) "Spm", i1,i2,sumI
     res = res + sumI
    End Do
@@ -10367,7 +10367,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     res = res + sumI
    End Do
 #ifdef GENERATIONMIXING
-  End If 
+  End If
 #endif
  !--------------------------
  ! Sleptons
@@ -10398,7 +10398,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End Do
    End Do
 #ifdef GENERATIONMIXING
-  End If 
+  End If
 #endif
   !--------------------------
   ! Scalar up
@@ -10429,7 +10429,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End Do
    End Do
 #ifdef GENERATIONMIXING
-  End If 
+  End If
 #endif
   !--------------------------
   ! Scalar down
@@ -10460,7 +10460,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End Do
    End Do
 #ifdef GENERATIONMIXING
-  End If 
+  End If
 #endif
  !--------------------------
  ! neutrinos
@@ -10510,7 +10510,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
    Call CoupCharginoZ(i1, i1, U, V, gSU2, cosW, coupC, coupC2)
    sumI = ( Abs(coupC)**2 + Abs(coupC2)**2 ) * HLoop(p2, mC2(i1), mC2(i1))  &
       & + 4._dp * Real( Conjg(coupC) * coupC2,dp )      &
-       &        * mC2(i1) * B0(p2, mC2(i1), mC2(i1)) 
+       &        * mC2(i1) * B0(p2, mC2(i1), mC2(i1))
    If (WriteOut) Write(ErrCan,*) "charginos",i1,i1, sumI
    res = res + sumI
    Do i2 = i1+1,n_char
@@ -10518,7 +10518,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     sumI = 2._dp * ( Abs(coupC)**2 + Abs(coupC2)**2 )  &
        &         * HLoop(p2, mC2(i1), mC2(i2))                              &
        & + 8._dp * Real( Conjg(coupC) * coupC2,dp )      &
-       &     * mC(i1) * mC(i2) * B0(p2, mC2(i1), mC2(i2)) 
+       &     * mC(i1) * mC(i2) * B0(p2, mC2(i1), mC2(i2))
      If (WriteOut) Write(ErrCan,*) "charginos",i1,i2, sumI
     res = res + sumI
    End Do
@@ -10535,7 +10535,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     sumI = 0.5_dp * ( Abs(coupC)**2 + Abs(coupC2)**2 )               &
        &          * HLoop(p2, mN2(i1), mN2(i1))                      &
        & + 2._dp * Real( Conjg(coupC) * coupC2,dp )                     &
-       &         * mN2(i1) * B0(p2, mN2(i1), mN2(i1)) 
+       &         * mN2(i1) * B0(p2, mN2(i1), mN2(i1))
    If (WriteOut) Write(ErrCan,*) "neutralinos",i1,i1, sumI
    res = res + sumI
    Do i2 = i1+1,n_neut
@@ -10546,7 +10546,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End If
     sumI = ( Abs(coupC)**2 + Abs(coupC2)**2 ) * HLoop(p2, mN2(i1), mN2(i2))  &
        & + 4._dp * Real( Conjg(coupC) * coupC2,dp )   &
-       &         * mN(i1) * mN(i2) * B0(p2, mN2(i1), mN2(i2)) 
+       &         * mN(i1) * mN(i2) * B0(p2, mN2(i1), mN2(i2))
     If (WriteOut) Write(ErrCan,*) "neutralinos",i1,i2, sumI
     res = res + sumI
    End Do
@@ -10562,12 +10562,12 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  Subroutine PiZZT1_SM(p2, gSU2, sinW2, vev, mZ2, mW2, mS02, mf_l2, mf_u2, mf_d2 &
    &    , res)
  !-----------------------------------------------------------------------
- ! Calculates the 1-loop self energy of Z-boson. 
+ ! Calculates the 1-loop self energy of Z-boson.
  ! The formula of J. Bagger et al, Nucl.Phys.B is used. The renormalization
  ! scale has to be set in the calling routine due to the structure of
- ! LoopTools. 
+ ! LoopTools.
  ! the input is:
- !  - p2 ......... the outer momentum squared 
+ !  - p2 ......... the outer momentum squared
  !  - gSU2 ....... the SU(2) gauge coupling at p2
  !  - sinW2 ...... sin(theta_W) squared
  !  - vev ........ SM vev
@@ -10575,7 +10575,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  !  - mW2 ........ W-boson mass squared
  !  - mS02 ....... mass of the scalar Higgs squared
  ! The output:
- !  - res    
+ !  - res
  ! written by Werner Porod, 4.1.09
  !-----------------------------------------------------------------------
  Implicit None
@@ -10687,20 +10687,20 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
 #endif
  !-----------------------------------------------------------------
  ! calculates scalar masses + mixing matrix R in the MSSM,
- ! 1-generation epsilon model and 3-generation epsilon model. 
+ ! 1-generation epsilon model and 3-generation epsilon model.
  ! input:
  ! output:
  !  mass(i) .... pseudoscalar masses
  !  mass2(i) ... = mass(i)**2
- !  R(i,j) .. mixing matrix of Scalars 
+ !  R(i,j) .. mixing matrix of Scalars
  ! written by Werner Porod, 1.12.99
  ! 10.10.01: portation to f90, new main strategy: calculate all couplings
  !           in this routine and pass to PiScalar only general couplings
- !           In this way one can use PiScalar for different models 
+ !           In this way one can use PiScalar for different models
  ! 20.02.02: - correcting a bug in the definition of p2
  !           - implementing 2-loop corrections using the modules
  !             BDSZHiggs.f  DSZHiggs.f  funcs.f provided by Pietro Slavich
- ! 09.07.02: - implementing 2-loop corrections using the module BDSZodd.f 
+ ! 09.07.02: - implementing 2-loop corrections using the module BDSZodd.f
  !             provided by Pietro Slavich
  ! 11.06.03: implementing alpha_b alpha_t + alpha^2_b corrections
  !           based on A. Dedes, G. Degrassi and P. Slavich, hep-ph/0305127
@@ -10763,7 +10763,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  !-----------------------
  ! initialisation
  !-----------------------
-  cosb2 = 1._dp / (1._dp + tanbQ**2) 
+  cosb2 = 1._dp / (1._dp + tanbQ**2)
   sinb2 = 1._dp - cosb2
   sinbcosb = Sqrt(cosb2*sinb2)
   sinb = Sqrt( sinb2 )
@@ -10774,14 +10774,14 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   mat2a(2,1) = mat2a(1,2)
   mat2a(2,2) = mZ2_mZ * sinb2 +( mA2_mA - b_A) * cosb2 + vevs_1L(2)
 
-  If (WriteOut) Then 
+  If (WriteOut) Then
    Write(ErrCan,*) "Tree level + pseudoscalar part:", mat2a(1,1), mat2a(1,2)
    Write(ErrCan,*) "                               ", mat2a(2,1), mat2a(2,2)
    Write(ErrCan,*) " The contribution von PiScalar:"
   End If
 
   !------------------------------------------------------------
-  ! Calculate first the couplings needed for the loop  
+  ! Calculate first the couplings needed for the loop
   !------------------------------------------------------------
   e_d = -1._dp / 3._dp
   e_u = 2._dp / 3._dp
@@ -10832,7 +10832,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
     End Do
    End Do
-    
+
   Else ! .not.GenerationMixing
 #endif
    Do i1=1,3
@@ -10896,7 +10896,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
    Do i2=1,2
     Do i3=1,2
      Call CoupChargedScalarScalar4(i1,i1, i2, i3, RSpm, id2R, gU1, gSU2  &
-                                 &, c_SpSmS0S0(i1,i2,i3) ) 
+                                 &, c_SpSmS0S0(i1,i2,i3) )
      Call CoupChargedScalarScalar3(i1, i2, i3, RSpm, id2R, vevs_DR, gU1 &
                                 &, gSU2, c_SpSmS0(i1,i2,i3) )
 
@@ -11047,7 +11047,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   n_char = i_c
   n_neut = i_n
   n_Sneut = i_sn
-  n_Slept = i_sl  
+  n_Slept = i_sl
  End Subroutine SetLoopMassModel
 
 
@@ -11328,8 +11328,8 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     Do i3 = 1,n_char
      sumL(i2,i3) = Conjg( c_CNW_R(i3,i1) ) * c_CNW_R(i2,i1) * B1m2
      sumR(i2,i3) = Conjg( c_CNW_L(i3,i1) ) * c_CNW_L(i2,i1) * B1m2
-     sumS(i2,i3) = Conjg( c_CNW_R(i3,i1) ) * c_CNW_L(i2,i1) * B0m2     
-    End Do 
+     sumS(i2,i3) = Conjg( c_CNW_R(i3,i1) ) * c_CNW_L(i2,i1) * B0m2
+    End Do
     If (WriteOut) Then
      Write (ErrCan,*) "C N W",i2,i1
      Write (ErrCan,*) "  sig_L",sumL(i2,:)
@@ -11356,14 +11356,14 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       sumL(i3,i4) = Conjg( c_SmpCN_L(i2,i4,i1) ) * c_SmpCN_L(i2,i3,i1) * B1m2
       sumR(i3,i4) = Conjg( c_SmpCN_R(i2,i4,i1) ) * c_SmpCN_R(i2,i3,i1) * B1m2
       sumS(i3,i4) = Conjg( c_SmpCN_L(i2,i4,i1) ) * c_SmpCN_R(i2,i3,i1) * B0m2
-     End Do 
+     End Do
      If (WriteOut) Then
       Write (ErrCan,*) "S^+ C N",i2,i3,i1
       Write (ErrCan,*) "  sig_L",sumL(i3,:)
       Write (ErrCan,*) "  sig_R",sumR(i3,:)
       Write (ErrCan,*) "  sig_S",sumS(i3,:)
      End If
-    End Do 
+    End Do
     sigL = sigL + sumL
     sigR = sigR + sumR
     sigS = sigS + sumS
@@ -11388,7 +11388,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
                & + Conjg( c_CCG_L(i2,i1) ) * c_CCG_L(i3,i1) * B1m2a
      sumS(i2,i3) = Conjg( c_CCZ_L(i2,i1) ) * c_CCZ_R(i3,i1) * B0m2   &
                & + Conjg( c_CCG_L(i2,i1) ) * c_CCG_R(i3,i1) * B0m2a
-    End Do 
+    End Do
     If (WriteOut) Then
      Write (ErrCan,*) "C C Z/G",i2,i1
      Write (ErrCan,*) "  sig_L",sumL(i2,:)
@@ -11415,14 +11415,14 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       sumL(i3,i4) = Conjg( c_CCP0_L(i3,i1,i2) ) * c_CCP0_L(i4,i1,i2) * B1m2
       sumR(i3,i4) = Conjg( c_CCP0_R(i3,i1,i2) ) * c_CCP0_R(i4,i1,i2) * B1m2
       sumS(i3,i4) = Conjg( c_CCP0_R(i3,i1,i2) ) * c_CCP0_L(i4,i1,i2) * B0m2
-     End Do 
+     End Do
      If (WriteOut) Then
       Write (ErrCan,*) "C C P0",i1,i3,i2
       Write (ErrCan,*) "  sig_L",sumL(i3,:)
       Write (ErrCan,*) "  sig_R",sumR(i3,:)
       Write (ErrCan,*) "  sig_S",sumS(i3,:)
      End If
-    End Do 
+    End Do
     sigL = sigL + sumL
     sigR = sigR + sumR
     sigS = sigS + sumS
@@ -11444,14 +11444,14 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       sumL(i3,i4) = Conjg( c_CCS0_L(i3,i1,i2) ) * c_CCS0_L(i4,i1,i2) * B1m2
       sumR(i3,i4) = Conjg( c_CCS0_R(i3,i1,i2) ) * c_CCS0_R(i4,i1,i2) * B1m2
       sumS(i3,i4) = Conjg( c_CCS0_R(i3,i1,i2) ) * c_CCS0_L(i4,i1,i2) * B0m2
-     End Do 
+     End Do
      If (WriteOut) Then
       Write (ErrCan,*) "C C S0",i1,i3,i2
       Write (ErrCan,*) "  sig_L",sumL(i3,:)
       Write (ErrCan,*) "  sig_R",sumR(i3,:)
       Write (ErrCan,*) "  sig_S",sumS(i3,:)
      End If
-    End Do 
+    End Do
     sigL = sigL + sumL
     sigR = sigR + sumR
     sigS = sigS + sumS
@@ -11633,7 +11633,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End Do
     m22 = mSlL2(i1)
     m32 = mSlR2(i2)
-    C0m = alphaM(1) * C0_3m(m12, m22, m32) 
+    C0m = alphaM(1) * C0_3m(m12, m22, m32)
     Do i3=1,3
      Do i4=1,3
       Do i5=1,3
@@ -11697,7 +11697,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
    m12 = Abs(mi(1))**2
    m22 = Abs(mu)**2
    m32 = mSlR2(i1)
-   C0m = mu * alphaM(1) * C0_3m(m12, m22, m32) * vevSM(2) 
+   C0m = mu * alphaM(1) * C0_3m(m12, m22, m32) * vevSM(2)
    Do i2=1,3
     Do i3=1,3
      SigLY(i2,i3) = SigLY(i2,i3) + LamLRR(i1,i2,i3) * Yl(i2,i2) * C0m
@@ -11770,11 +11770,11 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
    E_ij = SigDY / vevSM(2)
 
    sigma = 0._dp
-   sigma(1,2) = (SigDY(1,2) + SigDnoY(1,2)) / m_d(2) 
-   sigma(1,3) = (SigDY(1,3) + SigDnoY(1,3)) / m_d(3) 
-   sigma(2,3) = (SigDY(2,3) + SigDnoY(2,3)) / m_d(3) 
-   sigma(2,1) = (SigDY(2,1) + SigDnoY(2,1)) / m_d(2) 
-   sigma(3,1) = (SigDY(3,1) + SigDnoY(3,1)) / m_d(3) 
+   sigma(1,2) = (SigDY(1,2) + SigDnoY(1,2)) / m_d(2)
+   sigma(1,3) = (SigDY(1,3) + SigDnoY(1,3)) / m_d(3)
+   sigma(2,3) = (SigDY(2,3) + SigDnoY(2,3)) / m_d(3)
+   sigma(2,1) = (SigDY(2,1) + SigDnoY(2,1)) / m_d(2)
+   sigma(3,1) = (SigDY(3,1) + SigDnoY(3,1)) / m_d(3)
    sigma(3,2) = (SigDY(3,2) + SigDnoY(3,2)) / m_d(3)
 
    Etil_ij = 0._dp
@@ -11825,12 +11825,12 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   If (Present(C_llH).Or.Present(C_llA)) Then
    tanb = vevSM(2)/vevSM(1)
    E_ij = SigLY / vevSM(2)
-   sigma(1,2) = (SigLY(1,2) + SigLnoY(1,2)) / m_l(2) 
-   sigma(1,3) = (SigLY(1,3) + SigLnoY(1,3)) / m_l(3) 
-   sigma(2,3) = (SigLY(2,3) + SigLnoY(2,3)) / m_l(3) 
-   sigma(2,1) = (SigLY(2,1) + SigLnoY(2,1)) / m_l(2) 
-   sigma(3,1) = (SigLY(3,1) + SigLnoY(3,1)) / m_l(3) 
-   sigma(3,2) = (SigLY(3,2) + SigLnoY(3,2)) / m_l(3) 
+   sigma(1,2) = (SigLY(1,2) + SigLnoY(1,2)) / m_l(2)
+   sigma(1,3) = (SigLY(1,3) + SigLnoY(1,3)) / m_l(3)
+   sigma(2,3) = (SigLY(2,3) + SigLnoY(2,3)) / m_l(3)
+   sigma(2,1) = (SigLY(2,1) + SigLnoY(2,1)) / m_l(2)
+   sigma(3,1) = (SigLY(3,1) + SigLnoY(3,1)) / m_l(3)
+   sigma(3,2) = (SigLY(3,2) + SigLnoY(3,2)) / m_l(3)
    Etil_ij = E_ij
    Etil_ij(1,2) = Etil_ij(1,2) + sigma(1,2) * E_ij(2,2)
    Etil_ij(1,3) = Etil_ij(1,3)                                   &
@@ -11883,12 +11883,12 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
         & , mZ2, mW2, l_SU3, SigS, SigL, SigR, SigQCD)
  !-----------------------------------------------------------------------
  ! Calculates the 1-loop self energy of SM-fermions in the three generation
- ! case. 
+ ! case.
  ! The formulas of J. Bagger et al, Nucl.Phys.B are usedas basis.
  ! The renormalization scale has to be set in the main program
- !  due to the structure of Loopfuntcions. 
+ !  due to the structure of Loopfuntcions.
  ! the input is:
- ! - p2 ......... the outer momentum squared 
+ ! - p2 ......... the outer momentum squared
  ! - gSU3 ....... the SU(3) gauge coupling at p2
  ! - gSU2 ....... the SU(2) gauge coupling at p2
  ! - sinW2 ...... sin(theta_W) squared
@@ -11901,7 +11901,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  ! - mSfp(i) .... Sfermion masses'
  ! - RSfp(i,j) .. mixing matrix of the sfermions'
  ! - mglu ....... gluino mass
- ! - phase_glu .. phase of the gluino 
+ ! - phase_glu .. phase of the gluino
  ! - mZ2 ........ Z-boson mass
  ! - mW2 ........ W-boson mass
  ! - mS02 ....... masses of the scalar Higgs
@@ -11914,7 +11914,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  ! - N .......... mixing matrix of the neutrlinos
  ! - mC ......... masses of the charginos
  ! - U,V ........ mixing matrices of the charginos
- !    
+ !
  ! written by Werner Porod, 04.02.03
  ! taking the routine Sigma_Fermion as basis. The pure gluino QCD part is
  ! given extra, because heavy and light quarks have to be treated different
@@ -11941,7 +11941,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   Real(dp) :: cosW2, coupL, coupR, mf2(3), mfp2(3), mglu2, gp, f_SU3 &
      & , Q2, logQ, B1m2, B0m2, B1m2a, B0m2a
   Complex(dp) :: sumS(3,3), sumL(3,3), sumR(3,3), c_L(3), c_R(3)
-  Logical :: WriteOut 
+  Logical :: WriteOut
   Real(dp), Parameter :: &
     & as2loop = 1._dp / 24._dp + 2011._dp * oo32Pi2 / 12._dp           &
     &         + Log2 / 12._dp - oo8Pi2 * Zeta3                        &
@@ -11990,7 +11990,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     Do i2=1,3
      Call CoupGluinoSquark(gSU3, phase_glu, i2, i1, RSf, id3C, id3C &
                           &, c_L(i2), c_R(i2))
-    End Do    
+    End Do
     Do i2=1,3
      B0m2a = 16._dp * mglu * B0(mf2(i2),mglu2, mSf2(i1)) / 3._dp
      B1m2a = - 8._dp * B1(mf2(i2),mglu2, mSf2(i1)) / 3._dp
@@ -12025,7 +12025,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   !--------------
    Do i1=1,3
     B1m2 = - 0.5_dp * gSU2**2 * B1(p2,mfp2(i1), mW2)
-    c_L = RfpL(i1,:) 
+    c_L = RfpL(i1,:)
     Do i2=1,3
      B1m2a = - 0.5_dp * gSU2**2 * B1(mf2(i2),mfp2(i1), mW2)
      Do i3=1,3
@@ -12048,7 +12048,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   sumR =0._dp
   sumS =0._dp
   Do i1=1,3
-   C_L = coupL * RfL(i1,:) 
+   C_L = coupL * RfL(i1,:)
    C_R = coupR * RfR(i1,:)
    B1m2 = - B1(p2,mf2(i1), mZ2)
    B0m2 = - 4._dp * mf(i1) * B0(p2,mf2(i1), mZ2)
@@ -12062,7 +12062,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      If (i2.Ne.i3) Then
       sumL(i2,i3) = c_L(i3) * Conjg(c_L(i2) ) * B1m2
       sumR(i2,i3) = c_R(i3) * Conjg(c_R(i2) ) * B1m2
-      sumS(i2,i3) = c_L(i3) * Conjg(c_R(i2)) * B0m2 
+      sumS(i2,i3) = c_L(i3) * Conjg(c_R(i2)) * B0m2
      End If
     End Do
    End Do
@@ -12118,7 +12118,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SigR = SigR + sumR
     SigS = SigS + sumS
    End Do
-  End Do 
+  End Do
 
   !-------------
   !  charginos
@@ -12257,7 +12257,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   ! note the somewhat misleading notation, because in coupL, coupR
   ! the chirality of the neutralino is meant with L, R
   !---------------------------------------------------------------
-     SumR(i3,i3) = Abs(c_L(i3))**2 * B1m2a 
+     SumR(i3,i3) = Abs(c_L(i3))**2 * B1m2a
      SumL(i3,i3) = Abs(c_R(i3))**2 * B1m2a
      SumS(i3,i3) = c_L(i3)*Conjg(c_R(i3)) * B0m2a
      Do i4=1,3
@@ -12298,9 +12298,9 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  ! case in the superCKM basis, taking Sigma_Fermion3 as starting point
  ! The formulas are based on J. Bagger et al, NPB491 (1997) 3.
  ! The renormalization scale has to be set in the main program
- !  due to the structure of Loopfuntcions. 
+ !  due to the structure of Loopfuntcions.
  ! the input is:
- ! - p2 ......... the outer momentum squared 
+ ! - p2 ......... the outer momentum squared
  ! - gSU3 ....... the SU(3) gauge coupling at p2
  ! - gSU2 ....... the SU(2) gauge coupling at p2
  ! - sinW2 ...... sin(theta_W) squared
@@ -12314,7 +12314,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  ! - mSfp(i) .... Sfermion masses'
  ! - RSfp(i,j) .. mixing matrix of the sfermions'
  ! - mglu ....... gluino mass
- ! - phase_glu .. phase of the gluino 
+ ! - phase_glu .. phase of the gluino
  ! - mZ2 ........ Z-boson mass
  ! - mW2 ........ W-boson mass
  ! - mS02 ....... masses of the scalar Higgs
@@ -12327,7 +12327,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  ! - N .......... mixing matrix of the neutrlinos
  ! - mC ......... masses of the charginos
  ! - U,V ........ mixing matrices of the charginos
- !    
+ !
  ! written by Werner Porod, 03.04.14
  !-----------------------------------------------------------------------
  Implicit None
@@ -12345,7 +12345,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      & , Q2, logQ, B1m2, B0m2, B1m2a, B0m2a
   Complex(dp) :: sumS(3,3), sumL(3,3), sumR(3,3), c_L(3), c_R(3), yuk_f(3,3) &
      & , yuk_fp(3,3)
-  Logical :: WriteOut 
+  Logical :: WriteOut
   Real(dp), Parameter :: &
     & as2loop = 1._dp / 24._dp + 2011._dp * oo32Pi2 / 12._dp           &
     &         + Log2 / 12._dp - oo8Pi2 * Zeta3                        &
@@ -12405,7 +12405,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     Do i2=1,3
      Call CoupGluinoSquark(gSU3, phase_glu, i2, i1, RSf, id3C, id3C &
                           &, c_L(i2), c_R(i2))
-    End Do    
+    End Do
     Do i2=1,3
      B0m2a = 16._dp * mglu * B0(mf2(i2),mglu2, mSf2(i1)) / 3._dp
      B1m2a = - 8._dp * B1(mf2(i2),mglu2, mSf2(i1)) / 3._dp
@@ -12441,9 +12441,9 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
    Do i1=1,3
     B1m2 = - 0.5_dp * gSU2**2 * B1(p2,mfp2(i1), mW2)
     If (T3.Gt.0._dp) Then
-     c_L = CKM(i1,:) 
+     c_L = CKM(i1,:)
     Else
-     c_L = Conjg(CKM(:,i1)) 
+     c_L = Conjg(CKM(:,i1))
     End If
     Do i2=1,3
      B1m2a = - 0.5_dp * gSU2**2 * B1(mf2(i2),mfp2(i1), mW2)
@@ -12524,7 +12524,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     SigR = SigR + sumR
     SigS = SigS + sumS
    End Do
-  End Do 
+  End Do
 
   !-------------
   !  charginos
@@ -12646,7 +12646,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   ! note the somewhat misleading notation, because in coupL, coupR
   ! the chirality of the neutralino is meant with L, R
   !---------------------------------------------------------------
-     SumR(i3,i3) = Abs(c_L(i3))**2 * B1m2a 
+     SumR(i3,i3) = Abs(c_L(i3))**2 * B1m2a
      SumL(i3,i3) = Abs(c_R(i3))**2 * B1m2a
      SumS(i3,i3) = c_L(i3)*Conjg(c_R(i3)) * B0m2a
      Do i4=1,3
@@ -12683,11 +12683,11 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
           & , mglu , phase_glu, mN, mN2, N, mC, mC2, U, V, mS02, RS0, mP02    &
           & , RP0, mSpm2 , RSpm, mZ2, mW2, l_SU3, Resummed, res)
  !-----------------------------------------------------------------------
- ! Calculates the 1-loop self energy of SM-fermion. 
+ ! Calculates the 1-loop self energy of SM-fermion.
  ! The formula of J. Bagger et al, Nucl.Phys.B is used. The renormalization
- ! scale has to be set in the main program due to the structure of LoopTools. 
+ ! scale has to be set in the main program due to the structure of LoopTools.
  ! the input is:
- ! - p2 ......... the outer momentum squared 
+ ! - p2 ......... the outer momentum squared
  ! - gSU3 ....... the SU(3) gauge coupling at p2
  ! - gSU2 ....... the SU(2) gauge coupling at p2
  ! - sinW2 ...... sin(theta_W) squared
@@ -12700,7 +12700,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  ! - mSfp(i) .... Sfermion masses'
  ! - RSfp(i,j) .. mixing matrix of the sfermions'
  ! - mglu ....... gluino mass
- ! - phase_glu .. phase of the gluino 
+ ! - phase_glu .. phase of the gluino
  ! - mZ2 ........ Z-boson mass
  ! - mW2 ........ W-boson mass
  ! - mS02 ....... masses of the scalar Higgs
@@ -12713,7 +12713,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  ! - N .......... mixing matrix of the neutrlinos
  ! - mC ......... masses of the charginos
  ! - U,V ........ mixing matrices of the charginos
- !    
+ !
  ! written by Werner Porod, 25.12.01
  ! 30.01.03: correcting bug in 2-loop gluonic QCD corrections, forgot
  !           the 2-loop logs
@@ -12790,7 +12790,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      SumI = - mf(i_gen) * (Abs(coupLC)**2 + Abs(coupRC)**2)                  &
           &             * B1(p2,mglu2, mSf2(i1))                             &
           & + 2._dp * mglu * coupLC * Conjg( coupRC ) * B0(p2,mglu2, mSf2(i1))
-     sumI = 8._dp * sumI / 3._dp 
+     sumI = 8._dp * sumI / 3._dp
      If (WriteOut) Write(ErrCan,*) "gluino squark",i1,sumI
      res = res + sumI
     End Do
@@ -12800,7 +12800,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      SumI = - mf(i_gen) * B1(p2,mglu2, mSf2(i1))                             &
           & - 2._dp * mglu * Real( phase_glu * Conjg( Rsf(i1,2*i_gen-1) )    &
           &        * Rsf(i1,2*i_gen),dp ) * B0(p2,mglu2, mSf2(i1))
-     sumI = f_SU3 * sumI 
+     sumI = f_SU3 * sumI
      If (WriteOut) Write(ErrCan,*) "gluino squark",i1,i_gen,sumI
     res = res + sumI
     End Do
@@ -12847,7 +12847,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      res = res + sumI
     End Do
    End Do
- 
+
   Else
 #endif
    If (T3.Gt.0._dp) Then
@@ -12884,7 +12884,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       If (WriteOut) Write(ErrCan,*) "Chi+ Sf'",i1,i2,sumI
       res = res + sumI
      End Do
-    Else 
+    Else
      Do i2=1,6
       If (T3.Gt.0._dp) Then
        Call CoupCharginoSfermion(i1, i_gen, i2, gSU2, T3, RSfp, Yuk_fp, Yuk_f &
@@ -12920,7 +12920,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
           & + Conjg(coupRC) * coupLC * mC(i1) * B0(p2, mC2(i1), mSf2p(i_gen))
      If (WriteOut) Write(ErrCan,*) "Chi+ Sf'",i1,1,sumI
      res = res + sumI
-    Else 
+    Else
      Do i2=1,2
       m22 = mSf2p(2*(i_gen-1)+i2)
       Call CoupCharginoSfermion(i1, i2, gSU2, T3, RSfp2, yukD, yukU, U, V  &
@@ -13022,20 +13022,20 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
                      & , mSdown2, RSdown, res)
 #endif
  !-----------------------------------------------------------------------
- ! Calculates the 1-loop self energy of SM-fermion. 
+ ! Calculates the 1-loop self energy of SM-fermion.
  ! The formula of J. Bagger et al, Nucl.Phys.B is used. The renormalization
- ! scale has to be set in the main program due to the structure of LoopTools. 
+ ! scale has to be set in the main program due to the structure of LoopTools.
  ! the input is:
- ! - p2 ........... the outer momentum squared 
+ ! - p2 ........... the outer momentum squared
  ! - Q2 ........... renormalization scale
  ! - mglu ......... gluino mass
- ! - phase_glu .... phase of the gluino 
+ ! - phase_glu .... phase of the gluino
  ! - gSU3 ......... the SU(3) gauge coupling at p2
  ! - mSup2(i) ..... u-squark masses squared
  ! - RSup(i,j) .... u-squark mixing matrix
  ! - mSdown(i) .... d-squark masses squared
  ! - RSdown(i,j) .. d-squark mixing matrix
- !    
+ !
  ! written by Werner Porod, 13.8.99
  ! 27.11.01: portation to f90
  !-----------------------------------------------------------------------
@@ -13100,7 +13100,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
         & - 2._dp * mglu * (Abs(coupL)**2 + Abs(coupR)**2)  &
         &        * Real(B1(p2, mf_d2(i2), mSdown2(i1)),dp)  &
         & - 4._dp * mf_d(i2) * coupL * Conjg(coupR)         &
-        &         * Real(B0(p2, mf_d2(i2), mSdown2(i1)),dp) 
+        &         * Real(B0(p2, mf_d2(i2), mSdown2(i1)),dp)
     End Do
     If (WriteOut) Write(ErrCan,*) "D-Squark",i1,sumI
     res = res + sumI
@@ -13129,7 +13129,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End Do
     If (WriteOut) Write(ErrCan,*) "u-Squark, off-diagonal:",i1,mf_u(i1)*sumI
     res = res + mf_u(i1)*sumI
-  
+
     sumI = 0._dp
     Do i2=1,2
      sumI = sumI + 2._dp * Real( phase_glu * Conjg( RSdown(i_sq+i2,i_sq+1) )  &
@@ -13210,13 +13210,13 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      Write(ErrCan,*) "u-quark, u-squark",i1,i2
      Do i3=1,n_neut
       Write(ErrCan,*) "SigL(i,:)",i3,SumL(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigR(i,:)",i3,SumR(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigS(i,:)",i3,SumS(i3,:)
-     End Do 
+     End Do
     End If
     SigL = SigL + SumL
     SigR = SigR + SumR
@@ -13235,13 +13235,13 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      Write(ErrCan,*) "d-quark, d-squark",i1,i2
      Do i3=1,n_neut
       Write(ErrCan,*) "SigL(i,:)",i3,SumL(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigR(i,:)",i3,SumR(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigS(i,:)",i3,SumS(i3,:)
-     End Do 
+     End Do
     End If
     SigL = SigL + SumL
     SigR = SigR + SumR
@@ -13250,7 +13250,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   End Do
 
  !-----------------
- ! lepton-sleptons 
+ ! lepton-sleptons
  !-----------------
   Do i1=1,5-n_char ! needed for R-parity violation
    If (GenerationMixing) Then
@@ -13274,13 +13274,13 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      Write(ErrCan,*) "lepton, slepton",i1,i2
      Do i3=1,n_neut
       Write(ErrCan,*) "SigL(i,:)",i3,SumL(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigR(i,:)",i3,SumR(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigS(i,:)",i3,SumS(i3,:)
-     End Do 
+     End Do
     End If
     SigL = SigL + SumL
     SigR = SigR + SumR
@@ -13311,10 +13311,10 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      Write(ErrCan,*) "neutrino, sneutrino",i1,i2
      Do i3=1,n_neut
       Write(ErrCan,*) "SigL(i,:)",i3,SumL(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigR(i,:)",i3,SumR(i3,:)
-     End Do 
+     End Do
     End If
     SigL = SigL + SumL
     SigR = SigR + SumR
@@ -13333,19 +13333,19 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      SumL(i2,i3) = Conjg( c_CNW_R(i1,i2) ) * c_CNW_R(i1,i3) * B1m2
      SumR(i2,i3) = Conjg( c_CNW_L(i1,i2) ) * c_CNW_L(i1,i3) * B1m2
      SumS(i2,i3) = Conjg( c_CNW_L(i1,i2) ) * c_CNW_R(i1,i3) * B0m2
-    End Do 
+    End Do
    End Do
    If (WriteOut) Then
     Write(ErrCan,*) "chargino, W",i1
     Do i3=1,n_neut
      Write(ErrCan,*) "SigL(i,:)",i3,SumL(i3,:)
-    End Do 
+    End Do
     Do i3=1,n_neut
      Write(ErrCan,*) "SigR(i,:)",i3,SumR(i3,:)
-    End Do 
+    End Do
     Do i3=1,n_neut
      Write(ErrCan,*) "SigS(i,:)",i3,SumS(i3,:)
-    End Do 
+    End Do
    End If
    SigL = SigL + SumL
    SigR = SigR + SumR
@@ -13363,19 +13363,19 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       SumL(i3,i4) = Conjg( c_SmpCN_R(i2,i1,i3) ) * c_SmpCN_R(i2,i1,i4) * B1m2
       SumR(i3,i4) = Conjg( c_SmpCN_L(i2,i1,i3) ) * c_SmpCN_L(i2,i1,i4) * B1m2
       SumS(i3,i4) = Conjg( c_SmpCN_L(i2,i1,i3) ) * c_SmpCN_R(i2,i1,i4) * B0m2
-     End Do 
-    End Do 
+     End Do
+    End Do
     If (WriteOut) Then
      Write(ErrCan,*) "Chargino, S+",i1,i2
      Do i3=1,n_neut
       Write(ErrCan,*) "SigL(i,:)",i3,SumL(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigR(i,:)",i3,SumR(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigS(i,:)",i3,SumS(i3,:)
-     End Do 
+     End Do
     End If
     SigL = SigL + SumL
     SigR = SigR + SumR
@@ -13386,26 +13386,26 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  ! neutral gauge bosons
  !-------------------------------------
   Do i1 = 1,n_neut
-   B1m2 = - B1(p2,mN2(i1),mZ2) 
+   B1m2 = - B1(p2,mN2(i1),mZ2)
    B0m2 = - 4._dp * mN(i1) * B0(p2,mN2(i1),mZ2)
    Do i2 = 1,n_neut
     Do i3 = 1,n_neut
      SumL(i2,i3) = Conjg( c_NNZ_R(i2,i1) ) * c_NNZ_R(i3,i1) * B1m2
      SumR(i2,i3) = Conjg( c_NNZ_L(i2,i1) ) * c_NNZ_L(i3,i1) * B1m2
      SumS(i2,i3) = Conjg( c_NNZ_L(i2,i1) ) * c_NNZ_R(i3,i1) * B0m2
-    End Do 
+    End Do
    End Do
    If (WriteOut) Then
     Write(ErrCan,*) "neutralino, Z",i1
     Do i3=1,n_neut
      Write(ErrCan,*) "SigL(i,:)",i3,SumL(i3,:)
-    End Do 
+    End Do
     Do i3=1,n_neut
      Write(ErrCan,*) "SigR(i,:)",i3,SumR(i3,:)
-    End Do 
+    End Do
     Do i3=1,n_neut
      Write(ErrCan,*) "SigS(i,:)",i3,SumS(i3,:)
-    End Do 
+    End Do
    End If
    SigL = SigL + SumL
    SigR = SigR + SumR
@@ -13424,19 +13424,19 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       SumL(i3,i4) = Conjg( c_NNP0_L(i3,i1,i2) ) * c_NNP0_L(i4,i1,i2) * B1m2
       SumR(i3,i4) = Conjg( c_NNP0_R(i3,i1,i2) ) * c_NNP0_R(i4,i1,i2) * B1m2
       SumS(i3,i4) = Conjg( c_NNP0_R(i3,i1,i2) ) * c_NNP0_L(i4,i1,i2) * B0m2
-     End Do 
-    End Do 
+     End Do
+    End Do
     If (WriteOut) Then
      Write(ErrCan,*) "Neutralino, P0",i1,i2
      Do i3=1,n_neut
       Write(ErrCan,*) "SigL(i,:)",i3,SumL(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigR(i,:)",i3,SumR(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigS(i,:)",i3,SumS(i3,:)
-     End Do 
+     End Do
     End If
     SigL = SigL + SumL
     SigR = SigR + SumR
@@ -13456,19 +13456,19 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       SumL(i3,i4) = Conjg( c_NNS0_L(i3,i1,i2) ) * c_NNS0_L(i4,i1,i2) * B1m2
       SumR(i3,i4) = Conjg( c_NNS0_R(i3,i1,i2) ) * c_NNS0_R(i4,i1,i2) * B1m2
       SumS(i3,i4) = Conjg( c_NNS0_R(i3,i1,i2) ) * c_NNS0_L(i4,i1,i2) * B0m2
-     End Do 
-    End Do 
+     End Do
+    End Do
     If (WriteOut) Then
      Write(ErrCan,*) "Neutralino, S0",i1,i2
      Do i3=1,n_neut
       Write(ErrCan,*) "SigL(i,:)",i3,SumL(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigR(i,:)",i3,SumR(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigS(i,:)",i3,SumS(i3,:)
-     End Do 
+     End Do
     End If
     SigL = SigL + SumL
     SigR = SigR + SumR
@@ -13573,10 +13573,10 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      Write(ErrCan,*) "u-quark, u-squark",i1,i2
      Do i3=1,n_neut
       Write(ErrCan,*) "SigL(i,:)",i3,SumL(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigS(i,:)",i3,SumS(i3,:)
-     End Do 
+     End Do
     End If
     SigS = SigS - SumS - SumL
 
@@ -13610,10 +13610,10 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      Write(ErrCan,*) "d-quark, d-squark",i1,i2
      Do i3=1,n_neut
       Write(ErrCan,*) "SigL(i,:)",i3,SumL(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigS(i,:)",i3,SumS(i3,:)
-     End Do 
+     End Do
     End If
     SigS = SigS - SumS - SumL
    End Do
@@ -13648,16 +13648,16 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
                 & * 0.25_dp * ( B0m2_i(i2) + B0m2_i(i3) )
       SumL(i3,i2) = SumL(i2,i3)
       SumS(i3,i2) = SumS(i2,i3)
-    End Do 
+    End Do
    End Do
    If (WriteOut) Then
     Write(ErrCan,*) "chargino, W",i1
     Do i3=1,n_neut
      Write(ErrCan,*) "SigL(i,:)",i3,SumL(i3,:)
-    End Do 
+    End Do
     Do i3=1,n_neut
      Write(ErrCan,*) "SigS(i,:)",i3,SumS(i3,:)
-    End Do 
+    End Do
    End If
    SigS = SigS - SumS - sumL
   End Do
@@ -13689,16 +13689,16 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
                 & * 0.25_dp * ( B0m2_i(i3) + B0m2_i(i4) )
       SumL(i4,i3) = SumL(i3,i4)
       SumS(i4,i3) = SumS(i3,i4)
-     End Do 
-    End Do 
+     End Do
+    End Do
     If (WriteOut) Then
      Write(ErrCan,*) "Chargino, S+",i1,i2
      Do i3=1,n_neut
       Write(ErrCan,*) "SigL(i,:)",i3,SumL(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigS(i,:)",i3,SumS(i3,:)
-     End Do 
+     End Do
     End If
     SigS = SigS - SumS - sumL
    End Do
@@ -13709,7 +13709,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   Do i1 = 1,n_neut
    If (LoopContributions(5)) Then
      Do i3=1,n_neut
-      B1m2_i(i3) =  - mN(i3) * B1(mN2(i3),mN2(i1),mZ2) 
+      B1m2_i(i3) =  - mN(i3) * B1(mN2(i3),mN2(i1),mZ2)
       B0m2_i(i3) =  - 4._dp * mN(i1) * B0(mN2(i3),mN2(i1),mZ2)
      End Do
    Else
@@ -13730,22 +13730,22 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
                 & * 0.25_dp * ( B0m2_i(i2) + B0m2_i(i3) )
       SumL(i3,i2) = SumL(i2,i3)
       SumS(i3,i2) = SumS(i2,i3)
-    End Do 
+    End Do
    End Do
    If (WriteOut) Then
     Write(ErrCan,*) "neutralino, Z",i1
     Do i3=1,n_neut
      Write(ErrCan,*) "SigL(i,:)",i3,SumL(i3,:)
-    End Do 
+    End Do
     Do i3=1,n_neut
      Write(ErrCan,*) "SigS(i,:)",i3,SumS(i3,:)
-    End Do 
+    End Do
    End If
    SigS = SigS - SumS - sumL
   End Do
 
  !-------------------------------------
- ! neutralino - P0 
+ ! neutralino - P0
  !-------------------------------------
   Do i1 = 1,n_neut
    Do i2 = 1,n_P0
@@ -13772,16 +13772,16 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
                 & * 0.25_dp * ( B0m2_i(i3) + B0m2_i(i4) )
       SumL(i4,i3) = SumL(i3,i4)
       SumS(i4,i3) = SumS(i3,i4)
-     End Do 
-    End Do 
+     End Do
+    End Do
     If (WriteOut) Then
      Write(ErrCan,*) "Neutralino, P0",i1,i2
      Do i3=1,n_neut
       Write(ErrCan,*) "SigL(i,:)",i3,SumL(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigS(i,:)",i3,SumS(i3,:)
-     End Do 
+     End Do
     End If
      ! the + is here because my couplings are multiplied by i
     SigS = SigS + 0.5_dp * SumS + 0.5_dp * SumL
@@ -13816,16 +13816,16 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
                 & * 0.25_dp * ( B0m2_i(i3) + B0m2_i(i4) )
       SumL(i4,i3) = SumL(i3,i4)
       SumS(i4,i3) = SumS(i3,i4)
-     End Do 
-    End Do 
+     End Do
+    End Do
     If (WriteOut) Then
      Write(ErrCan,*) "Neutralino, S0",i1,i2
      Do i3=1,n_neut
       Write(ErrCan,*) "SigL(i,:)",i3,SumL(i3,:)
-     End Do 
+     End Do
      Do i3=1,n_neut
       Write(ErrCan,*) "SigS(i,:)",i3,SumS(i3,:)
-     End Do 
+     End Do
     End If
     SigS = SigS -  0.5_dp * SumS - 0.5_dp * SumL
    End Do
@@ -13964,14 +13964,14 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
        c_Sq4Z(i1,i2,i3) = coupC1 * Conjg(coupC2)
       End Do
      End Do
-    End Do  
+    End Do
     Do i1=1,3
      Do i2=1,3
       Do i3=1,3
-       c_Sq4W(i1,i2,i3) = Rsfp3(i1,i2) * Conjg( Rsfp3(i1,i3) ) 
+       c_Sq4W(i1,i2,i3) = Rsfp3(i1,i2) * Conjg( Rsfp3(i1,i3) )
       End Do
      End Do
-    End Do  
+    End Do
     c_Sq2W(1) = 2._dp * gSU2**2
     c_Sq2W(2) = c_Sq2W(1)
     c_Sq2W(3) = c_Sq2W(1)
@@ -14003,7 +14003,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     Call CoupSfermionZ(2, 2, gSU2, sinW2, e, T3, id2c, coupC1)
     c_Sq2Z(2) = 4._dp * Abs( coupC1 )**2
     c_Sq2Z(4) = c_Sq2Z(2)
-    c_Sq2Z(6) = c_Sq2Z(2)    
+    c_Sq2Z(6) = c_Sq2Z(2)
     c_Sq2W(1) = 2._dp * gSU2**2
     c_Sq2W(3) = c_Sq2W(1)
     c_Sq2W(5) = c_Sq2W(1)
@@ -14012,7 +14012,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
 #endif
    c_Sq4e = c_Sq4e * gSU2**2 * sinW2
    c_Sq4W = 0.5_dp * gSU2**2 * c_Sq4W
-   
+
 
   c_FNSf_L = ZeroC
   c_FNSf_R = ZeroC
@@ -14078,24 +14078,24 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
                                     &, id6C, gU1, gSU2, c_P0P0SfSf(i1,i2,i3) )
       Call CoupPseudoScalarSfermion3a(i1, i2, i3, RP0, T3, Y_l, Rsf6, Af, bi &
                                     &, c_P0SfSf(i1,i2,i3) )
-     End Do   
-    End Do   
+     End Do
+    End Do
    End Do
 
   Else ! .not. GenerationMixing
 #endif
    Do i1=1,n_P0
     Do i2=1,3
-     Rsf2 = Rsf6(2*i2-1:2*i2,2*i2-1:2*i2)      
+     Rsf2 = Rsf6(2*i2-1:2*i2,2*i2-1:2*i2)
      Do i3=1,2
       Do i4=1,2
        Call CoupPseudoscalarSfermion4(i1, i1, i3, i4, RP0, T3, e, Y_l(i2,i2)  &
               &, id2C, gU1, gSU2, c_P0P0SfSf(i1,2*(i2-1)+i3,2*(i2-1)+i4) )
        Call CoupPseudoScalarSfermion3a(i1, i3, i4, RP0, T3, Y_l(i2,i2), Rsf2 &
                      &, Af(i2,i2), bi, c_P0SfSf(i1,2*(i2-1)+i3,2*(i2-1)+i4) )
-      End Do   
-     End Do   
-    End Do   
+      End Do
+     End Do
+    End Do
    End Do
 #ifdef GENERATIONMIXING
   End If
@@ -14112,15 +14112,15 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
                              &, id6C, gU1, gSU2, c_S0S0SfSf(i1,i2,i3) )
       Call CoupScalarSfermion3a(i1, i2, i3, RS0, T3, e, Y_l, Rsf6, Af , mu_T &
                               &, vevSM, gU1, gSU2, c_S0SfSf(i1,i2,i3) )
-     End Do   
-    End Do   
+     End Do
+    End Do
    End Do
 
   Else ! .not. GenerationMixing
 #endif
    Do i1=1,n_S0
     Do i2=1,3
-     Rsf2 = Rsf6(2*i2-1:2*i2,2*i2-1:2*i2)      
+     Rsf2 = Rsf6(2*i2-1:2*i2,2*i2-1:2*i2)
      Do i3=1,2
       Do i4=1,2
        Call CoupScalarSfermion4(i1, i1, i3, i4, RS0, T3, e, Y_l(i2,i2)  &
@@ -14128,9 +14128,9 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
        Call CoupScalarSfermion3a(i1, i3, i4, RS0, T3, e, y_l(i2,i2), Rsf2 &
                                 &, Af(i2,i2), mu_T, vevSM, gU1, gSU2        &
                                 &, c_S0SfSf(i1,2*(i2-1)+i3,2*(i2-1)+i4) )
-      End Do   
-     End Do   
-    End Do   
+      End Do
+     End Do
+    End Do
    End Do
 #ifdef GENERATIONMIXING
   End If
@@ -14145,14 +14145,14 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      Do i3=1,6
       Call CoupChargedScalarSfermion4(i1, i1, i2, i3, RSpm, T3, e, Y_l  &
                            &, mat3, id6C, gU1, gSU2, c_SpmSpmSfSfp(i1,i2,i3) )
-     End Do   
-    End Do   
+     End Do
+    End Do
     Do i2=1,6
      Do i3=1,3
       Call CoupChargedScalarSfermion3(i1, i2, i3, RSpm, gSU2, vevSM, mu_T  &
                  & , Y_l, Af, id6c, mat3, mat3, RSneut,  c_SpmSfSfp(i1,i2,i3) )
-     End Do   
-    End Do   
+     End Do
+    End Do
    End Do
 
   Else ! .not. GenerationMixing
@@ -14168,9 +14168,9 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
        Call CoupChargedScalarSfermion4(i1, i1, i3, i4, RSpm, T3, e  &
                                 &, Y_l(i2,i2), ZeroC, id2C, gU1, gSU2   &
                                 &, c_SpmSpmSfSfp(i1,2*(i2-1)+i3,2*(i2-1)+i4) )
-      End Do   
-     End Do   
-    End Do   
+      End Do
+     End Do
+    End Do
    End Do
 #ifdef GENERATIONMIXING
   End If
@@ -14297,7 +14297,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
        If (i2.Eq.i1) Then
         Call CoupSfermion4G(i3, i4, 1, 1, gU1, gSU2, T3, e, id2C, 0.5_dp, eu &
                           &, id2c, 1, .True., coupC)
-       Else 
+       Else
         Call CoupSfermion4G(i3, i4, 1, 1, gU1, gSU2, T3, e, id2C, 0.5_dp, eu &
                           &, id2c, 1, .False., coupC)
        End If
@@ -14326,7 +14326,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   If (GenerationMixing) Then
    Do i1=6,1,-1
     mat6 = mat6a - PiSf(i1,:,:)
-    Call Chop(mat6) ! to avoid numerical problems 
+    Call Chop(mat6) ! to avoid numerical problems
     Call EigenSystem(mat6,mi6,Rsf,kont, test)
 
     If ((kont.Eq.-14).Or.(kont.Eq.-16)) Then
@@ -14380,13 +14380,13 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End Do
    End Do
 #ifdef GENERATIONMIXING
-  End If ! GenerationMixing 
+  End If ! GenerationMixing
 #endif
 
   Do i1=1,6
    If (mass2(i1).Gt.0._dp) Then
     mass(i1) = Sqrt( mass2(i1) )
-   Else 
+   Else
     If (ErrorLevel.Ge.0) Then
      Write(ErrCan,*) 'Warning from routine SleptonMass_1L!'
      Write(ErrCan,*) 'in the calculation of the masses'
@@ -14416,7 +14416,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   ! redoing calculation using refined p2
   !-------------------------------------
   i_count = 0
-  Do 
+  Do
    i_count = i_count + 1
    test_m2 = mass2
   Do i1=1,6
@@ -14433,7 +14433,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   If (GenerationMixing) Then
    Do i1=6,1,-1
     mat6 = mat6a - PiSf(i1,:,:)
-    Call Chop(mat6) ! to avoid numerical problems 
+    Call Chop(mat6) ! to avoid numerical problems
     Call EigenSystem(mat6,mi6,Rsf,kont, test)
 
     If ((kont.Eq.-14).Or.(kont.Eq.-16)) Then
@@ -14487,7 +14487,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End Do
    End Do
 #ifdef GENERATIONMIXING
-  End If ! GenerationMixing 
+  End If ! GenerationMixing
 #endif
 
   Do i1=1,6
@@ -14498,7 +14498,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End If
    If (mass2(i1).Gt.0._dp) Then
     mass(i1) = Sqrt( mass2(i1) )
-   Else 
+   Else
     If (ErrorLevel.Ge.0) Then
      Write(ErrCan,*) 'Warning from routine SleptonMass_1L!'
      Write(ErrCan,*) 'in the calculation of the masses'
@@ -14640,14 +14640,14 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
        c_Sq4Z(i1,i2,i3) = coupC1 * Conjg(coupC2)
       End Do
      End Do
-    End Do  
+    End Do
     Do i1=1,6
      Do i2=1,3
       Do i3=1,3
-       c_Sq4W(i1,i2,i3) = Rsfp6(i1,i2) * Conjg( Rsfp6(i1,i3) ) 
+       c_Sq4W(i1,i2,i3) = Rsfp6(i1,i2) * Conjg( Rsfp6(i1,i3) )
       End Do
      End Do
-    End Do  
+    End Do
     c_Sq4W = 0.5_dp * gSU2**2 * c_Sq4W
 
    Else ! .not. GenerationMixing
@@ -14656,7 +14656,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      c_Sq4Z(i1,i1,i1) = 0.25_dp * gSU2**2 / (1._dp - sinW2)
      Rsfp2 = Rsfp6(2*i1-1:2*i1,2*i1-1:2*i1)
      Do i2=1,2
-      c_Sq4W(2*(i1-1)+i2,i1,i1) = Rsfp2(i2,1) * Conjg( Rsfp2(i2,1) ) 
+      c_Sq4W(2*(i1-1)+i2,i1,i1) = Rsfp2(i2,1) * Conjg( Rsfp2(i2,1) )
      End Do
     End Do
     c_Sq4W = 0.5_dp * gSU2**2 * c_Sq4W
@@ -14666,7 +14666,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
    Call CoupSfermionZ(1, 1, gSU2, sinW2, 0._dp, T3, id2c, coupC1)
    c_Sq2Z = 4._dp * Abs( coupC1 )**2
    c_Sq2W = 2._dp * gSU2**2
-   
+
 
   c_FNSf_R = ZeroC
 #ifdef GENERATIONMIXING
@@ -14722,8 +14722,8 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      Do i3=1,3
       Call CoupPseudoscalarSfermion4(i1, i1, i2, i3, RP0, T3, e, mat3  &
                                     &, id3C, gU1, gSU2, c_P0P0SfSf(i1,i2,i3) )
-     End Do   
-    End Do   
+     End Do
+    End Do
    End Do
 
   Else ! .not. GenerationMixing
@@ -14749,8 +14749,8 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
                              &, id3C, gU1, gSU2, c_S0S0SfSf(i1,i2,i3) )
       Call CoupScalarSfermion3a(i1, i2, i3, RS0, T3, e, mat3, Rsf3, mat3, mu &
                               &, vevSM, gU1, gSU2, c_S0SfSf(i1,i2,i3) )
-     End Do   
-    End Do   
+     End Do
+    End Do
    End Do
 
   Else ! .not. GenerationMixing
@@ -14779,12 +14779,12 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      Do i3=1,3
       Call CoupChargedScalarSfermion4(i1, i1, i2, i3, RSpm, T3, e, mat3, Y_l  &
                              &, id3C, gU1, gSU2, c_SpmSpmSfSfp(i1,i2,i3) )
-     End Do   
+     End Do
      Do i3=1,6
       Call CoupChargedScalarSfermion3(i1, i3, i2, RSpm, gSU2, vevSM, mu, Y_l &
                  & , A_l, RSlepton, mat3, mat3, id3C,  c_SpmSfSfp(i1,i2,i3) )
-     End Do   
-    End Do   
+     End Do
+    End Do
    End Do
 
   Else ! .not. GenerationMixing
@@ -14798,8 +14798,8 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
       Call CoupChargedScalarSfermion3(i1, i4, 1, RSpm, gSU2, vevSM, mu     &
                & , Y_l(i2,i2), A_l(i2,i2), Rsf2, ZeroC, ZeroC, id2c &
                & , c_SpmSfSfp(i1,i2,2*(i2-1)+i4) )
-     End Do   
-    End Do   
+     End Do
+    End Do
    End Do
 #ifdef GENERATIONMIXING
   End If
@@ -14940,14 +14940,14 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     mass2(i1) = Real( mat3(i1,i1),dp )
     Rsf = id3C
 #ifdef GENERATIONMIXING
-   End If ! GenerationMixing 
+   End If ! GenerationMixing
 #endif
   End Do
 
   Do i1=1,3
    If (mass2(i1).Gt.0._dp) Then
     mass(i1) = Sqrt( mass2(i1) )
-   Else 
+   Else
     If (ErrorLevel.Ge.0) Then
      Write(ErrCan,*) 'Warning from routine SneutrinoMass_1L!'
      Write(ErrCan,*) 'in the calculation of the masses'
@@ -14969,7 +14969,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   ! redoing calculation using refined p2
   !-------------------------------------
   i_count = 0
-  Do 
+  Do
    i_count = i_count + 1
    test_m2 = mass2
 
@@ -15011,7 +15011,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     mass2(i1) = Real( mat3(i1,i1),dp )
     Rsf = id3C
 #ifdef GENERATIONMIXING
-   End If ! GenerationMixing 
+   End If ! GenerationMixing
 #endif
   End Do
 
@@ -15023,7 +15023,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End If
    If (mass2(i1).Gt.0._dp) Then
     mass(i1) = Sqrt( mass2(i1) )
-   Else 
+   Else
     If (ErrorLevel.Ge.0) Then
      Write(ErrCan,*) 'Warning from routine SneutrinoMass_1L!'
      Write(ErrCan,*) 'in the calculation of the masses'
@@ -15079,7 +15079,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  !  28.12.01: write first tree-level mass matrix as in case of generation
  !            mixing; check during the calculation of the couplings and
  !            diagonalisation whether generation mixing is included or not
- !  30.01.02: fixing bug in quatric QCD squark coupling 
+ !  30.01.02: fixing bug in quatric QCD squark coupling
  !-------------------------------------------------------------------------
  Implicit None
   Integer, Intent(inout) :: kont
@@ -15202,7 +15202,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   mat6a(1:3,4:6) = off
   Call Adjungate(off)
   mat6a(4:6,1:3) = off
-    
+
   !-----------
   ! couplings
   !-----------
@@ -15232,7 +15232,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     c_GQSq(2,:,:) = c_GQSq(1,:,:)
     c_GQSq(3,:,:) = c_GQSq(1,:,:)
 #ifdef GENERATIONMIXING
-   End If 
+   End If
 #endif
 
    c_Sq2g3 = ZeroC
@@ -15262,10 +15262,10 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
      End Do
      Do i2=1,3
       Do i3=1,3
-       c_Sq4W(i1,i2,i3) = Rsfp6(i1,i2) * Conjg( Rsfp6(i1,i3) ) 
+       c_Sq4W(i1,i2,i3) = Rsfp6(i1,i2) * Conjg( Rsfp6(i1,i3) )
       End Do
      End Do
-    End Do  
+    End Do
     c_Sq2W(1) = 2._dp * gSU2**2
     c_Sq2W(2) = c_Sq2W(1)
     c_Sq2W(3) = c_Sq2W(1)
@@ -15305,7 +15305,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     Call CoupSfermionZ(2, 2, gSU2, sinW2, e, T3, id2c, coupC1)
     c_Sq2Z(2) = 4._dp * Abs( coupC1 )**2
     c_Sq2Z(4) = c_Sq2Z(2)
-    c_Sq2Z(6) = c_Sq2Z(2)    
+    c_Sq2Z(6) = c_Sq2Z(2)
     c_Sq2W(1) = 2._dp * gSU2**2
     c_Sq2W(3) = c_Sq2W(1)
     c_Sq2W(5) = c_Sq2W(1)
@@ -15381,24 +15381,24 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
                                     &, id6C, gU1, gSU2, c_P0P0SqSq(i1,i2,i3) )
       Call CoupPseudoScalarSfermion3a(i1, i2, i3, RP0, T3, yuk, RSf6, Af, bi &
                                     &, c_P0SqSq(i1,i2,i3) )
-     End Do   
-    End Do   
+     End Do
+    End Do
    End Do
 
   Else ! .not. GenerationMixing
 #endif
    Do i1=1,n_P0
     Do i2=1,3
-     Rsf2 = Rsf6(2*i2-1:2*i2,2*i2-1:2*i2)      
+     Rsf2 = Rsf6(2*i2-1:2*i2,2*i2-1:2*i2)
      Do i3=1,2
       Do i4=1,2
        Call CoupPseudoscalarSfermion4(i1, i1, i3, i4, RP0, T3, e, yuk(i2,i2)  &
               &, id2C, gU1, gSU2, c_P0P0SqSq(i1,2*(i2-1)+i3,2*(i2-1)+i4) )
        Call CoupPseudoScalarSfermion3a(i1, i3, i4, RP0, T3, yuk(i2,i2), Rsf2 &
                      &, Af(i2,i2), bi, c_P0SqSq(i1,2*(i2-1)+i3,2*(i2-1)+i4) )
-      End Do   
-     End Do   
-    End Do   
+      End Do
+     End Do
+    End Do
    End Do
 #ifdef GENERATIONMIXING
   End If
@@ -15415,15 +15415,15 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
                              &, id6C, gU1, gSU2, c_S0S0SqSq(i1,i2,i3) )
       Call CoupScalarSfermion3a(i1, i2, i3, RS0, T3, e, yuk, RSf6, Af, mu_T &
                               &, vevSM, gU1, gSU2, c_S0SqSq(i1,i2,i3) )
-     End Do   
-    End Do   
+     End Do
+    End Do
    End Do
 
   Else ! .not. GenerationMixing
 #endif
    Do i1=1,n_S0
     Do i2=1,3
-     Rsf2 = Rsf6(2*i2-1:2*i2,2*i2-1:2*i2)      
+     Rsf2 = Rsf6(2*i2-1:2*i2,2*i2-1:2*i2)
      Do i3=1,2
       Do i4=1,2
        Call CoupScalarSfermion4(i1, i1, i3, i4, RS0, T3, e, yuk(i2,i2)  &
@@ -15431,9 +15431,9 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
        Call CoupScalarSfermion3a(i1, i3, i4, RS0, T3, e, yuk(i2,i2), Rsf2 &
                                 &, Af(i2,i2), mu_T, vevSM, gU1, gSU2      &
                                 &, c_S0SqSq(i1,2*(i2-1)+i3,2*(i2-1)+i4) )
-      End Do   
-     End Do   
-    End Do   
+      End Do
+     End Do
+    End Do
    End Do
 #ifdef GENERATIONMIXING
   End If
@@ -15457,8 +15457,8 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
        Call CoupChargedScalarSfermion3(i1, i2, i3, RSpm, gSU2, vevSM, mu_T  &
                    & , Y_d, Af, id6c, Y_u, Afp, RSup,  c_SpmSqSqp(i1,i2,i3) )
       End If
-     End Do   
-    End Do   
+     End Do
+    End Do
    End Do
 
   Else ! .not. GenerationMixing
@@ -15483,9 +15483,9 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
                & , Y_d(i2,i2), Af(i2,i2), id2c, Y_u(i2,i2), Afp(i2,i2), Rsf2 &
                & , c_SpmSqSqp(i1,2*(i2-1)+i3,2*(i2-1)+i4) )
        End If
-      End Do   
-     End Do   
-    End Do   
+      End Do
+     End Do
+    End Do
    End Do
 #ifdef GENERATIONMIXING
   End If
@@ -15700,14 +15700,14 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     p2 = msup2(i1)
    Else
     p2 = mSdown2(i1)
-   End If 
+   End If
    Call PiSquark(p2, mSf2, mf, mf2, mglu, c_GQSq, c_Sq4g3, c_Sq4e, c_Sq4Z     &
           & , c_Sq2Z, c_Sq2W, c_Sq2g3, mSfp2, c_Sq4W, mfp, mfp2               &
           & , mN, mN2, c_FNSf_L, c_FNSf_R, mC, mC2, c_CFpSf_L, c_CFpSf_R      &
           & , mP02, c_P0SqSq, c_P0P0SqSq, mS02, c_S0SqSq, c_S0S0SqSq          &
           & , mSpm2, c_SpmSqSqp, c_SpmSpmSqSqp, mSup2, c_SuSf4                &
           & , mSdown2, c_SdSf4, mSlepton2, c_SlSf4, mSneut2, c_SnSf4, mZ2, mW2&
-          & , WriteOut, PiSf(i1,:,:))   
+          & , WriteOut, PiSf(i1,:,:))
   End Do
 
 #ifdef GENERATIONMIXING
@@ -15718,7 +15718,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     Call EigenSystem(mat6,mi6,Rsf,kont,test)
     If ((kont.Eq.-14).Or.(kont.Eq.-16)) Then
      Write(ErrCan,*) "Possible numerical problem in "//NameOfUnit(Iname)
-     Write(errcan,*) "t3",t3 
+     Write(errcan,*) "t3",t3
      Write(ErrCan,*) "test =",test
      If (ErrorLevel.Eq.2) Call TerminateProgram
      kont = 0
@@ -15767,13 +15767,13 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End Do
    End Do
 #ifdef GENERATIONMIXING
-  End If ! GenerationMixing 
+  End If ! GenerationMixing
 #endif
 
   Do i1=1,6
    If (mass2(i1).Gt.0._dp) Then
     mass(i1) = Sqrt( mass2(i1) )
-   Else 
+   Else
     If (ErrorLevel.Ge.0) Then
      Write(ErrCan,*) 'Warning from routine SquarkMass_1L!'
      Write(ErrCan,*) 'in the calculation of the masses'
@@ -15798,7 +15798,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   ! redoing calculation using refined p2
   !-------------------------------------
   i_count = 0
-  Do 
+  Do
    i_count = i_count + 1
    test_m2 = mass2
    Do i1=1,6
@@ -15809,7 +15809,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
           & , mP02, c_P0SqSq, c_P0P0SqSq, mS02, c_S0SqSq, c_S0S0SqSq          &
           & , mSpm2, c_SpmSqSqp, c_SpmSpmSqSqp, mSup2, c_SuSf4                &
           & , mSdown2, c_SdSf4, mSlepton2, c_SlSf4, mSneut2, c_SnSf4, mZ2, mW2&
-          & , WriteOut, PiSf(i1,:,:))   
+          & , WriteOut, PiSf(i1,:,:))
    End Do
 
 #ifdef GENERATIONMIXING
@@ -15820,7 +15820,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     Call EigenSystem(mat6,mi6,Rsf,kont,test)
     If ((kont.Eq.-14).Or.(kont.Eq.-16)) Then
      Write(ErrCan,*) "Possible numerical problem in "//NameOfUnit(Iname)
-     Write(errcan,*) "t3",t3 
+     Write(errcan,*) "t3",t3
      Write(ErrCan,*) "test =",test
      If (ErrorLevel.Eq.2) Call TerminateProgram
      kont = 0
@@ -15869,7 +15869,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End Do
    End Do
 #ifdef GENERATIONMIXING
-  End If ! GenerationMixing 
+  End If ! GenerationMixing
 #endif
 
   Do i1=1,6
@@ -15880,7 +15880,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
     End If
    If (mass2(i1).Gt.0._dp) Then
     mass(i1) = Sqrt( mass2(i1) )
-   Else 
+   Else
     If (ErrorLevel.Ge.0) Then
      Write(ErrCan,*) 'Warning from routine SquarkMass_1L!'
      Write(ErrCan,*) 'in the calculation of the masses'
@@ -15931,7 +15931,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  ! in these cases Do nothing
  !------------------------------------
  If (ErrorLevel.Eq.-2) Return
- 
+
  Select Case(n)
  Case(-9)
   Write(ErrCan,*) "Problem in unit "//name
@@ -15994,12 +15994,12 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  Case(7)
   Write(ErrCan,*) "Problem in unit "//name
   Write(ErrCan,*) "m_A0^2 <0 in the first 1-loop calculation", WriteWert
-  Write(ErrCan,*) "Setting it to 10^4" 
+  Write(ErrCan,*) "Setting it to 10^4"
 
  Case(8)
   Write(ErrCan,*) "Problem in unit "//name
   Write(ErrCan,*) "m_H+^2 <0 in the first 1-loop calculation", WriteWert
-  Write(ErrCan,*) "Setting it to 10^4" 
+  Write(ErrCan,*) "Setting it to 10^4"
 
  Case Default
   Write(ErrCan,*) "Problem in unit "//name

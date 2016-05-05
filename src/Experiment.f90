@@ -6,7 +6,7 @@ Use Couplings
 Use Model_Data
 Use MSSM_Data
 
-Integer, Public :: check_exp(11)      
+Integer, Public :: check_exp(11)
 
 Real(dp), Public, Dimension(2) ::  m_sq_atm, tan_sq_atm, m_sq_sol, tan_sq_sol &
  & , Ue3_sq
@@ -22,8 +22,8 @@ Real(dp), Public :: m2_atm = 2.45e-21_dp
 Real(dp), Public :: tan2_atm_min = 0.8182_dp , tan2_atm_max = 1.3256_dp
 ! Min/Max of solar mass squared
 Real(dp), Public :: m2_sol_min = 7.46e-23_dp, m2_sol_max = 7.83e-23_dp
-! best fit for solar mass squared    
-Real(dp), Public :: m2_sol = 7.64e-23_dp 
+! best fit for solar mass squared
+Real(dp), Public :: m2_sol = 7.64e-23_dp
 ! Min/Max of tan^2(theta_sol)
 Real(dp), Public :: tan2_sol_min = 0.4286_dp, tan2_sol_max = 0.4970_dp
 ! Min/Max (U_e3)^2
@@ -51,7 +51,7 @@ Contains
   !----------------------------------
   ! initialisation
   !----------------------------------
-  check_exp = 0 
+  check_exp = 0
 
   If (i_mod.Eq.1) Then
    sin2_ab(1) = (RS0(1,1) + RS0(1,2) * tanb)**2 / (1._dp + tanb**2)
@@ -71,14 +71,14 @@ Contains
 
    If (Abs(N7(3,7)).Eq.0._dp) Then
     tan2 = 1.e99_dp
-   Else 
+   Else
     tan2 = Abs(N7(3,6)/N7(3,7))**2
    End If
    If ((tan2.Lt.tan2_atm_min).Or.(tan2.Gt.tan2_atm_max)) check_exp(9) = 1
 
    If (Abs(N7(1,5)).Eq.0._dp) Then
     tan2 = 1.e99_dp
-   Else 
+   Else
     tan2 = Abs(N7(2,5)/N7(1,5))**2
    End If
    If ((tan2.Lt.tan2_sol_min).Or.(tan2.Gt.tan2_sol_max)) check_exp(10) = 1
@@ -108,14 +108,14 @@ Contains
 !
 !   If (Abs(N10(3,7)).Eq.0._dp) Then
 !    tan2 = 1.e99_dp
-!   Else 
+!   Else
 !    tan2 = Abs(N10(3,6)/N10(3,7))**2
 !   End If
 !   If ((tan2.Lt.tan2_atm_min).Or.(tan2.Gt.tan2_atm_max)) check_exp(9) = 1
 !
 !   If (Abs(N10(1,5)).Eq.0._dp) Then
 !    tan2 = 1.e99_dp
-!   Else 
+!   Else
 !    tan2 = Abs(N10(2,5)/N10(1,5))**2
 !   End If
 !   If ((tan2.Lt.tan2_sol_min).Or.(tan2.Gt.tan2_sol_max)) check_exp(10) = 1
@@ -149,7 +149,7 @@ Contains
     m_bound = 108._dp + 7._dp * sin2_ab(i1)
    Else If (sin2_ab(i1).Lt.0.8_dp) Then
     m_bound = 109._dp + 5._dp * sin2_ab(i1)
-   Else 
+   Else
     m_bound = 110._dp + 4._dp * sin2_ab(i1)
    End If
  ! including theoretical uncertainty

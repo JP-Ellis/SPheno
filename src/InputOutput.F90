@@ -21,7 +21,7 @@ Character(len=15) :: HighScaleModel, HighScaleModel2
 ! input/output according to SUSY Les Houches accord
 Logical, Save :: LesHouches_Format
 ! if R-parity is added at low energies
-Logical, Save ::  Add_Rparity = .False.  
+Logical, Save ::  Add_Rparity = .False.
 ! transfer of GMSB info
 Real(dp), Save :: grav_fac = 1._dp
 ! used in combination with Fittino
@@ -39,14 +39,14 @@ Real(dp), Save, Private :: SigMin=1.e-3_dp
 ! contains information on possible inconsitencies in the input
 Integer, Save, Private :: in_kont(2)
 ! name of 'input-program'
-Character(len=40), Private :: sp_info 
+Character(len=40), Private :: sp_info
 ! tempory variables for Higgs mixing in case of NMSSM
 Real(dp), Private, Dimension(3,3) :: RS03_save, RP03_save
 ! for Les Houches input/output
 Logical :: Write_SLHA1 = .False. ! write a second SLHA output file
                                  ! using SLHA1 standard only called SPheno_1.spc
 Integer, Private :: i_cpv=0
-Logical, Private :: l_RP_Pythia = .False. ! Pythia only takes 4x4 matrix 
+Logical, Private :: l_RP_Pythia = .False. ! Pythia only takes 4x4 matrix
                                          ! for neutralinos and 2x2 for charginos
 Integer, Private :: io_RP=0 ! 0 standard SLHA way of putting RP state numbering
                             ! 1 flavour ordered way of putting RP state numbering
@@ -59,12 +59,12 @@ Logical, Private :: l_pmns_in = .False. ! in case that PMNS is given
 Logical, Private :: minpar_set = .False. ! in case that PMNS is given
 ! write branching ratios h-> V V^* with off-shell vector bosons instead
 ! of folding it with the branching ratios of vector bosons
-Logical, Private :: BR_Higgs_with_offshell_V = .False. 
+Logical, Private :: BR_Higgs_with_offshell_V = .False.
 ! for the nat-SUSY project  with SASHA
-Logical, Private :: MADGraph_style = .False. 
+Logical, Private :: MADGraph_style = .False.
 ! for gravitino mass as input
 Logical, Private :: l_m32_in = .False.
-                                        
+
 Contains
 
 
@@ -72,7 +72,7 @@ Contains
  Subroutine LesHouches_Input(inFile, kont, HighScaleModel &
                            & , Ecms, Pm, Pp, l_ISR, Fgmsb)
  !--------------------------------------------------------------------
- ! reads in data using the Les Houches standard as defined in 
+ ! reads in data using the Les Houches standard as defined in
  ! hep-ph/03111231 and arXiv:0801.0045
  ! input:
  !  - inFile: name of input file
@@ -93,7 +93,7 @@ Contains
   Real(dp), Intent(out) :: Fgmsb, Ecms(:), Pm(:), Pp(:)
   Character(len=15), Intent(out) :: HighScaleModel
   Logical, Intent(out) :: l_ISR(:)
-  
+
   Character(len=80) :: read_line
   Integer :: i_mod=-1, set_mod_par(27)=-1 &
     & , i1, p_max, p_act, i_sp, i_model=-1, i_particles=-1, i_rp=0
@@ -124,7 +124,7 @@ Contains
   GenerationMixing=.False.
   L_BR=.True.
   L_CS=.False.
-  L_ISR = .False. 
+  L_ISR = .False.
   If (l_open) Then
    Open(ErrCan,file="Messages.out",status="unknown")
    l_open = .False.
@@ -170,19 +170,19 @@ Contains
                                      ! because InitializeStandardModel assumes a non-zero phase
      s12 = lam_wolf
      s23 = s12**2 * A_wolf
-     s13 = s23 * lam_wolf * Sqrt(eta_wolf**2+rho_wolf**2) 
+     s13 = s23 * lam_wolf * Sqrt(eta_wolf**2+rho_wolf**2)
      c12 = Sqrt(1._dp-s12*s12)
      c23 = Sqrt(1._dp-s23*s23)
      c13 = Sqrt(1._dp-s13*s13)
 
      CKM(1,1) = c12 * c13
      CKM(1,2) = s12 * c13
-     CKM(1,3) = s13      
-     CKM(2,1) = -s12*c23 -c12*s23*s13 
-     CKM(2,2) = c12*c23 -s12*s23*s13 
+     CKM(1,3) = s13
+     CKM(2,1) = -s12*c23 -c12*s23*s13
+     CKM(2,2) = c12*c23 -s12*s23*s13
      CKM(2,3) = s23 * c13
-     CKM(3,1) = s12*s23 -c12*c23*s13 
-     CKM(3,2) = -c12*s23 - s12*c23*s13 
+     CKM(3,1) = s12*s23 -c12*c23*s13
+     CKM(3,2) = -c12*s23 - s12*c23*s13
      CKM(3,3) = c23 * c13
     End If
 
@@ -191,7 +191,7 @@ Contains
 
     Else If (read_line(7:14).Eq."IMMINPAR") Then
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMMINPAR") 
+      Call Warn_CPV(i_cpv, "IMMINPAR")
       Cycle
      End If
      Call Read_MINPAR(99, 1, i_model, set_mod_par, kont)
@@ -201,7 +201,7 @@ Contains
 
     Else If (read_line(7:14).Eq."IMEXTPAR") Then
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMEXTPAR") 
+      Call Warn_CPV(i_cpv, "IMEXTPAR")
       Cycle
      End If
      Call Read_EXTPAR(99, 1, i_model, set_mod_par, kont)
@@ -223,7 +223,7 @@ Contains
 
     Else If (read_line(7:17).Eq."IMRVKAPPAIN") Then
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMRVKAPPAIN") 
+      Call Warn_CPV(i_cpv, "IMRVKAPPAIN")
       Cycle
      End If
      Call ReadVectorC(99, 3, eps, 1, "Im(epsilon)", kont)
@@ -231,30 +231,30 @@ Contains
 
     Else If (read_line(7:15).Eq."RVKAPPAIN") Then
      Call ReadVectorC(99, 3, eps, 0, "Re(epsilon)", kont)
-     
+
     Else If (read_line(7:15).Eq."RVSNVEVIN") Then
-     Call ReadVectorR(99, 3, vevL, "v_L", kont)  
+     Call ReadVectorR(99, 3, vevL, "v_L", kont)
      set_mod_par(27) = 1
 
     Else If (read_line(7:19).Eq."IMRVLAMPBDAIN") Then
      If (i_cpv.Lt.2) Then
-       Call Warn_CPV(i_cpv, "IMRVLAMPBDAIN") 
+       Call Warn_CPV(i_cpv, "IMRVLAMPBDAIN")
        Cycle
      End If
      Call ReadTensorC(99, 3, Rp_lam, 1, "Im(lambda_ijk)", kont, 12)
      RP_trilinear = .True.
- 
+
     Else If (read_line(7:17).Eq."RVLAMPBDAIN") Then
      Call ReadTensorC(99, 3, Rp_lam, 0, "Re(lambda_ijk)", kont, 12)
      RP_trilinear = .True.
- 
+
      Else If (read_line(7:18).Eq."RVLAMPBDAPIN") Then
       Call ReadTensorC(99, 3, Rp_lamp, 0, "Re(lambda'_ijk)", kont)
       RP_trilinear = .True.
 
      Else If (read_line(7:20).Eq."IMRVLAMPBDAPIN") Then
       If (i_cpv.Lt.2) Then
-       Call Warn_CPV(i_cpv, "IMRVLAMPBDAPIN") 
+       Call Warn_CPV(i_cpv, "IMRVLAMPBDAPIN")
        Cycle
       End If
       Call ReadTensorC(99, 3, Rp_lamp, 1, "Im(lambda'_ijk)", kont)
@@ -271,7 +271,7 @@ Contains
 
     Else If (read_line(7:12).Eq."IMMSL2") Then
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMMSL2") 
+      Call Warn_CPV(i_cpv, "IMMSL2")
       Cycle
      End If
      Call ReadMatrixC(99, 3, M2L_pmns, 1, "Im(M2_L)", kont, 1)
@@ -287,7 +287,7 @@ Contains
 
     Else If (read_line(7:12).Eq."IMMSE2") Then
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMMSE2") 
+      Call Warn_CPV(i_cpv, "IMMSE2")
       Cycle
      End If
      Call ReadMatrixC(99, 3, M2E_pmns, 1, "Im(M2_E)", kont, 1)
@@ -303,7 +303,7 @@ Contains
 
     Else If (read_line(7:12).Eq."IMMSQ2") Then
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMMSQ2") 
+      Call Warn_CPV(i_cpv, "IMMSQ2")
       Cycle
      End If
      Call ReadMatrixC(99, 3, M2Q_sckm, 1, "Im(M2_Q)", kont, 1)
@@ -319,7 +319,7 @@ Contains
 
     Else If (read_line(7:12).Eq."IMMSU2") Then
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMMSU2") 
+      Call Warn_CPV(i_cpv, "IMMSU2")
       Cycle
      End If
      Call ReadMatrixC(99, 3, M2U_sckm, 1, "Im(M2_U)", kont, 1)
@@ -335,7 +335,7 @@ Contains
 
     Else If (read_line(7:12).Eq."IMMSD2") Then
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMMSD2") 
+      Call Warn_CPV(i_cpv, "IMMSD2")
       Cycle
      End If
      Call ReadMatrixC(99, 3, M2D_sckm, 1, "Im(M2_D)", kont, 1)
@@ -358,7 +358,7 @@ Contains
     Else If (read_line(7:13).Eq."IMM15IN") Then
 
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMM15IN") 
+      Call Warn_CPV(i_cpv, "IMM15IN")
       Cycle
      End If
      Call ReadVectorC2(99, 1, vec1C, 1, "Im(M_15)", kont)
@@ -385,7 +385,7 @@ Contains
     Else If (read_line(7:13).Eq."IMM15T15TBIN") Then
 
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMM15T15TBIN") 
+      Call Warn_CPV(i_cpv, "IMM15T15TBIN")
       Cycle
      End If
      Call ReadVectorC2(99, 1, vec1C, 1, "Im(M_T)", kont)
@@ -406,7 +406,7 @@ Contains
 
     Else If (read_line(7:12).Eq."IMTUIN") Then
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMTU") 
+      Call Warn_CPV(i_cpv, "IMTU")
       Cycle
      End If
      Call ReadMatrixC(99, 3, AU_0_sckm, 1, "Im(T_U)", kont)
@@ -426,7 +426,7 @@ Contains
 
     Else If (read_line(7:12).Eq."IMTDIN") Then
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMTD") 
+      Call Warn_CPV(i_cpv, "IMTD")
       Cycle
      End If
      Call ReadMatrixC(99, 3, AD_0_sckm, 1, "Im(T_D)", kont)
@@ -444,7 +444,7 @@ Contains
 
     Else If (read_line(7:12).Eq."IMTEIN") Then
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMTE") 
+      Call Warn_CPV(i_cpv, "IMTE")
       Cycle
      End If
      Call ReadMatrixC(99, 3, AL_0_pmns, 1, "Im(T_E)", kont)
@@ -460,13 +460,13 @@ Contains
      If (Maxval(Abs(Y_nu_0))**2.Gt.6._dp) Then
       Write(ErrCan,*) "Y_nu is non-perturbative at M_GUT"
       kont = -314
-      Call AddError(314)      
+      Call AddError(314)
       Return
      End If
 
     Else If (read_line(7:17).Eq."IMYNURLHUIN") Then
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMYNURLHU") 
+      Call Warn_CPV(i_cpv, "IMYNURLHU")
       Cycle
      End If
      If (.Not.Ynu_at_MR3) Fixed_Nu_Yukawas = .True.
@@ -496,7 +496,7 @@ Contains
       Call AddError(314)
       Return
      End If
-      
+
      Yb30_H24(3,:,:) = Yb3_H24_gut
      Yb30_H24(2,:,:) = Yb30_H24(3,:,:)
      Yb30_H24(2,:,3) = 0._dp
@@ -508,7 +508,7 @@ Contains
 
     Else If (read_line(7:13).Eq."IMY24IN") Then
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMY24IN") 
+      Call Warn_CPV(i_cpv, "IMY24IN")
       Cycle
      End If
 
@@ -538,7 +538,7 @@ Contains
     Else If (read_line(7:18).Eq."IMYHD15THDIN") Then
 
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMYHD15THDIN") 
+      Call Warn_CPV(i_cpv, "IMYHD15THDIN")
       Cycle
      End If
      mat1(1,1) = Lambda1_gut
@@ -556,7 +556,7 @@ Contains
     Else If (read_line(7:19).Eq."IMYHU15TBHUIN") Then
 
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMYHU15TBHUIN") 
+      Call Warn_CPV(i_cpv, "IMYHU15TBHUIN")
       Cycle
      End If
      mat1(1,1) = Lambda2_gut
@@ -578,7 +578,7 @@ Contains
     Else If (read_line(7:16).Eq."IMYL15TLIN") Then
 
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMYL15TLIN") 
+      Call Warn_CPV(i_cpv, "IMYL15TLIN")
       Cycle
      End If
      Call ReadMatrixC2(99, 3, YT_H15_gut,1,2, "Im(Y_T)", kont)
@@ -604,7 +604,7 @@ Contains
     Else If (read_line(7:13).Eq."IMY15IN") Then
 
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMY15IN") 
+      Call Warn_CPV(i_cpv, "IMY15IN")
       Cycle
      End If
      Call ReadMatrixC2(99, 3, YT_H15_gut,1,2, "Im(Y_T)", kont)
@@ -643,7 +643,7 @@ Contains
 
     Else If (read_line(7:13).Eq."IMMWMIN") Then
      If (i_cpv.Lt.2) Then
-      Call Warn_CPV(i_cpv, "IMMWMIN") 
+      Call Warn_CPV(i_cpv, "IMMWMIN")
       Cycle
      End If
      Call ReadMatrixC(99, 3, MWM30,1, "MWM3", kont)
@@ -761,7 +761,7 @@ Contains
 
    If (kont.Ne.0) Return
 
-  End Do 
+  End Do
 200 Close(99)
 
 !-----------------------------------------------
@@ -781,7 +781,7 @@ Contains
   End If
 
   If (i_particles.Eq.1) Then  ! MSSM particle content
-   If (i_model.Eq.0) Then 
+   If (i_model.Eq.0) Then
     If (i_rp.Ne.0) HighScaleModel2 = "RPexplicit"
     If ((set_mod_par(7).Eq.1).And.(set_mod_par(8).Eq.1)) Then
      If (i_rp.Eq.0) HighScaleModel = "MSSM1"
@@ -837,7 +837,7 @@ Contains
      mA2_Q =  mP02(2)
      B = mP02(2) * tanb / (1._dp + tanb**2)
 
-    Else 
+    Else
      Write(ErrCan,*) "Higgs sector has not been specified consistently. Aborting"
      kont = -307
      Call AddError(307)
@@ -849,8 +849,8 @@ Contains
      kont = -305 ! model has not specified completly
 
      If ((i_model.Eq.0).And.(Sum(set_mod_par(1:25)).Eq.23)) kont = 0 ! MSSM
-     If ((i_model.Eq.1).And.(Sum(set_mod_par(1:5)).Eq.5)) kont = 0 ! mSugra 
-     If ((i_model.Eq.2).And.(Sum(set_mod_par(1:5)).Eq.5)) Then ! GMSB 
+     If ((i_model.Eq.1).And.(Sum(set_mod_par(1:5)).Eq.5)) kont = 0 ! mSugra
+     If ((i_model.Eq.2).And.(Sum(set_mod_par(1:5)).Eq.5)) Then ! GMSB
       kont = 0
       AoY_d_0 = 0._dp
       AoY_l_0 = 0._dp
@@ -858,9 +858,9 @@ Contains
       AoY_u_0 = 0._dp
       Fgmsb = Lambda * MlambdaS ! needed for the calculation of NLSP
       If (grav_fac.Ge.0) Then
-       m32 = grav_fac * 2.4e-19_dp * Fgmsb  ! gravitino mass in GeV  
+       m32 = grav_fac * 2.4e-19_dp * Fgmsb  ! gravitino mass in GeV
       Else
-       m32 = 2.4e-19_dp * Fgmsb  ! gravitino mass in GeV  
+       m32 = 2.4e-19_dp * Fgmsb  ! gravitino mass in GeV
       End If
 
       If (Lambda.Gt.MlambdaS) Then
@@ -896,7 +896,7 @@ Contains
    !----------------------------------------------------
    ! check if Higgs masses and mixings are given
    !----------------------------------------------------
-   A_nu(1,:) = AoY_nu(1,:) * Y_nu(1,:) 
+   A_nu(1,:) = AoY_nu(1,:) * Y_nu(1,:)
 
   Else If (i_particles.Eq.5) Then  ! MSSM + 2 nu_R particle content
    Call SetRGEscale(mZ2)
@@ -920,7 +920,7 @@ Contains
    !----------------------------------------------------
    ! check if Higgs masses and mixings are given
    !----------------------------------------------------
-   A_nu(1:2,:) = AoY_nu(1:2,:) * Y_nu(1:2,:) 
+   A_nu(1:2,:) = AoY_nu(1:2,:) * Y_nu(1:2,:)
    A_h02 = Ao_h02 * h02
    A_lam222 = Ao_lam222 * lam2
    A_lam112 = Ao_lam112 * lam112
@@ -979,12 +979,12 @@ Contains
    tanb_mZ = tanb
    A_h0 = Ao_h0 * h0
    A_lam = Ao_lam * lam
-   A_nu(1,:) = AoY_nu(1,:) * Y_nu(1,:) 
+   A_nu(1,:) = AoY_nu(1,:) * Y_nu(1,:)
    A_pns = Ao_hpns * h_pns
    If (lam_vs.Ne.0._dp) Then ! calulate either h0 or v_P
     If ((h0.Ne.0._dp).And.(vP.Eq.0._dp)) vp = sqrt2 * lam_vs / h0
     If ((h0.Eq.0._dp).And.(vP.Ne.0._dp)) h0 = sqrt2 * lam_vs / vp
-   End If 
+   End If
    !----------------------------------------------------
    ! check if 1st and 2nd generation parameters are set
    !----------------------------------------------------
@@ -1006,7 +1006,7 @@ Contains
   If (check_alpha(1).And.check_alpha(2)) Then
    Write(ErrCan,*) "Warning: alpha(0) and alpha(mZ) have been specified,"
    Write(ErrCan,*) "the consisteny has not been checked!"
-   in_kont(1) = 1 
+   in_kont(1) = 1
   End If
   !------------------------------------------
   ! recalculate quantities to be sure
@@ -1061,7 +1061,7 @@ Contains
     MnuR(3) = wert
     Y_nu_0(3,:) = vec3C
    End If
-    
+
    Y_nu_mR(1,:,1) = Y_nu_0(:,1)
    Y_nu_mR(2,:,1:2) = Y_nu_0(:,1:2)
    Y_nu_mR(3,:,:) = Y_nu_0
@@ -1095,7 +1095,7 @@ Contains
     MWM30(3,3) = wertC
     Yb3_H24_gut(3,:) = vec3C
    End If
-    
+
    Yb30_H24(3,:,:) = Yb3_H24_gut
    Yb30_H24(2,:,:) = Yb30_H24(3,:,:)
    Yb30_H24(2,:,3) = 0._dp
@@ -1261,7 +1261,7 @@ Contains
   Implicit None
    Integer, Intent(in) :: io
 
-    Do 
+    Do
      Read(io,*,End=200) read_line
      If (read_line(1:1).Eq."#") Cycle ! this loop
      Backspace(io) ! resetting to the beginning of the line
@@ -1302,7 +1302,7 @@ Contains
 
 
   Subroutine Warn_CPV(i_cpv, name)
-  Implicit None 
+  Implicit None
    Integer, Intent(in) :: i_cpv
    Character(len=*), Intent(in) :: name
    If (i_cpv.Eq.0) Write(ErrCan,*) "CP violation is switched off"
@@ -1316,7 +1316,7 @@ Contains
   Implicit None
    Integer, Intent(in) :: io
 
-    Do 
+    Do
      Read(io,*,End=200) read_line
      If (read_line(1:1).Eq."#") Cycle ! this loop
      Backspace(io) ! resetting to the beginning of the line
@@ -1468,7 +1468,7 @@ Contains
 
    Integer :: i1, i2
 
-    Do 
+    Do
      Read(io,*,End=200) read_line
      If (read_line(1:1).Eq."#") Cycle ! this loop
      Backspace(io) ! resetting to the beginning of the line
@@ -1504,7 +1504,7 @@ Contains
    Integer :: i_scheme
    Real(dp) :: scale
 
-    Do 
+    Do
      Read(io,*,End=200) read_line
      If (read_line(1:1).Eq."#") Cycle ! this loop
      Backspace(io) ! resetting to the beginning of the line
@@ -1537,7 +1537,7 @@ Contains
   Implicit None
    Integer, Intent(in) :: io
 
-    Do 
+    Do
      Read(io,*,End=200) read_line
      If (read_line(1:1).Eq."#") Cycle ! this loop
      Backspace(io) ! resetting to the beginning of the line
@@ -1568,7 +1568,7 @@ Contains
   Implicit None
    Integer, Intent(in) :: io
 
-    Do 
+    Do
      Read(io,*,End=200) read_line
 !     Write(*,*) read_line
      Backspace(io) ! resetting to the beginning of the line
@@ -1587,11 +1587,11 @@ Contains
      Case(2)
       lam12_0(1) = Cmplx(wert, Aimag(lam12_0(1) ), dp)
      Case(3)
-      lam12_0(1) = Cmplx(Real(lam12_0(1), dp ), wert, dp) 
+      lam12_0(1) = Cmplx(Real(lam12_0(1), dp ), wert, dp)
      Case(4)
       lam12_0(2) = Cmplx(wert, Aimag(lam12_0(2) ), dp)
      Case(5)
-      lam12_0(2) = Cmplx(Real(lam12_0(2), dp ), wert, dp) 
+      lam12_0(2) = Cmplx(Real(lam12_0(2), dp ), wert, dp)
      Case(6)
       If (wert.Eq.1) Then
        Fifteen_plet = .True.
@@ -1621,14 +1621,14 @@ Contains
     alpha = 0._dp
     beta = 0._dp
 
-    Do 
+    Do
      Read(io,*,End=200) read_line
 !     Write(*,*) read_line
      Backspace(io) ! resetting to the beginning of the line
      If ((read_line(1:1).Eq."#").Or.(read_line(1:1).Eq."B")  &
                                 .Or.(read_line(1:1).Eq."b") ) Exit ! this loop
      Read(io,*) i1, wert, read_line
-     Select Case(i1)     
+     Select Case(i1)
      Case(1)
       theta_12 = wert
       s12 = Sin(wert)
@@ -1685,15 +1685,15 @@ Contains
    Integer, Intent(in) :: io, i_cpv
 
    Real(dp) :: s12, s13, s23, c12, c13, c23, phase
-    
-    Do 
+
+    Do
      Read(io,*,End=200) read_line
 !     Write(*,*) read_line
      Backspace(io) ! resetting to the beginning of the line
      If ((read_line(1:1).Eq."#").Or.(read_line(1:1).Eq."B")  &
                                 .Or.(read_line(1:1).Eq."b") ) Exit ! this loop
      Read(io,*) i1, wert, read_line
-     Select Case(i1)     
+     Select Case(i1)
      Case(1)
       lam_wolf = wert
      Case(2)
@@ -1748,7 +1748,7 @@ Contains
    Integer, Intent(in) :: io
    Integer, Intent(inout) :: kont
 
-    Do 
+    Do
      Read(io,*,End=200) read_line
 !     Write(*,*) read_line
 
@@ -1790,7 +1790,7 @@ Contains
    i_cpv = 0
    i_rp = 0
 
-    Do 
+    Do
      Read(io,*) read_line
      If (read_line(1:1).Eq."#") Cycle ! this loop
      Backspace(io) ! resetting to the beginning of the line
@@ -1858,7 +1858,7 @@ Contains
        i_particles = 1
        i_model = 1
        Fifteen_plet = .True.
-      Else If (i_mod.Eq.114) Then  ! adding Higgs triplet 
+      Else If (i_mod.Eq.114) Then  ! adding Higgs triplet
        HighScaleModel = "SEESAW_II"
        check = SetHighScaleModel("SEESAW_II")
        i_particles = 1
@@ -1880,7 +1880,7 @@ Contains
        i_particles = 5
        i_model = 5
 ! Florian Staub
-      Else If (i_mod.Eq.113) Then  ! adding three 24-plet 
+      Else If (i_mod.Eq.113) Then  ! adding three 24-plet
        HighScaleModel = "SEESAW_III_3G"
 #ifdef SEESAWIII
        check = SetHighScaleModel("SEESAW_III_3G")
@@ -1953,9 +1953,9 @@ Contains
      Else If (i_test.Eq.11) Then
       If (i_mod.Lt.0) Then
        Write(*,*) &
-          & "You must not give a negative step number for entry 11 of Model",i_mod 
+          & "You must not give a negative step number for entry 11 of Model",i_mod
        Write(*,*) "It will be ignored"
-      Else If (i_mod.Ge.1) Then ! do nothing in case of 0 
+      Else If (i_mod.Ge.1) Then ! do nothing in case of 0
        n_Q_out = i_mod
        l_Q_out = .True.
       End If
@@ -1966,83 +1966,83 @@ Contains
        n_Q_out = 1           ! was not yet set
        l_Q_out = .True.
       End If
-       
+
 !      Call SetRGEScale(r_mod**2)  ! set Q_EWSB
 
      Else If (i_test.Eq.21) Then
       Select Case(i_mod)
       Case(6)
-       l_PDG_out(36) = .True. 
+       l_PDG_out(36) = .True.
       Case(25) ! h0
-       l_PDG_out(8) = .True. 
+       l_PDG_out(8) = .True.
       Case(35) ! H0
-       l_PDG_out(9) = .True. 
+       l_PDG_out(9) = .True.
       Case(36) ! A0
-       l_PDG_out(10) = .True. 
+       l_PDG_out(10) = .True.
       Case(37) ! H+
-       l_PDG_out(11) = .True. 
+       l_PDG_out(11) = .True.
       Case(45) ! H03
-       l_PDG_out(36) = .True. 
+       l_PDG_out(36) = .True.
       Case(46) ! A02
-       l_PDG_out(36) = .True. 
+       l_PDG_out(36) = .True.
       Case(1000001) ! ~d_1
-       l_PDG_out(18) = .True. 
+       l_PDG_out(18) = .True.
       Case(1000002)  ! ~u_1
-       l_PDG_out(12) = .True. 
+       l_PDG_out(12) = .True.
       Case(1000003)  ! ~d_2
-       l_PDG_out(20) = .True. 
+       l_PDG_out(20) = .True.
       Case(1000004)  ! ~u_2
-       l_PDG_out(14) = .True. 
+       l_PDG_out(14) = .True.
       Case(1000005) ! ~d_3
-       l_PDG_out(22) = .True. 
+       l_PDG_out(22) = .True.
       Case(1000006)  ! ~u_3
-       l_PDG_out(16) = .True. 
+       l_PDG_out(16) = .True.
       Case(1000011)  ! ~l_1
-       l_PDG_out(24) = .True. 
+       l_PDG_out(24) = .True.
       Case(1000012)  ! ~nu_1
-       l_PDG_out(30) = .True. 
+       l_PDG_out(30) = .True.
       Case(1000013)  ! ~l_2
-       l_PDG_out(26) = .True. 
+       l_PDG_out(26) = .True.
       Case(1000014)  ! ~nu_2
-       l_PDG_out(31) = .True. 
+       l_PDG_out(31) = .True.
       Case(1000015)  ! ~l_3
-       l_PDG_out(28) = .True. 
+       l_PDG_out(28) = .True.
       Case(1000016)  ! ~nu_3
-       l_PDG_out(33) = .True. 
+       l_PDG_out(33) = .True.
       Case(1000022) ! neutralino_1
-       l_PDG_out(4) = .True. 
+       l_PDG_out(4) = .True.
       Case(1000023) ! neutralino_2
-       l_PDG_out(5) = .True. 
+       l_PDG_out(5) = .True.
       Case(1000024) ! chargino_1
-       l_PDG_out(2) = .True. 
+       l_PDG_out(2) = .True.
       Case(1000025) ! neutralino_3
-       l_PDG_out(6) = .True. 
+       l_PDG_out(6) = .True.
       Case(1000035) ! neutralino_4
-       l_PDG_out(7) = .True. 
+       l_PDG_out(7) = .True.
       Case(1000037) ! chargino_2
-       l_PDG_out(3) = .True. 
+       l_PDG_out(3) = .True.
       Case(1000045) ! neutralino_5
-       l_PDG_out(36) = .True. 
+       l_PDG_out(36) = .True.
       Case(1000021)  ! gluino
-       l_PDG_out(1) = .True. 
+       l_PDG_out(1) = .True.
       Case(2000001) ! ~d_4
-       l_PDG_out(19) = .True. 
+       l_PDG_out(19) = .True.
       Case(2000002) ! ~u_4
-       l_PDG_out(13) = .True. 
+       l_PDG_out(13) = .True.
       Case(2000003) ! ~d_5
-       l_PDG_out(21) = .True. 
+       l_PDG_out(21) = .True.
       Case(2000004) ! ~u_5
-       l_PDG_out(15) = .True. 
+       l_PDG_out(15) = .True.
       Case(2000005) ! ~d_6
-       l_PDG_out(23) = .True. 
+       l_PDG_out(23) = .True.
       Case(2000006) ! ~u_6
-       l_PDG_out(17) = .True. 
+       l_PDG_out(17) = .True.
       Case(2000011) ! ~l_4
-       l_PDG_out(25) = .True. 
+       l_PDG_out(25) = .True.
       Case(2000013)  ! ~l_5
-       l_PDG_out(27) = .True. 
+       l_PDG_out(27) = .True.
       Case(2000015)  ! ~l_6
-       l_PDG_out(29) = .True. 
+       l_PDG_out(29) = .True.
       Case default
        Write(ErrCan,*) "In block MODSEL, entry 21"
        Write(ErrCan,*) "The number",i_mod,"either does not exist or corresponds"
@@ -2077,7 +2077,7 @@ Contains
     Pm = 0._dp
     Pp = 0._dp
     l_ISR = .False.
-    Do 
+    Do
      Read(io,*,End=200,err=200) read_line
 !     Write(*,*) trim(read_line)
      If (read_line(1:1).Eq."#") Cycle ! this loop
@@ -2097,7 +2097,7 @@ Contains
       End If
 
      Case(3)
-      If (Int(wert).Ne.0) Then 
+      If (Int(wert).Ne.0) Then
        External_Spectrum = .True.
        External_Higgs = .True.
       End If
@@ -2153,7 +2153,7 @@ Contains
               ! branching ratios of the V*
       If (Int(wert).Ne.0) BR_Higgs_with_offshell_V = .True.
       If (Int(wert).Eq.0) BR_Higgs_with_offshell_V = .False.
- 
+
      Case(21)  ! whether to calculate cross sections or not
       If (Int(wert).Eq.1) L_CS = .True.
       If (Int(wert).Eq.0) L_CS = .False.
@@ -2231,7 +2231,7 @@ Contains
        WriteOut = .True.
       End If
 
-     Case(37) ! if =1 -> CKM thourgh V_u, if =2 CKM through V_d 
+     Case(37) ! if =1 -> CKM thourgh V_u, if =2 CKM through V_d
       If ((wert.Eq.1._dp).Or.(wert.Eq.2._dp)) i1 =  SetYukawaScheme(Int(wert))
 
      Case(38) ! set looplevel of RGEs
@@ -2256,33 +2256,33 @@ Contains
 
 
      Case(80) ! exit for sure with non-zero value if a problem occurs
-      If (wert.Eq.1) Non_Zero_Exit = .True.      
+      If (wert.Eq.1) Non_Zero_Exit = .True.
 
      Case(89) ! quick and dirty way to implement model by Suchita Kulkarni
-      If (wert.Eq.1) Model_Suchita = .True.      
+      If (wert.Eq.1) Model_Suchita = .True.
 
      Case(90) ! add R-parity at low energies
-      If (wert.Eq.1) Add_Rparity = .True.      
+      If (wert.Eq.1) Add_Rparity = .True.
 
      Case(91) ! fit RP parameters such, that neutrino data are o.k.
-      If (wert.Eq.1) l_fit_RP_parameters = .True.      
+      If (wert.Eq.1) l_fit_RP_parameters = .True.
 
      Case(92) ! for Pythia input
-      If (wert.Eq.1) l_RP_Pythia = .True.      
+      If (wert.Eq.1) l_RP_Pythia = .True.
 
      Case(93) ! calculates cross section in case of RP, only partially implemented
-      If (wert.Eq.1) l_CSrp = .True.      
+      If (wert.Eq.1) l_CSrp = .True.
 
      Case(94) ! calculates cross section in case of RP, only partially implemented
       If ((wert.Eq.1).Or.(wert.Eq.2)) io_RP = wert
 
      Case(99) ! MADGraph output style, some additional information
-      If (wert.Eq.1) MADGraph_style = .True. 
+      If (wert.Eq.1) MADGraph_style = .True.
 
-     Case(100) ! use bsstep instead of 
+     Case(100) ! use bsstep instead of
       If (wert.Eq.1) test_l = Set_Use_bsstep_instead_of_rkqs(.True.)
 
-     Case(101) ! use bsstep instead of 
+     Case(101) ! use bsstep instead of
       If (wert.Eq.1) test_l = Set_Use_rzextr_instead_of_pzextr(.True.)
 
      Case(110) ! write output for LHC observables
@@ -2301,7 +2301,7 @@ Contains
                & ,i_par,wert
      End Select ! i_par
 
-    End Do  ! i_par 
+    End Do  ! i_par
 
    200 Return
 
@@ -2325,7 +2325,7 @@ Contains
     End If
 !    Write(ErrCan,*) "Reading EXTPAR"
 
-    Do 
+    Do
      Read(io,*,End=200) read_line
 !     Write(*,*) trim(read_line)
      If (read_line(1:1).Eq."#") Cycle ! this loop
@@ -2349,12 +2349,12 @@ Contains
       If (i_model.Eq.0) Call SetRGEScale(wert**2)  ! in case of MSSM
       If (i_model.Eq.1) Call SetGUTScale(wert)     ! Sugra
       If (i_model.Eq.3) Call SetGUTScale(wert)     ! AMSB
-     Else If (i_par.Eq.1) Then 
+     Else If (i_par.Eq.1) Then
       n_extpar(1) = "M_1"
-      If (i_c.Eq.0) Mi(1) = Cmplx(wert, Aimag(Mi(1)), dp) 
-      If (i_c.Eq.0) Mi_0(1) = Cmplx(wert, Aimag(Mi_0(1)), dp) 
+      If (i_c.Eq.0) Mi(1) = Cmplx(wert, Aimag(Mi(1)), dp)
+      If (i_c.Eq.0) Mi_0(1) = Cmplx(wert, Aimag(Mi_0(1)), dp)
       If (i_c.Eq.1) Mi(1) = Cmplx(Real(Mi(1),dp), wert, dp)
-      If (i_c.Eq.1) Mi_0(1) = Cmplx(Real(Mi_0(1),dp), wert, dp)  
+      If (i_c.Eq.1) Mi_0(1) = Cmplx(Real(Mi_0(1),dp), wert, dp)
       set_mod_par(1) = 1
      Else If (i_par.Eq.2) Then
 
@@ -2362,43 +2362,43 @@ Contains
       If (i_c.Eq.0) Mi(2) = Cmplx(wert, Aimag(Mi(2)), dp)
       If (i_c.Eq.0) Mi_0(2) = Cmplx(wert, Aimag(Mi_0(2)), dp)
       If (i_c.Eq.1) Mi(2) = Cmplx(Real(Mi(2),dp), wert, dp)
-      If (i_c.Eq.1) Mi_0(2) = Cmplx(Real(Mi_0(2),dp), wert, dp)  
+      If (i_c.Eq.1) Mi_0(2) = Cmplx(Real(Mi_0(2),dp), wert, dp)
       set_mod_par(2) = 1
-     Else If (i_par.Eq.3) Then 
+     Else If (i_par.Eq.3) Then
       n_extpar(3) = "M_3"
-      If (i_c.Eq.0) Mi(3) = Cmplx(wert, Aimag(Mi(3)), dp) 
-      If (i_c.Eq.0) Mi_0(3) = Cmplx(wert, Aimag(Mi_0(3)), dp) 
+      If (i_c.Eq.0) Mi(3) = Cmplx(wert, Aimag(Mi(3)), dp)
+      If (i_c.Eq.0) Mi_0(3) = Cmplx(wert, Aimag(Mi_0(3)), dp)
       If (i_c.Eq.1) Mi(3) = Cmplx(Real(Mi(3),dp), wert, dp)
-      If (i_c.Eq.1) Mi_0(3) = Cmplx(Real(Mi_0(3),dp), wert, dp)  
+      If (i_c.Eq.1) Mi_0(3) = Cmplx(Real(Mi_0(3),dp), wert, dp)
       set_mod_par(3) = 1
-     Else If (i_par.Eq.11) Then 
+     Else If (i_par.Eq.11) Then
       n_extpar(11) = "A_t"
-      If (i_c.Eq.0) AoY_u(3,3) = Cmplx(wert, Aimag(AoY_u(3,3)), dp) 
-      If (i_c.Eq.1) AoY_u(3,3) = Cmplx(Real(AoY_u(3,3),dp), wert, dp) 
+      If (i_c.Eq.0) AoY_u(3,3) = Cmplx(wert, Aimag(AoY_u(3,3)), dp)
+      If (i_c.Eq.1) AoY_u(3,3) = Cmplx(Real(AoY_u(3,3),dp), wert, dp)
       At_save = AoY_u(3,3)
-      AoY_u_0 = AoY_u 
+      AoY_u_0 = AoY_u
       set_mod_par(4) = 1
-     Else If (i_par.Eq.12) Then 
+     Else If (i_par.Eq.12) Then
       n_extpar(12) = "A_b"
       If (i_c.Eq.0) AoY_d(3,3) = Cmplx(wert, Aimag(AoY_d(3,3)), dp)
-      If (i_c.Eq.1) AoY_d(3,3) = Cmplx(Real(AoY_d(3,3),dp), wert, dp) 
+      If (i_c.Eq.1) AoY_d(3,3) = Cmplx(Real(AoY_d(3,3),dp), wert, dp)
       Ab_save = AoY_d(3,3)
-      AoY_d_0 = AoY_d 
+      AoY_d_0 = AoY_d
       set_mod_par(5) = 1
-     Else If (i_par.Eq.13) Then 
+     Else If (i_par.Eq.13) Then
       n_extpar(13) = "A_tau"
-      If (i_c.Eq.0) AoY_l(3,3) = Cmplx(wert, Aimag(AoY_l(3,3)), dp) 
-      If (i_c.Eq.1) AoY_l(3,3) = Cmplx(Real(AoY_l(3,3),dp), wert, dp) 
+      If (i_c.Eq.0) AoY_l(3,3) = Cmplx(wert, Aimag(AoY_l(3,3)), dp)
+      If (i_c.Eq.1) AoY_l(3,3) = Cmplx(Real(AoY_l(3,3),dp), wert, dp)
       Atau_save = AoY_l(3,3)
-      AoY_l_0 = AoY_l 
+      AoY_l_0 = AoY_l
       set_mod_par(6) = 1
-     Else If ((i_par.Eq.21).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.21).And.(i_c.Eq.0)) Then
       n_extpar(21) = "M^2_Hd"
       M2_H(1) = wert
       M2_H_0(1) = wert
       set_mod_par(7) = 1
 
-     Else If ((i_par.Eq.22).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.22).And.(i_c.Eq.0)) Then
       n_extpar(22) = "M^2_Hu"
       M2_H(2) = wert
       M2_H_0(2) = wert
@@ -2406,7 +2406,7 @@ Contains
 
      Else If (i_par.Eq.23) Then
       n_extpar(23) = "mu"
-      If ((i_model.Eq.0).Or.(HighScaleModel.Eq."NMSSM")) Then 
+      If ((i_model.Eq.0).Or.(HighScaleModel.Eq."NMSSM")) Then
        If (i_c.Eq.0) mu = Cmplx(wert, Aimag(mu), dp)
        If (i_c.Eq.1) mu = Cmplx(Real(mu,dp), wert, dp)
        set_mod_par(9) = 1
@@ -2418,11 +2418,11 @@ Contains
        Write(ErrCan,*) &
          &   "mu can only be specified in the general (N)MSSM and mSUGRA"
        Write(ErrCan,*) "and is ignored for the high scale models GMSB and AMSB"
-      End If 
+      End If
 
-     Else If ((i_par.Eq.24).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.24).And.(i_c.Eq.0)) Then
       n_extpar(24) = "M^2_A(Q)"
-      If ((i_model.Eq.0).Or.(i_model.Eq.0)) Then 
+      If ((i_model.Eq.0).Or.(i_model.Eq.0)) Then
        mP02(2) = wert
        If (mP02(2).Ge.0._dp) mP0(2) = Sqrt(mP02(2))
        set_mod_par(10) = 1
@@ -2430,16 +2430,16 @@ Contains
        Write(ErrCan,*) "m_A0(Q) can only be specified in the general MSSM and is"
        Write(ErrCan,*) "ignored for high scale models like SUGRA, GMSB or AMSB"
       End If
- 
-     Else If ((i_par.Eq.25).And.(i_c.Eq.0)) Then 
+
+     Else If ((i_par.Eq.25).And.(i_c.Eq.0)) Then
       n_extpar(25) = "tan(beta)"
       tanb = wert
       tanb_Q = wert
       tanb_in_at_Q = .True.
 
-     Else If ((i_par.Eq.26).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.26).And.(i_c.Eq.0)) Then
       n_extpar(26) = "m_A, pole mass"
-      If (i_model.Eq.0) Then 
+      If (i_model.Eq.0) Then
        HighScaleModel = "pMSSM"
        check = SetHighScaleModel("pMSSM")
        P0(2)%m = wert
@@ -2448,14 +2448,14 @@ Contains
        mP0(2) = wert
        mP02(2) = wert**2
        set_mod_par(10) = 1
-      Else If (i_model.Eq.1) Then 
+      Else If (i_model.Eq.1) Then
        P0(2)%m = wert
        P0(2)%m2 = wert**2
 ! to be checked
        mP0(2) = wert
        mP02(2) = wert**2
        set_mod_par(10) = 1
-      Else If (HighScaleModel.Eq."RPspon") Then 
+      Else If (HighScaleModel.Eq."RPspon") Then
        mP0(2) = wert
        mP02(2) = wert**2
       Else
@@ -2463,77 +2463,77 @@ Contains
        Write(ErrCan,*) "ignored for high scale models like SUGRA, GMSB or AMSB"
       End If
 
-     Else If ((i_par.Eq.31).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.31).And.(i_c.Eq.0)) Then
       n_extpar(31) = "M^2_L11"
       M2L_pmns(1,1) = wert**2
       M2L_0_pmns(1,1) = M2L_pmns(1,1)
       set_mod_par(11) = 1
-     Else If ((i_par.Eq.32).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.32).And.(i_c.Eq.0)) Then
       n_extpar(32) = "M^2_L22"
       M2L_pmns(2,2) = wert**2
       M2L_0_pmns(2,2) = M2L_pmns(2,2)
       set_mod_par(12) = 1
-     Else If ((i_par.Eq.33).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.33).And.(i_c.Eq.0)) Then
       n_extpar(33) = "M^2_L33"
       M2L_pmns(3,3) = wert**2
       M2L_0_pmns(3,3) = M2L_pmns(3,3)
       set_mod_par(13) = 1
-     Else If ((i_par.Eq.34).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.34).And.(i_c.Eq.0)) Then
       n_extpar(34) = "M^2_E11"
       M2E_pmns(1,1) = wert**2
       M2E_0_pmns(1,1) = M2E_pmns(1,1)
       set_mod_par(14) = 1
-     Else If ((i_par.Eq.35).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.35).And.(i_c.Eq.0)) Then
       n_extpar(35) = "M^2_E22"
       M2E_pmns(2,2) = wert**2
       M2E_0_pmns(2,2) = M2E_pmns(2,2)
       set_mod_par(15) = 1
-     Else If ((i_par.Eq.36).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.36).And.(i_c.Eq.0)) Then
       n_extpar(36) = "M^2_E33"
       M2E_pmns(3,3) = wert**2
       M2E_0_pmns(3,3) = M2E_pmns(3,3)
       set_mod_par(16) = 1
-     Else If ((i_par.Eq.41).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.41).And.(i_c.Eq.0)) Then
       n_extpar(41) = "M^2_Q11"
       M2Q_sckm(1,1) = wert**2
       M2Q_0_sckm(1,1) = M2Q_sckm(1,1)
       set_mod_par(17) = 1
-     Else If ((i_par.Eq.42).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.42).And.(i_c.Eq.0)) Then
       n_extpar(42) = "M^2_Q22"
       M2Q_sckm(2,2) = wert**2
       M2Q_0_sckm(2,2) = M2Q_sckm(2,2)
       set_mod_par(18) = 1
-     Else If ((i_par.Eq.43).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.43).And.(i_c.Eq.0)) Then
       n_extpar(43) = "M^2_Q33"
       M2Q_sckm(3,3) = wert**2
       M2Q_0_sckm(3,3) = M2Q_sckm(3,3)
       set_mod_par(19) = 1
-     Else If ((i_par.Eq.44).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.44).And.(i_c.Eq.0)) Then
       n_extpar(44) = "M^2_U11"
       M2U_sckm(1,1) = wert**2
       M2U_0_sckm(1,1) = M2U_sckm(1,1)
       set_mod_par(20) = 1
-     Else If ((i_par.Eq.45).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.45).And.(i_c.Eq.0)) Then
       n_extpar(45) = "M^2_U22"
       M2U_sckm(2,2) = wert**2
       M2U_0_sckm(2,2) = M2U_sckm(2,2)
       set_mod_par(21) = 1
-     Else If ((i_par.Eq.46).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.46).And.(i_c.Eq.0)) Then
       n_extpar(46) = "M^2_U33"
       M2U_sckm(3,3) = wert**2
       M2U_0_sckm(3,3) = M2U_sckm(3,3)
       set_mod_par(22) = 1
-     Else If ((i_par.Eq.47).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.47).And.(i_c.Eq.0)) Then
       n_extpar(47) = "M^2_D11"
       M2D_sckm(1,1) = wert**2
       M2D_0_sckm(1,1) = M2D_sckm(1,1)
       set_mod_par(23) = 1
-     Else If ((i_par.Eq.48).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.48).And.(i_c.Eq.0)) Then
       n_extpar(48) = "M^2_D22"
       M2D_sckm(2,2) = wert**2
       M2D_0_sckm(2,2) = M2D_sckm(2,2)
       set_mod_par(24) = 1
-     Else If ((i_par.Eq.49).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.49).And.(i_c.Eq.0)) Then
       n_extpar(49) = "M^2_D33"
       M2D_sckm(3,3) = wert**2
       M2D_0_sckm(3,3) = M2D_sckm(3,3)
@@ -2542,26 +2542,26 @@ Contains
      !------------------------------
      ! NMSSM
      !------------------------------
-     Else If (i_par.Eq.61) Then 
+     Else If (i_par.Eq.61) Then
       n_extpar(61) = "lambda"
-      If (i_c.Eq.0) h0 = Cmplx(wert, Aimag(h0),dp) 
+      If (i_c.Eq.0) h0 = Cmplx(wert, Aimag(h0),dp)
       If (i_c.Eq.1) h0 = Cmplx(Real(h0,dp), wert, dp)
-     Else If (i_par.Eq.62) Then 
+     Else If (i_par.Eq.62) Then
       n_extpar(62) = "kappa"
       ! different convention with respect to Cyril
       If (i_c.Eq.0) lam = Cmplx(2._dp * wert, Aimag(lam),dp)
       If (i_c.Eq.1) lam = Cmplx(Real(lam,dp), 2._dp * wert, dp)
-     Else If (i_par.Eq.63) Then 
+     Else If (i_par.Eq.63) Then
       n_extpar(63) = "A_lambda"
-      If (i_c.Eq.0) Ao_h0 = Cmplx(wert, Aimag(Ao_h0),dp) 
+      If (i_c.Eq.0) Ao_h0 = Cmplx(wert, Aimag(Ao_h0),dp)
       If (i_c.Eq.1) Ao_lam = Cmplx(Real(Ao_lam,dp), wert, dp)
-     Else If (i_par.Eq.64) Then 
+     Else If (i_par.Eq.64) Then
       n_extpar(64) = "A_kappa"
-      If (i_c.Eq.0) Ao_lam = Cmplx(wert, Aimag(Ao_lam),dp) 
+      If (i_c.Eq.0) Ao_lam = Cmplx(wert, Aimag(Ao_lam),dp)
       If (i_c.Eq.1) Ao_lam = Cmplx(Real(Ao_lam,dp), wert, dp)
      Else If (i_par.Eq.65) Then
       n_extpar(65) = "mu_eff"
-      If ((HighScaleModel.Eq."NMSSM").Or.(HighScaleModel.Eq."RPspon")) Then 
+      If ((HighScaleModel.Eq."NMSSM").Or.(HighScaleModel.Eq."RPspon")) Then
        If (i_c.Eq.0) lam_vS = Cmplx(wert, Aimag(lam_vS),dp)
        If (i_c.Eq.1) lam_vS = Cmplx(Real(lam_vS,dp), wert, dp)
        set_mod_par(9) = 1
@@ -2570,26 +2570,26 @@ Contains
        Write(ErrCan,*) "mu can only be specified in this way in the NMSSM and"
        Write(ErrCan,*) "is ignored in model "//Trim(HighScaleModel)
       End If
-     
+
      !---------------------------------------
      ! explicit R-parity breaking a la Munoz
      ! and spontaneous R-parity breaking
      !---------------------------------------
       Else If (i_par.Eq.71) Then
         M2_P = wert
-      Else If (i_par.Eq.72) Then 
+      Else If (i_par.Eq.72) Then
        vP = wert ! has to be replaced by v_R later in case of Munoz
-      Else If (i_par.Eq.73) Then 
+      Else If (i_par.Eq.73) Then
        Y_nu(1,1) = wert ! has to be replaced by hnu(1) later
-      Else If (i_par.Eq.74) Then 
+      Else If (i_par.Eq.74) Then
        Y_nu(1,2) = wert ! has to be replaced by hnu(1) later
-      Else If (i_par.Eq.75) Then 
+      Else If (i_par.Eq.75) Then
        Y_nu(1,3) = wert ! has to be replaced by hnu(1) later
-      Else If (i_par.Eq.76) Then 
+      Else If (i_par.Eq.76) Then
        AoY_nu(1,1) = wert ! has to be replaced by AoY_nu(1) later
-      Else If (i_par.Eq.77) Then 
+      Else If (i_par.Eq.77) Then
        AoY_nu(1,2) = wert ! has to be replaced by AoY_nu(1) later
-      Else If (i_par.Eq.78) Then 
+      Else If (i_par.Eq.78) Then
        AoY_nu(1,3) = wert ! has to be replaced by AoY_nu(1) later
      !---------------------------------------
      ! spontaneous R-parity breaking
@@ -2598,70 +2598,70 @@ Contains
         M2_S = wert
       Else If (i_par.Eq.82) Then
         M2_R(1,1) = wert
-      Else If (i_par.Eq.83) Then 
-       vS = wert 
-      Else If (i_par.Eq.84) Then 
-       vR = wert  
-      Else If (i_par.Eq.85) Then 
-       h_pns = wert  
-      Else If (i_par.Eq.86) Then 
-       Ao_hpns = wert  
-      Else If (i_par.Eq.87) Then 
-       M_rs = wert  
-      Else If (i_par.Eq.88) Then 
-       M_phi = wert  
-      Else If (i_par.Eq.89) Then 
-       BM_rs = wert  
-      Else If (i_par.Eq.90) Then 
-       BM_phi = wert  
+      Else If (i_par.Eq.83) Then
+       vS = wert
+      Else If (i_par.Eq.84) Then
+       vR = wert
+      Else If (i_par.Eq.85) Then
+       h_pns = wert
+      Else If (i_par.Eq.86) Then
+       Ao_hpns = wert
+      Else If (i_par.Eq.87) Then
+       M_rs = wert
+      Else If (i_par.Eq.88) Then
+       M_phi = wert
+      Else If (i_par.Eq.89) Then
+       BM_rs = wert
+      Else If (i_par.Eq.90) Then
+       BM_phi = wert
      !---------------------------------------
      ! explicit R-parity breaking a la Munoz
      ! and spontaneous R-parity breaking
      !---------------------------------------
       Else If (i_par.Eq.91) Then
-       If (i_c.Eq.0) h02 = Cmplx(wert, Aimag(h02),dp) 
+       If (i_c.Eq.0) h02 = Cmplx(wert, Aimag(h02),dp)
        If (i_c.Eq.1) h02 = Cmplx(Real(h02,dp), wert, dp)
-      Else If (i_par.Eq.92) Then 
+      Else If (i_par.Eq.92) Then
         ! different convention  with respect to Cyril
-       If (i_c.Eq.0) lam2 = Cmplx(2._dp * wert, Aimag(lam2),dp) 
+       If (i_c.Eq.0) lam2 = Cmplx(2._dp * wert, Aimag(lam2),dp)
        If (i_c.Eq.1) lam2 = Cmplx(Real(lam2,dp), 2._dp * wert , dp)
-      Else If (i_par.Eq.93) Then 
-       If (i_c.Eq.0) lam112 = Cmplx(wert, Aimag(lam112),dp) 
+      Else If (i_par.Eq.93) Then
+       If (i_c.Eq.0) lam112 = Cmplx(wert, Aimag(lam112),dp)
        If (i_c.Eq.1) lam112 = Cmplx(Real(lam112,dp), wert, dp)
-      Else If (i_par.Eq.94) Then 
-       If (i_c.Eq.0) lam122 = Cmplx(wert, Aimag(lam122),dp) 
+      Else If (i_par.Eq.94) Then
+       If (i_c.Eq.0) lam122 = Cmplx(wert, Aimag(lam122),dp)
        If (i_c.Eq.1) lam122 = Cmplx(Real(lam122,dp), wert, dp)
-      Else If (i_par.Eq.95) Then 
+      Else If (i_par.Eq.95) Then
        If (i_c.Eq.0) Ao_h02 = Cmplx(wert, Aimag(Ao_h02),dp)
        If (i_c.Eq.1) Ao_h02 = Cmplx(Real(Ao_h02,dp), wert, dp)
-      Else If (i_par.Eq.96) Then 
-       If (i_c.Eq.0) Ao_lam222 = Cmplx(wert, Aimag(Ao_lam222),dp) 
+      Else If (i_par.Eq.96) Then
+       If (i_c.Eq.0) Ao_lam222 = Cmplx(wert, Aimag(Ao_lam222),dp)
        If (i_c.Eq.1) Ao_lam222 = Cmplx(Real(Ao_lam222,dp), wert, dp)
-      Else If (i_par.Eq.97) Then 
+      Else If (i_par.Eq.97) Then
        If (i_c.Eq.0) Ao_lam112 = Cmplx(wert, Aimag(Ao_lam112),dp)
-       If (i_c.Eq.1) Ao_lam112 = Cmplx(Real(Ao_lam112,dp), wert, dp) 
-      Else If (i_par.Eq.98) Then 
+       If (i_c.Eq.1) Ao_lam112 = Cmplx(Real(Ao_lam112,dp), wert, dp)
+      Else If (i_par.Eq.98) Then
        If (i_c.Eq.0) Ao_lam122 = Cmplx(wert, Aimag(Ao_lam122),dp)
        If (i_c.Eq.1) Ao_lam122 = Cmplx(Real(Ao_lam122,dp), wert, dp)
-      Else If (i_par.Eq.99) Then 
+      Else If (i_par.Eq.99) Then
        M2_R(2,2) = wert**2
-      Else If (i_par.Eq.100) Then 
+      Else If (i_par.Eq.100) Then
        vP2 = wert ! has to be replaced by v_R2 later
-      Else If (i_par.Eq.101) Then 
+      Else If (i_par.Eq.101) Then
        Y_nu(2,1) = wert ! has to be replaced by hnu2(1) later
-      Else If (i_par.Eq.102) Then 
+      Else If (i_par.Eq.102) Then
        Y_nu(2,2) = wert ! has to be replaced by hnu2(2) later
-      Else If (i_par.Eq.103) Then 
+      Else If (i_par.Eq.103) Then
        Y_nu(2,3) = wert ! has to be replaced by hnu2(3) later
-      Else If (i_par.Eq.104) Then 
+      Else If (i_par.Eq.104) Then
        AoY_nu(2,1) = wert ! has to be replaced by AoY_nu2(1) later
-      Else If (i_par.Eq.105) Then 
+      Else If (i_par.Eq.105) Then
        AoY_nu(2,2) = wert ! has to be replaced by AoY_nu2(2) later
-      Else If (i_par.Eq.106) Then 
+      Else If (i_par.Eq.106) Then
        AoY_nu(2,3) = wert ! has to be replaced by AoY_nu2(3) later
 
 ! Florian Staub, Seesaw II+III
-      Else If (i_par.Eq.200) Then 
+      Else If (i_par.Eq.200) Then
        If (i_c.Eq.0) MTM0 = Cmplx(wert, Aimag(MTM0),dp)
        If (i_c.Eq.1) MTM0 = Cmplx(Real(MTM0,dp), wert,dp)
        If (i_c.Eq.0) Then
@@ -2672,11 +2672,11 @@ Contains
         MZ15_mH3 = wert
        End If
        MTM_GUT = MTM0
-      Else If (i_par.Eq.202) Then 
+      Else If (i_par.Eq.202) Then
        If (i_c.Eq.0) Lambda1_gut = Cmplx(wert, Aimag(Lambda1_gut),dp)
        If (i_c.Eq.1) Lambda1_gut = Cmplx(Real(Lambda1_gut,dp), wert,dp)
        lam12_0(1) = Lambda1_gut
-      Else If (i_par.Eq.203) Then 
+      Else If (i_par.Eq.203) Then
        If (i_c.Eq.0) Lambda2_gut = Cmplx(wert, Aimag(Lambda2_gut),dp)
        If (i_c.Eq.1) Lambda2_gut = Cmplx(Real(Lambda2_gut,dp), wert,dp)
        lam12_0(2) = Lambda2_gut
@@ -2706,11 +2706,11 @@ Contains
       End If
      End If
 !     Write(errcan,*) i_par,wert
-    End Do  ! i_par 
+    End Do  ! i_par
 
     200 Return
 
-  End Subroutine Read_EXTPAR 
+  End Subroutine Read_EXTPAR
 
 
   Subroutine Read_MINPAR(io, i_c, i_model, set_mod_par, kont)
@@ -2730,7 +2730,7 @@ Contains
      Return
     End If
 
-    Do 
+    Do
      Read(io,*,End=200) read_line
 !     Write(*,*) read_line
      If (read_line(1:1).Eq."#") Cycle ! this loop
@@ -2740,7 +2740,7 @@ Contains
      Read(io,*) i_par,wert ! ,read_line
 ! Write(*,*) i_c,i_par,wert ! ,read_line
 ! Write(*,*) i_model
-     If ((i_par.Eq.1).And.(i_c.Eq.0)) Then 
+     If ((i_par.Eq.1).And.(i_c.Eq.0)) Then
       If (i_model.Eq.1) Then ! mSugra, M_0
        set_mod_par(1) = 1
        M2D_0_sckm = 0._dp
@@ -2762,10 +2762,10 @@ Contains
        M0_amsb = wert
       End If
 
-     Else If (i_par.Eq.2) Then 
+     Else If (i_par.Eq.2) Then
       If (i_model.Eq.1) Then ! mSugra, M_1/2
        set_mod_par(2) = 1
-       If (i_c.Eq.0) Mi_0 =  Cmplx(wert, Aimag(Mi_0),dp) 
+       If (i_c.Eq.0) Mi_0 =  Cmplx(wert, Aimag(Mi_0),dp)
        If (i_c.Eq.1) Mi_0 =  Cmplx(Real(Mi_0,dp),  wert, dp)
       Else If ((i_model.Eq.2).And.(i_c.Eq.0)) Then ! GMSB, M_M
        set_mod_par(2) = 1
@@ -2775,24 +2775,24 @@ Contains
        M_32 = wert
       End If
 
-     Else If ((i_par.Eq.3).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.3).And.(i_c.Eq.0)) Then
       If ((i_model.Ge.0).And.(i_model.Le.3)) Then ! MSSM, mSugra, GMSB, AMSB
        set_mod_par(3) = 1
        tanb = wert
        tanb_mZ = wert
       End If
 
-     Else If (i_par.Eq.4) Then 
+     Else If (i_par.Eq.4) Then
       If ((i_model.Ge.0).And.(i_model.Le.3)) Then ! MSSM, mSugra, GMSB, AMSB, sign_mu
        set_mod_par(4) = 1
        If (i_c.Eq.0) phase_mu = Cmplx(wert, Aimag(phase_mu),dp)
        If (i_c.Eq.1) phase_mu = Cmplx(Real(phase_mu, dp),  wert, dp)
       End If
 
-     Else If (i_par.Eq.5) Then 
+     Else If (i_par.Eq.5) Then
       If (i_model.Eq.1) Then ! mSugra, A_0
        set_mod_par(5) = 1
-       If (i_c.Eq.0) AoY_d_0 = Cmplx(wert, Aimag(AoY_d_0),dp) 
+       If (i_c.Eq.0) AoY_d_0 = Cmplx(wert, Aimag(AoY_d_0),dp)
        If (i_c.Eq.1) AoY_d_0 = Cmplx( Real(AoY_d_0,dp) , wert, dp)
        AoY_l_0 = AoY_d_0
        AoY_u_0 = AoY_d_0
@@ -2807,7 +2807,7 @@ Contains
        n10plets = 0
       End If
 
-     Else If ((i_par.Eq.6).And.(i_c.Eq.0)) Then 
+     Else If ((i_par.Eq.6).And.(i_c.Eq.0)) Then
       If (i_model.Eq.2) Then ! GMSB, Gravitino mass factor
        set_mod_par(6) = 1
        grav_fac = wert
@@ -2820,20 +2820,20 @@ Contains
       D_SO_10 = wert
 
      Else If (i_par.Eq.9) Then ! SUGRA_SU5, real(lambda(m_GUT))
-      If (i_c.Eq.0) lam_0 = Cmplx(wert, Aimag(lam_0),dp) 
+      If (i_c.Eq.0) lam_0 = Cmplx(wert, Aimag(lam_0),dp)
       If (i_c.Eq.1) lam_0 = Cmplx( Real(lam_0,dp), wert, dp)
- 
+
      Else If (i_par.Eq.10) Then ! SUGRA_SU5, real(lambda'(m_GUT))
-      If (i_c.Eq.0) lamp_0 = Cmplx(wert, Aimag(lamp_0), dp) 
-      If (i_c.Eq.1) lamp_0 = Cmplx( Real(lamp_0,dp), wert, dp) 
- 
-     Else 
+      If (i_c.Eq.0) lamp_0 = Cmplx(wert, Aimag(lamp_0), dp)
+      If (i_c.Eq.1) lamp_0 = Cmplx( Real(lamp_0,dp), wert, dp)
+
+     Else
       Write(ErrCan,*) "Error in routine "//NameOfUnit(Iname)
-      If (i_c.Eq.0) Write(ErrCan,*) "Unknown entry for Block MINPAR ",i_par 
-      If (i_c.Eq.1) Write(ErrCan,*) "Unknown entry for Block IMMINPAR ",i_par 
+      If (i_c.Eq.0) Write(ErrCan,*) "Unknown entry for Block MINPAR ",i_par
+      If (i_c.Eq.1) Write(ErrCan,*) "Unknown entry for Block IMMINPAR ",i_par
       Call AddError(304)
       If (ErrorLevel.Eq.2) Call TerminateProgram
-     End If 
+     End If
 
     End Do ! i_par
 
@@ -2844,12 +2844,12 @@ Contains
   Subroutine Read_SMinput(io)
   Implicit None
    Integer, Intent(in) :: io
-   
+
    Integer :: i_sm
    Real(dp) :: wert
    Character(len=80) :: read_line
 
-    Do 
+    Do
      Read(io,*) read_line
      If (read_line(1:1).Eq."#") Cycle ! this loop
      Backspace(io) ! resetting to the beginning of the line
@@ -2898,7 +2898,7 @@ Contains
       calc_ferm = .True.
 
      Case(12) ! m_nu_1, input is in GeV
-      Mf_nu(1) = wert 
+      Mf_nu(1) = wert
       l_pmns(2) = .True.
 
      Case(13) ! muon mass
@@ -2907,7 +2907,7 @@ Contains
       calc_ferm = .True.
 
      Case(14) ! m_nu_2, input is in eV, transform to GeV
-      Mf_nu(2) = wert 
+      Mf_nu(2) = wert
       l_pmns(2) = .True.
 
      Case(21) ! d-quark mass at 2 GeV
@@ -2932,14 +2932,14 @@ Contains
 
      Case Default
       If (output_screen) &
-           & Write(*,*) "Ignoring unknown entry for Block SMINPUTS ",i_sm 
-      Write(ErrCan,*) "Ignoring unknown entry for Block SMINPUTS ",i_sm 
+           & Write(*,*) "Ignoring unknown entry for Block SMINPUTS ",i_sm
+      Write(ErrCan,*) "Ignoring unknown entry for Block SMINPUTS ",i_sm
      End Select
 
     End Do ! i_sm
 
   End Subroutine Read_SMinput
- 
+
  End  Subroutine LesHouches_Input
 
 
@@ -2952,10 +2952,10 @@ Contains
       & , Rho_parameter, Ecms, Pm, Pp, ISR, SigSup, SigSdown, SigSle &
       & , SigSn, SigChi0, SigC, SigS0, SigSP, SigHp, omega, f_name)
  !--------------------------------------------------------------------
- ! writes out data using the Les Houches standard as defined in 
+ ! writes out data using the Les Houches standard as defined in
  ! hep-ph/0311123
  ! input:
- !   - HighScaleModel ........ string specifiying the model 
+ !   - HighScaleModel ........ string specifiying the model
  !   - M_GUT ................. scale of high scale theory, in general a GUT theory
  !   - BRbtosgamma ........... 10^4 BR(b -> s gamma)
  !   - a_mu .................. SUSY contribution to (g-2)_muon
@@ -3006,7 +3006,7 @@ Contains
      & , c_sm(7)
   Character(len=4) :: c_S0(6), c_P0(5)
   Character(len=8) :: Datum
-  Integer :: n_n, n_c, n_s0, n_p0, n_spm, n_sl, n_sn, n_sd, n_su 
+  Integer :: n_n, n_c, n_s0, n_p0, n_spm, n_sl, n_sn, n_sd, n_su
   Integer :: id_n(8), id_sp(7), id_sm(7), id_S0(6), id_P0(5), id_c(5), id_snu(3)
   Integer, Parameter ::id_A0 = 36, id_Hp = 37                            &
       & , id_W = 24, id_Z = 23, id_ph = 22, id_gl = 21                   &
@@ -3015,31 +3015,31 @@ Contains
       & , id_grav = 1000039, id_glu = 1000021
   Logical :: non_minimal ! checks if there is deviations from the minimal models
   Logical, Save :: l_open = .True. ! in case of a loop I want to open the
-                                   ! output only once 
+                                   ! output only once
   !-------------------------------------------------------------------
   ! these variables are useful for the case of R-parity violation
   !------------------------------------------------------------------
   Integer :: i1_min
   Logical :: file_exists,  use_new_RP
-  !--------------------------------------------------------------------- 
-  ! mixing matrices for shifts to super-CKM and super-PMNS basis 
-  !--------------------------------------------------------------------- 
+  !---------------------------------------------------------------------
+  ! mixing matrices for shifts to super-CKM and super-PMNS basis
+  !---------------------------------------------------------------------
   Integer :: ierr, i_errors(1100), id_check(2)
   Real(dp) :: Yu(3), Yd(3), Yl(3)
   Complex(dp), Dimension(3,3) :: CKM_Q, PMNS_Q, RSn_pmns
   Complex(dp), Dimension(6,6) :: RUsq_ckm, RDsq_ckm, RSl_pmns
-  !--------------------------------------------------------------------- 
+  !---------------------------------------------------------------------
   ! LHC edge variables
-  !--------------------------------------------------------------------- 
+  !---------------------------------------------------------------------
   Real(dp) :: LHC_observ(50), mSle(6), mSu(6), mSd(6), m4(4), m5(5), m7(7)
-  !--------------------------------------------------------------------- 
+  !---------------------------------------------------------------------
   ! for output at various scales
-  !--------------------------------------------------------------------- 
+  !---------------------------------------------------------------------
   Real(dp) :: delta_Q, Q_act, tb_save
-  !--------------------------------------------------------------------- 
+  !---------------------------------------------------------------------
   ! dummy particles
-  !--------------------------------------------------------------------- 
-  Type(particle2) :: part2  
+  !---------------------------------------------------------------------
+  Type(particle2) :: part2
   Type(particle23) :: part23
 
   c_lm(1) = "e-"
@@ -3065,11 +3065,11 @@ Contains
   c_sm(1) = "H-"
   id_sp = 0
   id_sp(1) = 37
-  id_sm = - id_sp  
+  id_sm = - id_sp
 
   n_sd = 6
   n_su = 6
- 
+
   id_c(1) = 1000024
   id_c(2) = 1000037
 
@@ -3089,8 +3089,8 @@ Contains
    n_n = 5
    n_c = 2
    n_s0 = 3
-   n_p0 = 2 
-   n_spm = 1 
+   n_p0 = 2
+   n_spm = 1
    n_sl = 6
    n_sn = 3
    n_min = 1   ! first relevant neutralino index
@@ -3114,10 +3114,10 @@ Contains
    n_n = 7
    n_c = 5
    n_s0 = 5
-   n_p0 = 4 
-   n_spm = 7 
+   n_p0 = 4
+   n_spm = 7
    n_sl = 0
-   n_sn = 0 
+   n_sn = 0
 
    If (io_RP.Eq.1) Then  ! flavour ordered output
     mat5R = Abs(RP05)
@@ -3164,7 +3164,7 @@ Contains
      mat5R(:,jj) = 0._dp
     End Do
 
-    i_zaehl = 1 
+    i_zaehl = 1
     mat8R = Abs(RSpm8)
     mat8R(1,:) = 0._dp ! this is the Goldstone boson
     Do i1=1,7
@@ -3192,7 +3192,7 @@ Contains
      mat8R(ii,:) = 0._dp
      mat8R(:,jj) = 0._dp
     End Do
-    
+
    Else If (io_RP.Eq.2) Then ! old way of putting 'PDG' numbers
 
     Do i1=1,4
@@ -3304,12 +3304,12 @@ Contains
    n_n = 5
    n_c = 2
    n_s0 = 6
-   n_p0 = 5 
-   n_spm = 7 
+   n_p0 = 5
+   n_spm = 7
    n_sl = 0
-   n_sn = 0 
+   n_sn = 0
 
-   i_zaehl = 1 
+   i_zaehl = 1
    mat8R = Abs(RSpm8)
    mat8R(1,:) = 0._dp ! this is the Goldstone boson
    Do i1=1,7
@@ -3349,8 +3349,8 @@ Contains
    n_n = 4
    n_c = 2
    n_s0 = 2
-   n_p0 = 1 
-   n_spm = 1 
+   n_p0 = 1
+   n_spm = 1
    n_sl = 6
    n_sn = 3
    n_min = 1   ! first relevant neutralino index
@@ -3404,7 +3404,7 @@ Contains
    Write(io_L,100) "Block SPhenoINFO     # SPheno specific information"
    If (TwoLoopRGE) Then
     Write(io_L,100) "    1      2         # using 2-loop RGEs"
-   Else 
+   Else
     Write(io_L,100) "    1      1         # using 1-loop RGEs"
    End If
    If (YukScen.Eq.1) Then
@@ -3448,10 +3448,10 @@ Contains
     Write(io_L,104) 1,gauge_0(1),"# g'(M_GUT)^DRbar"
     Write(io_L,104) 2,gauge_0(2),"# g(M_GUT)^DRbar"
     Write(io_L,104) 3,gauge_0(3),"# g3(M_GUT)^DRbar"
-    
+
    !----------------------------------------------------------------
    ! in the case of GenerationMixing Yukawas
-   ! are given in the SuperCKM basis 
+   ! are given in the SuperCKM basis
    !----------------------------------------------------------------
     If (GenerationMixing) Then
      Call Switch_to_superCKM(Y_d_0, Y_u_0, A_d_0, A_u_0, M2_D_0, M2_Q_0, M2_U_0         &
@@ -3520,9 +3520,9 @@ Contains
     Else If (HighScaleModel.Eq."SUGRA_NuR1") Then
      Write(io_L,100) "    3    3    # mSUGRA model + nu_R at a common scale"
      Write(io_L,100) "Block MnuRnuR  # mass scale of the right handed neutrinos"
-     Write(io_L,107) 1,1,MnuR(1),"# m_nu_R_1"     
-     Write(io_L,107) 2,2,MnuR(1),"# m_nu_R_2"     
-     Write(io_L,107) 3,3,MnuR(1),"# m_nu_R_3"     
+     Write(io_L,107) 1,1,MnuR(1),"# m_nu_R_1"
+     Write(io_L,107) 2,2,MnuR(1),"# m_nu_R_2"
+     Write(io_L,107) 3,3,MnuR(1),"# m_nu_R_3"
     Else If (HighScaleModel.Eq."SUGRA_NuR") Then
      Y_nu_0 = Transpose(Y_nu_0) ! in the RGEs the transposed Yukawas are used
      Write(io_L,100) "    3    4    # mSUGRA model + three  nu_R, ~nu_R"
@@ -3624,7 +3624,7 @@ Contains
                            & ,"lambda_1")
      Call WriteMatrixBlockC3a(io_L,Lambda2_GUT,m_GUT,"YHU15TBHU","GUT scale" &
                            & ,"lambda_2")
-     
+
      Write(io_L,106) "Block M15 Q=",m_GUT,"# (GUT scale)"
      Write(io_L,107) 1,1,Abs(MTM_gut),"# MWM      "
      Write(io_L,106) "Block M15T15TB Q=",Abs(MTM_GUT),"# (Triplet Scale)"
@@ -3633,7 +3633,7 @@ Contains
      Write(io_L,107) 1,1,Abs(MZM),"# M_Z   "
      Write(io_L,106) "Block M15S15SB Q=",Abs(MTM_GUT),"# (Triplet Scale)"
      Write(io_L,107) 1,1,Abs(MSM),"# M_Z   "
-     
+
      Call WriteMatrixBlockC3(io_L,3,2,YT0_h15,Abs(MTM_GUT) &            ! symmetric
                          & ,"YL15TL","triplet scale","Y_(T,", .True.)! matrix
      Call WriteMatrixBlockC3(io_L,3,2,YS0_h15,Abs(MTM_GUT) &            ! symmetric
@@ -3646,7 +3646,7 @@ Contains
      Call WriteMatrixBlockC3a(io_L,Lambda20,Abs(MTM_GUT),"YHU15TBHU","Triplet scale" &
                            & ,"lambda_2")
 
-! Florian SARAH, Seesaw II+III      
+! Florian SARAH, Seesaw II+III
     End If
     Write(io_L,100) "Block MINPAR  # Input parameters"
     Write(io_L,101) 1,Sqrt(Real(M2_E_0(1,1),dp)),"# m0      "
@@ -3667,7 +3667,7 @@ Contains
 
    !----------------------------------------------------------------
    ! in the case of GenerationMixing Yukawas
-   ! are given in the SuperCKM basis 
+   ! are given in the SuperCKM basis
    !----------------------------------------------------------------
     If (GenerationMixing) Then
      Call Switch_to_superCKM(Y_d_0, Y_u_0, A_d_0, A_u_0, M2_D_0, M2_Q_0, M2_U_0         &
@@ -3742,7 +3742,7 @@ Contains
     Write(io_L,104) 1,gauge_0(1),"# g'(Q)^DRbar"
     Write(io_L,104) 2,gauge_0(2),"# g(Q)^DRbar"
     Write(io_L,104) 3,gauge_0(3),"# g3(Q)^DRbar"
-    
+
    Else If (HighScaleModel.Eq."AMSB") Then
     non_minimal = .False.
     Write(io_L,100) "Block MODSEL  # Model selection"
@@ -3750,7 +3750,7 @@ Contains
     If (GenerationMixing) Write(io_L,100) &
       &             "    6    3    # switching on flavour violation"
     Write(io_L,100) "Block MINPAR  # Input parameters"
-    Write(io_L,101) 1,m0_amsb,"# M_0" 
+    Write(io_L,101) 1,m0_amsb,"# M_0"
     Write(io_L,101) 2,m_32,"# m_3/2, gravitino mass"
     Write(io_L,101) 3,tanb_mZ,"# tanb at m_Z   "
     Write(io_L,101) 4, Real(phase_mu,dp),"# Sign(mu)"
@@ -3786,7 +3786,7 @@ Contains
      Write(io_L,104) 1,gauge_0(1),"# g'(Q)^DRbar"
      Write(io_L,104) 2,gauge_0(2),"# g(Q)^DRbar"
      Write(io_L,104) 3,gauge_0(3),"# g3(Q)^DRbar"
-    
+
     Else
      Write(io_L,100) "Block MODSEL  # Model selection"
      Write(io_L,100) "    1    0    # general MSSM"
@@ -3808,7 +3808,7 @@ Contains
     Write(io_L,100) "Block MINPAR  # Input parameters"
     Write(io_L,101) 3,tanb_mZ,"# tanb at m_Z    "
     Write(io_L,101) 4, Real(phase_mu,dp),"# Sign(mu)"
-   End If 
+   End If
 
    If (Sum(in_extpar(:,1)).Gt.0) Then
     Write(io_L,100) "Block EXTPAR  # non-universal input parameters"
@@ -3911,7 +3911,7 @@ Contains
 
    End If
 
-      
+
 ! couplings
   Write(io_L,106) "Block gauge Q=",Q,"# (SUSY scale)"
   Write(io_L,104) 1,gauge(1),"# g'(Q)^DRbar"
@@ -3933,8 +3933,8 @@ Contains
   Write(io_L,107) 2,2,Yl(2), "# Y_mu(Q)^DRbar"
   Write(io_L,107) 3,3,Yl(3), "# Y_tau(Q)^DRbar"
 
-  If (GenerationMixing) Then 
-                             
+  If (GenerationMixing) Then
+
    Call WriteMatrixBlockC(io_L,3,CKM_Q,Q &
                          & ,"VCKM","V_CKM at the SUSY scale","V_(")
 
@@ -3950,7 +3950,7 @@ Contains
    Call WriteMatrixBlockC(io_L,3,Ad_sckm,Q,"Td","SUSY scale","T_(d,",tr=.True.)
    Call WriteMatrixBlockC(io_L,3,Al_pmns,Q,"Te","SUSY scale","T_(l,", tr=.True.)
 
-  Else 
+  Else
    Write(io_L,106) "Block Au Q=",Q,"# (SUSY scale)"
    If (Abs(y_u(1,1)).Gt.0._dp) &
         & Write(io_L,107) 1,1,Real(Au_sckm(1,1)/y_u(1,1),dp), "# A_u(Q)^DRbar"
@@ -4160,50 +4160,50 @@ Contains
    If (HighScaleModel.Ne."RPexplicit") &
         & Write(io_L,102) id_l(3),mf_l(3),"# m_tau(pole)"
    If (HighScaleModel.Eq."NMSSM") Then
-    Write(io_L,102) 25,S03(1)%m,"# leightest neutral scalar" 
-    Write(io_L,102) 35,S03(2)%m,"# second neutral scalar" 
-    Write(io_L,102) 45,S03(3)%m,"# third neutral scalar" 
-    Write(io_L,102) 36,P03(2)%m,"# leighter pseudoscalar" 
-    Write(io_L,102) 46,P03(3)%m,"# heavier pseudoscalar" 
+    Write(io_L,102) 25,S03(1)%m,"# leightest neutral scalar"
+    Write(io_L,102) 35,S03(2)%m,"# second neutral scalar"
+    Write(io_L,102) 45,S03(3)%m,"# third neutral scalar"
+    Write(io_L,102) 36,P03(2)%m,"# leighter pseudoscalar"
+    Write(io_L,102) 46,P03(3)%m,"# heavier pseudoscalar"
     Write(io_L,102) 37,Spm(2)%m,"# H+"
    Else If (HighScaleModel.Eq."RPexplicit") Then
 !    Write(io_L,102) 12,mN7(1),"# lightest neutrino"
 !    Write(io_L,102) 14,mN7(2),"# second lightest neutrino"
 !    Write(io_L,102) 16,mN7(3),"# heaviest neutrino"
-    If (io_rp.Eq.0) Then  ! the standard SLHA output requires some searching 
+    If (io_rp.Eq.0) Then  ! the standard SLHA output requires some searching
      Do i1=1,5
       If (id_s0(i1).Eq.25) Exit
      End Do
-     Write(io_L,102) id_s0(i1),S05(i1)%m,"# leightest neutral scalar" 
+     Write(io_L,102) id_s0(i1),S05(i1)%m,"# leightest neutral scalar"
      Do i1=1,5
       If (id_s0(i1).Eq.35) Exit
      End Do
-     Write(io_L,102) id_s0(i1),S05(i1)%m,"# 2nd neutral scalar" 
+     Write(io_L,102) id_s0(i1),S05(i1)%m,"# 2nd neutral scalar"
      Do i1=1,5
       If (id_s0(i1).Eq.1000012) Exit
      End Do
-     Write(io_L,102) id_s0(i1),S05(i1)%m,"# 3rd neutral scalar" 
+     Write(io_L,102) id_s0(i1),S05(i1)%m,"# 3rd neutral scalar"
      Do i1=1,5
       If (id_s0(i1).Eq.1000014) Exit
      End Do
-     Write(io_L,102) id_s0(i1),S05(i1)%m,"# 4th neutral scalar" 
+     Write(io_L,102) id_s0(i1),S05(i1)%m,"# 4th neutral scalar"
      Do i1=1,5
       If (id_s0(i1).Eq.1000016) Exit
      End Do
-     Write(io_L,102) id_s0(i1),S05(i1)%m,"# 5th neutral scalar" 
+     Write(io_L,102) id_s0(i1),S05(i1)%m,"# 5th neutral scalar"
 
      Do i1=1,4
       If (id_p0(i1).Eq.36) Exit
      End Do
-     Write(io_L,102) id_P0(i1),P05(i1+1)%m,"# leightest pseudoscalar" 
+     Write(io_L,102) id_P0(i1),P05(i1+1)%m,"# leightest pseudoscalar"
      Do i1=1,4
       If (id_p0(i1).Eq.1000017) Exit
      End Do
-     Write(io_L,102) id_P0(i1),P05(i1+1)%m,"# 2nd pseudoscalar" 
+     Write(io_L,102) id_P0(i1),P05(i1+1)%m,"# 2nd pseudoscalar"
      Do i1=1,4
       If (id_p0(i1).Eq.1000018) Exit
      End Do
-     Write(io_L,102) id_P0(i1),P05(i1+1)%m,"# 3rd pseudoscalar" 
+     Write(io_L,102) id_P0(i1),P05(i1+1)%m,"# 3rd pseudoscalar"
      Do i1=1,4
       If (id_p0(i1).Eq.1000019) Exit
      End Do
@@ -4212,55 +4212,55 @@ Contains
      Do i1=1,7
       If (id_Sp(i1).Eq.37) Exit
      End Do
-     Write(io_L,102) Abs(id_sp(i1)),Spm8(i1+1)%m,"# leightest charged scalar" 
+     Write(io_L,102) Abs(id_sp(i1)),Spm8(i1+1)%m,"# leightest charged scalar"
      Do i1=1,7
       If (id_Sp(i1).Eq.-1000011) Exit
      End Do
-     Write(io_L,102) Abs(id_sp(i1)),Spm8(i1+1)%m,"# 2nd charged scalar" 
+     Write(io_L,102) Abs(id_sp(i1)),Spm8(i1+1)%m,"# 2nd charged scalar"
      Do i1=1,7
       If (id_Sp(i1).Eq.-1000013) Exit
      End Do
-     Write(io_L,102) Abs(id_sp(i1)),Spm8(i1+1)%m,"# 3rd charged scalar" 
+     Write(io_L,102) Abs(id_sp(i1)),Spm8(i1+1)%m,"# 3rd charged scalar"
      Do i1=1,7
       If (id_Sp(i1).Eq.-1000015) Exit
      End Do
-     Write(io_L,102) Abs(id_sp(i1)),Spm8(i1+1)%m,"# 4th charged scalar" 
+     Write(io_L,102) Abs(id_sp(i1)),Spm8(i1+1)%m,"# 4th charged scalar"
      Do i1=1,7
       If (id_Sp(i1).Eq.-2000011) Exit
      End Do
-     Write(io_L,102) Abs(id_sp(i1)),Spm8(i1+1)%m,"# 5th charged scalar" 
+     Write(io_L,102) Abs(id_sp(i1)),Spm8(i1+1)%m,"# 5th charged scalar"
      Do i1=1,7
       If (id_Sp(i1).Eq.-2000013) Exit
      End Do
-     Write(io_L,102) Abs(id_sp(i1)),Spm8(i1+1)%m,"# 6th charged scalar" 
+     Write(io_L,102) Abs(id_sp(i1)),Spm8(i1+1)%m,"# 6th charged scalar"
      Do i1=1,7
       If (id_Sp(i1).Eq.-2000015) Exit
      End Do
-     Write(io_L,102) Abs(id_sp(i1)),Spm8(i1+1)%m,"# 7th charged scalar" 
+     Write(io_L,102) Abs(id_sp(i1)),Spm8(i1+1)%m,"# 7th charged scalar"
 
-    Else 
-     Write(io_L,102) id_s0(1),S05(1)%m,"# leightest neutral scalar" 
-     Write(io_L,102) id_s0(2),S05(2)%m,"# 2nd neutral scalar" 
-     Write(io_L,102) id_s0(3),S05(3)%m,"# 3rd neutral scalar" 
-     Write(io_L,102) id_s0(4),S05(4)%m,"# 4th neutral scalar" 
-     Write(io_L,102) id_s0(5),S05(5)%m,"# 5th neutral scalar" 
-     Write(io_L,102) id_P0(1),P05(2)%m,"# leightest pseudoscalar" 
-     Write(io_L,102) id_P0(2),P05(3)%m,"# 2nd pseudoscalar" 
-     Write(io_L,102) id_P0(3),P05(4)%m,"# 3rd pseudoscalar" 
+    Else
+     Write(io_L,102) id_s0(1),S05(1)%m,"# leightest neutral scalar"
+     Write(io_L,102) id_s0(2),S05(2)%m,"# 2nd neutral scalar"
+     Write(io_L,102) id_s0(3),S05(3)%m,"# 3rd neutral scalar"
+     Write(io_L,102) id_s0(4),S05(4)%m,"# 4th neutral scalar"
+     Write(io_L,102) id_s0(5),S05(5)%m,"# 5th neutral scalar"
+     Write(io_L,102) id_P0(1),P05(2)%m,"# leightest pseudoscalar"
+     Write(io_L,102) id_P0(2),P05(3)%m,"# 2nd pseudoscalar"
+     Write(io_L,102) id_P0(3),P05(4)%m,"# 3rd pseudoscalar"
      Write(io_L,102) id_p0(4),P05(5)%m,"# 4th pseudoscalar"
-     Write(io_L,102) Abs(id_sp(1)),Spm8(2)%m,"# leightest charged scalar" 
-     Write(io_L,102) Abs(id_sp(2)),Spm8(3)%m,"# 2nd charged scalar" 
-     Write(io_L,102) Abs(id_sp(3)),Spm8(4)%m,"# 3rd charged scalar" 
-     Write(io_L,102) Abs(id_sp(4)),Spm8(5)%m,"# 4th charged scalar" 
-     Write(io_L,102) Abs(id_sp(5)),Spm8(6)%m,"# 5th charged scalar" 
-     Write(io_L,102) Abs(id_sp(6)),Spm8(7)%m,"# 6th charged scalar" 
-     Write(io_L,102) Abs(id_sp(7)),Spm8(8)%m,"# 7th charged scalar" 
+     Write(io_L,102) Abs(id_sp(1)),Spm8(2)%m,"# leightest charged scalar"
+     Write(io_L,102) Abs(id_sp(2)),Spm8(3)%m,"# 2nd charged scalar"
+     Write(io_L,102) Abs(id_sp(3)),Spm8(4)%m,"# 3rd charged scalar"
+     Write(io_L,102) Abs(id_sp(4)),Spm8(5)%m,"# 4th charged scalar"
+     Write(io_L,102) Abs(id_sp(5)),Spm8(6)%m,"# 5th charged scalar"
+     Write(io_L,102) Abs(id_sp(6)),Spm8(7)%m,"# 6th charged scalar"
+     Write(io_L,102) Abs(id_sp(7)),Spm8(8)%m,"# 7th charged scalar"
     End If
-    
+
    Else
-    Write(io_L,102) 25,S0(1)%m,"# h0" 
-    Write(io_L,102) 35,S0(2)%m,"# H0" 
-    Write(io_L,102) 36,P0(2)%m,"# A0" 
+    Write(io_L,102) 25,S0(1)%m,"# h0"
+    Write(io_L,102) 35,S0(2)%m,"# H0"
+    Write(io_L,102) 36,P0(2)%m,"# A0"
     Write(io_L,102) 37,Spm(2)%m,"# H+"
    End If
 ! squarks
@@ -4351,7 +4351,7 @@ Contains
      Do ii=1,6
       Write(io_L,102) id_su(ii),Sup(ii)%m,"# "//Trim(c_su(ii))
      End Do
-      
+
     Else ! use mass ordering
 
      id_sd(1) = 1000001
@@ -4451,13 +4451,13 @@ Contains
    c_su(5) = "~t_1"
    c_su(6) = "~t_2"
   End If ! GenerationMixing
-   
+
    If (HighScaleModel.Ne."RPexplicit") Then
 
 ! sleptons
     If (GenerationMixing) Then
      If (Use_Flavour_States) Then ! using flavour ordering, old fashionnd
- 
+
       mat3R = Abs(RSn_pmns)
       Do i1=1,3
        MaxCont = Maxval(mat3R)
@@ -4626,7 +4626,7 @@ Contains
      If (Sum(Abs(Real(N5(i1,:)))).Eq.0._dp) Then
       mNr(i1) = - Chi05(i1)%m
       nr(i1,1:5) = (0._dp,-1._dp) * n5(i1,:)
-     Else   
+     Else
       mNr(i1) =  Chi05(i1)%m
       nr(i1,1:5) = n5(i1,:)
      End If
@@ -4640,7 +4640,7 @@ Contains
      Do i1=1,4
       If (Sum(Abs(Real(N(i1,:)))).Lt.0.1_dp) Then
        nr(i1,1:4) = Aimag(n(i1,:))
-      Else   
+      Else
        nr(i1,1:4) = n(i1,:)
       End If
      End Do
@@ -4653,7 +4653,7 @@ Contains
       If (Sum(Abs(Real(N7(i1,:)))).Eq.0._dp) Then
        mNr(i1) = - Chi07(i1)%m
        nr(i1,1:7) = Aimag(n7(i1,:))
-      Else   
+      Else
        mNr(i1) =  Chi07(i1)%m
        nr(i1,1:7) = n7(i1,:)
       End If
@@ -4665,7 +4665,7 @@ Contains
      If (Sum(Abs(Real(N(i1,:)))).Eq.0._dp) Then
       mNr(i1) = - Chi0(i1)%m
       nr(i1,1:4) = Aimag(n(i1,:))
-     Else   
+     Else
       mNr(i1) =  Chi0(i1)%m
       nr(i1,1:4) = n(i1,:)
      End If
@@ -4681,12 +4681,12 @@ Contains
     End Do
 
    Else
-    Write(io_L,102) 1000022,mnr(1),"# ~chi_10" 
-    Write(io_L,102) 1000023,mnr(2),"# ~chi_20" 
-    Write(io_L,102) 1000025,mnr(3),"# ~chi_30" 
-    Write(io_L,102) 1000035,mnr(4),"# ~chi_40" 
+    Write(io_L,102) 1000022,mnr(1),"# ~chi_10"
+    Write(io_L,102) 1000023,mnr(2),"# ~chi_20"
+    Write(io_L,102) 1000025,mnr(3),"# ~chi_30"
+    Write(io_L,102) 1000035,mnr(4),"# ~chi_40"
     If (HighScaleModel.Eq."NMSSM") Write(io_L,102) 1000045,mnr(5),"# ~chi_50"
-    Write(io_L,102) 1000024,ChiPm(1)%m,"# ~chi_1+" 
+    Write(io_L,102) 1000024,ChiPm(1)%m,"# ~chi_1+"
     Write(io_L,102) 1000037,ChiPm(2)%m,"# ~chi_2+"
    End If
 
@@ -4701,7 +4701,7 @@ Contains
     Write(io_L,107) 3,3,mnur(3),"# m_nu_R_3"
    End If
 
-! Mixing matrices 
+! Mixing matrices
   Write(io_L,100) "# Higgs mixing"
   If (HighScaleModel.Eq."NMSSM") Then
    Write(io_L,103) "Block HIGMIX Q=",Q, "# neutral scalar Higgs mixing"
@@ -4763,7 +4763,7 @@ Contains
      Write(io_L,105) i1,i2,RP05(i1,i2) &
              & ,"# R_P0("//Bu(i1)//","//Bu(i2)//")"
     End Do
-   End Do 
+   End Do
    Write(io_L,103) "Block RVLMIX Q=",Q, "# charged Higgs mixing"
    Do i1=1,8
     Do i2=1,8
@@ -4817,7 +4817,7 @@ Contains
    Call WriteMatrixBlockC2(io_L, 2, RDsq_ckm(5:6,5:6), "sbotmix" &
                          &, "sbottom mixing matrix", "R_sb(")
 
-   If (HighScaleModel.Ne."RPexplicit") & 
+   If (HighScaleModel.Ne."RPexplicit") &
     & Call WriteMatrixBlockC2(io_L, 2, RSl_pmns(5:6,5:6), "staumix" &
                             &, "stau mixing matrix", "R_sta(")
   End If
@@ -4836,7 +4836,7 @@ Contains
                          &, "chargino mixing matrix", "U(")
    Call WriteMatrixBlockC2(io_L, 2, V, "Vmix" &
                          &, "chargino mixing matrix", "V(")
-  Else   
+  Else
    Call WriteMatrixBlockC2(io_L, n_n, nr(1:n_n,1:n_n), "Nmix" &
                          &, "neutralino mixing matrix", "N(")
    Call WriteMatrixBlockC2(io_L, n_c, U, "Umix" &
@@ -4850,7 +4850,7 @@ Contains
  ! is given at different scales, if required
  !-------------------------------------------------------------------------
  If (l_Q_out) then ! need parameters and potentially also the masses at another scale
-  If (Qout.eq.0._dp) Qout=Q 
+  If (Qout.eq.0._dp) Qout=Q
   delta_Q = Exp( Log(Qout/mZ) / n_Q_out )
   Q_act = mZ
   Do i1=0,n_Q_out
@@ -4869,7 +4869,7 @@ Contains
    Call WriteParametersAtQ(Q, gauge, Y_l, Y_d, Y_u, Mi, A_l, A_d, A_u &
           & , M2_E, M2_L, M2_D, M2_Q, M2_U, M2_H, tanb_Q, phase_mu      &
           & , GenerationMixing, Q_act, 1.e-4_dp, io_L)
-   tanb_Q = tb_save 
+   tanb_Q = tb_save
    Write(io_L,100) "###########################################################"
    If (Calc_Mass) then
     Write(io_L,311) Q_act
@@ -4897,7 +4897,7 @@ Contains
    Call WriteParametersAtQ(Q, gauge, Y_l, Y_d, Y_u, Mi, A_l, A_d, A_u &
           & , M2_E, M2_L, M2_D, M2_Q, M2_U, M2_H, tanb_Q, phase_mu      &
           & , GenerationMixing, Q_PDG_out(i1), 1.e-4_dp, io_L)
-   tanb_Q = tb_save 
+   tanb_Q = tb_save
    Write(io_L,100) "###########################################################"
    If (Calc_Mass) then
     Write(io_L,311) Q_PDG_out(i1)
@@ -4922,12 +4922,12 @@ Contains
   Do i1=1,n_sl
    p_id = Slepton(i1)%id
    Write(io_L,200) id_p(p_id),Slepton(i1)%g,Trim(names(p_id))
-   If (Slepton(i1)%g.Gt.0._dp) Then 
+   If (Slepton(i1)%g.Gt.0._dp) Then
     If (Sum(Slepton(i1)%gi2).Gt.0._dp) Then ! 2-body decays
      Write(io_L,100) "#    BR                NDA      ID1      ID2"
      Do i2=1,200
-      p_id1 = Slepton(i1)%id2(i2,1) 
-      p_id2 = Slepton(i1)%id2(i2,2) 
+      p_id1 = Slepton(i1)%id2(i2,1)
+      p_id2 = Slepton(i1)%id2(i2,2)
       If (Slepton(i1)%bi2(i2).Gt.BrMin) Then
        Write(io_L,401) Slepton(i1)%bi2(i2),2,id_p(p_id1),id_p(p_id2), &
                   & Trim(names(p_id)),Trim(names(p_id1)),Trim(names(p_id2))
@@ -4938,9 +4938,9 @@ Contains
     If (Sum(Slepton(i1)%gi3).Gt.0._dp) Then ! 3-body decays
      Write(io_L,100) "#    BR                NDA      ID1      ID2       ID3"
      Do i2=1,600
-      p_id1 =Slepton(i1)%id3(i2,1) 
-      p_id2 =Slepton(i1)%id3(i2,2) 
-      p_id3 =Slepton(i1)%id3(i2,3) 
+      p_id1 =Slepton(i1)%id3(i2,1)
+      p_id2 =Slepton(i1)%id3(i2,2)
+      p_id3 =Slepton(i1)%id3(i2,3)
       If (Slepton(i1)%bi3(i2).Gt.BrMin) Then
        Write(io_L,402) Slepton(i1)%bi3(i2),3,id_p(p_id1),id_p(p_id2)      &
                     & ,id_p(p_id3), Trim(names(p_id)), Trim(names(p_id1)) &
@@ -4950,7 +4950,7 @@ Contains
     End If
 
    End If
-  End Do   
+  End Do
 
   !---------------------------------
   ! sneutrinos
@@ -4962,8 +4962,8 @@ Contains
     If (Sum(Sneut(i1)%gi2).Gt.0._dp) Then ! 2-body decays
      Write(io_L,100) "#    BR                NDA      ID1      ID2"
      Do i2=1,200
-      p_id1 = Sneut(i1)%id2(i2,1) 
-      p_id2 = Sneut(i1)%id2(i2,2) 
+      p_id1 = Sneut(i1)%id2(i2,1)
+      p_id2 = Sneut(i1)%id2(i2,2)
       If (Sneut(i1)%bi2(i2).Gt.BrMin) Then
        Write(io_L,401) Sneut(i1)%bi2(i2),2,id_p(p_id1),id_p(p_id2), &
                    & Trim(names(p_id)),Trim(names(p_id1)),Trim(names(p_id2))
@@ -4974,9 +4974,9 @@ Contains
     If (Sum(Sneut(i1)%gi3).Gt.0._dp) Then ! 3-body decays
      Write(io_L,100) "#    BR                NDA      ID1      ID2       ID3"
      Do i2=1,600
-      p_id1 =Sneut(i1)%id3(i2,1) 
-      p_id2 =Sneut(i1)%id3(i2,2) 
-      p_id3 =Sneut(i1)%id3(i2,3) 
+      p_id1 =Sneut(i1)%id3(i2,1)
+      p_id2 =Sneut(i1)%id3(i2,2)
+      p_id3 =Sneut(i1)%id3(i2,3)
       If (Sneut(i1)%bi3(i2).Gt.BrMin) Then
        Write(io_L,402) Sneut(i1)%bi3(i2),3,id_p(p_id1),id_p(p_id2)      &
                      & ,id_p(p_id3), Trim(names(p_id)), Trim(names(p_id1)) &
@@ -4986,7 +4986,7 @@ Contains
     End If
 
    End If
-  End Do   
+  End Do
 
   !---------------------------------
   ! d-squarks
@@ -4997,15 +4997,15 @@ Contains
    If (Sdown(i1)%g.Gt.0._dp) Then ! 2-body decays
     Write(io_L,100) "#    BR                NDA      ID1      ID2"
     Do i2=1,200
-     p_id1 = Sdown(i1)%id2(i2,1) 
-     p_id2 = Sdown(i1)%id2(i2,2) 
+     p_id1 = Sdown(i1)%id2(i2,1)
+     p_id2 = Sdown(i1)%id2(i2,2)
      If (Sdown(i1)%bi2(i2).Gt.BrMin) Then
       Write(io_L,401) Sdown(i1)%bi2(i2),2,id_p(p_id1),id_p(p_id2), &
                   & Trim(names(p_id)),Trim(names(p_id1)),Trim(names(p_id2))
      End If
     End Do
    End If
-  End Do   
+  End Do
 
   !---------------------------------
   ! u-squarks
@@ -5016,8 +5016,8 @@ Contains
    If (Sup(i1)%g.Gt.0._dp) Then ! 2-body decays
     Write(io_L,100) "#    BR                NDA      ID1      ID2"
     Do i2=1,200
-     p_id1 = Sup(i1)%id2(i2,1) 
-     p_id2 = Sup(i1)%id2(i2,2) 
+     p_id1 = Sup(i1)%id2(i2,1)
+     p_id2 = Sup(i1)%id2(i2,2)
      If (Sup(i1)%bi2(i2).Gt.BrMin) Then
       Write(io_L,401) Sup(i1)%bi2(i2),2,id_p(p_id1),id_p(p_id2), &
                   & Trim(names(p_id)),Trim(names(p_id1)),Trim(names(p_id2))
@@ -5026,9 +5026,9 @@ Contains
     If (Sum(Sup(i1)%gi3).Gt.0._dp) Then ! 3-body decays
      Write(io_L,100) "#    BR                NDA      ID1      ID2       ID3"
      Do i2=1,600
-      p_id1 =Sup(i1)%id3(i2,1) 
-      p_id2 =Sup(i1)%id3(i2,2) 
-      p_id3 =Sup(i1)%id3(i2,3) 
+      p_id1 =Sup(i1)%id3(i2,1)
+      p_id2 =Sup(i1)%id3(i2,2)
+      p_id3 =Sup(i1)%id3(i2,3)
       If (Sup(i1)%bi3(i2).Gt.BrMin) Then
        Write(io_L,402) Sup(i1)%bi3(i2),3,id_p(p_id1),id_p(p_id2),id_p(p_id3) &
                     & , Trim(names(p_id)), Trim(names(p_id1))                 &
@@ -5056,15 +5056,15 @@ Contains
    Else   ! MSSM output
     part23 = ChiPm(i1)
 
-   End If ! model selection 
+   End If ! model selection
 
    p_id = part23%id
    Write(io_L,200) id_p(p_id),part23%g,Trim(names(p_id))
    If (Sum(part23%gi2).Gt.0._dp) Then ! 2-body decays
     Write(io_L,100) "#    BR                NDA      ID1      ID2"
     Do i2=1,200
-     p_id1 =part23%id2(i2,1) 
-     p_id2 =part23%id2(i2,2) 
+     p_id1 =part23%id2(i2,1)
+     p_id2 =part23%id2(i2,2)
      If (part23%bi2(i2).Gt.BrMin) Then
       Write(io_L,401) part23%bi2(i2),2,id_p(p_id1),id_p(p_id2), &
                   & Trim(names(p_id)),Trim(names(p_id1)),Trim(names(p_id2))
@@ -5074,9 +5074,9 @@ Contains
    If (Sum(part23%gi3).Gt.0._dp) Then ! 3-body decays
     Write(io_L,100) "#    BR                NDA      ID1      ID2       ID3"
     Do i2=1,600
-     p_id1 =part23%id3(i2,1) 
-     p_id2 =part23%id3(i2,2) 
-     p_id3 =part23%id3(i2,3) 
+     p_id1 =part23%id3(i2,1)
+     p_id2 =part23%id3(i2,2)
+     p_id3 =part23%id3(i2,3)
      If (part23%bi3(i2).Gt.BrMin) Then
       Write(io_L,402) part23%bi3(i2),3,id_p(p_id1),id_p(p_id2),id_p(p_id3) &
                     & , Trim(names(p_id)), Trim(names(p_id1))                 &
@@ -5106,15 +5106,15 @@ Contains
    Else   ! MSSM output
     part23 = Chi0(i1)
 
-   End If ! model selection 
+   End If ! model selection
 
    p_id = part23%id
    Write(io_L,200) id_p(p_id),part23%g,Trim(names(p_id))
    If (Sum(part23%gi2).Gt.0._dp) Then ! 2-body decays
     Write(io_L,100) "#    BR                NDA      ID1      ID2"
     Do i2=1,200
-     p_id1 =part23%id2(i2,1) 
-     p_id2 =part23%id2(i2,2) 
+     p_id1 =part23%id2(i2,1)
+     p_id2 =part23%id2(i2,2)
      If (part23%bi2(i2).Gt.BrMin) Then
       Write(io_L,401) part23%bi2(i2),2,id_p(p_id1),id_p(p_id2), &
                    & Trim(names(p_id)),Trim(names(p_id1)),Trim(names(p_id2))
@@ -5124,11 +5124,11 @@ Contains
    If (Sum(part23%gi3).Gt.0._dp) Then ! 3-body decays
     Write(io_L,100) "#    BR                NDA      ID1      ID2       ID3"
     Do i2=1,600
-     p_id1 =part23%id3(i2,1) 
-     p_id2 =part23%id3(i2,2) 
-     p_id3 =part23%id3(i2,3) 
+     p_id1 =part23%id3(i2,1)
+     p_id2 =part23%id3(i2,2)
+     p_id3 =part23%id3(i2,3)
      If (part23%bi3(i2).Gt.BrMin) Then
-!      If ((id_p(p_id2).Eq.12).And.(id_p(p_id2).Eq.-12)) 
+!      If ((id_p(p_id2).Eq.12).And.(id_p(p_id2).Eq.-12))
       Write(io_L,402) part23%bi3(i2),3,id_p(p_id1),id_p(p_id2),id_p(p_id3) &
                    & , Trim(names(p_id)), Trim(names(p_id1))               &
                    & , Trim(names(p_id2)), Trim(names(p_id3))
@@ -5145,8 +5145,8 @@ Contains
    If (Sum(Glu%gi2).Gt.0._dp) Then ! 2-body decays
     Write(io_L,100) "#    BR                NDA      ID1      ID2"
     Do i2=1,200
-     p_id1 =Glu%id2(i2,1) 
-     p_id2 =Glu%id2(i2,2) 
+     p_id1 =Glu%id2(i2,1)
+     p_id2 =Glu%id2(i2,2)
      If (Glu%bi2(i2).Gt.BrMin) Then
       Write(io_L,401) Glu%bi2(i2),2,id_p(p_id1),id_p(p_id2), &
                   & Trim(names(p_id)),Trim(names(p_id1)),Trim(names(p_id2))
@@ -5156,9 +5156,9 @@ Contains
    If (Sum(Glu%gi3).Gt.0._dp) Then ! 3-body decays
     Write(io_L,100) "#    BR                NDA      ID1      ID2       ID3"
     Do i2=1,600
-     p_id1 =Glu%id3(i2,1) 
-     p_id2 =Glu%id3(i2,2) 
-     p_id3 =Glu%id3(i2,3) 
+     p_id1 =Glu%id3(i2,1)
+     p_id2 =Glu%id3(i2,2)
+     p_id3 =Glu%id3(i2,3)
      If (Glu%bi3(i2).Gt.BrMin) Then
       Write(io_L,402) Glu%bi3(i2),3,id_p(p_id1),id_p(p_id2),id_p(p_id3)    &
                  & ,Trim(names(p_id)),Trim(names(p_id1)),Trim(names(p_id2)) &
@@ -5184,8 +5184,8 @@ Contains
    If (part23%g.Gt.0._dp) Then ! 2-body decays
     Write(io_L,100) "#    BR                NDA      ID1      ID2"
     Do i2=1,200
-     p_id1 = part23%id2(i2,1) 
-     p_id2 = part23%id2(i2,2) 
+     p_id1 = part23%id2(i2,1)
+     p_id2 = part23%id2(i2,2)
      If (part23%bi2(i2).Gt.BrMin) Then
       Write(io_L,401) part23%bi2(i2),2,id_p(p_id1),id_p(p_id2), &
                   & Trim(names(p_id)),Trim(names(p_id1)),Trim(names(p_id2))
@@ -5194,7 +5194,7 @@ Contains
    End If
    If(BR_Higgs_with_offshell_V) Then
     Do i2=1,10
-     p_id1 = part23%id3(i2,1) 
+     p_id1 = part23%id3(i2,1)
      p_id2 = part23%id3(i2,2)
      If (part23%bi3(i2).Gt.BrMin) Then
       Write(io_L,401) part23%bi3(i2),2,id_p(p_id1),id_p(p_id2), &
@@ -5210,7 +5210,7 @@ Contains
      Write(io_L,100) "# writing decays into V V* as 3-body decays"
      Write(io_L,100) "#    BR                NDA      ID1      ID2       ID3"
      Do i2=1,10
-      p_id1 = part23%id3(i2,1) 
+      p_id1 = part23%id3(i2,1)
       p_id2 = part23%id3(i2,2)
       If (p_id1.Eq.0) Cycle
       If ( id_p(p_id1).Eq.24) Then ! positive charged W-boson is on-shell
@@ -5274,15 +5274,15 @@ Contains
     part2 = P05(i1)
    Else
     part2 = P0(i1)
-   End If ! model selection 
+   End If ! model selection
 
    p_id = part2%id
    Write(io_L,200) id_p(p_id),part2%g,Trim(names(p_id))
    If (part2%g.Gt.0._dp) Then ! 2-body decays
     Write(io_L,100) "#    BR                NDA      ID1      ID2"
     Do i2=1,200
-     p_id1 = part2%id2(i2,1) 
-     p_id2 = part2%id2(i2,2) 
+     p_id1 = part2%id2(i2,1)
+     p_id2 = part2%id2(i2,2)
      If (part2%bi2(i2).Gt.BrMin) Then
       Write(io_L,401) part2%bi2(i2),2,id_p(p_id1),id_p(p_id2), &
                  & Trim(names(p_id)),Trim(names(p_id1)),Trim(names(p_id2))
@@ -5308,8 +5308,8 @@ Contains
    If (part2%g.Gt.0._dp) Then ! 2-body decays
     Write(io_L,100) "#    BR                NDA      ID1      ID2"
     Do i2=1,200
-     p_id1 = part2%id2(i2,1) 
-     p_id2 = part2%id2(i2,2) 
+     p_id1 = part2%id2(i2,1)
+     p_id2 = part2%id2(i2,2)
      If (part2%bi2(i2).Gt.BrMin) Then
       Write(io_L,401) part2%bi2(i2),2,id_p(p_id1),id_p(p_id2), &
                    & Trim(names(p_id)),Trim(names(p_id1)),Trim(names(p_id2))
@@ -5318,7 +5318,7 @@ Contains
    End If
   End Do ! loop of charged scalars
 
- End If ! L_BR  
+ End If ! L_BR
 
  !---------------------------------------------
  ! cross section information
@@ -5331,7 +5331,7 @@ Contains
     Write(io_L,4712) Ecms(i3),Pm(i3),Pp(i3)," 1  # e+ e- XS, Pe-, Pe+,  including ISR"
    Else
     Write(io_L,4712) Ecms(i3),Pm(i3),Pp(i3)," 0  # e+ e- XS"
-   End If  
+   End If
    Write(io_L,100) "#      Sigma [fb]    NDA        ID1     ID2"
    ! u-squarks
    Do i1=1,6
@@ -5378,7 +5378,7 @@ Contains
         &      , id_c(i1), -id_c(i2), c_cm(i1)//" "//c_cp(i2)
     End Do
    End Do
-   
+
    If (HighScaleModel.Eq."RPexplicit") Then
     Do i1=1,n_s0
      If (SigS0(i3,i1).Gt.SigMin) Write(io_L,4711) SigS0(i3,i1),2, id_S0(i1) &
@@ -5429,10 +5429,10 @@ Contains
   !--------------------------------------------------------
   !information for HiggsBounds, for the moment only MSSM
   !--------------------------------------------------------
-  If (HighScaleModel.Eq."NMSSM") Then  
+  If (HighScaleModel.Eq."NMSSM") Then
 
   Else If (HighScaleModel.Eq."RPexplicit") Then
- 
+
   Else
    If (L_BR) Call Write_HiggsBoundsInput(io_L,RS0, RP0)
   End If
@@ -5452,10 +5452,10 @@ Contains
   Write(io_L,101) 12,Abs(DeltaMbd)," # |Delta(M_Bd)| [ps^-1] "
   Write(io_L,101) 13,Abs(DeltaMbs)," # |Delta(M_Bs)| [ps^-1] "
 
-  Write(io_L,101) 16, epsK       , " # epsilon_K" 
-  Write(io_L,101) 17, DeltaMK    , " # Delta(M_K)" 
-  Write(io_L,101) 18, K0toPi0NuNu, " # BR(K^0 -> pi^0 nu nu)" 
-  Write(io_L,101) 19, KptoPipNuNu, " # BR(K^+ -> pi^+ nu nu)" 
+  Write(io_L,101) 16, epsK       , " # epsilon_K"
+  Write(io_L,101) 17, DeltaMK    , " # Delta(M_K)"
+  Write(io_L,101) 18, K0toPi0NuNu, " # BR(K^0 -> pi^0 nu nu)"
+  Write(io_L,101) 19, KptoPipNuNu, " # BR(K^+ -> pi^+ nu nu)"
 
   Write(io_L,101) 20,A_e," # Delta(g-2)_electron/2"
   Write(io_L,101) 21,A_mu," # Delta(g-2)_muon/2"
@@ -5486,13 +5486,13 @@ Contains
 !   Call WriteMatrixBlockC2(io_L, 3, Unu, "Unu" &
 !                         &, "neutrino mixing matrix", "U_(nu,")
   End If
-  
+
   Call Write_Wilson_Coeff(io_L,1,kont)  ! Wilson coefficients at m_Z
   Call Write_Wilson_Coeff(io_L,2,kont)  ! Wilson coefficients at Q=160 ~ m_t(m_t)
 
   If (Present(omega)) Then
    Write(io_L,100) "Block Omega # omega h^2"
-   Write(io_L,101) 1,omega," # omega h^2"   
+   Write(io_L,101) 1,omega," # omega h^2"
   End If
 
   If (LWrite_LHC_Observables) Then
@@ -5641,7 +5641,7 @@ Contains
  98 Format(2x,i2,3x,i3,2x,"# ",a)
  99 Format(1x,i5,3x,a)
 100 Format(a)
-101 Format(2x,i3,2x,1P,e16.8,2x,a) 
+101 Format(2x,i3,2x,1P,e16.8,2x,a)
 102 Format(1x,i9,3x,1P,e16.8,2x,a)
 103 Format(a13,1P,e16.8,2x,a)
 104 Format(i4,2x,1P,e16.8,2x,a)
@@ -5675,7 +5675,7 @@ Contains
   Character(len=8) :: Datum
   Character(len=10) :: Zeit
   Logical, Save :: l_open = .True. ! in case of a loop I want to open the
-                                   ! output only once 
+                                   ! output only once
   Integer :: i_errors(1100)
 
   Q = Sqrt( GetRenormalizationScale() )
@@ -5722,7 +5722,7 @@ Contains
     Write(io_L,100) "Block SPhenoINFO     # SPheno specific information"
     If (TwoLoopRGE) Then
      Write(io_L,100) "    1      2         # using 2-loop RGEs"
-    Else 
+    Else
      Write(io_L,100) "    1      1         # using 1-loop RGEs"
     End If
     If (YukScen.Eq.1) Then
@@ -5753,9 +5753,9 @@ Contains
   Write(io,*) " "
   If (YukScen.Eq.1) Then
    Write(io,*) &
-     & "Running masses have been used for the boundary conditions at mZ" 
+     & "Running masses have been used for the boundary conditions at mZ"
   Else If (YukScen.Eq.2) Then
-   Write(io,*) "Pole masses have been used for the boundary conditions at mZ" 
+   Write(io,*) "Pole masses have been used for the boundary conditions at mZ"
   End If
   Write(io,*) "  Using Yukawa scheme :",GetYukawaScheme()
   Write(io,*) " "
@@ -5828,10 +5828,10 @@ Contains
   If (ierr.Ne.0) Then
    Do i1=1,3
     Do i2=1,3
-     Write(io_L,105) i2,i1,Real(yl(i2,i1),dp),"# Y_(l,"//bu(i2)//bu(i1)//")"  
+     Write(io_L,105) i2,i1,Real(yl(i2,i1),dp),"# Y_(l,"//bu(i2)//bu(i1)//")"
     End Do
    End Do
-  Else 
+  Else
    Write(io_L,107) 1,1,Real(Yl(1,1),dp), "# Y_e(Q)^DRbar"
    Write(io_L,107) 2,2,Real(Yl(2,2),dp), "# Y_mu(Q)^DRbar"
    Write(io_L,107) 3,3,Real(Yl(3,3),dp), "# Y_tau(Q)^DRbar"
@@ -5844,7 +5844,7 @@ Contains
       Write(io_L,105) i2,i1,Aimag(yl(i2,i1)),"# Im(Y_(l,"//bu(i2)//bu(i1)//"))"
      End Do
     End Do
-   Else 
+   Else
     Write(io_L,107) 1,1,Aimag(Yl(1,1)), "# Im(Y_e)(Q)^DRbar"
     Write(io_L,107) 2,2,Aimag(Yl(2,2)), "# Im(Y_mu)(Q)^DRbar"
     Write(io_L,107) 3,3,Aimag(Yl(3,3)), "# Im(Y_tau)(Q)^DRbar"
@@ -5872,7 +5872,7 @@ Contains
   Integer, Intent(in) :: io_L, io, n_c, n_n, n_sl, n_sn, n_sd, n_su, n_S0     &
    & , n_P0, n_Spm, id_l(3), id_nu(3), id_d(3), id_u(3), id_c(:), id_n(:)     &
    & , id_sle(:), id_snu(:), id_sd(:), id_su(:), id_S0(:), id_P0(:), id_Sm(:) &
-   & , id_Sp(:), id_W, id_Z, id_glu, id_grav, id_gl, id_ph, c_min, n_min 
+   & , id_Sp(:), id_W, id_Z, id_glu, id_grav, id_gl, id_ph, c_min, n_min
   Real(dp), Intent(in) :: gT_N(:), gP_N2(:,:), gP_N3(:,:), BR_N2(:,:)       &
    & , BR_N3(:,:), gT_S0(:), gP_S0(:,:), BR_S0(:,:), gT_P0(:), gP_P0(:,:)   &
    & , BR_P0(:,:), gT_Spm(:), gP_Spm(:,:), BR_Spm(:,:), gT_C(:), gP_C2(:,:) &
@@ -5885,7 +5885,7 @@ Contains
   Character(len=4), intent(in) :: c_S0(:), c_P0(:), c_su(6), c_sd(6)
   Character(len=5), intent(in) :: c_cp(:), c_cm(:), c_c0(:)
 
-  Character(len=13) :: c_sfermion 
+  Character(len=13) :: c_sfermion
 
   Integer :: i_zaehl, id_d_2(200,2), id_d_3(400,3), i1, i2, i3, i4, id_f &
      & , id_fp, i_c2, i_eff
@@ -6022,7 +6022,7 @@ Contains
      c_sfermion = "selectron"
     Else If (i1.Le.4) Then
      c_sfermion = "smuon"
-    Else 
+    Else
      c_sfermion = "stau"
     End If
 
@@ -6073,7 +6073,7 @@ Contains
    End Do
 
 
-  End Do   
+  End Do
 
   !---------------------------------
   ! sneutrinos
@@ -6204,7 +6204,7 @@ Contains
    End Do
 
 
-  End Do   
+  End Do
 
   !---------------------------------
   ! d-squarks
@@ -6314,7 +6314,7 @@ Contains
     Else If (i1.Le.4) Then
      c_sfermion = "s-charm_"
      id_fp = 2
-    Else 
+    Else
      c_sfermion = "stop_"
      id_fp = 4
     End If
@@ -6340,7 +6340,7 @@ Contains
      c_sfermion = "s-down_"
     Else If (i1.Le.4) Then
      c_sfermion = "s-strange_"
-    Else 
+    Else
      c_sfermion = "sbottom_"
     End If
 
@@ -6386,7 +6386,7 @@ Contains
    End Do
 
 
-  End Do   
+  End Do
 
   !---------------------------------
   ! u-squarks
@@ -6496,7 +6496,7 @@ Contains
     Else If (i1.Le.4) Then
      c_sfermion = "s-strange_"
      id_fp = 2
-    Else 
+    Else
      c_sfermion = "sbottom_"
      id_fp = 4
     End If
@@ -6522,7 +6522,7 @@ Contains
      c_sfermion = "s-up_"
     Else If (i1.Le.4) Then
      c_sfermion = "s-charm_"
-    Else 
+    Else
      c_sfermion = "stop_"
     End If
 
@@ -6639,7 +6639,7 @@ Contains
     End Do
    End If
 
-  End Do   
+  End Do
 
   !--------------
   ! charginos
@@ -6694,7 +6694,7 @@ Contains
      Else If (i2.Le.4) Then
       c_sfermion="smuon_"
       id_f = i2 - 2
-     Else 
+     Else
       c_sfermion="stau_"
       id_f = i2 - 4
      End If
@@ -6723,7 +6723,7 @@ Contains
      Else If (i2.Le.4) Then
       c_sfermion="s-charm_"
       id_f = i2 - 2
-     Else 
+     Else
       c_sfermion="stop_"
       id_f = i2 - 2
      End If
@@ -6741,7 +6741,7 @@ Contains
      Else If (i2.Le.4) Then
       c_sfermion="s-strange_"
       id_f = i2 - 2
-     Else 
+     Else
       c_sfermion="sbottom_"
       id_f = i2 - 4
      End If
@@ -6759,7 +6759,7 @@ Contains
     Lnames(i_zaehl) =  Trim(c_c0(i2))//" W+"
     id_d_2(i_zaehl,1) = id_n(i2)
     id_d_2(i_zaehl,2) = id_W
-    i_zaehl = i_zaehl+1    
+    i_zaehl = i_zaehl+1
    End Do
 
    Do i3=1,n_spm
@@ -6768,7 +6768,7 @@ Contains
      Lnames(i_zaehl) =  Trim(c_c0(i2))//" "//Trim(c_sp(i3))
      id_d_2(i_zaehl,1) = id_n(i2)
      id_d_2(i_zaehl,2) = id_sp(i3)
-     i_zaehl = i_zaehl+1    
+     i_zaehl = i_zaehl+1
     End Do
    End Do
 
@@ -6777,7 +6777,7 @@ Contains
     Lnames(i_zaehl) =  Trim(c_cp(i2))//" Z"
     id_d_2(i_zaehl,1) = id_c(i2)
     id_d_2(i_zaehl,2) = id_Z
-    i_zaehl = i_zaehl+1    
+    i_zaehl = i_zaehl+1
    End Do
 
    Do i3=1,n_p0
@@ -6786,7 +6786,7 @@ Contains
      Lnames(i_zaehl) =  Trim(c_cp(i2))//" "//Trim(c_p0(i3))
      id_d_2(i_zaehl,1) = id_c(i2)
      id_d_2(i_zaehl,2) = id_p0(i3)
-     i_zaehl = i_zaehl+1    
+     i_zaehl = i_zaehl+1
     End Do
    End Do
 
@@ -6796,7 +6796,7 @@ Contains
      Lnames(i_zaehl) =  Trim(c_cp(i2))//" "//Trim(c_s0(i3))
      id_d_2(i_zaehl,1) = id_c(i2)
      id_d_2(i_zaehl,2) = id_s0(i3)
-     i_zaehl = i_zaehl+1    
+     i_zaehl = i_zaehl+1
     End Do
    End Do
 
@@ -6833,7 +6833,7 @@ Contains
         id_d_3(i_zaehl-i_c2,1) = id_n(i2)
         id_d_3(i_zaehl-i_c2,2) = - id_d(i3)
         id_d_3(i_zaehl-i_c2,3) = id_u(i4)
-        i_zaehl = i_zaehl+1    
+        i_zaehl = i_zaehl+1
        End Do
       End Do
       Do i3=1,3-(n_c-2)
@@ -6844,7 +6844,7 @@ Contains
        id_d_3(i_zaehl-i_c2,1) = id_n(i2)
        id_d_3(i_zaehl-i_c2,2) = - id_l(i3)
        id_d_3(i_zaehl-i_c2,3) = id_nu(i3)
-       i_zaehl = i_zaehl+1    
+       i_zaehl = i_zaehl+1
       End Do
      End Do
 
@@ -6855,7 +6855,7 @@ Contains
        id_d_3(i_zaehl-i_c2,1) = id_glu
        id_d_3(i_zaehl-i_c2,2) = - id_d(i3)
        id_d_3(i_zaehl-i_c2,3) = id_u(i4)
-       i_zaehl = i_zaehl+1    
+       i_zaehl = i_zaehl+1
       End Do
      End Do
 
@@ -6869,7 +6869,7 @@ Contains
         id_d_3(i_zaehl-i_c2,1) = id_c(i2)
         id_d_3(i_zaehl-i_c2,2) = - id_u(i3)
         id_d_3(i_zaehl-i_c2,3) = id_u(i4)
-        i_zaehl = i_zaehl+1    
+        i_zaehl = i_zaehl+1
        End Do
       End Do
       Do i3=1,3
@@ -6881,7 +6881,7 @@ Contains
         id_d_3(i_zaehl-i_c2,1) = id_c(i2)
         id_d_3(i_zaehl-i_c2,2) = - id_d(i3)
         id_d_3(i_zaehl-i_c2,3) = id_d(i4)
-        i_zaehl = i_zaehl+1    
+        i_zaehl = i_zaehl+1
        End Do
       End Do
       Do i3=1,5-n_c
@@ -6893,7 +6893,7 @@ Contains
         id_d_3(i_zaehl-i_c2,1) = id_c(i2)
         id_d_3(i_zaehl-i_c2,2) = - id_l(i3)
         id_d_3(i_zaehl-i_c2,3) = id_l(i4)
-        i_zaehl = i_zaehl+1    
+        i_zaehl = i_zaehl+1
        End Do
       End Do
       If ((n_c-2).Lt.3) Then
@@ -6902,10 +6902,10 @@ Contains
        id_d_3(i_zaehl-i_c2,1) = id_c(i2)
        id_d_3(i_zaehl-i_c2,2) = - id_nu(1)
        id_d_3(i_zaehl-i_c2,3) = id_nu(3)
-       i_zaehl = i_zaehl+1    
+       i_zaehl = i_zaehl+1
       End If
      End Do
-  
+
     Else ! GenerationMixing
 
      Do i2=1,n_n
@@ -6916,7 +6916,7 @@ Contains
        id_d_3(i_zaehl-i_c2,1) = id_n(i2)
        id_d_3(i_zaehl-i_c2,2) = - id_d(i3)
        id_d_3(i_zaehl-i_c2,3) = id_u(i3)
-       i_zaehl = i_zaehl+1    
+       i_zaehl = i_zaehl+1
       End Do
       Do i3=1,5-n_c
        Fnames(i_zaehl) = &
@@ -6926,7 +6926,7 @@ Contains
        id_d_3(i_zaehl-i_c2,1) = id_n(i2)
        id_d_3(i_zaehl-i_c2,2) = - id_l(i3)
        id_d_3(i_zaehl-i_c2,3) = id_nu(i3)
-       i_zaehl = i_zaehl+1    
+       i_zaehl = i_zaehl+1
       End Do
      End Do
 
@@ -6936,7 +6936,7 @@ Contains
       id_d_3(i_zaehl-i_c2,1) = id_glu
       id_d_3(i_zaehl-i_c2,2) = - id_d(i3)
       id_d_3(i_zaehl-i_c2,3) = id_u(i3)
-      i_zaehl = i_zaehl+1    
+      i_zaehl = i_zaehl+1
      End Do
 
      Do i2=1,i1-1
@@ -6947,7 +6947,7 @@ Contains
        id_d_3(i_zaehl-i_c2,1) = id_c(i2)
        id_d_3(i_zaehl-i_c2,2) = - id_u(i3)
        id_d_3(i_zaehl-i_c2,3) = id_u(i3)
-       i_zaehl = i_zaehl+1    
+       i_zaehl = i_zaehl+1
       End Do
       Do i3=1,3
        Fnames(i_zaehl) = &
@@ -6956,7 +6956,7 @@ Contains
        id_d_3(i_zaehl-i_c2,1) = id_c(i2)
        id_d_3(i_zaehl-i_c2,2) = - id_d(i3)
        id_d_3(i_zaehl-i_c2,3) = id_d(i3)
-       i_zaehl = i_zaehl+1    
+       i_zaehl = i_zaehl+1
       End Do
       Do i3=1,5-n_c
        Fnames(i_zaehl) = &
@@ -6966,7 +6966,7 @@ Contains
        id_d_3(i_zaehl-i_c2,1) = id_c(i2)
        id_d_3(i_zaehl-i_c2,2) = - id_l(i3)
        id_d_3(i_zaehl-i_c2,3) = id_d(i3)
-       i_zaehl = i_zaehl+1    
+       i_zaehl = i_zaehl+1
       End Do
       If ((n_c-2).Lt.3) Then
        Fnames(i_zaehl) = "chargino_"//Bu(i2)//"nu_i nu_i"
@@ -6974,7 +6974,7 @@ Contains
        id_d_3(i_zaehl-i_c2,1) = id_c(i2)
        id_d_3(i_zaehl-i_c2,2) = - id_nu(1)
        id_d_3(i_zaehl-i_c2,3) = id_nu(1)
-       i_zaehl = i_zaehl+1    
+       i_zaehl = i_zaehl+1
       End If
      End Do
 
@@ -7015,7 +7015,7 @@ Contains
       i_zaehl = i_zaehl+2
      End Do
     End Do
-    
+
     Do i2=1,n_sn
      i3 = i2
      Fnames(i_zaehl) = "sneutrino_"//Bu(i2)//" "//Trim(c_snu(i3))//"^*"
@@ -7028,7 +7028,7 @@ Contains
      id_d_2(i_zaehl+1,2) = id_nu(i3)
      i_zaehl = i_zaehl+2
     End Do
-    
+
     Do i2=1,n_su
      Do i3 = 1,3
       Fnames(i_zaehl) = "sup_"//Bu(i2)//" "//Trim(c_u(i3))//"^*"
@@ -7042,7 +7042,7 @@ Contains
       i_zaehl = i_zaehl+2
      End Do
     End Do
-    
+
     Do i2=1,n_sd
      Do i3 = 1,3
       Fnames(i_zaehl) = "sdown_"//Bu(i2)//" "//Trim(c_d(i3))//"^*"
@@ -7056,7 +7056,7 @@ Contains
       i_zaehl = i_zaehl+2
      End Do
     End Do
-    
+
    Else ! GenerationMixing
 
     Do i2=1,n_sl
@@ -7067,7 +7067,7 @@ Contains
      Else If (i2.Le.4) Then
       c_sfermion="smuon_"
       id_f = i2 - 2
-     Else 
+     Else
       c_sfermion="stau_"
       id_f = i2 - 4
      End If
@@ -7097,7 +7097,7 @@ Contains
      id_d_2(i_zaehl+1,2) = id_nu(i3)
      i_zaehl = i_zaehl+2
     End Do
-    
+
     Do i2=1,n_su
      i3 = (i2+1)/2
      If (i2.Le.2) Then
@@ -7106,7 +7106,7 @@ Contains
      Else If (i2.Le.4) Then
       c_sfermion="s-charm_"
       id_f = i2 - 2
-     Else 
+     Else
       c_sfermion="stop_"
       id_f = i2 - 2
      End If
@@ -7120,7 +7120,7 @@ Contains
      id_d_2(i_zaehl+1,2) = id_u(i3)
      i_zaehl = i_zaehl+2
     End Do
-    
+
     Do i2=1,n_sd
      i3 = (i2+1)/2
      If (i2.Le.2) Then
@@ -7129,7 +7129,7 @@ Contains
      Else If (i2.Le.4) Then
       c_sfermion="s-strange_"
       id_f = i2 - 2
-     Else 
+     Else
       c_sfermion="sbottom_"
       id_f = i2 - 4
      End If
@@ -7143,7 +7143,7 @@ Contains
      id_d_2(i_zaehl+1,2) = id_d(i3)
      i_zaehl = i_zaehl+2
     End Do
-    
+
    End If ! GenerationMixing
 
    Do i2=1,n_c
@@ -7154,7 +7154,7 @@ Contains
     id_d_2(i_zaehl,1) = id_c(i2)
     id_d_2(i_zaehl,2) = -id_W
     id_d_2(i_zaehl+1,:) = - id_d_2(i_zaehl,:)
-    i_zaehl = i_zaehl+2 
+    i_zaehl = i_zaehl+2
    End Do
 
    Do i3=1,n_spm
@@ -7166,7 +7166,7 @@ Contains
      id_d_2(i_zaehl,1) = id_c(i2)
      id_d_2(i_zaehl,2) = -id_sp(i3)
      id_d_2(i_zaehl+1,:) = - id_d_2(i_zaehl,:)
-     i_zaehl = i_zaehl+2   
+     i_zaehl = i_zaehl+2
     End Do
    End Do
 
@@ -7176,7 +7176,7 @@ Contains
     Lnames(i_zaehl) =  Trim(c_c0(i2))//" Z"
     id_d_2(i_zaehl,1) = id_n(i2)
     id_d_2(i_zaehl,2) = id_Z
-    i_zaehl = i_zaehl+1    
+    i_zaehl = i_zaehl+1
    End Do
 
    Do i3=1,n_p0
@@ -7185,7 +7185,7 @@ Contains
      Lnames(i_zaehl) =  Trim(c_c0(i2))//" "//Trim(c_p0(i3))
      id_d_2(i_zaehl,1) = id_n(i2)
      id_d_2(i_zaehl,2) = id_p0(i3)
-     i_zaehl = i_zaehl+1    
+     i_zaehl = i_zaehl+1
     End Do
    End Do
 
@@ -7195,7 +7195,7 @@ Contains
      Lnames(i_zaehl) =  Trim(c_c0(i2))//" "//Trim(c_s0(i3))
      id_d_2(i_zaehl,1) = id_n(i2)
      id_d_2(i_zaehl,2) = id_s0(i3)
-     i_zaehl = i_zaehl+1    
+     i_zaehl = i_zaehl+1
     End Do
    End Do
 
@@ -7216,13 +7216,13 @@ Contains
    i_zaehl = i_zaehl + 1
 
    If (HighScaleModel.Eq."NMSSM") Then
-    i_zaehl = 150 
+    i_zaehl = 150
    Else If (HighScaleModel.Eq."RPexplicit") Then
     i_zaehl = 186
    Else If (HighScaleModel.Eq."NURRP1") Then
     i_zaehl = 190
    Else
-    i_zaehl = 150 
+    i_zaehl = 150
    End If
 
    Do i2=1,i1-1
@@ -7230,13 +7230,13 @@ Contains
     Lnames(i_zaehl) =  Trim(c_c0(i2))//" photon"
     id_d_2(i_zaehl,1) = id_n(i2)
     id_d_2(i_zaehl,2) = id_ph
-    i_zaehl = i_zaehl+1    
+    i_zaehl = i_zaehl+1
    End Do
 
    i_c2 = i_zaehl-1
    gP = 0._dp
    BR = 0._dp
-   
+
    i_eff = i1 + 1 - n_min
 
    gT = gT_N(i_eff)
@@ -7294,7 +7294,7 @@ Contains
        id_d_3(i_zaehl+1,:) = -id_d_3(i_zaehl,:)
        i_zaehl = i_zaehl+2
       End Do
-     End Do   
+     End Do
 
      Do i3=1,3
       Do i4=1,3
@@ -7304,7 +7304,7 @@ Contains
        id_d_3(i_zaehl,1) = id_glu
        id_d_3(i_zaehl,2) = - id_u(i3)
        id_d_3(i_zaehl,3) = id_u(i4)
-       i_zaehl = i_zaehl+1    
+       i_zaehl = i_zaehl+1
       End Do
      End Do
 
@@ -7316,7 +7316,7 @@ Contains
        id_d_3(i_zaehl,1) = id_glu
        id_d_3(i_zaehl,2) = - id_d(i3)
        id_d_3(i_zaehl,3) = id_d(i4)
-       i_zaehl = i_zaehl+1    
+       i_zaehl = i_zaehl+1
       End Do
      End Do
 
@@ -7330,7 +7330,7 @@ Contains
         id_d_3(i_zaehl,1) = id_n(i2)
         id_d_3(i_zaehl,2) = - id_u(i3)
         id_d_3(i_zaehl,3) = id_u(i4)
-        i_zaehl = i_zaehl+1    
+        i_zaehl = i_zaehl+1
        End Do
       End Do
       Do i3=1,3
@@ -7342,7 +7342,7 @@ Contains
         id_d_3(i_zaehl,1) = id_n(i2)
         id_d_3(i_zaehl,2) = - id_d(i3)
         id_d_3(i_zaehl,3) = id_d(i4)
-        i_zaehl = i_zaehl+1    
+        i_zaehl = i_zaehl+1
        End Do
       End Do
       Fnames(i_zaehl) = "neutralino_"//Bu(i2)//" nu_i nu_j"
@@ -7350,7 +7350,7 @@ Contains
       id_d_3(i_zaehl,1) = id_n(i2)
       id_d_3(i_zaehl,2) = - id_nu(1)
       id_d_3(i_zaehl,3) = id_nu(3)
-      i_zaehl = i_zaehl+1    
+      i_zaehl = i_zaehl+1
       Do i3=1,3
        Do i4=1,3
         Fnames(i_zaehl) = &
@@ -7360,12 +7360,12 @@ Contains
         id_d_3(i_zaehl,1) = id_n(i2)
         id_d_3(i_zaehl,2) = - id_l(i3)
         id_d_3(i_zaehl,3) = id_l(i4)
-        i_zaehl = i_zaehl+1    
+        i_zaehl = i_zaehl+1
        End Do
       End Do
-     
+
      End Do
-  
+
     Else ! GenerationMixing
 
      Do i2=1,n_c
@@ -7399,7 +7399,7 @@ Contains
        id_d_3(i_zaehl+1,:) = -id_d_3(i_zaehl,:)
        i_zaehl = i_zaehl+2
       End Do
-     End Do   
+     End Do
 
       Do i3=1,3
        i4 = i3
@@ -7409,7 +7409,7 @@ Contains
        id_d_3(i_zaehl,1) = id_glu
        id_d_3(i_zaehl,2) = - id_u(i3)
        id_d_3(i_zaehl,3) = id_u(i4)
-       i_zaehl = i_zaehl+1    
+       i_zaehl = i_zaehl+1
       End Do
 
       Do i3=1,3
@@ -7420,7 +7420,7 @@ Contains
        id_d_3(i_zaehl,1) = id_glu
        id_d_3(i_zaehl,2) = - id_d(i3)
        id_d_3(i_zaehl,3) = id_d(i4)
-       i_zaehl = i_zaehl+1    
+       i_zaehl = i_zaehl+1
       End Do
 
       Do i2=1,i1-1
@@ -7433,7 +7433,7 @@ Contains
         id_d_3(i_zaehl,1) = id_n(i2)
         id_d_3(i_zaehl,2) = - id_u(i3)
         id_d_3(i_zaehl,3) = id_u(i4)
-        i_zaehl = i_zaehl+1    
+        i_zaehl = i_zaehl+1
        End Do
        Do i3=1,3
         i4 = i3
@@ -7444,7 +7444,7 @@ Contains
         id_d_3(i_zaehl,1) = id_n(i2)
         id_d_3(i_zaehl,2) = - id_d(i3)
         id_d_3(i_zaehl,3) = id_d(i4)
-        i_zaehl = i_zaehl+1    
+        i_zaehl = i_zaehl+1
        End Do
        If ((n_n-4).Lt.3) Then
         Fnames(i_zaehl) = "neutralino_"//Bu(i2)//" nu_i nu_i"
@@ -7452,7 +7452,7 @@ Contains
         id_d_3(i_zaehl,1) = id_n(i2)
         id_d_3(i_zaehl,2) = - id_nu(1)
         id_d_3(i_zaehl,3) = id_nu(3)
-        i_zaehl = i_zaehl+1    
+        i_zaehl = i_zaehl+1
        End If
        Do i3=1,7-n_n
         i4 = i3
@@ -7463,10 +7463,10 @@ Contains
         id_d_3(i_zaehl,1) = id_n(i2)
         id_d_3(i_zaehl,2) = - id_l(i3)
         id_d_3(i_zaehl,3) = id_l(i4)
-        i_zaehl = i_zaehl+1    
-       End Do    
+        i_zaehl = i_zaehl+1
+       End Do
       End Do
- 
+
      If (     (HighScaleModel.Eq."RPexplicit") &
         & .or.(HighScaleModel(1:5).Eq."NURRP") ) Then
       Do i2=1,n_c
@@ -7492,7 +7492,7 @@ Contains
          id_d_3(i_zaehl,2) = - id_c(i2)
          id_d_3(i_zaehl,3) = id_c(i3)
          id_d_3(i_zaehl+1,1) = id_n(1)
-         id_d_3(i_zaehl+1,2:3) = -id_d_3(i_zaehl,2:3) 
+         id_d_3(i_zaehl+1,2:3) = -id_d_3(i_zaehl,2:3)
          i_zaehl = i_zaehl+2
         End If
        End Do
@@ -7522,7 +7522,7 @@ Contains
           id_d_3(i_zaehl,2) = - id_l(i3)
           id_d_3(i_zaehl,3) = id_l(i4)
           id_d_3(i_zaehl+1,1) = id_n(i2)
-          id_d_3(i_zaehl+1,2:3) = -id_d_3(i_zaehl,2:3) 
+          id_d_3(i_zaehl+1,2:3) = -id_d_3(i_zaehl,2:3)
           i_zaehl = i_zaehl+2
          End If
         End Do
@@ -7546,7 +7546,7 @@ Contains
       i_zaehl = i_zaehl+1
      End If
     End If ! GenerationMixing
-   
+
     Write(io_L,100) "#    BR                NDA      ID1      ID2       ID3"
 
     BR(i_c2+1:i_zaehl-1) = BR_N3(i_eff,1:i_zaehl-i_c2-1)
@@ -7580,7 +7580,7 @@ Contains
      i_zaehl = i_zaehl+2
     End Do
    End Do
-    
+
    Do i2=1,n_sd
     Do i3 = 1,3
      Fnames(i_zaehl) = "sdown_"//Bu(i2)//" "//Trim(c_d(i3))//"^*"
@@ -7594,8 +7594,8 @@ Contains
      i_zaehl = i_zaehl+2
     End Do
    End Do
- 
-    
+
+
   Else ! GenerationMixing
 
    Do i2=1,n_su
@@ -7606,7 +7606,7 @@ Contains
     Else If (i2.Le.4) Then
      c_sfermion="s-charm_"
      id_f = i2 - 2
-    Else 
+    Else
      c_sfermion="stop_"
      id_f = i2 - 2
     End If
@@ -7620,7 +7620,7 @@ Contains
     id_d_2(i_zaehl+1,2) = id_u(i3)
     i_zaehl = i_zaehl+2
    End Do
-    
+
    Do i2=1,n_sd
     i3 = (i2+1)/2
     If (i2.Le.2) Then
@@ -7629,7 +7629,7 @@ Contains
     Else If (i2.Le.4) Then
      c_sfermion="s-strange_"
      id_f = i2 - 2
-    Else 
+    Else
      c_sfermion="sbottom_"
      id_f = i2 - 4
     End If
@@ -7643,7 +7643,7 @@ Contains
     id_d_2(i_zaehl+1,2) = id_d(i3)
     i_zaehl = i_zaehl+2
    End Do
-    
+
    id_f = 1
    c_sfermion="stop_"
    Fnames(i_zaehl) = Trim(c_sfermion)//Bu(id_f)//" "//Trim(c_u(2))//"^*"
@@ -7663,7 +7663,7 @@ Contains
    Lnames(i_zaehl) =  Trim(c_c0(i2))//" gluon"
    id_d_2(i_zaehl,1) = id_n(i2)
    id_d_2(i_zaehl,2) = id_gl
-   i_zaehl = i_zaehl+1    
+   i_zaehl = i_zaehl+1
   End Do
 
   i_c2 = i_zaehl-1
@@ -7675,7 +7675,7 @@ Contains
   Write(io_L,200) id_glu,gT_Glu,Trim(c_gl)
   If (Sum(gp_Glu2).Gt.0._dp) Then ! 2-body decays
    Write(io_L,100) "#    BR                NDA      ID1      ID2"
-   Do i2=1,i_zaehl-1 
+   Do i2=1,i_zaehl-1
     If (BR_Glu2(i2).Gt.BrMin) Write(io_L,201) BR_Glu2(i2),2,id_d_2(i2,:), &
             &                   Trim(c_gl)//" -> "//Trim(Lnames(i2))//")"
    End Do
@@ -7696,7 +7696,7 @@ Contains
        id_d_3(i_zaehl-i_c2,1) = id_n(i2)
        id_d_3(i_zaehl-i_c2,2) = - id_u(i3)
        id_d_3(i_zaehl-i_c2,3) = id_u(i4)
-       i_zaehl = i_zaehl+1    
+       i_zaehl = i_zaehl+1
       End Do
      End Do
      Do i3=1,3
@@ -7708,7 +7708,7 @@ Contains
        id_d_3(i_zaehl-i_c2,1) = id_n(i2)
        id_d_3(i_zaehl-i_c2,2) = - id_d(i3)
        id_d_3(i_zaehl-i_c2,3) = id_d(i4)
-       i_zaehl = i_zaehl+1    
+       i_zaehl = i_zaehl+1
       End Do
      End Do
     End Do
@@ -7731,7 +7731,7 @@ Contains
        i_zaehl = i_zaehl+2
       End Do
      End Do
-    End Do 
+    End Do
 
     Do i2=1,6
      Do i3=1,3
@@ -7745,7 +7745,7 @@ Contains
       id_d_3(i_zaehl-i_c2+1,:) = -id_d_3(i_zaehl-i_c2,:)
       i_zaehl = i_zaehl+2
      End Do
-    End Do  
+    End Do
 
    Else ! GenerationMixing
     Do i2=1,n_n
@@ -7758,7 +7758,7 @@ Contains
       id_d_3(i_zaehl-i_c2,1) = id_n(i2)
       id_d_3(i_zaehl-i_c2,2) = - id_u(i3)
       id_d_3(i_zaehl-i_c2,3) = id_u(i4)
-      i_zaehl = i_zaehl+1    
+      i_zaehl = i_zaehl+1
      End Do
      Do i3=1,3
       i4=i3
@@ -7769,7 +7769,7 @@ Contains
       id_d_3(i_zaehl-i_c2,1) = id_n(i2)
       id_d_3(i_zaehl-i_c2,2) = - id_d(i3)
       id_d_3(i_zaehl-i_c2,3) = id_d(i4)
-      i_zaehl = i_zaehl+1    
+      i_zaehl = i_zaehl+1
      End Do
     End Do
 
@@ -7790,7 +7790,7 @@ Contains
       id_d_3(i_zaehl-i_c2+1,:) = -id_d_3(i_zaehl-i_c2,:)
       i_zaehl = i_zaehl+2
      End Do
-    End Do 
+    End Do
 
     Do i2=5,6
      i3=3
@@ -7803,7 +7803,7 @@ Contains
      id_d_3(i_zaehl-i_c2,3) = id_d(i3)
      id_d_3(i_zaehl-i_c2+1,:) = -id_d_3(i_zaehl-i_c2,:)
      i_zaehl = i_zaehl+2
-    End Do  
+    End Do
    End If ! GenerationMixing
 
    Write(io_L,100) "#    BR                NDA      ID1      ID2       ID3"
@@ -8007,7 +8007,7 @@ Contains
       End Do ! i4
      End Do ! i3
     End Do ! i2
-    ! sneutrinos 
+    ! sneutrinos
     Do i2=1,n_sn
      Lnames(i_zaehl) = Trim(c_snu(i2))//" "//Trim(c_snu(i2))
      id_d_2(i_zaehl,1) = -id_snu(i2)
@@ -8133,7 +8133,7 @@ Contains
 
    End If
 
-   ! neutralinos 
+   ! neutralinos
    Do i2=1,n_n
     Do i3=i2,n_n
      Fnames(i_zaehl) = 'neutralino_'//Bu(i2)//' neutralino_'//Bu(i3)
@@ -8246,11 +8246,11 @@ Contains
    Do i2=1,i_zaehl-1
     If (BR(i2).Gt.BrMin)  Write(io_L,201) BR(i2),2,id_d_2(i2,:)  &
            &  ,Trim(c_m)//" -> "//Trim(Lnames(i2))//")"
-   End Do    
-   
-   Fnames(i_zaehl) = "W^+ W^-*" 
+   End Do
+
+   Fnames(i_zaehl) = "W^+ W^-*"
    Fnames(i_zaehl+1) = "W^- W^+*"
-   Fnames(i_zaehl+2) = "Z Z^*" 
+   Fnames(i_zaehl+2) = "Z Z^*"
 
    Call WriteDecays2(io,c_m , Fnames, gP, 100*BR, gT, BrMin100)
    If ((BR(i_zaehl).Gt.BrMin).Or.(BR(i_zaehl+2).Gt.BrMin)) Then
@@ -8280,18 +8280,18 @@ Contains
      End Do
     End If
     i_zaehl = i_zaehl + 2
-    If (BR(i_zaehl).Gt.BrMin) Then 
+    If (BR(i_zaehl).Gt.BrMin) Then
      Write(io_L,202) BrZinv*BR(i_zaehl),3,id_Z,id_nu(1),-id_nu(1), &
         & Trim(c_m)//" -> Z0 nu_i nu_i)"
-     Do i2=1,3  
+     Do i2=1,3
       Write(io_L,202) BrZll(i2)*BR(i_zaehl),3,id_Z,id_l(i2),-id_l(i2), &
         & Trim(c_m)//" -> Z0 "//Trim(c_lm(i2))//" "//Trim(c_lp(i2))//")"
      End Do
-     Do i2=1,3  
+     Do i2=1,3
       Write(io_L,202) BrZqq(i2)*BR(i_zaehl),3,id_Z,id_d(i2),-id_d(i2), &
         & Trim(c_m)//" -> Z0 "//Trim(c_d(i2))//" "//Trim(c_d(i2))//")"
      End Do
-     Do i2=1,2 
+     Do i2=1,2
       Write(io_L,202) BrZqq(i2)*BR(i_zaehl),3,id_Z,id_u(i2),-id_u(i2), &
         & Trim(c_m)//" -> Z0 "//Trim(c_u(i2))//" "//Trim(c_u(i2))//")"
      End Do
@@ -8579,7 +8579,7 @@ Contains
 
    End If
 
-   ! neutralinos 
+   ! neutralinos
    Do i2=1,n_n
     Do i3=i2,n_n
      Fnames(i_zaehl) = 'neutralino_'//Bu(i2)//' neutralino_'//Bu(i3)
@@ -8666,10 +8666,10 @@ Contains
    Do i2=1,i_zaehl-1
     If (BR(i2).Gt.BrMin)  Write(io_L,201) BR(i2),2,id_d_2(i2,:)  &
            &  ,Trim(c_m)//" -> "//Trim(Lnames(i2))//")"
-   End Do    
+   End Do
    If (BR(i_zaehl+3).Gt.BrMin)  Write(io_L,201) BR(i_zaehl+3),2,id_gl  &
            &  ,id_gl,Trim(c_m)//" -> g g)"
- 
+
    Call WriteDecays2(io,c_m , Fnames, gP, 100*BR, gT, BrMin100)
 
   End Do
@@ -8793,7 +8793,7 @@ Contains
    Do i2=1,i_zaehl-1
     If (BR(i2).Gt.BrMin)  Write(io_L,201) BR(i2),2,id_d_2(i2,:)  &
            &  ,Trim(c_m)//" -> "//Trim(Lnames(i2))//")"
-   End Do    
+   End Do
 
   End Do
 
@@ -8801,7 +8801,7 @@ Contains
  200 Format("DECAY",1x,I9,3x,1P,E16.8,0P,3x,"# ",a)
  201 Format(3x,1P,e16.8,0p,3x,I2,3x,2(i9,1x),2x,"# BR(",a)
  202 Format(3x,1P,e16.8,0p,3x,I2,3x,3(i9,1x),2x,"# BR(",a)
- 
+
  end subroutine LH_write_decays
 
  Subroutine LH_write_ext(io_L, Q, bi)
@@ -8837,7 +8837,7 @@ Contains
 
  100 Format(a)
  104 Format(i4,2x,1P,e16.8,2x,a)
-      
+
  End Subroutine LH_write_ext
 
  Subroutine LH_write_msq(io_L, c_sd, id_sd, c_su, id_su)
@@ -8948,7 +8948,7 @@ Contains
    c_su(5) = "~t_1"
    c_su(6) = "~t_2"
   End If ! GenerationMixing
-  
+
  102 Format(1x,i9,3x,1P,e16.8,2x,a)
 
  End Subroutine LH_write_msq
@@ -9064,7 +9064,7 @@ Contains
 
    Iname = Iname + 1
    NameOfUnit(Iname) = "ReadMatrixC"
-   Do 
+   Do
     Read(io,*,End=200) read_line
 !     Write(*,*) read_line
     If (read_line(1:1).Eq."#") Cycle ! ignore comments
@@ -9132,7 +9132,7 @@ Contains
 
    Iname = Iname + 1
    NameOfUnit(Iname) = "ReadMatrixC2"
-   Do 
+   Do
     Read(io,*,End=200) read_line
 !     Write(*,*) read_line
     If (read_line(1:1).Eq."#") Cycle ! ignore comments
@@ -9154,7 +9154,7 @@ Contains
     Else If (i_in.eq.2) then
      i2 = i3
     End if
-    
+
     If ((i1.Lt.1).Or.(i1.Gt.nmax)) Then
      Write(ErrCan,*) "Problem while reading "//mat_name//" in routine"// &
         & Trim(NameOfUnit(Iname))//", index i1=",i1
@@ -9210,7 +9210,7 @@ Contains
 
    Iname = Iname + 1
    NameOfUnit(Iname) = "ReadMatrixR"
-   Do 
+   Do
     Read(io,*,End=200) read_line
 !     Write(*,*) read_line
     If (read_line(1:1).Eq."#") Cycle ! ignore comments
@@ -9227,7 +9227,7 @@ Contains
         & Trim(NameOfUnit(Iname))//", index i1=",i1
      Iname = Iname - 1
      kont = -309
-     Call AddError(309) 
+     Call AddError(309)
      Call TerminateProgram()
     End If
     If ((i2.Lt.1).Or.(i2.Gt.nmax)) Then
@@ -9235,7 +9235,7 @@ Contains
         & Trim(NameOfUnit(Iname))//", index i2=",i2
      Iname = Iname - 1
      kont = -309
-     Call AddError(309) 
+     Call AddError(309)
      Call TerminateProgram()
     End If
 
@@ -9247,7 +9247,7 @@ Contains
    Return
 
   End Subroutine ReadMatrixR
-  
+
   Subroutine ReadTensorC(io, nmax, mat, ic, mat_name, kont, AS)
   Implicit None
    Character(len=*) :: mat_name
@@ -9255,7 +9255,7 @@ Contains
    Complex(dp), Intent(inout) :: mat(nmax, nmax, nmax)
    Integer, Intent(out) :: kont
    Integer, Intent(in), Optional :: AS ! if present, specifies which entries
-                                       ! are antisymmetri: 12 -> i1 i2 
+                                       ! are antisymmetri: 12 -> i1 i2
                                        !                   13 -> i1 i3
                                        !                   23 -> i2 i3
    Character(len=80) :: read_line
@@ -9266,7 +9266,7 @@ Contains
 
    Iname = Iname + 1
    NameOfUnit(Iname) = "ReadTensorC"
-   Do 
+   Do
     Read(io,*,End=200) read_line
 !     Write(*,*) read_line
     If (read_line(1:1).Eq."#") Cycle ! ignore comments
@@ -9290,7 +9290,7 @@ Contains
      Write(ErrCan,*) "Problem while reading "//mat_name//" in routine"// &
         & Trim(NameOfUnit(Iname))//", index i2=",i2
      Iname = Iname - 1
-     kont = -312 
+     kont = -312
      Call AddError(312)
      Call TerminateProgram()
     End If
@@ -9318,7 +9318,7 @@ Contains
    Return
 
   End Subroutine ReadTensorC
-  
+
   Subroutine ReadVectorC(io, nmax, vec, ic, vec_name, kont)
   Implicit None
    Character(len=*) :: vec_name
@@ -9334,7 +9334,7 @@ Contains
 
    Iname = Iname + 1
    NameOfUnit(Iname) = "ReadVectorC"
-   Do 
+   Do
     Read(io,*,End=200) read_line
 !     Write(*,*) read_line
     If (read_line(1:1).Eq."#") Cycle ! ignore comments
@@ -9364,7 +9364,7 @@ Contains
    Return
 
   End Subroutine ReadVectorC
-  
+
   Subroutine ReadVectorC2(io, nmax, vec, ic, vec_name, kont)
   Implicit None
    Character(len=*) :: vec_name
@@ -9380,7 +9380,7 @@ Contains
 
    Iname = Iname + 1
    NameOfUnit(Iname) = "ReadVectorC2"
-   Do 
+   Do
     Read(io,*,End=200) read_line
 !     Write(*,*) Trim(read_line)
     If (read_line(1:1).Eq."#") Cycle ! ignore comments
@@ -9400,7 +9400,7 @@ Contains
      Call AddError(315)
      Cycle
     End If
-     
+
     If ((i1.Lt.1).Or.(i1.Gt.nmax)) Then
      Write(ErrCan,*) "Problem while reading "//vec_name//" in routine"// &
         & Trim(NameOfUnit(Iname))//", index i1=",i1
@@ -9419,7 +9419,7 @@ Contains
    Return
 
   End Subroutine ReadVectorC2
-  
+
   Subroutine ReadVectorR(io, nmax, vec, vec_name, kont)
   Implicit None
    Character(len=*) :: vec_name
@@ -9435,7 +9435,7 @@ Contains
 
    Iname = Iname + 1
    NameOfUnit(Iname) = "ReadVectorR"
-   Do 
+   Do
     Read(io,*,End=200) read_line
 !     Write(*,*) read_line
     If (read_line(1:1).Eq."#") Cycle ! ignore comments
@@ -9464,7 +9464,7 @@ Contains
    Return
 
   End Subroutine ReadVectorR
-  
+
   Subroutine ReadVectorR2(io, nmax, vec, vec_name, kont)
   Implicit None
    Character(len=*) :: vec_name
@@ -9480,7 +9480,7 @@ Contains
 
    Iname = Iname + 1
    NameOfUnit(Iname) = "ReadVectorR2"
-   Do 
+   Do
     Read(io,*,End=200) read_line
 !     Write(*,*) trim(read_line)
     If (read_line(1:1).Eq."#") Cycle ! ignore comments
@@ -9500,7 +9500,7 @@ Contains
      Call AddError(315)
      Cycle
     End If
-     
+
     If ((i1.Lt.1).Or.(i1.Gt.nmax)) Then
      Write(ErrCan,*) "Problem while reading "//vec_name//" in routine"// &
         & Trim(NameOfUnit(Iname))//", index i1=",i1
@@ -9568,7 +9568,7 @@ Contains
   Real(dp) :: T3, YL, YR, ML, MR, mSf(2), mSf2(2), mSdown(6), mSup(6)    &
       & , mSlepton(6), mSneut(3)
   Complex(dp) :: Rsf(2,2), A, Y
-  
+
   Iname = Iname + 1
   NameOfUnit(Iname) = "WriteSPhenoOutputLHA1"
 
@@ -9621,7 +9621,7 @@ Contains
     Write(io_L,104) 1,gauge_0(1),"# g'(Q)^DRbar"
     Write(io_L,104) 2,gauge_0(2),"# g(Q)^DRbar"
     Write(io_L,104) 3,gauge_0(3),"# g3(Q)^DRbar"
-    
+
    Else If ((HighScaleModel(1:5).Eq."SUGRA").Or.   &
           & (HighScaleModel(1:5).Eq."SEESA")) Then
     non_minimal = .False.
@@ -9634,7 +9634,7 @@ Contains
     Else If (HighScaleModel.Eq."SUGRA_NuR1") Then
      Write(io_L,100) "    3    3    # mSUGRA model + nu_R at a common scale"
      Write(io_L,100) "Block MnuR  # mass scale of the right handed neutrinos"
-     Write(io_L,101) 1,MnuR(1),"# m_nu_R      "     
+     Write(io_L,101) 1,MnuR(1),"# m_nu_R      "
     Else If (HighScaleModel.Eq."SUGRA_NuR") Then
      Y_nu_0 = Transpose(Y_nu_0) ! in the RGEs the transposed Yukawas are used
      Write(io_L,100) "    3    4    # mSUGRA model + three  nu_R, ~nu_R"
@@ -9642,7 +9642,7 @@ Contains
      Do i1=1,3
       Do i2=1,3
        Write(io_L,105) i2,i1,Real(Y_nu_0(i2,i1),dp), &
-             & "# Y_(nu,"//bu(i2)//bu(i1)//")"  
+             & "# Y_(nu,"//bu(i2)//bu(i1)//")"
       End Do
      End Do
      If (Maxval(Abs(Aimag(Y_nu_0))).Gt.0._dp) Then
@@ -9650,7 +9650,7 @@ Contains
       Do i1=1,3
        Do i2=1,3
         Write(io_L,105) i2,i1,Aimag(Y_nu_0(i2,i1)) &
-             & ,"# Im(Y_(nu,"//bu(i2)//bu(i1)//"))"  
+             & ,"# Im(Y_(nu,"//bu(i2)//bu(i1)//"))"
        End Do
       End Do
      End If
@@ -9659,7 +9659,7 @@ Contains
      Write(io_L,106) "Block YT0 Q=",m_GUT,"# (GUT scale)"
      Do i1=1,3
       Do i2=i1,3
-       Write(io_L,105) i2,i1,Real(Y_T_0(i2,i1),dp),"# Y_(T,"//bu(i2)//bu(i1)//")"  
+       Write(io_L,105) i2,i1,Real(Y_T_0(i2,i1),dp),"# Y_(T,"//bu(i2)//bu(i1)//")"
       End Do
      End Do
      If (Maxval(Abs(Aimag(Y_T_0))).Gt.0._dp) Then
@@ -9667,7 +9667,7 @@ Contains
       Do i1=1,3
        Do i2=i1,3
         Write(io_L,105) i2,i1,Aimag(Y_T_0(i2,i1)) &
-             & ,"# Im(Y_(T,"//bu(i2)//bu(i1)//"))"  
+             & ,"# Im(Y_(T,"//bu(i2)//bu(i1)//"))"
        End Do
       End Do
      End If
@@ -9684,7 +9684,7 @@ Contains
      Else
       Write(io_L,100) "    6    0               # using RGEs for 3-plet"
      End If
-      
+
     End If
     Write(io_L,100) "Block MINPAR  # Input parameters"
     Write(io_L,101) 1,Sqrt(Real(M2_E_0(1,1),dp)),"# m0      "
@@ -9702,7 +9702,7 @@ Contains
     Write(io_L,104) 1,gauge_0(1),"# g'(Q)^DRbar"
     Write(io_L,104) 2,gauge_0(2),"# g(Q)^DRbar"
     Write(io_L,104) 3,gauge_0(3),"# g3(Q)^DRbar"
-    
+
    Else If (HighScaleModel.Eq."AMSB") Then
     non_minimal = .False.
     Write(io_L,100) "Block MODSEL  # Model selection"
@@ -9710,12 +9710,12 @@ Contains
     If (GenerationMixing) Write(io_L,100) &
       & " 6 1                      # switching on flavour violation"
     Write(io_L,100) "Block MINPAR  # Input parameters"
-    Write(io_L,101) 1,m0_amsb,"# M_0" 
+    Write(io_L,101) 1,m0_amsb,"# M_0"
     Write(io_L,101) 2,m_32,"# m_3/2, gravitino mass"
     Write(io_L,101) 3,tanb_mZ,"# tanb at m_Z   "
     Write(io_L,101) 4, Real(phase_mu,dp),"# Sign(mu)"
 
-    
+
    Else
     non_minimal = .True.
     Write(io_L,100) "# Either the general MSSM or a model has been used"
@@ -9724,7 +9724,7 @@ Contains
     Write(io_L,100) "Block MINPAR  # Input parameters"
     Write(io_L,101) 3,tanb_mZ,"# tanb at m_Z    "
     Write(io_L,101) 4, Real(phase_mu,dp),"# Sign(mu)"
-   End If 
+   End If
 
    !---------------------------------------------------
    ! parameters + masses for SPheno.spc
@@ -9796,7 +9796,7 @@ Contains
     Write(io_L,104) 48,Sqrt(Real(M2D_SCKM(2,2),dp)),"# M_(D,22)"
     Write(io_L,104) 49,Sqrt(Real(M2D_SCKM(3,3),dp)),"# M_(D,33)"
    End If
-      
+
 ! couplings
   Write(io_L,106) "Block gauge Q=",Q,"# (SUSY scale)"
   Write(io_L,104) 1,gauge(1),"# g'(Q)^DRbar"
@@ -9813,8 +9813,8 @@ Contains
   Write(io_L,107) 2,2,Yd(2), "# Y_s(Q)^DRbar"
   Write(io_L,107) 3,3,Yd(3), "# Y_b(Q)^DRbar"
 
-  If (GenerationMixing) Then 
-                             
+  If (GenerationMixing) Then
+
    Write(io_L,106) "Block VCKM Q=",Q,"# Re(CKM) at the SUSY scale"
    Do i1=1,3
     Do i2=1,3
@@ -9849,10 +9849,10 @@ Contains
   If (ierr.Ne.0) Then
    Do i1=1,3
     Do i2=1,3
-     Write(io_L,105) i2,i1,Real(Y_l(i2,i1),dp),"# Y_(l,"//bu(i2)//bu(i1)//")"  
+     Write(io_L,105) i2,i1,Real(Y_l(i2,i1),dp),"# Y_(l,"//bu(i2)//bu(i1)//")"
     End Do
    End Do
-  Else 
+  Else
    Write(io_L,107) 1,1,Real(y_l(1,1),dp), "# Y_e(Q)^DRbar"
    Write(io_L,107) 2,2,Real(y_l(2,2),dp), "# Y_mu(Q)^DRbar"
    Write(io_L,107) 3,3,Real(y_l(3,3),dp), "# Y_tau(Q)^DRbar"
@@ -9865,7 +9865,7 @@ Contains
       Write(io_L,105) i2,i1,Aimag(Y_l(i2,i1)),"# Im(Y_(l,"//bu(i2)//bu(i1)//"))"
      End Do
     End Do
-   Else 
+   Else
     Write(io_L,107) 1,1,Aimag(y_l(1,1)), "# Im(Y_e)(Q)^DRbar"
     Write(io_L,107) 2,2,Aimag(y_l(2,2)), "# Im(Y_mu)(Q)^DRbar"
     Write(io_L,107) 3,3,Aimag(y_l(3,3)), "# Im(Y_tau)(Q)^DRbar"
@@ -9916,7 +9916,7 @@ Contains
    Do i2=1,3
     Do i1=1,3
      Write(io_L,105) i2,i1,Real(M2_L(i2,i1),dp)  &
-                  & ,"# M^2_(L,"//bu(i2)//bu(i1)//")"  
+                  & ,"# M^2_(L,"//bu(i2)//bu(i1)//")"
     End Do
    End Do
    If (Maxval(Abs(Aimag(M2_L))).Gt.0._dp) Then
@@ -9925,7 +9925,7 @@ Contains
     Do i2=1,3
      Do i1=1,3
       Write(io_L,105) i2,i1,Aimag(M2_L(i2,i1)) &
-                 &   ,"# Im(M^2_(L,"//bu(i2)//bu(i1)//"))"  
+                 &   ,"# Im(M^2_(L,"//bu(i2)//bu(i1)//"))"
      End Do
     End Do
    End If
@@ -9934,7 +9934,7 @@ Contains
    Do i2=1,3
     Do i1=1,3
      Write(io_L,105) i2,i1,Real(M2_E(i2,i1),dp)  &
-                  & ,"# M^2_(E,"//bu(i2)//bu(i1)//")"  
+                  & ,"# M^2_(E,"//bu(i2)//bu(i1)//")"
     End Do
    End Do
    If (Maxval(Abs(Aimag(M2_E))).Gt.0._dp) Then
@@ -9943,7 +9943,7 @@ Contains
     Do i2=1,3
      Do i1=1,3
       Write(io_L,105) i2,i1,Aimag(M2_E(i2,i1)) &
-                 &   ,"# Im(M^2_(E,"//bu(i2)//bu(i1)//"))"  
+                 &   ,"# Im(M^2_(E,"//bu(i2)//bu(i1)//"))"
      End Do
     End Do
    End If
@@ -9952,7 +9952,7 @@ Contains
    Do i2=1,3
     Do i1=1,3
      Write(io_L,105) i2,i1,Real(M2Q_SCKM(i2,i1),dp) &
-                   & ,"# M^2_(Q,"//bu(i2)//bu(i1)//")"  
+                   & ,"# M^2_(Q,"//bu(i2)//bu(i1)//")"
     End Do
    End Do
    If (Maxval(Abs(Aimag(M2Q_SCKM))).Gt.0._dp) Then
@@ -9961,7 +9961,7 @@ Contains
     Do i2=1,3
      Do i1=1,3
       Write(io_L,105) i2,i1,Aimag(M2Q_SCKM(i2,i1)) &
-                 &   ,"# Im(M^2_(Q,"//bu(i2)//bu(i1)//"))"  
+                 &   ,"# Im(M^2_(Q,"//bu(i2)//bu(i1)//"))"
      End Do
     End Do
    End If
@@ -9970,7 +9970,7 @@ Contains
    Do i2=1,3
     Do i1=1,3
      Write(io_L,105) i2,i1,Real(M2U_SCKM(i1,i2),dp)  &
-                  & ,"# M^2_(U,"//bu(i2)//bu(i1)//")"  
+                  & ,"# M^2_(U,"//bu(i2)//bu(i1)//")"
     End Do
    End Do
    If (Maxval(Abs(Aimag(M2U_SCKM))).Gt.0._dp) Then
@@ -9979,7 +9979,7 @@ Contains
     Do i2=1,3
      Do i1=1,3
       Write(io_L,105) i2,i1,Aimag(M2U_SCKM(i1,i2)) &
-                 &   ,"# Im(M^2_(U,"//bu(i2)//bu(i1)//"))"  
+                 &   ,"# Im(M^2_(U,"//bu(i2)//bu(i1)//"))"
      End Do
     End Do
    End If
@@ -9988,7 +9988,7 @@ Contains
    Do i2=1,3
     Do i1=1,3
      Write(io_L,105) i2,i1,Real(M2D_SCKM(i1,i2),dp)  &
-                  & ,"# M^2_(D,"//bu(i2)//bu(i1)//")"  
+                  & ,"# M^2_(D,"//bu(i2)//bu(i1)//")"
     End Do
    End Do
    If (Maxval(Abs(Aimag(M2D_SCKM))).Gt.0._dp) Then
@@ -9997,7 +9997,7 @@ Contains
     Do i2=1,3
      Do i1=1,3
       Write(io_L,105) i2,i1,Aimag(M2D_SCKM(i1,i2)) &
-                 &   ,"# Im(M^2_(D,"//bu(i2)//bu(i1)//"))"  
+                 &   ,"# Im(M^2_(D,"//bu(i2)//bu(i1)//"))"
      End Do
     End Do
    End If
@@ -10109,37 +10109,37 @@ Contains
    If (HighScaleModel.Ne."RPexplicit") &
         & Write(io_L,102) id_l(3),mf_l(3),"# m_tau(pole)"
    If (HighScaleModel.Eq."NMSSM") Then
-    Write(io_L,102) 25,S03(1)%m,"# leightest neutral scalar" 
-    Write(io_L,102) 35,S03(2)%m,"# second neutral scalar" 
-    Write(io_L,102) 45,S03(3)%m,"# third neutral scalar" 
-    Write(io_L,102) 36,P03(2)%m,"# leighter pseudoscalar" 
-    Write(io_L,102) 46,P03(3)%m,"# heavier pseudoscalar" 
+    Write(io_L,102) 25,S03(1)%m,"# leightest neutral scalar"
+    Write(io_L,102) 35,S03(2)%m,"# second neutral scalar"
+    Write(io_L,102) 45,S03(3)%m,"# third neutral scalar"
+    Write(io_L,102) 36,P03(2)%m,"# leighter pseudoscalar"
+    Write(io_L,102) 46,P03(3)%m,"# heavier pseudoscalar"
     Write(io_L,102) 37,Spm(2)%m,"# H+"
    Else If (HighScaleModel.Eq."RPexplicit") Then
 !    Write(io_L,102) 12,mN7(1),"# lightest neutrino"
 !    Write(io_L,102) 14,mN7(2),"# second lightest neutrino"
 !    Write(io_L,102) 16,mN7(3),"# heaviest neutrino"
-    Write(io_L,102) id_s0(1),S05(1)%m,"# leightest neutral scalar" 
-    Write(io_L,102) id_s0(2),S05(2)%m,"# 2nd neutral scalar" 
-    Write(io_L,102) id_s0(3),S05(3)%m,"# 3rd neutral scalar" 
-    Write(io_L,102) id_s0(4),S05(4)%m,"# 4th neutral scalar" 
-    Write(io_L,102) id_s0(5),S05(5)%m,"# 5th neutral scalar" 
-    Write(io_L,102) id_P0(1),P05(2)%m,"# leightest pseudoscalar" 
-    Write(io_L,102) id_P0(2),P05(3)%m,"# 2nd pseudoscalar" 
-    Write(io_L,102) id_P0(3),P05(4)%m,"# 3rd pseudoscalar" 
+    Write(io_L,102) id_s0(1),S05(1)%m,"# leightest neutral scalar"
+    Write(io_L,102) id_s0(2),S05(2)%m,"# 2nd neutral scalar"
+    Write(io_L,102) id_s0(3),S05(3)%m,"# 3rd neutral scalar"
+    Write(io_L,102) id_s0(4),S05(4)%m,"# 4th neutral scalar"
+    Write(io_L,102) id_s0(5),S05(5)%m,"# 5th neutral scalar"
+    Write(io_L,102) id_P0(1),P05(2)%m,"# leightest pseudoscalar"
+    Write(io_L,102) id_P0(2),P05(3)%m,"# 2nd pseudoscalar"
+    Write(io_L,102) id_P0(3),P05(4)%m,"# 3rd pseudoscalar"
     Write(io_L,102) id_p0(4),P05(5)%m,"# 4th pseudoscalar"
-    Write(io_L,102) Abs(id_sp(1)),Spm8(2)%m,"# leightest charged scalar" 
-    Write(io_L,102) Abs(id_sp(2)),Spm8(3)%m,"# 2nd charged scalar" 
-    Write(io_L,102) Abs(id_sp(3)),Spm8(4)%m,"# 3rd charged scalar" 
-    Write(io_L,102) Abs(id_sp(4)),Spm8(5)%m,"# 4th charged scalar" 
-    Write(io_L,102) Abs(id_sp(5)),Spm8(6)%m,"# 5th charged scalar" 
-    Write(io_L,102) Abs(id_sp(6)),Spm8(7)%m,"# 6th charged scalar" 
-    Write(io_L,102) Abs(id_sp(7)),Spm8(8)%m,"# 7th charged scalar" 
-    
+    Write(io_L,102) Abs(id_sp(1)),Spm8(2)%m,"# leightest charged scalar"
+    Write(io_L,102) Abs(id_sp(2)),Spm8(3)%m,"# 2nd charged scalar"
+    Write(io_L,102) Abs(id_sp(3)),Spm8(4)%m,"# 3rd charged scalar"
+    Write(io_L,102) Abs(id_sp(4)),Spm8(5)%m,"# 4th charged scalar"
+    Write(io_L,102) Abs(id_sp(5)),Spm8(6)%m,"# 5th charged scalar"
+    Write(io_L,102) Abs(id_sp(6)),Spm8(7)%m,"# 6th charged scalar"
+    Write(io_L,102) Abs(id_sp(7)),Spm8(8)%m,"# 7th charged scalar"
+
    Else
-    Write(io_L,102) 25,S0(1)%m,"# h0" 
-    Write(io_L,102) 35,S0(2)%m,"# H0" 
-    Write(io_L,102) 36,P0(2)%m,"# A0" 
+    Write(io_L,102) 25,S0(1)%m,"# h0"
+    Write(io_L,102) 35,S0(2)%m,"# H0"
+    Write(io_L,102) 36,P0(2)%m,"# A0"
     Write(io_L,102) 37,Spm(2)%m,"# H+"
    End If
 ! squarks
@@ -10232,7 +10232,7 @@ Contains
      Do ii=1,6
       Write(io_L,102) id_su(ii),msup(ii),"# "//Trim(c_su(ii))
      End Do
-   
+
     Else ! use mass ordering
 
      id_sd(1) = 1000001
@@ -10332,7 +10332,7 @@ Contains
    c_su(5) = "~t_1"
    c_su(6) = "~t_2"
   End If ! GenerationMixing
-   
+
    If (HighScaleModel.Ne."RPexplicit") Then
 
 ! sleptons
@@ -10340,7 +10340,7 @@ Contains
     mSneut = Sneut%m
     If (GenerationMixing) Then
      If (Use_Flavour_States) Then ! using flavour ordering, old fashionnd
- 
+
       Do i1=1,3
        MaxCont = Maxval(Abs(Rsneut(i1,:))**2)
        If (Abs(Rsneut(i1,1))**2.Eq.maxCont) Then
@@ -10476,17 +10476,17 @@ Contains
      If (Sum(Abs(Real(N(i1,:)))).Lt.0.1_dp) Then
       mNr(i1) = - Chi0(i1)%m
       nr(i1,1:4) = Aimag(n(i1,:))
-     Else   
+     Else
       mNr(i1) =  Chi0(i1)%m
       nr(i1,1:4) = Real(n(i1,:),dp)
      End If
     End Do
 
-    Write(io_L,102) 1000022,mnr(1),"# ~chi_10" 
-    Write(io_L,102) 1000023,mnr(2),"# ~chi_20" 
-    Write(io_L,102) 1000025,mnr(3),"# ~chi_30" 
-    Write(io_L,102) 1000035,mnr(4),"# ~chi_40" 
-    Write(io_L,102) 1000024,ChiPm(1)%m,"# ~chi_1+" 
+    Write(io_L,102) 1000022,mnr(1),"# ~chi_10"
+    Write(io_L,102) 1000023,mnr(2),"# ~chi_20"
+    Write(io_L,102) 1000025,mnr(3),"# ~chi_30"
+    Write(io_L,102) 1000035,mnr(4),"# ~chi_40"
+    Write(io_L,102) 1000024,ChiPm(1)%m,"# ~chi_1+"
     Write(io_L,102) 1000037,ChiPm(2)%m,"# ~chi_2+"
 
    If (Maxval(MnuR).Gt.0._dp) Then
@@ -10497,7 +10497,7 @@ Contains
     Write(io_L,102) 3,mnur(3),"# m_nu_R_3"
    End If
 
-! Mixing matrices 
+! Mixing matrices
   Write(io_L,100) "# Higgs mixing"
    Write(io_L,100) "Block alpha # Effective Higgs mixing angle"
    Write(io_L,108) -Asin(RS0(1,1)),"# alpha"
@@ -10543,7 +10543,7 @@ Contains
    Write(io_L,105) 2,2,Real(Rsf(2,2),dp),"# R_sb(2,2)"
 
    T3 = -0.5_dp
-   Yl = -1._dp 
+   Yl = -1._dp
    Yr = 2._dp
     Ml = M2_L(3,3)
     Mr = M2_E(3,3)
@@ -10577,7 +10577,7 @@ Contains
    Write(io_L,105) 2,2,Real(V(2,2),dp),"# V(2,2)"
 
 100 Format(a)
-101 Format(2x,i3,2x,1P,e16.8,2x,a) 
+101 Format(2x,i3,2x,1P,e16.8,2x,a)
 102 Format(1x,i9,3x,1P,e16.8,2x,a)
 103 Format(a13,1P,e16.8,2x,a)
 104 Format(i4,2x,1P,e16.8,2x,a)
@@ -10587,7 +10587,7 @@ Contains
 108 Format(9x,1P,E16.8,0P,3x,a)
 109 Format(1x,3i3,3x,1P,e16.8,3x,a)
   Close(io_L)
-  
+
 
 !   if (f_c.lt.10) then
 !    f_n = "omg000"//bu(f_c)//".out"
@@ -10603,10 +10603,10 @@ Contains
 !    k2 = (f_c - k1 * 1000)/100
 !    k3 = (f_c - k1 * 1000 - k2*100)/10
 !    f_n = "omg"//bu(k1)//bu(k2)//bu(k3)//bu(f_c-k1*1000-k2*100-k3*10)//".out"
-!   end if   
+!   end if
 
   Iname = Iname - 1
-  
+
  End Subroutine WriteSPhenoOutputLHA1
 
 
@@ -10628,7 +10628,7 @@ Contains
   Write(io,200) 6,2.43_dp,"top"
   Write(io,100) "#    BR                NDA      ID1      ID2"
   Write(io,401) 1.0_dp,2,5,24,"t","b","W"
-  
+
   Write(io,100) "Block HiggsBoundsInputHiggsCouplingsFermions"
   Write(io,100) "# ScalarNormEffCoupSq PseudoSNormEffCoupSq NP IP1 IP2 IP2"
   wert1 = (RS0(1,1) / RP0(1,1))**2
@@ -10666,10 +10666,10 @@ Contains
   Write(io,100) "#"
   Write(io,102) 0.0_dp,3,25,25,23,"h0-h0-Z"
   Write(io,102) 0.0_dp,3,35,25,23,"H0-h0-Z"
-  wert = (RP0(2,1)*RS0(1,1) - RP0(2,2)*RS0(1,2))**2 
+  wert = (RP0(2,1)*RS0(1,1) - RP0(2,2)*RS0(1,2))**2
   Write(io,102) wert,3,36,25,23,"A0-h0-Z"
   Write(io,102) 0.0_dp,3,35,35,23,"H0-H0-Z"
-  wert = (RP0(2,1)*RS0(2,1) - RP0(2,2)*RS0(2,2))**2 
+  wert = (RP0(2,1)*RS0(2,1) - RP0(2,2)*RS0(2,2))**2
   Write(io,102) wert,3,36,35,23,"A0-H0-Z"
   Write(io,102) 0.0_dp,3,36,36,23,"A0-A0-Z"
   Write(io,100) "#"
@@ -10717,7 +10717,7 @@ Contains
    End If
 
    Deallocate( vec )
-    
+
   Else
 
    If (Maxval( Abs( Aimag(matrix) )) .Lt.1.e-15_dp) Then
@@ -10776,11 +10776,11 @@ Contains
     Write(io,*) " "//name//" : kinematically not possible"
    Else If (Maxval(sigma).Lt.SigMin) Then
     Write(io,*) " "//name//" : cross sections below",SigMin,"fb"
-   Else 
+   Else
     Write(io,*) " "//name
     Do i1=1,len1
      Do i2=i1,len2
-      If (Sigma(i1,i2).Gt.SigMin) Write(io,900) i1,i2,Sigma(i1,i2) 
+      If (Sigma(i1,i2).Gt.SigMin) Write(io,900) i1,i2,Sigma(i1,i2)
      End Do
     End Do
    End If
@@ -10801,7 +10801,7 @@ Contains
     Write(io,*) " "//name//" : kinematically not possible"
    Else If (sigma.Lt.SigMin) Then
     Write(io,*) " "//name//" : cross section below",Real(SigMin),"fb"
-   Else 
+   Else
     Write(io,*) " "//name
     Write(io,900) sigma
    End If
@@ -10811,7 +10811,7 @@ Contains
 
  End Subroutine WriteCrossSection1
 
- 
+
  Subroutine WriteDecays2(n, titel, names, gP, BR, gT, prez)
  Implicit None
   Integer, Intent(in) :: n
@@ -10824,7 +10824,7 @@ Contains
   If (Sum(gp).Eq.0._dp) Then! case of stable particles
    Write (n,*) titel//" : stable"
     Write (n,*) ' '
-   Return 
+   Return
   End If
 
   dim1 = Size( gP )
@@ -11169,7 +11169,7 @@ Contains
  ! writes out all MSSM parameters
  ! written by Werner Porod
  ! 15.11.01: writting MSSM part,
- !           WriteBilinear and WriteTrilinear should be used later for 
+ !           WriteBilinear and WriteTrilinear should be used later for
  !           R-parity violation
  !-----------------------------------------------------------------------
  Implicit None
@@ -11216,7 +11216,7 @@ Contains
   End If
   If (WithComments) Write(n,*) " "
 
-  
+
   If (WithComments) Write(n,*) "tan(beta), mu, B"
   If ((Aimag(mu).Eq.0._dp).And.(Aimag(B).Eq.0._dp)) Then
    Write(n,103) tanb, Real(mu), Real(B)
@@ -11274,7 +11274,7 @@ Contains
           & , GenerationMixing, Qout, delta, io_L)
  !-----------------------------------------------------------------------
  ! runs the parameters given at a scale Qin to the scale Qout, calculates
- ! the masses within the MSSM and prints them out 
+ ! the masses within the MSSM and prints them out
  !-----------------------------------------------------------------------
  Implicit None
   Integer, Intent(in) :: io_L
@@ -11349,7 +11349,7 @@ Contains
     Do i1=1,4
      If (Sum(Abs(Real(N(i1,:)))).Eq.0._dp) Then
       nr(i1,1:4) = Aimag(n(i1,:))
-     Else   
+     Else
       nr(i1,1:4) = n(i1,:)
      End If
     End Do
@@ -11418,8 +11418,8 @@ Contains
    End If
   End If
 
-  If (GenerationMixing) Then 
-                             
+  If (GenerationMixing) Then
+
    Call WriteMatrixBlockC(io_L,3,CKM_Q,Qout &
                          & ,"VCKM","V_CKM at the SUSY scale","V_(")
 
@@ -11435,7 +11435,7 @@ Contains
    Call WriteMatrixBlockC(io_L,3,Ad_sckm,Qout,"Td","SUSY scale","T_(d,",tr=.True.)
    Call WriteMatrixBlockC(io_L,3,Al_pmns,Qout,"Te","SUSY scale","T_(l,", tr=.True.)
 
-  Else 
+  Else
    Write(io_L,106) "Block Au Q=",Qout,"# (SUSY scale)"
    If (Abs(Yu_Q(1)).Gt.0._dp) &
         & Write(io_L,107) 1,1,Real(Au_sckm(1,1)/Yu_Q(1),dp), "# A_u(Q)^DRbar"
@@ -11557,9 +11557,9 @@ Contains
 
    Write(io_L,100) "Block MASS  # Mass spectrum"
    Write(io_L,100) "#   PDG code      mass          particle"
-   Write(io_L,102) 25,mS0(1),"# h0" 
-   Write(io_L,102) 35,mS0(2),"# H0" 
-   Write(io_L,102) 36,mP0(2),"# A0" 
+   Write(io_L,102) 25,mS0(1),"# h0"
+   Write(io_L,102) 35,mS0(2),"# H0"
+   Write(io_L,102) 36,mP0(2),"# A0"
    Write(io_L,102) 37,mSpm(2),"# H+"
 
    If (GenerationMixing) Then
@@ -11570,7 +11570,7 @@ Contains
     id_sd(5) = 2000003
     id_sd(6) = 2000005
     Do i1=1,6
-     Write(io_L,102) id_sd(i1),mSdown(i1),"#~d_"//Bu(i1) 
+     Write(io_L,102) id_sd(i1),mSdown(i1),"#~d_"//Bu(i1)
     End Do
 
     id_su(1) = 1000002
@@ -11657,11 +11657,11 @@ Contains
   End If ! GenerationMixing
 
   Write(io_L,102) 1000021,mGlu,"# ~g"
-  Write(io_L,102) 1000022,mN(1),"# ~chi_10" 
-  Write(io_L,102) 1000023,mN(2),"# ~chi_20" 
-  Write(io_L,102) 1000025,mN(3),"# ~chi_30" 
-  Write(io_L,102) 1000035,mN(4),"# ~chi_40" 
-  Write(io_L,102) 1000024,mC(1),"# ~chi_1+" 
+  Write(io_L,102) 1000022,mN(1),"# ~chi_10"
+  Write(io_L,102) 1000023,mN(2),"# ~chi_20"
+  Write(io_L,102) 1000025,mN(3),"# ~chi_30"
+  Write(io_L,102) 1000035,mN(4),"# ~chi_40"
+  Write(io_L,102) 1000024,mC(1),"# ~chi_1+"
   Write(io_L,102) 1000037,mC(2),"# ~chi_2+"
 
   If (generationmixing) Then
@@ -11689,7 +11689,7 @@ Contains
    Call WriteMatrixBlockC2(io_L, 2, RDsq_ckm(5:6,5:6), "sbotmix" &
                          &, "sbottom mixing matrix", "R_sb(")
 
-!   If (HighScaleModel.Ne."RPexplicit") & 
+!   If (HighScaleModel.Ne."RPexplicit") &
    Call WriteMatrixBlockC2(io_L, 2, RSl_pmns(5:6,5:6), "staumix" &
                             &, "stau mixing matrix", "R_sta(")
   End If
@@ -11708,7 +11708,7 @@ Contains
 !                         &, "chargino mixing matrix", "U(")
 !   Call WriteMatrixBlockC2(io_L, 2, V, "Vmix" &
 !                         &, "chargino mixing matrix", "V(")
-!  Else   
+!  Else
    Call WriteMatrixBlockC2(io_L, n_n, nr(1:n_n,1:n_n), "Nmix" &
                          &, "neutralino mixing matrix", "N(")
    Call WriteMatrixBlockC2(io_L, n_c, U, "Umix" &
@@ -11723,7 +11723,7 @@ Contains
   Iname = Iname - 1
 
 100 Format(a)
-101 Format(2x,i3,2x,1P,e16.8,2x,a) 
+101 Format(2x,i3,2x,1P,e16.8,2x,a)
 102 Format(1x,i9,3x,1P,e16.8,2x,a)
 103 Format(a13,1P,e16.8,2x,a)
 104 Format(i4,2x,1P,e16.8,2x,a)
@@ -11755,7 +11755,7 @@ Contains
    End Do
    Write(n,*) vec
    Deallocate( vec )
-    
+
   Else
     If (dim_matrix.Le.4) Then
      Do i1=1,dim_matrix

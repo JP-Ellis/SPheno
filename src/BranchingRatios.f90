@@ -1,4 +1,4 @@
-Module BranchingRatios 
+Module BranchingRatios
 
 ! load modules
 Use Control
@@ -37,7 +37,7 @@ Contains
      & , N, Sneut, RSneut, Slept, RSlepton, Sup, RSup, Sdown, RSdown, uL_L     &
      & , uL_R, uD_L, uD_R, uU_L, uU_R, S0, RS0, P0, RP0, Spm, RSpm, epsI       &
      & , deltaM, CTBD, fac3, Y_d, A_d, Y_l, A_l, Y_u, A_u, mu, vevSM, Fgmsb    &
-     & , m32, grav_fac) 
+     & , m32, grav_fac)
  !------------------------------------------------------------------
  ! Calculates the branching of SUSY particles within the MSSM
  ! it is assumed that the SUSY couplings as well as the parameters
@@ -45,7 +45,7 @@ Contains
  ! Input: - gauge(i) .... the gauge couplings
  !        - epsI ........ precision to which the integrals for the
  !                        3-body decays are evolved
- !        - deltaM ...... maximal ratio of mass over phasespace in 
+ !        - deltaM ...... maximal ratio of mass over phasespace in
  !                        3-body decays where the masses are set 0
  !                        in the calculation of the phase space.
  !        - CTBD ........ logical variable, it .true. then all 3-body
@@ -57,7 +57,7 @@ Contains
  !          will be recalculated using the routines for 3-body decays
  !  the variable GenerationMixing is taken from the Module InputOutput
  ! The exact form of the output depends partly on the variable
- ! GenerationMixing. 
+ ! GenerationMixing.
  ! output:
  !  - gT_Sn(i) .... total width of sneutrino_i, i=1-3
  !  - BR_Sn(i,j) .. branching ratios of sneutrino_i
@@ -91,7 +91,7 @@ Contains
  !     j=22+j,22+j*2  .... A0 + sneutrino j=1,i-1
  !     j=22+j,22+j*3  .... h0 + sneutrino j=1,i-1
  !     j=22+j,22+j*4  .... H0 + sneutrino j=1,i-1
- !  
+ !
  ! written by Werner Porod, 25.04.02
  ! 16.09.02: instead of using globally defined couplings, now locally
  !           defined couplings are used.
@@ -106,7 +106,7 @@ Contains
  !           However, in the 3-body modes on-shell particles will be
  !           negelected. This requires also a change in the output
  !           format. Moreover, also the charge conjugated final states
- !           will be printed in future. 
+ !           will be printed in future.
  !           Starting with the gluino
  ! 10.09.03: changing ordering for neutralino 2-body decays such that
  !           charge conjugated final states are included
@@ -119,10 +119,10 @@ Contains
  Implicit None
 
   Integer, Intent(in) :: n_nu, n_l, n_d, n_u, n_Z, n_W, n_snu, n_sle, n_Sd &
-     & , n_su, n_n, n_c, n_g, n_s0, n_p0, n_Spm, id_grav, id_gl, id_ph 
+     & , n_su, n_n, n_c, n_g, n_s0, n_p0, n_Spm, id_grav, id_gl, id_ph
   Integer, Intent(in), Dimension(1) :: id_Z, id_W
   Integer, Intent(in), Dimension(3) :: id_nu, id_l, id_d, id_u
-  
+
   Real(dp), Intent(in) :: epsI, deltaM, gauge(3), fac3
   Real(dp), Intent(in) :: RP0(2,2), RS0(2,2)
   Complex(dp), Intent(in) :: PhaseGlu, RSpm(2,2), U(2,2), V(2,2), N(4,4) &
@@ -140,7 +140,7 @@ Contains
                              ! decays of the scalar up
   Type(particle2) :: SMp(2) ! contains the identies of the negative charged ones
   Type(particle23) :: ChiM(2) ! contains the identies of the negative charged ones
-                              
+
   Integer :: i1, i2, k_neut
   Real(dp) :: sinW
 
@@ -153,11 +153,11 @@ Contains
       & , c_UUZ_L, c_UUZ_R, c_NuNuZ_L, c_NuNuZ_R
   Complex(dp) :: c_CCZ_L(2,2,1), c_CCZ_R(2,2,1)           &
       & , c_NNZ_L(4,4,1), c_NNZ_R(4,4,1), c_NNS0_L(4,4,2)            &
-      & , c_NNS0_R(4,4,2), c_NNP0_L(4,4,2), c_NNP0_R(4,4,2) 
+      & , c_NNS0_R(4,4,2), c_NNP0_L(4,4,2), c_NNP0_R(4,4,2)
   Complex(dp) :: c_GDSd_L(3,6), c_GDSd_R(3,6)          &
       & , c_DNSd_L(3,4,6), c_DNSd_R(3,4,6), c_GUSu_L(3,6)         &
       & , c_GUSu_R(3,6), c_UNSu_L(3,4,6), c_UNSu_R(3,4,6)         &
-      & , c_LNSl_L(3,4,6), c_LNSl_R(3,4,6), c_NuNSn_L(3,4,3)      & 
+      & , c_LNSl_L(3,4,6), c_LNSl_R(3,4,6), c_NuNSn_L(3,4,3)      &
       & , c_NuNSn_R(3,4,3), c_DDP0_L(3,3,2), c_LLP0_L(3,3,2)      &
       & , c_UUP0_L(3,3,2), c_DDP0_R(3,3,2), c_LLP0_R(3,3,2)       &
       & , c_UUP0_R(3,3,2), c_DDS0_L(3,3,2), c_LLS0_L(3,3,2)       &
@@ -168,7 +168,7 @@ Contains
       & , c_CLSn_R(2,3,3), c_CNuSl_L(2,3,6), c_CNuSl_R(2,3,6)
   Complex(dp) :: c_GlGlS0(2), c_GGS0(2),  c_GlGlP0(2), c_GGP0(2)
   Complex(dp) :: c_P0SdSd(2,6,6), c_P0SuSu(2,6,6), c_P0SlSl(2,6,6) &
-      & , c_P0SnSn(2,3,3), c_P0S0Z(2,2,1) 
+      & , c_P0SnSn(2,3,3), c_P0S0Z(2,2,1)
   Real(dp) :: c_P0S03(2,2,2), c_S0WWvirt(2,1), c_S0ZZvirt(2,1), vev
   Complex(dp) :: c_S0SdSd(2,6,6), c_S0SuSu(2,6,6) &
       & , c_S0SlSl(2,6,6), c_S0SnSn(2,3,3), c_LNuW(3,3)
@@ -198,7 +198,7 @@ Contains
       & , mS0(2), mS02(2), RS0_h(2,2), mSpm(2), mSpm2(2), sinb, cosb
   Complex(dp) :: U_h(2,2), V_h(2,2), N_h(4,4), Rsneut_h(3,3), RSlepton_h(6,6)  &
               & , RSdown_h(6,6), RSup_h(6,6), RSpm_h(2,2), PhiGlu, yuk, A      &
-              & , Rsl(2,2) , Rsd(2,2) , Rsu(2,2) 
+              & , Rsl(2,2) , Rsd(2,2) , Rsu(2,2)
   Real(dp) :: fakt, r_T, width, width1
   Real(dp), Parameter :: mf_nu(3)=0._dp, e_d = -1._dp/3._dp, e_u = 2._dp/3._dp
   Complex(dp), Parameter :: g_sd0(6) = 0._dp, g_su0(6) = 0._dp &
@@ -218,12 +218,12 @@ Contains
   Spm(1)%g = gamW
   P0(1)%g = gamZ
 
-  Sup2%m = Sup%m 
-  Sup2%id = Sup%id 
-  Slept2%m = Slept%m 
-  Slept2%id = Slept%id 
-  Sneut2%m  = Sneut%m 
-  Sneut2%id = Sneut%id 
+  Sup2%m = Sup%m
+  Sup2%id = Sup%id
+  Slept2%m = Slept%m
+  Slept2%id = Slept%id
+  Sneut2%m  = Sneut%m
+  Sneut2%id = Sneut%id
   ChiM%m = ChiPm%m
   ChiM%id = ChiPm%id + 1
   SMp%m = SPm%m
@@ -255,13 +255,13 @@ Contains
 
   tanb = vevSM(2) / vevSM(1)
   cosb = 1._dp / Sqrt(1._dp + tanb**2)
-  sinb = cosb * tanb 
+  sinb = cosb * tanb
   Call LoopCouplingsMSSM(GenerationMixing, Y_d(3,3), tanb, A_d(3,3), mu &
                & , Sdown%m, Sup%m2, RSup, P0%m2, CKM, c_UNSu_R, c_GUSu_R)
 
   If (grav_fac.Ne.0._dp) Then
    F_eff = grav_fac*Fgmsb ! effective SUSY breaking scale in case of GSMB
-  Else 
+  Else
    F_eff = Fgmsb
   End If
   !------------------------------------------------
@@ -279,7 +279,7 @@ Contains
    Sneut(i1)%gi2 = Sneut2(i1)%gi2
    Sneut(i1)%bi2 = Sneut2(i1)%bi2
    Sneut(i1)%id2 = Sneut2(i1)%id2
-  End Do 
+  End Do
 
   !------------------------------------------------
   ! 3-body decays of sneutrinos
@@ -535,7 +535,7 @@ Contains
   g_W = (vevSM(1) * RS0(1,1) + vevSM(2) * RS0(1,2) ) / vev
   !-----------------------------------------------------------------
   ! including approx. QCD corrections in case of lighter h^0
-  ! based on Graudenz, Djouadi, Spira, Zerwas NPB (1995), for gamma 
+  ! based on Graudenz, Djouadi, Spira, Zerwas NPB (1995), for gamma
   !-----------------------------------------------------------------
   r_T = 1._dp - oo4pi2 * g_i(3)**2
   fakt = 1._dp + 2._dp * oo3pi2 * g_i(3)**2
@@ -551,10 +551,10 @@ Contains
   ! taking out the gamma gamma part, adding gluon gluon part
   ! sqrt appears as I change here the coupling and not the width
   !---------------------------------------------------------------------
-  g_u = g_u * fakt 
-  g_d = g_d * fakt 
-  g_su = g_su * fakt 
-  g_sd = g_sd * fakt 
+  g_u = g_u * fakt
+  g_d = g_d * fakt
+  g_su = g_su * fakt
+  g_sd = g_sd * fakt
   Call CoupScalarGluon(S0(1)%m2, mf_u2, g_u, mf_d2, g_d, mSup2, g_su &
                       & , mSdown2, g_sd, c_GlGlS0(1), coup )
   r_GlGlS0(1) = Abs(c_GlGlS0(1) / coup)**2
@@ -565,11 +565,11 @@ Contains
       & , id_u, n_Z, id_Z, n_W, id_W, n_snu, n_sle, n_Sd, n_su, n_n, n_c, n_p0 &
       & , n_Spm, id_ph, id_gl, S0, c_S03, c_GlGlS0, c_GGS0, mf_l, c_LLS0_L     &
       & , c_LLS0_R, mf_d, c_DDS0_L, c_DDS0_R, mf_u, c_UUS0_L, c_UUS0_R, Slept  &
-      & , c_S0SlSl, Sneut, c_S0SnSn, Sdown, c_S0SdSd, Sup, c_S0SuSu, Chi0      & 
+      & , c_S0SlSl, Sneut, c_S0SnSn, Sdown, c_S0SdSd, Sup, c_S0SuSu, Chi0      &
       & , c_NNS0_L, c_NNS0_R, ChiPm, c_CCS0_L, c_CCS0_R, m_W, c_S0WW           &
       & , c_S0WWvirt, m_Z, c_S0ZZ, c_S0ZZvirt, Spm, c_SmpS03, P0, c_P0S03      &
       & , c_P0S0Z, c_SmpS0W, Glu%m)
-  
+
   sinW2 = gauge(1)**2 / (gauge(1)**2 + gauge(2)**2)
   !------------------------------------------------------------------------
   ! loop induced couplings to photons and gluons
@@ -607,10 +607,10 @@ Contains
       & , c_SmpP03, c_SmpP0W, S0, c_SmpS03, c_SmpS0W, 1)
 
   Do i1=1,2
-   c_CGW_L(1) = U(i1,1) /F_eff 
-   c_CGW_R(1) = V(i1,1) /F_eff 
-   c_CGW_L(2) = oosqrt2 * U(i1,2) * cosb /F_eff 
-   c_CGW_R(2) = oosqrt2 *  V(i1,2) * sinb /F_eff 
+   c_CGW_L(1) = U(i1,1) /F_eff
+   c_CGW_R(1) = V(i1,1) /F_eff
+   c_CGW_L(2) = oosqrt2 * U(i1,2) * cosb /F_eff
+   c_CGW_R(2) = oosqrt2 *  V(i1,2) * sinb /F_eff
    If (.Not.CTBD)  Then
     Call CharginoTwoBodyDecays(i1, n_nu, id_nu, n_l, id_l, n_d, id_d, n_u      &
        & , id_u, n_Z, id_Z, n_W, id_W, n_snu, n_sle, n_Sd, n_su, n_n, n_c      &
@@ -657,7 +657,7 @@ Contains
        & , GenerationMixing, k_neut, epsI, deltaM, .True. )
     End If
 
-   Else ! enforce calculation of 3-body final states 
+   Else ! enforce calculation of 3-body final states
      Call CharginoThreeBodyDecays(i1, n_l, id_l, n_nu, id_nu, n_d, id_d, n_u   &
        & , id_u, n_c, n_n, n_W, id_W, n_Z, id_Z, n_Sle, n_Snu, n_Sd, n_Su      &
        & , n_S0, n_P0, n_Spm, ChiPm, mZ, gamZ, c_NuNuZ_L, c_NuNuZ_R, mf_l      &
@@ -689,16 +689,16 @@ Contains
      ChiPm(1)%g = Sum(ChiPm(1)%gi2) + Sum(ChiPm(1)%gi3)
      ChiPm(1)%bi2 = ChiPm(1)%gi2 / ChiPm(1)%g
      ChiPm(1)%bi3 = ChiPm(1)%gi3 / ChiPm(1)%g
-    End If 
+    End If
    End If
   End Do
-  
+
   OnlySM = .True.
 
   Do i1=1,4
    If (.Not.CTBD) Then
     sinW = Sqrt(sinW2)
-    cosW = Sqrt(1._dp - sinW2)    
+    cosW = Sqrt(1._dp - sinW2)
     c_NGP = (N(i1,1)*cosW+N(i1,2)*sinW) / F_eff
     c_NGZ(1) = (- N(i1,1)*sinW+ N(i1,2)*cosW) / F_eff
     c_NGZ(2) = oosqrt2 * (cosb * N(i1,3) - sinb * N(i1,4) ) / F_eff
@@ -793,14 +793,14 @@ Contains
      Chi0(2)%g = Sum(Chi0(2)%gi2) + Sum(Chi0(2)%gi3)
      Chi0(2)%bi2 = Chi0(2)%gi2 / Chi0(2)%g
      Chi0(2)%bi3 = Chi0(2)%gi3 / Chi0(2)%g
-    End If 
+    End If
    End If
 
   End Do
 
   !-------------------------------------------------------
   ! in the case of the lighter stop it is possible that
-  ! all two-body decay modes are kinematically forbidden 
+  ! all two-body decay modes are kinematically forbidden
   !-------------------------------------------------------
   If (GenerationMixing) Then
    Write(ErrCan,*) "Warning 3-body decays of ~t_1 are not in case of"
@@ -809,7 +809,7 @@ Contains
     Sup(i1)%gi3 = 0
     Sup(i1)%bi3 = 0
    End Do
-  Else 
+  Else
    If ((Sup(5)%g.Lt.fac3*Sup(5)%m).Or.CTBD) Then ! calculation including widths
     Sup(5)%gi2 = 0._dp
     !--------------------------------------------
@@ -853,7 +853,7 @@ Contains
    Complex(dp), Intent(inout) :: c_UNSu_R(3,4,6), c_GUSu_R(3,6)
 
    Integer ::  kont
-   
+
    Real(dp) :: cosb2, sinb2, cos2b, fakt16pi, deltal, deltar, mass2(3), test(2)
    Complex(dp) :: Rsf(3,3), mat3(3,3)
 
@@ -889,7 +889,7 @@ Contains
      kont = 0
     End If
     If ((kont.Ne.0).And.(ErrorLevel.Ge.0)) Then
-!   call AddNOW() 
+!   call AddNOW()
      Write(ErrCan,*) "Warning, in subroutine "//NameOfUnit(Iname)
      Write(ErrCan,*) "Diagonalization of mat3 has failed",kont
      If (ErrorLevel.Eq.2) Call TerminateProgram
@@ -917,7 +917,7 @@ Contains
     & , Chi0, N, Sneut, RSneut, Slept, RSlepton, Sup, RSup, Sdown, RSdown     &
     & , uL_L, uL_R, uD_L, uD_R, uU_L, uU_R, S0, RS0, P0, RP0, Spm, RSpm       &
     & , epsI, deltaM, CTBD, fac3, Y_d, A_d, Y_l, A_l, Y_u, A_u, mu, h0, Ah0   &
-    & , lam, Alam, vevSM, vP, Fgmsb, m32, grav_fac) 
+    & , lam, Alam, vevSM, vP, Fgmsb, m32, grav_fac)
  !------------------------------------------------------------------
  ! Calculates the branching of SUSY particles within the MSSM
  ! it is assumed that the SUSY couplings as well as the parameters
@@ -925,7 +925,7 @@ Contains
  ! Input: - gauge(i) .... the gauge couplings
  !        - epsI ........ precision to which the integrals for the
  !                        3-body decays are evolved
- !        - deltaM ...... maximal ratio of mass over phasespace in 
+ !        - deltaM ...... maximal ratio of mass over phasespace in
  !                        3-body decays where the masses are set 0
  !                        in the calculation of the phase space.
  !        - kont ........ control variable, is 0 if everything is o.k.
@@ -938,7 +938,7 @@ Contains
  !          will be recalculated using the routines for 3-body decays
  !  the variable GenerationMixing is taken from the Module InputOutput
  ! The exact form of the output depends partly on the variable
- ! GenerationMixing. 
+ ! GenerationMixing.
  ! output:
  !  - gT_Sn(i) .... total width of sneutrino_i, i=1-3
  !  - BR_Sn(i,j) .. branching ratios of sneutrino_i
@@ -972,7 +972,7 @@ Contains
  !     j=22+j,22+j*2  .... A0 + sneutrino j=1,i-1
  !     j=22+j,22+j*3  .... h0 + sneutrino j=1,i-1
  !     j=22+j,22+j*4  .... H0 + sneutrino j=1,i-1
- !  
+ !
  ! written by Werner Porod, 25.04.02
  ! 16.09.02: instead of using globally defined couplings, now locally
  !           defined couplings are used.
@@ -987,7 +987,7 @@ Contains
  !           However, in the 3-body modes on-shell particles will be
  !           negelected. This requires also a change in the output
  !           format. Moreover, also the charge conjugated final states
- !           will be printed in future. 
+ !           will be printed in future.
  !           Starting with the gluino
  ! 10.09.03: changing ordering for neutralino 2-body decays such that
  !           charge conjugated final states are included
@@ -1000,7 +1000,7 @@ Contains
  Implicit None
 
   Integer, Intent(in) :: n_nu, n_l, n_d, n_u, n_Z, n_W, n_snu, n_sle, n_Sd &
-     & , n_su, n_n, n_c, n_g, n_s0, n_p0, n_Spm, id_grav, id_gl, id_ph 
+     & , n_su, n_n, n_c, n_g, n_s0, n_p0, n_Spm, id_grav, id_gl, id_ph
   Integer, Intent(in), Dimension(1) :: id_Z, id_W
   Integer, Intent(in), Dimension(3) :: id_nu, id_l, id_d, id_u
 
@@ -1035,11 +1035,11 @@ Contains
       & , c_UUZ_L, c_UUZ_R, c_NuNuZ_L, c_NuNuZ_R
   Complex(dp) :: c_CCZ_L(2,2,1), c_CCZ_R(2,2,1)           &
       & , c_NNZ_L(5,5,1), c_NNZ_R(5,5,1), c_NNS0_L(5,5,3)            &
-      & , c_NNS0_R(5,5,3), c_NNP0_L(5,5,3), c_NNP0_R(5,5,3) 
+      & , c_NNS0_R(5,5,3), c_NNP0_L(5,5,3), c_NNP0_R(5,5,3)
   Complex(dp) :: c_GDSd_L(3,6), c_GDSd_R(3,6)          &
       & , c_DNSd_L(3,5,6), c_DNSd_R(3,5,6), c_GUSu_L(3,6)         &
       & , c_GUSu_R(3,6), c_UNSu_L(3,5,6), c_UNSu_R(3,5,6)         &
-      & , c_LNSl_L(3,5,6), c_LNSl_R(3,5,6), c_NuNSn_L(3,5,3)      & 
+      & , c_LNSl_L(3,5,6), c_LNSl_R(3,5,6), c_NuNSn_L(3,5,3)      &
       & , c_NuNSn_R(3,5,3), c_DDP0_L(3,3,3), c_LLP0_L(3,3,3)      &
       & , c_UUP0_L(3,3,3), c_DDP0_R(3,3,3), c_LLP0_R(3,3,3)       &
       & , c_UUP0_R(3,3,3), c_DDS0_L(3,3,3), c_LLS0_L(3,3,3)       &
@@ -1050,7 +1050,7 @@ Contains
       & , c_CLSn_R(2,3,3), c_CNuSl_L(2,3,6), c_CNuSl_R(2,3,6)
   Complex(dp) :: c_GlGlS0(3), c_GGS0(3), c_GlGlP0(3), c_GGP0(3)
   Complex(dp) :: c_P0SdSd(3,6,6), c_P0SuSu(3,6,6), c_P0SlSl(3,6,6) &
-      & , c_P0SnSn(3,3,3), c_P0S0Z(3,3,1) 
+      & , c_P0SnSn(3,3,3), c_P0S0Z(3,3,1)
   Real(dp) :: c_P0S03(3,3,3), c_S0WWvirt(3,1), c_S0ZZvirt(3,1), vev
   Complex(dp) :: c_S0SdSd(3,6,6), c_S0SuSu(3,6,6) &
       & , c_S0SlSl(3,6,6), c_S0SnSn(3,3,3), c_LNuW(3,3)
@@ -1077,18 +1077,18 @@ Contains
   ! first all couplings are calculated, see module Couplings
   !----------------------------------------------------------
   sinW2 = gauge(1)**2 / (gauge(1)**2 + gauge(2)**2)
-  
+
   m_W = mW
   m_Z = mZ
   Spm(1)%g = gamW
   P0(1)%g = gamZ
 
-  Sup2%m = Sup%m 
-  Sup2%id = Sup%id 
-  Slept2%m = Slept%m 
-  Slept2%id = Slept%id 
-  Sneut2%m  = Sneut%m 
-  Sneut2%id = Sneut%id 
+  Sup2%m = Sup%m
+  Sup2%id = Sup%id
+  Slept2%m = Slept%m
+  Slept2%id = Slept%id
+  Sneut2%m  = Sneut%m
+  Sneut2%id = Sneut%id
   ChiM%m = ChiPm%m
   ChiM%id = ChiPm%id + 1
   SMp%m = SPm%m
@@ -1120,11 +1120,11 @@ Contains
 
   tanb = vevSM(2) / vevSM(1)
   cosb = 1._dp / Sqrt(1._dp + tanb**2)
-  sinb = cosb * tanb 
-   
+  sinb = cosb * tanb
+
   If (grav_fac.Ne.0._dp) Then
    F_eff = grav_fac*Fgmsb ! effective SUSY breaking scale in case of GSMB
-  Else 
+  Else
    F_eff = Fgmsb
   End If
 
@@ -1143,7 +1143,7 @@ Contains
    Sneut(i1)%gi2 = Sneut2(i1)%gi2
    Sneut(i1)%bi2 = Sneut2(i1)%bi2
    Sneut(i1)%id2 = Sneut2(i1)%id2
-  End Do 
+  End Do
 
   !------------------------------------------------
   ! 3-body decays of sneutrinos
@@ -1285,10 +1285,10 @@ Contains
       & , c_SmpP0W, S0, c_SmpS03, c_SmpS0W, 1)
 
   Do i1=1,2
-   c_CGW_L(1) = U(i1,1) /F_eff 
-   c_CGW_R(1) = V(i1,1) /F_eff 
-   c_CGW_L(2) = oosqrt2 * U(i1,2) * cosb /F_eff 
-   c_CGW_R(2) = oosqrt2 * V(i1,2) * sinb /F_eff 
+   c_CGW_L(1) = U(i1,1) /F_eff
+   c_CGW_R(1) = V(i1,1) /F_eff
+   c_CGW_L(2) = oosqrt2 * U(i1,2) * cosb /F_eff
+   c_CGW_R(2) = oosqrt2 * V(i1,2) * sinb /F_eff
    If (.Not.CTBD)  Then
     Call CharginoTwoBodyDecays(i1, n_nu, id_nu, n_l, id_l, n_d, id_d, n_u      &
        & , id_u, n_Z, id_Z, n_W, id_W, n_snu, n_sle, n_Sd, n_su, n_n, n_c      &
@@ -1298,7 +1298,7 @@ Contains
        & , c_SmpCN_L, c_SmpCN_R, m_Z, c_CCZ_L, c_CCZ_R, P0, c_CCP0_L, c_CCP0_R &
        & , S0, c_CCS0_L, c_CCS0_R, m32, c_CGW_L, c_CGW_R, 1)
     k_neut =0
-    
+
     If (ChiPm(i1)%g.Lt. fac3*Abs(ChiPm(i1)%m)) Then
      ChiPm(i1)%gi2 = 0._dp
      Call CharginoThreeBodyDecays(i1, n_l, id_l, n_nu, id_nu, n_d, id_d, n_u   &
@@ -1336,7 +1336,7 @@ Contains
        & , GenerationMixing, k_neut, epsI, deltaM, .True. )
     End If
 
-   Else ! enforce calculation of 3-body final states 
+   Else ! enforce calculation of 3-body final states
      Call CharginoThreeBodyDecays(i1, n_l, id_l, n_nu, id_nu, n_d, id_d, n_u   &
        & , id_u, n_c, n_n, n_W, id_W, n_Z, id_Z, n_Sle, n_Snu, n_Sd, n_Su      &
        & , n_S0, n_P0, n_Spm, ChiPm, mZ, gamZ, c_NuNuZ_L, c_NuNuZ_R, mf_l      &
@@ -1362,7 +1362,7 @@ Contains
   Do i1=1,5
    If (.Not.CTBD) Then
     sinW = Sqrt(sinW2)
-    cosW = Sqrt(1._dp - sinW2)    
+    cosW = Sqrt(1._dp - sinW2)
     c_NGP = (N(i1,1)*cosW+N(i1,2)*sinW) / F_eff
     c_NGZ(1) = (- N(i1,1)*sinW+ N(i1,2)*cosW) / F_eff
     c_NGZ(2) = oosqrt2 * (cosb * N(i1,3) - sinb * N(i1,4) ) / F_eff
@@ -1437,10 +1437,10 @@ Contains
     End If ! CTBD
 
   End Do
-     
+
   !-------------------------------------------------------
   ! in the case of the lighter stop it is possible that
-  ! all two-body decay modes are kinematically forbidden 
+  ! all two-body decay modes are kinematically forbidden
   !-------------------------------------------------------
   If (GenerationMixing) Then
    Write(ErrCan,*) "Warning 3-body decays of ~t_1 are not in case of"
@@ -1449,7 +1449,7 @@ Contains
     Sup(i1)%gi3 = 0
     Sup(i1)%bi3 = 0
    End Do
-  Else 
+  Else
    If ((Sup(5)%g.Lt.fac3*Sup(5)%m).Or.CTBD) Then ! calculation including widths
     Sup(5)%gi2 = 0._dp
     !--------------------------------------------
@@ -1488,7 +1488,7 @@ Contains
     & , n_p0, n_Spm, id_grav, id_gl, id_ph, gauge, Glu, PhaseGlu, ChiPm, U, V &
     & , Chi0, N, Sup, RSup, Sdown, RSdown, uD_L, uD_R, uU_L, uU_R, S0, RS0    &
     & , P0, RP0, Spm, RSpm, epsI, deltaM, CTBD, fac3, Y_d, A_d, Y_l, A_l      &
-    & , Y_u, A_u, mu, eps, vevSM, vL, Fgmsb, m32, grav_fac) 
+    & , Y_u, A_u, mu, eps, vevSM, vL, Fgmsb, m32, grav_fac)
  !------------------------------------------------------------------
  ! Calculates the branching of SUSY particles within the MSSM
  ! it is assumed that the SUSY couplings as well as the parameters
@@ -1496,7 +1496,7 @@ Contains
  ! Input: - gauge(i) .... the gauge couplings
  !        - epsI ........ precision to which the integrals for the
  !                        3-body decays are evolved
- !        - deltaM ...... maximal ratio of mass over phasespace in 
+ !        - deltaM ...... maximal ratio of mass over phasespace in
  !                        3-body decays where the masses are set 0
  !                        in the calculation of the phase space.
  !        - CTBD ........ logical variable, it .true. then all 3-body
@@ -1508,7 +1508,7 @@ Contains
  !          will be recalculated using the routines for 3-body decays
  !  the variable GenerationMixing is taken from the Module InputOutput
  ! The exact form of the output depends partly on the variable
- ! GenerationMixing. 
+ ! GenerationMixing.
  ! output:
  !  - gT_Sn(i) .... total width of sneutrino_i, i=1-3
  !  - BR_Sn(i,j) .. branching ratios of sneutrino_i
@@ -1542,7 +1542,7 @@ Contains
  !     j=22+j,22+j*2  .... A0 + sneutrino j=1,i-1
  !     j=22+j,22+j*3  .... h0 + sneutrino j=1,i-1
  !     j=22+j,22+j*4  .... H0 + sneutrino j=1,i-1
- !  
+ !
  ! written by Werner Porod, 25.04.02
  ! 16.09.02: instead of using globally defined couplings, now locally
  !           defined couplings are used.
@@ -1557,7 +1557,7 @@ Contains
  !           However, in the 3-body modes on-shell particles will be
  !           negelected. This requires also a change in the output
  !           format. Moreover, also the charge conjugated final states
- !           will be printed in future. 
+ !           will be printed in future.
  !           Starting with the gluino
  ! 10.09.03: changing ordering for neutralino 2-body decays such that
  !           charge conjugated final states are included
@@ -1570,7 +1570,7 @@ Contains
  Implicit None
 
   Integer, Intent(in) :: n_nu, n_l, n_d, n_u, n_Z, n_W, n_snu, n_sle, n_Sd &
-     & , n_su, n_n, n_c, n_g, n_s0, n_p0, n_Spm, id_grav, id_gl, id_ph 
+     & , n_su, n_n, n_c, n_g, n_s0, n_p0, n_Spm, id_grav, id_gl, id_ph
   Integer, Intent(in), Dimension(1) :: id_Z, id_W
   Integer, Intent(in), Dimension(3) :: id_nu, id_l, id_d, id_u
 
@@ -1621,7 +1621,7 @@ Contains
       & , c_UUZ_R = 0._dp
   Complex(dp) :: c_CCZ_L(5,5,1), c_CCZ_R(5,5,1)           &
       & , c_NNZ_L(7,7,1), c_NNZ_R(7,7,1), c_NNS0_L(7,7,5)            &
-      & , c_NNS0_R(7,7,5), c_NNP0_L(7,7,5), c_NNP0_R(7,7,5) 
+      & , c_NNS0_R(7,7,5), c_NNP0_L(7,7,5), c_NNP0_R(7,7,5)
   Complex(dp) :: c_GDSd_L(3,6), c_GDSd_R(3,6)          &
       & , c_DNSd_L(3,7,6), c_DNSd_R(3,7,6), c_GUSu_L(3,6)         &
       & , c_GUSu_R(3,6), c_UNSu_L(3,7,6), c_UNSu_R(3,7,6)         &
@@ -1631,7 +1631,7 @@ Contains
   Complex(dp) :: c_CUSd_L(5,3,6), c_CUSd_R(5,3,6)      &
       & , c_CDSu_L(5,3,6), c_CDSu_R(5,3,6)
   Complex(dp) :: c_GlGlP0(5), c_GGP0(5), c_GlGlS0(5), c_GGS0(5)
-  Complex(dp) :: c_P0SdSd(5,6,6), c_P0SuSu(5,6,6), c_P0S0Z(5,5,1) 
+  Complex(dp) :: c_P0SdSd(5,6,6), c_P0SuSu(5,6,6), c_P0S0Z(5,5,1)
   Real(dp) :: c_P0S03(5,5,5)
   Complex(dp) :: c_S0SdSd(5,6,6), c_S0SuSu(5,6,6)
   Real(dp) :: c_S03(5,5,5), c_S0WW(5,1), c_S0ZZ(5,1), c_S0WWvirt(5,1) &
@@ -1665,8 +1665,8 @@ Contains
   Spm(1)%g = gamW
   P0(1)%g = gamZ
 
-  Sup2%m = Sup%m 
-  Sup2%id = Sup%id 
+  Sup2%m = Sup%m
+  Sup2%id = Sup%id
   ChiM%m = ChiPm%m
   ChiM%id = ChiPm%id + 1
   SMp%m = SPm%m
@@ -1674,11 +1674,11 @@ Contains
 
   tanb = vevSM(2) / vevSM(1)
   cosb = 1._dp / Sqrt(1._dp + tanb**2)
-  sinb = cosb * tanb 
-   
+  sinb = cosb * tanb
+
   If (grav_fac.Ne.0._dp) Then
    F_eff = grav_fac*Fgmsb ! effective SUSY breaking scale in case of GSMB
-  Else 
+  Else
    F_eff = Fgmsb
   End If
 
@@ -1776,7 +1776,7 @@ c_GraUSu_R = 0
       & , id_u, n_Z, id_Z, n_W, id_W, n_snu, n_sle, n_Sd, n_su, n_n, n_c, n_p0 &
       & , n_Spm, id_ph, id_gl, S0, c_S03, c_GlGlS0, c_GGS0, mf_l, c_LLS0_L     &
       & , c_LLS0_R, mf_d, c_DDS0_L, c_DDS0_R, mf_u, c_UUS0_L, c_UUS0_R, Slept  &
-      & , c_S0SlSl, Sneut, c_S0SnSn, Sdown, c_S0SdSd, Sup, c_S0SuSu, Chi0      & 
+      & , c_S0SlSl, Sneut, c_S0SnSn, Sdown, c_S0SdSd, Sup, c_S0SuSu, Chi0      &
       & , c_NNS0_L, c_NNS0_R, ChiPm, c_CCS0_L, c_CCS0_R, m_W, c_S0WW           &
       & , c_S0WWvirt, m_Z, c_S0ZZ, c_S0ZZvirt, Spm, c_SmpS03, P0, c_P0S03      &
       & , c_P0S0Z, c_SmpS0W, Glu%m)
@@ -1809,7 +1809,7 @@ c_GraUSu_R = 0
    Call check_charge(Spm(i1)%id,SPm(i1)%id2)
 
 !     if ((abs(Chi0(4)%m).gt.Spm(2)%m).and.(i1.le.4)) then
-!      z1 = 181 
+!      z1 = 181
 !      z2 = 191
 !      Do i2=1,3
 !       Do i3=i2,3
@@ -1830,8 +1830,8 @@ c_GraUSu_R = 0
   End Do
 
   Do i1=4,5
-   c_CGW_L(1) = U(i1,1) /F_eff 
-   c_CGW_R(1) = V(i1,1) /F_eff 
+   c_CGW_L(1) = U(i1,1) /F_eff
+   c_CGW_R(1) = V(i1,1) /F_eff
    c_CGW_L(2) = oosqrt2 * U(i1,2) * cosb / F_eff
    c_CGW_R(2) = oosqrt2 * V(i1,2) * sinb / F_eff
    If (.Not.CTBD)  Then
@@ -1882,7 +1882,7 @@ c_GraUSu_R = 0
        & , GenerationMixing, k_neut, epsI, deltaM, .True. )
     End If
 
-   Else ! enforce calculation of 3-body final states 
+   Else ! enforce calculation of 3-body final states
      Call CharginoThreeBodyDecays(i1, n_l, id_l, n_nu, id_nu, n_d, id_d, n_u   &
        & , id_u, n_c, n_n, n_W, id_W, n_Z, id_Z, n_Sle, n_Snu, n_Sd, n_Su      &
        & , n_S0, n_P0, n_Spm, ChiPm, mZ, gamZ, c_NuNuZ_L, c_NuNuZ_R, mf_l      &
@@ -1909,7 +1909,7 @@ c_GraUSu_R = 0
   Do i1=4,7
    If (.Not.CTBD) Then
     sinW = Sqrt(sinW2)
-    cosW = Sqrt(1._dp - sinW2)    
+    cosW = Sqrt(1._dp - sinW2)
     c_NGP = (N(i1,1)*cosW+N(i1,2)*sinW) / F_eff
     c_NGZ(1) = (- N(i1,1)*sinW+ N(i1,2)*cosW) / F_eff
     c_NGZ(2) = oosqrt2 * (cosb * N(i1,3) - sinb * N(i1,4) ) / F_eff
@@ -1989,7 +1989,7 @@ c_GraUSu_R = 0
 
   !-------------------------------------------------------
   ! in the case of the lighter stop it is possible that
-  ! all two-body decay modes are kinematically forbidden 
+  ! all two-body decay modes are kinematically forbidden
   !-------------------------------------------------------
 !   If (GenerationMixing) Then
 !    Write(ErrCan,*) "Warning 3-body decays of ~t_1 are not in case of"
@@ -1998,7 +1998,7 @@ c_GraUSu_R = 0
     Sup(i1)%gi3 = 0
     Sup(i1)%bi3 = 0
    End Do
-!   Else 
+!   Else
 !    If ((Sup(5)%g.Lt.fac3*Sup(5)%m).Or.CTBD) Then ! calculation including widths
 !     Sup(5)%gi2 = 0._dp
 !     !--------------------------------------------
@@ -2017,16 +2017,16 @@ c_GraUSu_R = 0
 !        & , c_DNSd_R(:,4:7,:), c_SdSuW(:,:,1), Sneut, ChiPm(4:5), c_CLSn_L   &
 !        & , c_CLSn_R, c_CDSu_L, c_CDSu_R, c_CNW_L(:,:,1), c_CNW_R(:,:,1)     &
 !        & , Slept, c_CNuSl_R, epsI, .False.)
-! 
+!
 !   Else  ! calculation excluding widths
 !     Call StopDecays3(n_l, id_l, n_nu, id_nu, n_su, n_sd, n_sle, n_snu, n_d     &
 !        & , id_d, id_W, n_n, n_c,Sup, Sdown, Chi0, gauge(2), c_UNSu_L, c_UNSu_R &
 !        & , c_DNSd_L, c_DNSd_R, c_SdSuW(:,:,1), Sneut, ChiPm, c_CLSn_L          &
 !        & , c_CLSn_R, c_CDSu_L, c_CDSu_R, c_CNW_L(:,:,1), c_CNW_R(:,:,1)        &
 !        & , Slept, c_CNuSl_R, epsI, .True.)
-! 
+!
 !   End If
-! 
+!
 !   End If ! generation mixing
 
   Iname = Iname - 1
@@ -2038,7 +2038,7 @@ c_GraUSu_R = 0
     & , n_p0, n_Spm, id_grav, id_gl, id_ph, gauge, Glu, PhaseGlu, ChiPm, U, V &
     & , Chi0, N, Sup, RSup, Sdown, RSdown, uD_L, uD_R, uU_L, uU_R, S0, RS0    &
     & , P0, RP0, Spm, RSpm, epsI, deltaM, CTBD, fac3, Y_d, A_d, Y_l, A_l      &
-    & , Y_u, A_u, mu, eps, RP_lam, RP_lamp, vevSM, vL, Fgmsb, m32, grav_fac) 
+    & , Y_u, A_u, mu, eps, RP_lam, RP_lamp, vevSM, vL, Fgmsb, m32, grav_fac)
  !------------------------------------------------------------------
  ! Calculates the branching of SUSY particles within the MSSM
  ! it is assumed that the SUSY couplings as well as the parameters
@@ -2046,7 +2046,7 @@ c_GraUSu_R = 0
  ! Input: - gauge(i) .... the gauge couplings
  !        - epsI ........ precision to which the integrals for the
  !                        3-body decays are evolved
- !        - deltaM ...... maximal ratio of mass over phasespace in 
+ !        - deltaM ...... maximal ratio of mass over phasespace in
  !                        3-body decays where the masses are set 0
  !                        in the calculation of the phase space.
  !        - CTBD ........ logical variable, it .true. then all 3-body
@@ -2058,7 +2058,7 @@ c_GraUSu_R = 0
  !          will be recalculated using the routines for 3-body decays
  !  the variable GenerationMixing is taken from the Module InputOutput
  ! The exact form of the output depends partly on the variable
- ! GenerationMixing. 
+ ! GenerationMixing.
  ! output:
  !  - gT_Sn(i) .... total width of sneutrino_i, i=1-3
  !  - BR_Sn(i,j) .. branching ratios of sneutrino_i
@@ -2092,7 +2092,7 @@ c_GraUSu_R = 0
  !     j=22+j,22+j*2  .... A0 + sneutrino j=1,i-1
  !     j=22+j,22+j*3  .... h0 + sneutrino j=1,i-1
  !     j=22+j,22+j*4  .... H0 + sneutrino j=1,i-1
- !  
+ !
  ! written by Werner Porod, 25.04.02
  ! 16.09.02: instead of using globally defined couplings, now locally
  !           defined couplings are used.
@@ -2107,7 +2107,7 @@ c_GraUSu_R = 0
  !           However, in the 3-body modes on-shell particles will be
  !           negelected. This requires also a change in the output
  !           format. Moreover, also the charge conjugated final states
- !           will be printed in future. 
+ !           will be printed in future.
  !           Starting with the gluino
  ! 10.09.03: changing ordering for neutralino 2-body decays such that
  !           charge conjugated final states are included
@@ -2120,7 +2120,7 @@ c_GraUSu_R = 0
  Implicit None
 
   Integer, Intent(in) :: n_nu, n_l, n_d, n_u, n_Z, n_W, n_snu, n_sle, n_Sd &
-     & , n_su, n_n, n_c, n_g, n_s0, n_p0, n_Spm, id_grav, id_gl, id_ph 
+     & , n_su, n_n, n_c, n_g, n_s0, n_p0, n_Spm, id_grav, id_gl, id_ph
   Integer, Intent(in), Dimension(1) :: id_Z, id_W
   Integer, Intent(in), Dimension(3) :: id_nu, id_l, id_d, id_u
 
@@ -2171,7 +2171,7 @@ c_GraUSu_R = 0
       & , c_UUZ_R = 0._dp
   Complex(dp) :: c_CCZ_L(5,5,1), c_CCZ_R(5,5,1)           &
       & , c_NNZ_L(7,7,1), c_NNZ_R(7,7,1), c_NNS0_L(7,7,5)            &
-      & , c_NNS0_R(7,7,5), c_NNP0_L(7,7,5), c_NNP0_R(7,7,5) 
+      & , c_NNS0_R(7,7,5), c_NNP0_L(7,7,5), c_NNP0_R(7,7,5)
   Complex(dp) :: c_GDSd_L(3,6), c_GDSd_R(3,6)          &
       & , c_DNSd_L(3,7,6), c_DNSd_R(3,7,6), c_GUSu_L(3,6)         &
       & , c_GUSu_R(3,6), c_UNSu_L(3,7,6), c_UNSu_R(3,7,6)         &
@@ -2181,7 +2181,7 @@ c_GraUSu_R = 0
   Complex(dp) :: c_CUSd_L(5,3,6), c_CUSd_R(5,3,6)      &
       & , c_CDSu_L(5,3,6), c_CDSu_R(5,3,6)
   Complex(dp) :: c_GlGlP0(5), c_GGP0(5), c_GlGlS0(5), c_GGS0(5)
-  Complex(dp) :: c_P0SdSd(5,6,6), c_P0SuSu(5,6,6), c_P0S0Z(5,5,1) 
+  Complex(dp) :: c_P0SdSd(5,6,6), c_P0SuSu(5,6,6), c_P0S0Z(5,5,1)
   Real(dp) :: c_P0S03(5,5,5)
   Complex(dp) :: c_S0SdSd(5,6,6), c_S0SuSu(5,6,6)
   Real(dp) :: c_S03(5,5,5), c_S0WW(5,1), c_S0ZZ(5,1), c_S0WWvirt(5,1) &
@@ -2215,8 +2215,8 @@ c_GraUSu_R = 0
   Spm(1)%g = gamW
   P0(1)%g = gamZ
 
-  Sup2%m = Sup%m 
-  Sup2%id = Sup%id 
+  Sup2%m = Sup%m
+  Sup2%id = Sup%id
   ChiM%m = ChiPm%m
   ChiM%id = ChiPm%id + 1
   SMp%m = SPm%m
@@ -2224,11 +2224,11 @@ c_GraUSu_R = 0
 
   tanb = vevSM(2) / vevSM(1)
   cosb = 1._dp / Sqrt(1._dp + tanb**2)
-  sinb = cosb * tanb 
-   
+  sinb = cosb * tanb
+
   If (grav_fac.Ne.0._dp) Then
    F_eff = grav_fac*Fgmsb ! effective SUSY breaking scale in case of GSMB
-  Else 
+  Else
    F_eff = Fgmsb
   End If
 
@@ -2325,7 +2325,7 @@ c_GraUSu_R = 0
       & , id_u, n_Z, id_Z, n_W, id_W, n_snu, n_sle, n_Sd, n_su, n_n, n_c, n_p0 &
       & , n_Spm, id_ph, id_gl, S0, c_S03, c_GlGlS0, c_GGS0, mf_l, c_LLS0_L     &
       & , c_LLS0_R, mf_d, c_DDS0_L, c_DDS0_R, mf_u, c_UUS0_L, c_UUS0_R, Slept  &
-      & , c_S0SlSl, Sneut, c_S0SnSn, Sdown, c_S0SdSd, Sup, c_S0SuSu, Chi0      & 
+      & , c_S0SlSl, Sneut, c_S0SnSn, Sdown, c_S0SdSd, Sup, c_S0SuSu, Chi0      &
       & , c_NNS0_L, c_NNS0_R, ChiPm, c_CCS0_L, c_CCS0_R, m_W, c_S0WW           &
       & , c_S0WWvirt, m_Z, c_S0ZZ, c_S0ZZvirt, Spm, c_SmpS03, P0, c_P0S03      &
       & , c_P0S0Z, c_SmpS0W, Glu%m)
@@ -2358,7 +2358,7 @@ c_GraUSu_R = 0
    Call check_charge(Spm(i1)%id,SPm(i1)%id2)
 
 !     if ((abs(Chi0(4)%m).gt.Spm(2)%m).and.(i1.le.4)) then
-!      z1 = 181 
+!      z1 = 181
 !      z2 = 191
 !      Do i2=1,3
 !       Do i3=i2,3
@@ -2379,8 +2379,8 @@ c_GraUSu_R = 0
   End Do
 
   Do i1=4,5
-   c_CGW_L(1) = U(i1,1) /F_eff 
-   c_CGW_R(1) = V(i1,1) /F_eff 
+   c_CGW_L(1) = U(i1,1) /F_eff
+   c_CGW_R(1) = V(i1,1) /F_eff
    c_CGW_L(2) = oosqrt2 * U(i1,2) * cosb / F_eff
    c_CGW_R(2) = oosqrt2 * V(i1,2) * sinb / F_eff
    If (.Not.CTBD)  Then
@@ -2432,7 +2432,7 @@ c_GraUSu_R = 0
        & , GenerationMixing, k_neut, epsI, deltaM, .True. )
     End If
 
-   Else ! enforce calculation of 3-body final states 
+   Else ! enforce calculation of 3-body final states
      Call CharginoThreeBodyDecays(i1, n_l, id_l, n_nu, id_nu, n_d, id_d, n_u   &
        & , id_u, n_c, n_n, n_W, id_W, n_Z, id_Z, n_Sle, n_Snu, n_Sd, n_Su      &
        & , n_S0, n_P0, n_Spm, ChiPm, mZ, gamZ, c_NuNuZ_L, c_NuNuZ_R, mf_l      &
@@ -2459,7 +2459,7 @@ c_GraUSu_R = 0
   Do i1=4,7
    If (.Not.CTBD) Then
     sinW = Sqrt(sinW2)
-    cosW = Sqrt(1._dp - sinW2)    
+    cosW = Sqrt(1._dp - sinW2)
     c_NGP = (N(i1,1)*cosW+N(i1,2)*sinW) / F_eff
     c_NGZ(1) = (- N(i1,1)*sinW+ N(i1,2)*cosW) / F_eff
     c_NGZ(2) = oosqrt2 * (cosb * N(i1,3) - sinb * N(i1,4) ) / F_eff
@@ -2539,7 +2539,7 @@ c_GraUSu_R = 0
 
   !-------------------------------------------------------
   ! in the case of the lighter stop it is possible that
-  ! all two-body decay modes are kinematically forbidden 
+  ! all two-body decay modes are kinematically forbidden
   !-------------------------------------------------------
 !   If (GenerationMixing) Then
 !    Write(ErrCan,*) "Warning 3-body decays of ~t_1 are not in case of"
@@ -2548,7 +2548,7 @@ c_GraUSu_R = 0
     Sup(i1)%gi3 = 0
     Sup(i1)%bi3 = 0
    End Do
-!   Else 
+!   Else
 !    If ((Sup(5)%g.Lt.fac3*Sup(5)%m).Or.CTBD) Then ! calculation including widths
 !     Sup(5)%gi2 = 0._dp
 !     !--------------------------------------------
@@ -2567,16 +2567,16 @@ c_GraUSu_R = 0
 !        & , c_DNSd_R(:,4:7,:), c_SdSuW(:,:,1), Sneut, ChiPm(4:5), c_CLSn_L   &
 !        & , c_CLSn_R, c_CDSu_L, c_CDSu_R, c_CNW_L(:,:,1), c_CNW_R(:,:,1)     &
 !        & , Slept, c_CNuSl_R, epsI, .False.)
-! 
+!
 !   Else  ! calculation excluding widths
 !     Call StopDecays3(n_l, id_l, n_nu, id_nu, n_su, n_sd, n_sle, n_snu, n_d     &
 !        & , id_d, id_W, n_n, n_c,Sup, Sdown, Chi0, gauge(2), c_UNSu_L, c_UNSu_R &
 !        & , c_DNSd_L, c_DNSd_R, c_SdSuW(:,:,1), Sneut, ChiPm, c_CLSn_L          &
 !        & , c_CLSn_R, c_CDSu_L, c_CDSu_R, c_CNW_L(:,:,1), c_CNW_R(:,:,1)        &
 !        & , Slept, c_CNuSl_R, epsI, .True.)
-! 
+!
 !   End If
-! 
+!
 !   End If ! generation mixing
 
   Iname = Iname - 1

@@ -141,7 +141,7 @@ Contains
    If (Present(mt)) Then
     DeltaAlpha = - 8._dp * Log(Q / mt) / (9._dp * Pi)
     Alpha_MSbar = Alpha_MSbar / ( 1._dp + DeltaAlpha * alpha)
-   End If 
+   End If
   Else
    DeltaAlpha = 3.5_dp * Log(Q / mW) / Pi + 0.5_dp * oo3pi
    If (Present(mt)) DeltaAlpha = DeltaAlpha - 8._dp * Log(Q / mt) / (9._dp * Pi)
@@ -164,7 +164,7 @@ Contains
  !  - mSqU(i), i=1,..,6 the masses of the u-squarks
  !  - mSqD(i), i=1,..,6 the masses of the d-squarks
  ! written by Werner Porod, 19.7.1999
- ! 16.11.01: portation to f90 
+ ! 16.11.01: portation to f90
  !-----------------------------------------------------------------------
  Implicit None
   Real(dp), Intent(in) :: Q,mG,mSqU(6),mSqD(6)
@@ -187,7 +187,7 @@ Contains
   DeltaAlpha = 0.5_dp - 2._dp * Log(mG /Q) - 2._dp * Log(mt/Q ) / 3._dp &
            & - sumI / 6._dp
   DeltaAlpha = AlphaS_mZ * DeltaAlpha / ( 2._dp * Pi)
-  
+
   AlphaSDR = AlphaS_mZ / (1._dp - DeltaAlpha)
 
  End Function AlphaSDR
@@ -205,7 +205,7 @@ Contains
   Complex(dp), Intent(in) :: g_u(3), g_d(3)
   Complex(dp), Intent(out) :: coup
   Complex(dp), Optional, Intent(out) :: coupSM
- 
+
   Integer :: i1
   Real(dp) :: Mh2p
   !--------------------------------------
@@ -232,9 +232,9 @@ Contains
     coup = coup + g_d(i1) * AP_onehalf(mH2p/ mf_d2(i1))  &
          &      + g_u(i1) * AP_onehalf(mH2p/ mf_u2(i1))
    End Do
-  
+
   coup = 0.75_dp * coup
- 
+
  End Subroutine CoupPseudoScalarGluon
 
 
@@ -252,7 +252,7 @@ Contains
   Complex(dp), Intent(in) :: g_u(3), g_d(3), g_l(3), g_C(2)
   Complex(dp), Intent(out) :: coup
   Complex(dp), Optional, Intent(out) :: coupSM
- 
+
   Integer :: i1
   Real(dp) :: Mh2p
   !--------------------------------------
@@ -286,8 +286,8 @@ Contains
   Do i1=1,2
    coup = coup + g_C(i1) * AP_onehalf(mH2p/ mC2(i1))
   End Do
-  
-  
+
+
  End Subroutine CoupPseudoScalarPhoton
 
 
@@ -304,7 +304,7 @@ Contains
   Complex(dp), Intent(in) :: g_u(3), g_d(3), g_su(6), g_sd(6)
   Complex(dp), Intent(out) :: coup
   Complex(dp), Optional, Intent(out) :: coupSM
- 
+
   Integer :: i1
   Real(dp) :: Mh2p
   !--------------------------------------
@@ -338,9 +338,9 @@ Contains
    coup = coup + g_sd(i1) * A_zero(mH2p/ mSdown2(i1)) &
         &      + g_su(i1) * A_zero(mH2p/ mSup2(i1))
   End Do
-  
+
   coup = 0.75_dp * coup
- 
+
  End Subroutine CoupScalarGluon
 
  Subroutine CoupScalarPhoton(m_H2, mW2, g_W, mf_u2, g_u, r_T, mf_d2, g_d, mf_l2 &
@@ -358,12 +358,12 @@ Contains
  Implicit None
   Real(dp), Intent(in) :: m_H2, mW2, mf_u2(3), mf_d2(3), mf_l2(3), m_Hp2 &
     & , mSup2(6), mSdown2(6), mSlept2(6), mC2(2)
-  Real(dp), Intent(in) :: g_W, g_Hp, r_T, r_sq 
+  Real(dp), Intent(in) :: g_W, g_Hp, r_T, r_sq
   Complex(dp), Intent(in) :: g_u(3), g_d(3), g_l(3), g_C(2), g_su(6), g_sd(6) &
     & , g_sl(6)
   Complex(dp), Intent(out) :: coup
   Complex(dp), Optional, Intent(out) :: coupSM
- 
+
   Integer :: i1
   Real(dp) :: Mh2p
   !--------------------------------------
@@ -410,7 +410,7 @@ Contains
         &      + r_sq * ( g_sd(i1) * A_zero(mH2p/ mSdown2(i1)) &
         &               + 4._dp * g_su(i1) * A_zero(mH2p/ mSup2(i1)) ) / 3._dp
   End Do
-  
+
  End Subroutine CoupScalarPhoton
 
  Subroutine InitializeLoopCouplings(vevs)
@@ -466,9 +466,9 @@ Contains
  !----------------------------------------------------------------------
  !     Returns the running EM coupling alpha_em(q**2)
  !     taken from ISASUSY
- !  is used to calculate the coupling at low energies 
+ !  is used to calculate the coupling at low energies
  !
- ! SEE BARGER/PHILLIPS, P. 202 
+ ! SEE BARGER/PHILLIPS, P. 202
  !----------------------------------------------------------------------
  Implicit None
 
@@ -479,7 +479,7 @@ Contains
   SUM=0._dp
   QU2=4._dp/3._dp
   QD2=1._dp/3._dp
-  qs4 = 0.25_dp * QS 
+  qs4 = 0.25_dp * QS
   Do i1=1,3
    If (qs4.Gt.mf_l2(i1)) SUM=SUM+Log(qs4/mf_l2(i1) )
    If (qs4.Gt.mf_u2(i1)) SUM=SUM+QU2*Log(qs4/mf_u2(i1) )

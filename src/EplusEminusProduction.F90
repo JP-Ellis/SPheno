@@ -2,7 +2,7 @@
 Module EplusEminusProduction
 ! comments
 ! This module is a collection of subroutines and functions that are
-! needed to calculate of cross sections in e+ e- annihilation. 
+! needed to calculate of cross sections in e+ e- annihilation.
 
 ! load modules
  Use Control
@@ -56,7 +56,7 @@ Module EplusEminusProduction
   Real(dp), Private :: T3_in, e_in
 
 ! for sfermion production
-  Integer, private :: n_n  ! number of neutralinos in case of sleptons 
+  Integer, private :: n_n  ! number of neutralinos in case of sleptons
   Real(dp), Private :: gg, gZ, ZZ, mSfer2(2), smax, smin,  &
                           & fgg, fgz, fzz
 ! for QCD corrections
@@ -64,7 +64,7 @@ Module EplusEminusProduction
   Real(dp), Private :: msq1, msq2, msq12, msq22, mq2, cos2th, sin2th &
      &      ,mglu2, a(2,2), vq, aq, Qq, mglumq!, mq, QCDfact
   Complex(dp), Private :: costh, sinth
-! for the process e+ e- -> selectrons, charged scalars 
+! for the process e+ e- -> selectrons, charged scalars
   Real(dp), Private :: mk(7), mk2(7), fgN(7), fZNr(7), fZNi(7), fNN(2,7,7)
 ! for the process e+ e- -> sneutrinos
   Real(dp), Private :: fZV(2), fVV(2,2), ml2(2), mSnu2, mSn2(3)
@@ -93,12 +93,12 @@ Real(dp), Private :: RmZmW2, RmZmW4, FacWW(3)
 #endif
 ! private Routines
 #ifdef BEAMSTRAHLUNG
-  Private :: Lee, ILee, BeamElectronDistribution, ISRElectronDistribution 
+  Private :: Lee, ILee, BeamElectronDistribution, ISRElectronDistribution
 #else
   Private :: Lee, ILee
 #endif
 ! private variables
- 
+
 Contains
 
 
@@ -792,7 +792,7 @@ Contains
    If (Abs(RSpm(i1,3)).gt.0.5) mSf(1) = mSpm(i1)
    If (Abs(RSpm(i1,6)).gt.0.5) mSf(2) = mSpm(i1)
   end do
-  
+
   SigmaN = 0._dp
   Do i1=1,7
    Do i2=1,7
@@ -958,7 +958,7 @@ Contains
      End If
     End Do
    End Do
-  End If 
+  End If
   !------------------------
   ! running couplings
   !------------------------
@@ -990,7 +990,7 @@ Contains
              + Re * Abs( bi(i1) )**2 * ProdPmPp(2)
     fZNi(i1) = 0._dp
    End Do
-   fgN = oo16pi * gin(2)**2 * sinW2 * fgN 
+   fgN = oo16pi * gin(2)**2 * sinW2 * fgN
    fZNr = - oo16pi * coup * fZNr
    Do i1=1,7
     Do i2=i1,7
@@ -1022,7 +1022,7 @@ Contains
           + Re * biC(i1) * bj(i1) * ProdPmPp(2)
     coupC = coup * coupC
     fZNr(i1) = Real( coupC,dp )
-    fZNi(i1) = Aimag( coupC ) 
+    fZNi(i1) = Aimag( coupC )
    End Do
    fZNr = - oo16pi * fZNr
    fZNi = - oo16pi * gmZ * fZNi
@@ -1041,11 +1041,11 @@ Contains
   Do i1=1,7
    Do i2=i1,7
     If (i1.Eq.i2) Then
-     fNN(1,i1,i2) = oo64pi * fNN(1,i1,i2) 
-     fNN(2,i1,i2) = oo64pi * fNN(2,i1,i2) 
+     fNN(1,i1,i2) = oo64pi * fNN(1,i1,i2)
+     fNN(2,i1,i2) = oo64pi * fNN(2,i1,i2)
     Else
-     fNN(1,i1,i2) = oo32pi * fNN(1,i1,i2) 
-     fNN(2,i1,i2) = oo32pi * fNN(2,i1,i2) 
+     fNN(1,i1,i2) = oo32pi * fNN(1,i1,i2)
+     fNN(2,i1,i2) = oo32pi * fNN(2,i1,i2)
     End If
    End Do
   End Do
@@ -1053,7 +1053,7 @@ Contains
 
   invPropZ = 1._dp / ( (s-mZ2)**2 + gmZ2 )
   sumGauge2 = ( fgg + ( fgZ * (s-mZ2) + fZZ * s ) * s * invPropZ ) * kappa3d2
-  sumGauge2 = sumGauge2 / s**4 
+  sumGauge2 = sumGauge2 / s**4
 
   sumGaugeN = 0._dp
   sumN2 = 0._dp
@@ -1121,7 +1121,7 @@ Contains
   !-------------
   If ( (mSpm(i)+mSpm(j))**2.Ge.s) Then
    iname = iname - 1
-   Return 
+   Return
   End If
 
   !--------------------------------------------------------------------
@@ -1136,7 +1136,7 @@ Contains
   U_in = U
   V_in = V
   mK = mN
-  mk2 = mN**2    
+  mk2 = mN**2
   mSfer2(1) = mSpm(i)**2
   mSfer2(2) = mSpm(j)**2
 
@@ -1176,12 +1176,12 @@ Contains
 !----------------------------------------------------------------------
    ymin = (mSpm(i)+mSpm(j)) / Ebeam - 1._dp
    If (ymin.Lt.0._dp) Then
-    ymin = 0._dp 
+    ymin = 0._dp
     zmax = 1._dp
    Else
     zmax = (1._dp - ymin)**(0.5_dp * EtaBeam)
    End If
-   region(1:4) = 0._dp 
+   region(1:4) = 0._dp
    region(5:8) = 1._dp
    init = 0
    ncall = 15000
@@ -1208,7 +1208,7 @@ Contains
    If (zmax.Lt.-8._dp) Then
     sigma = EpEmToSelectronsTree(s) * ILee(beta,zmax)
    Else
-    zmin = -10._dp 
+    zmin = -10._dp
     sigma =  EpEmToSelectronsTree(s) * ILee(beta,zmin) &
         & + dgauss(EpEmToSelectronsISR,zmin,zmax,1.e-3_dp)
    End If
@@ -1220,13 +1220,13 @@ Contains
 !----------------------------
 ! 0.38939e12 gives fb
 !----------------------------
-  sigma = 0.38939e12_dp * sigma  
+  sigma = 0.38939e12_dp * sigma
 
   Iname = Iname - 1
 
  End Subroutine EpEmToChargedScalarsRPeps
 
- 
+
  Subroutine EpEmToCharginos(i, j, mC, U, V, mSn, Pm, Pp, s, ISR  &
                & ,Beam , sigma, design)
  !--------------------------------------------------------------------------
@@ -1286,7 +1286,7 @@ Contains
   U_in = 0
   V_in(1:n_c,1:n_c) = V
   U_in(1:n_c,1:n_c) = U
- 
+
 
 #ifdef BEAMSTRAHLUNG
   If (Beam) Then
@@ -1315,12 +1315,12 @@ Contains
 !----------------------------------------------------------------------
    ymin = (mC(i)+mC(j)) / Ebeam - 1._dp
    If (ymin.Lt.0._dp) Then
-    ymin = 0._dp 
+    ymin = 0._dp
     zmax = 1._dp
    Else
     zmax = (1._dp - ymin)**(0.5_dp * EtaBeam)
    End If
-   region(1:4) = 0._dp 
+   region(1:4) = 0._dp
    region(5:8) = 1._dp
    init = 0
    ncall = 15000
@@ -1347,7 +1347,7 @@ Contains
    If (zmax.Lt.-8._dp) Then
     sigma = EpEmToCharginosTree(s) * ILee(beta,zmax)
    Else
-    zmin = -10._dp 
+    zmin = -10._dp
     sigma =  EpEmToCharginosTree(s) * ILee(beta,zmin) &
         & + dgauss(EpEmToCharginosISR,zmin,zmax,1.e-3_dp)
    End If
@@ -1384,7 +1384,7 @@ Contains
   SqrtS = Sqrt( s )
   sp_char = Sqrt( p2_char ) * SqrtS
   p_char = sp_char / s
-  
+
   sigma_ij = 0._dp
 
   invPropZ = 1._dp / ( (s-mZ2)**2 + gmZ2 )
@@ -1408,7 +1408,7 @@ Contains
       &                      + Re * (1._dp + P_m) * (1._dp - P_p) )          &
       &    * Real(OLij + ORij,dp)
    gSn = oo16pi * g4 * sinW2 * Abs( V_in(ind_1,1) )**2 &
-       &        * (1._dp - P_m) * (1._dp + P_p) 
+       &        * (1._dp - P_m) * (1._dp + P_p)
   Else
    gg = 0._dp
    gZ = 0._dp
@@ -1453,7 +1453,7 @@ Contains
   Bl2 = Bl**2
 
   sigma_ij(3) = invPropZ * p_char  &
-           &  * ( ZZi(1) * (EiEj + p2_char / 3._dp) + ZZi(2) ) 
+           &  * ( ZZi(1) * (EiEj + p2_char / 3._dp) + ZZi(2) )
   sigma_ij(5) = - (s-mZ2) * invPropZ * ( ZSn(1) * hab + ZSn(2) * LogAlBl) / s
   sigma_ij(6) = SnSn * p_char                                         &
             & * ( (EiEj + p2_char  - sp_char * AldBl) / (Al2 - Bl2)   &
@@ -1506,17 +1506,17 @@ Contains
   ! Parameter for Beamstrahlung
   !------------------------------------------------------
   If (z(1).Ge.radprob) Then
-   x1 = 1._dp 
-   BeamFactor = 1._dp 
+   x1 = 1._dp
+   BeamFactor = 1._dp
   Else
-   x1 = 1._dp - (1._dp - z(1) / radprob)**3  
-   BeamFactor = BeamElectronDistribution( z(1) ) 
+   x1 = 1._dp - (1._dp - z(1) / radprob)**3
+   BeamFactor = BeamElectronDistribution( z(1) )
   End If
   If (z(3).Ge.radprob) Then
-   x3 = 1._dp 
+   x3 = 1._dp
   Else
-   x3 = 1._dp - (1._dp - z(3)  / radprob)**3  
-   BeamFactor = BeamFactor * BeamElectronDistribution( z(3) ) 
+   x3 = 1._dp - (1._dp - z(3)  / radprob)**3
+   BeamFactor = BeamFactor * BeamElectronDistribution( z(3) )
   End If
   !------------------------------------------------------
   ! Parameter for ISR
@@ -1526,7 +1526,7 @@ Contains
   x4 = 1._dp - (zmax*z(4))**(2._dp / EtaBeam)
   ISRfactor2 = ISRfactor2 * ISRElectronDistribution(x4)
 
-  s = 0.25_dp * smax * (x1 * x2 + x3 * x4)**2 
+  s = 0.25_dp * smax * (x1 * x2 + x3 * x4)**2
 
   If (s.Le.smin) Then ! kinematically forbidden
    EpEmToCharginosBeam = 0._dp
@@ -1545,7 +1545,7 @@ Contains
    End Do ! i_run
    s = s_save
    CalculateSpline = .False.
-  End If !CalculateSpline 
+  End If !CalculateSpline
 
   i_near = Int( (s-smin)/DeltaS )
   If (i_near.Le.2) Then
@@ -1559,7 +1559,7 @@ Contains
    DeltaSplineY = Spline(i_near-2:i_near+2,2)
   End If
 
-  Call polint(DeltaSplineX,DeltaSplineY,s,sigmaT,dsigmaT) 
+  Call polint(DeltaSplineX,DeltaSplineY,s,sigmaT,dsigmaT)
 
   EpEmToCharginosBeam = BeamFactor * ISRfactor2 * sigmaT
 
@@ -1570,12 +1570,12 @@ Contains
  Subroutine EpEmToNeutralinos(i, j, mN, N, mSel, RSel, Pm, Pp, s, ISR  &
                & ,Beam , cosT1, cosT2, sigma, design)
  !-----------------------------------------------------------------------
- ! calculates the production cross of neutralinos, the case of R-parity 
+ ! calculates the production cross of neutralinos, the case of R-parity
  ! violaton is included under the assumption that selectrons hardly mix with
  ! the other sleptons and the charged Higgs
  ! input:
  !  i,j ........ indices of neutralinos
- !  mN(i) ...... neutralinos masses 
+ !  mN(i) ...... neutralinos masses
  !  N(i,j) ..... nixing matrix of neutralinos
  !  mSel(i) .... selectron masses
  !  RSel(i,j) .. mixing matrix for selectrons
@@ -1751,7 +1751,7 @@ Contains
    Call CoupNeutralinoZ(n2,n1,Nn,g,cW,Ol_ij,Or_ij)
   end if
 
-  yuk = 0._dp 
+  yuk = 0._dp
   Call CoupNeutralinoSlepton(n1,1,gp,g,RSe,Yuk,Nn,fLi(1),fRi(1))
   Call CoupNeutralinoSlepton(n1,2,gp,g,RSe,Yuk,Nn,fLi(2),fRi(2))
 
@@ -1778,7 +1778,7 @@ Contains
      &               - Real( Ol_ij**2,dp ) * AngularFactorZ(3) * s     &
      &               ) / ( (s-mZ2)**2 + gmZ2 )
 
-  ReZprop = (s-mZ2) / ( (s-mZ2)**2 + gmZ2 ) 
+  ReZprop = (s-mZ2) / ( (s-mZ2)**2 + gmZ2 )
   Do i1=1,2
    LogPcT(i1) = Log( (SumMass2(i1) - s + lambda * cT1)     &
      &             / (SumMass2(i1) - s + lambda * cT2) )
@@ -1790,13 +1790,13 @@ Contains
      &              + PolFactorZ(2) * Re                                  &
      &                     * Real( Conjg(fLi(i1)) * fLj(i1) * Ol_ij,dp )) &
      &              * (0.5_dp * lambda * (SumMass2(i1) + s)               &
-     &                            * AngularFactorZsel(1)                  & 
-     &                - ProdMass(i1) * (LogPcT(i1) -  LogMcT(i1))         & 
+     &                            * AngularFactorZsel(1)                  &
+     &                - ProdMass(i1) * (LogPcT(i1) -  LogMcT(i1))         &
      &                )                                                   &
      &            + ( PolFactorSel(1) * Le                                &
      &                     * Real( Conjg(fRi(i1)) * fRj(i1) * Ol_ij,dp )  &
      &                   + PolFactorSel(2) * Re                           &
-     &                     * Real( Conjg(fLi(i1)) * fLj(i1) * Or_ij,dp )) & 
+     &                     * Real( Conjg(fLi(i1)) * fLj(i1) * Or_ij,dp )) &
      &                 * s * ( LogPcT(i1) - LogMcT(i1) )
 
 
@@ -1808,10 +1808,10 @@ Contains
      &                 + Abs(fLj(i1))**2 * PolFactorSel2(2) )              &
      &               * ( - 0.125_dp * AngularFactorZsel(1) * lambda        &
      &                 + 0.25_dp * SumMass2(i1) * LogPcT(i1)               &
-     &                 - 0.5_dp * ProdMass(i1)                             & 
+     &                 - 0.5_dp * ProdMass(i1)                             &
      &                   * ( 1._dp / (SumMass2(i1)-s+lambda*cT2)           &
      &                     - 1._dp / (SumMass2(i1)-s+lambda*cT1) )         &
-     &                 ) 
+     &                 )
 
   partSel2(i1) = partSel2(i1)                                               &
      &             + ( Abs(fRi(i1))**2 * PolFactorSel2(1)                   &
@@ -1823,13 +1823,13 @@ Contains
      &                 + 0.5_dp * ProdMass(i1)                              &
      &                   * ( 1._dp / (SumMass2(i1)-s-lambda*cT2)            &
      &                     - 1._dp / (SumMass2(i1)-s-lambda*cT1) )          &
-     &                 ) 
+     &                 )
 
   partSel2(i1) = partSel2(i1)                                               &
-     &             - 0.5_dp * Real( fRi(i1) * fLi(i1)                       & 
+     &             - 0.5_dp * Real( fRi(i1) * fLi(i1)                       &
      &                          * Conjg( fRj(i1) * fLj(i1) ),dp )           &
      &               * PolFactorSel2(5)                                     &
-     &               * ( AngularFactorZsel(1) * lambda                      & 
+     &               * ( AngularFactorZsel(1) * lambda                      &
      &                 + ( 2._dp * ProdMass(i1) / (SumMass2(i1)-s) - s      &
      &                   + s * (s-mi2-mj2) / (SumMass2(i1)-s) )             &
      &                   * (- LogPcT(i1) + LogMcT(i1) )                     &
@@ -1837,12 +1837,12 @@ Contains
      &              - 0.5_dp * ( PolFactorSel(1)                            &
      &                         * Real( fRi(i1)**2 * Conjg(fRj(i1)**2),dp )  &
      &                       + PolFactorSel(2)                              &
-     &                         * Real( fLi(i1)**2 * Conjg(fLj(i1)**2),dp )  & 
+     &                         * Real( fLi(i1)**2 * Conjg(fLj(i1)**2),dp )  &
      &                       )                                              &
      &                     * s * (- LogPcT(i1) + LogMcT(i1) )               &
-     &                     / (SumMass2(i1)-s) 
+     &                     / (SumMass2(i1)-s)
 
-      End Do 
+      End Do
 
   eeNeutralinoTree = ( partZZ - partZsel(1) - partZsel(2)   &
      &               + partSel2(1) + partSel2(2) ) / s2
@@ -1870,7 +1870,7 @@ Contains
   Iname = Iname - 1
 
  End Function eeNeutralinoISR
- 
+
 
  Subroutine EpEmPseudoScalarScalar(i,j,mP0,RP0,mS0,RS0,Pm,Pp,s,ISR &
                                    &     ,sigma)
@@ -1891,7 +1891,7 @@ Contains
  !  sigma ...... production cross section in fb
  ! written by Werner Porod, 2.1.00
  ! 24.10.2000: porting the code to f90
- ! 20.02.03: fixing bug: for the computation of smin the indices i and j 
+ ! 20.02.03: fixing bug: for the computation of smin the indices i and j
  !                       had to be interchanged
  !-----------------------------------------------------------------------
  Implicit None
@@ -1933,7 +1933,7 @@ Contains
   !-------------
   If ( (mP0(i)+mS0(j))**2.Ge.s) Then
    Iname = Iname - 1
-   Return 
+   Return
   End If
   !--------------------------------------------------------------------
   ! internal information
@@ -1963,7 +1963,7 @@ Contains
    If (zmax.Lt.-8._dp) Then
     sigma = eePseudoScalarScalarTree(s) * ILee(beta,zmax)
    Else
-    zmin = -10._dp 
+    zmin = -10._dp
     sigma = eePseudoScalarScalarTree(s) * ILee(beta,zmin)   &
     &     + dgauss(eePseudoScalarScalarISR,zmin,zmax,1.e-3_dp)
    End If
@@ -2005,7 +2005,7 @@ Contains
   Sqrts = Sqrt(s)
   Call runningCouplings(Sqrts,gin,yukin)
 
-  sinW2 = gin(1)**2 / (gin(1)**2 + gin(2)**2) 
+  sinW2 = gin(1)**2 / (gin(1)**2 + gin(2)**2)
   cosW = Sqrt(1 - sinW2)
 
   Call CoupPseudoScalarScalarZ(ind_1, ind_2, gin(2), cosW, RP0_in, RS0_in, coupC)
@@ -2085,7 +2085,7 @@ Contains
   !-------------
   If ( (ms0(i)+mZ)**2.Ge.s) Then
    Iname = Iname - 1
-   Return 
+   Return
   End If
   !--------------------------------------------------------------------
   ! internal information
@@ -2112,7 +2112,7 @@ Contains
    If (zmax.Lt.-8._dp) Then
     sigma = eeScalarZTree(s) * ILee(beta,zmax)
    Else
-    zmin = -10._dp 
+    zmin = -10._dp
     sigma = eeScalarZTree(s) * ILee(beta,zmin)   &
      &    + dgauss(eeScalarZISR,zmin,zmax,1.e-3_dp)
    End If
@@ -2173,13 +2173,13 @@ Contains
   !-------------
   If ( (ms0(i)+mZ)**2.Ge.s) Then
    Iname = Iname - 1
-   Return 
+   Return
   End If
   !--------------------------------------------------------------------
   ! setting g to 1 because the running coupling is included later
   !--------------------------------------------------------------------
   n_vL = Size(vevL)
-  n_S0 = 2 + n_vL 
+  n_S0 = 2 + n_vL
   ind_1 = i
   vevSM_in = vevSM
   vL_in = 0._dp
@@ -2203,7 +2203,7 @@ Contains
    If (zmax.Lt.-8._dp) Then
     sigma = eeScalarZTree(s) * ILee(beta,zmax)
    Else
-    zmin = -10._dp 
+    zmin = -10._dp
     sigma = eeScalarZTree(s) * ILee(beta,zmin)   &
      &    + dgauss(eeScalarZISR,zmin,zmax,1.e-3_dp)
    End If
@@ -2225,7 +2225,7 @@ Contains
  Real(dp) Function eeScalarZISR(x)
  !-----------------------------------------------------------------------
  ! auxiliary function for the calculation of Higgs Z production in
- ! e+e- annihilation. Is called by EpEmScalarZMSSM and 
+ ! e+e- annihilation. Is called by EpEmScalarZMSSM and
  ! EpEmScalarZrp for the calculation of ISR corrections
  ! written by Werner Porod, 2.1.00
  ! 24.10.2000: porting the code to f90
@@ -2265,10 +2265,10 @@ Contains
   cosW2 = gin(2)**2 / (gin(1)**2 + gin(2)**2)
   sinW2 = 1._dp - cosW2
 
-  if ((n_S0.eq.2).or.(n_S0.eq.3)) then  
+  if ((n_S0.eq.2).or.(n_S0.eq.3)) then
    Call CoupScalarZ(ind_1, gin(2), cosW2, vevSM_in, RS0_in, coup)
    coup = coup / (2._dp * gin(2) * Sqrt( Dot_product(vevSM_in, vevSM_in) ) )
-  else 
+  else
    Call CoupScalarZ(ind_1, gin(2), cosW2, vevSM_in, vL_in, RS0_in, coup)
    coup = coup / (2._dp * gin(2) * Sqrt( Dot_product(vevSM_in, vevSM_in) &
         &                              + Dot_product(vL_in, vL_in)       ) )
@@ -2318,7 +2318,7 @@ Contains
  !-------------
  ! kinematics
  !-------------
-  If ( (mSpm(2)+mSpm(2))**2.Gt.s) Return 
+  If ( (mSpm(2)+mSpm(2))**2.Gt.s) Return
 
  !--------------------------------------------------------------------
  ! transfering information to internal variables
@@ -2344,7 +2344,7 @@ Contains
    If (zmax.Lt.-8._dp) Then
     sigma = eeHiggsTree(s) * ILee(beta,zmax)
    Else
-    zmin = -10._dp 
+    zmin = -10._dp
     sigma =  eeHiggsTree(s) * ILee(beta,zmin)  &
         & + dgauss(eeHiggsISR,zmin,zmax,1.e-3_dp)
    Endif
@@ -2377,7 +2377,7 @@ Contains
     & ,Le, Re, ae, ve, gg, gZ, ZZ
 
   kappa = (s-mSfer2(1)-mSfer2(2))**2 - 4._dp * mSfer2(1) * mSfer2(2)
-  kappa3d2 = kappa**1.5_dp 
+  kappa3d2 = kappa**1.5_dp
 
  !------------------------
  ! running couplings
@@ -2464,7 +2464,7 @@ Contains
                  ! whether this is the 1-generation or 3-generation model
   If ( (4._dp*mSnu2).Ge.s) Then
    iname = iname - 1
-   Return 
+   Return
   End If
 
   !--------------------------------------------------------------------
@@ -2503,12 +2503,12 @@ Contains
 !----------------------------------------------------------------------
    ymin = 2._dp * mSn / Ebeam - 1._dp ! (msf(i)+msf(j)) / Ebeam - 1._dp
    If (ymin.Lt.0._dp) Then
-    ymin = 0._dp 
+    ymin = 0._dp
     zmax = 1._dp
    Else
     zmax = (1._dp - ymin)**(0.5_dp * EtaBeam)
    End If
-   region(1:4) = 0._dp 
+   region(1:4) = 0._dp
    region(5:8) = 1._dp
    init = 0
    itmx = 10
@@ -2535,7 +2535,7 @@ Contains
    If (zmax.Lt.-8._dp) Then
     sigma = EpEmToEsneutrinosTree(s) * ILee(beta,zmax)
    Else
-    zmin = -10._dp 
+    zmin = -10._dp
     sigma =  EpEmToEsneutrinosTree(s) * ILee(beta,zmin) &
         & + dgauss(EpEmToEsneutrinosISR,zmin,zmax,1.e-3_dp)
    End If
@@ -2593,7 +2593,7 @@ Contains
   !-------------
   If ( (mSn(i)+mSn(j))**2.Ge.s) Then
    iname = iname - 1
-   Return 
+   Return
   End If
 
   mSn2 = mSn**2
@@ -2612,15 +2612,15 @@ Contains
   !--------------------------------------------------------------------
   cosW2 = mW2 / mZ2
   sinW2 = 1._dp - cosW2
-  If (i.Eq.j) Then 
+  If (i.Eq.j) Then
    Call CoupFermionZ(-0.5_dp,-1._dp,1._dp,sinW2,Le,Re)
    fzz = oo64pi * (Le**2 *(1-Pm)*(1+Pp) +Re**2 *(1+Pm)*(1-Pp)) / (6._dp *cosW2)
    fac = 0._dp
    Do i1=1,3
-    fac(1) = fac(1) + Abs( Conjg( RSnu(i,i1) ) * RfL(1,i1) )**2 
+    fac(1) = fac(1) + Abs( Conjg( RSnu(i,i1) ) * RfL(1,i1) )**2
    End Do
    fac(2) = fac(1)
-   Do i1=1,2 
+   Do i1=1,2
     fZV(i1) = Abs( V(i1,1) )**2
    End Do
    fZV = - oo32pi * Le * (1-Pm) * (1+Pp) * fac(1) * fZV / Sqrt(cosW2)
@@ -2629,11 +2629,11 @@ Contains
    fZV = 0._dp
    fac = 0._dp
    Do i1=1,3
-    fac(1) = fac(1) + Abs( Conjg( RSnu(i,i1) ) * RfL(1,i1) )**2 
-    fac(2) = fac(2) + Abs( Conjg( RSnu(j,i1) ) * RfL(1,i1) )**2 
+    fac(1) = fac(1) + Abs( Conjg( RSnu(i,i1) ) * RfL(1,i1) )**2
+    fac(2) = fac(2) + Abs( Conjg( RSnu(j,i1) ) * RfL(1,i1) )**2
    End Do
   End If
-  fVV(1,1) = oo64pi * Abs( V(1,1) )**4 
+  fVV(1,1) = oo64pi * Abs( V(1,1) )**4
   fVV(1,2) = oo32pi * Abs( V(1,1) )**2 * Abs( V(2,1) )**2
   fVV(2,1) = fVV(1,2)
   fVV(2,2) = oo64pi * Abs( V(2,1) )**4
@@ -2643,7 +2643,7 @@ Contains
   testC = Abs(fZZ) + Sum( Abs(fZV) ) + Sum( Abs( fVV ) )
   If (testC.Eq.0._dp) Then
    iname = iname - 1
-   Return 
+   Return
   End If
 
   ml2 = mC**2
@@ -2677,12 +2677,12 @@ Contains
 !----------------------------------------------------------------------
    ymin = (mSn(i)+mSn(j)) / Ebeam - 1._dp
    If (ymin.Lt.0._dp) Then
-    ymin = 0._dp 
+    ymin = 0._dp
     zmax = 1._dp
    Else
     zmax = (1._dp - ymin)**(0.5_dp * EtaBeam)
    End If
-   region(1:4) = 0._dp 
+   region(1:4) = 0._dp
    region(5:8) = 1._dp
    init = 0
    ncall = 15000
@@ -2705,7 +2705,7 @@ Contains
    If (zmax.Lt.-8._dp) Then
     sigma = EpEmToEsneutrinosTree(s) * ILee(beta,zmax)
    Else
-    zmin = -10._dp 
+    zmin = -10._dp
     sigma =  EpEmToEsneutrinosTree(s) * ILee(beta,zmin) &
         & + dgauss(EpEmToEsneutrinosISR,zmin,zmax,1.e-3_dp)
    End If
@@ -2818,7 +2818,7 @@ Contains
    if (GenerationMixing) then
     fac(1) = Abs(Rsf_in(ind_1,1))**2
     fac(2) = fac(1)
-   else 
+   else
     fac = 1._dp
    end if
    Do i1=1,2
@@ -2842,14 +2842,14 @@ Contains
 
   If (fZZ.Ne.0._dp) Then
    invPropZ = 1._dp / ( (s-mZ2)**2 + gmZ2 )
-   sumGauge2 = fZZ * kappa3d2 * invPropZ  
+   sumGauge2 = fZZ * kappa3d2 * invPropZ
 
    sumGaugeN = (s-mZ2) * invPropZ * ( fZV(1) * propN(1)  &
              &                      + fZV(2) * propN(2)  )
   Else
    sumGaugeN = 0._dp
    sumGauge2 = 0._dp
-  End If 
+  End If
 
   sumN2 = 0._dp
   Do i1=1,2
@@ -2902,17 +2902,17 @@ Contains
   ! Parameter for Beamstrahlung
   !------------------------------------------------------
   If (z(1).Ge.radprob) Then
-   x1 = 1._dp 
-   BeamFactor = 1._dp 
+   x1 = 1._dp
+   BeamFactor = 1._dp
   Else
-   x1 = 1._dp - (1._dp - z(1) / radprob)**3  
-   BeamFactor = BeamElectronDistribution( z(1) ) 
+   x1 = 1._dp - (1._dp - z(1) / radprob)**3
+   BeamFactor = BeamElectronDistribution( z(1) )
   End If
   If (z(3).Ge.radprob) Then
-   x3 = 1._dp 
+   x3 = 1._dp
   Else
-   x3 = 1._dp - (1._dp - z(3)  / radprob)**3  
-   BeamFactor = BeamFactor * BeamElectronDistribution( z(3) ) 
+   x3 = 1._dp - (1._dp - z(3)  / radprob)**3
+   BeamFactor = BeamFactor * BeamElectronDistribution( z(3) )
   End If
   !------------------------------------------------------
   ! Parameter for ISR
@@ -2922,7 +2922,7 @@ Contains
   x4 = 1._dp - (zmax*z(4))**(2._dp / EtaBeam)
   ISRfactor2 = ISRfactor2 * ISRElectronDistribution(x4)
 
-  s = 0.25_dp * smax * (x1 * x2 + x3 * x4)**2 
+  s = 0.25_dp * smax * (x1 * x2 + x3 * x4)**2
   If (s.Le.smin) Then ! kinematically forbidden
    EpEmToSneutrinosBeam = 0._dp
    Return
@@ -2940,7 +2940,7 @@ Contains
    End Do ! i_run
    s = s_save
    CalculateSpline = .False.
-  End If !CalculateSpline 
+  End If !CalculateSpline
 
   i_near = Int( (s-smin)/DeltaS )
   If (i_near.Le.2) Then
@@ -2954,7 +2954,7 @@ Contains
    DeltaSplineY = Spline(i_near-2:i_near+2,2)
   End If
 
-  Call polint(DeltaSplineX,DeltaSplineY,s,sigmaT,dsigmaT) 
+  Call polint(DeltaSplineX,DeltaSplineY,s,sigmaT,dsigmaT)
 
   EpEmToSneutrinosBeam = BeamFactor * ISRfactor2 * sigmaT
 
@@ -3010,7 +3010,7 @@ Contains
   !-------------
   If ( (msf(i)+msf(j))**2.Ge.s) Then
    iname = iname - 1
-   Return 
+   Return
   End If
 
   !--------------------------------------------------------------------
@@ -3025,7 +3025,7 @@ Contains
   Rsf_in(1:2,1:2) = Rsf
   N_in(1:n_n,1:n_n) = N
   mK(1:n_n) = mN
-  mk2(1:n_n) = mN**2    
+  mk2(1:n_n) = mN**2
   mSfer2(1) = msf(i)**2
   mSfer2(2) = msf(j)**2
 
@@ -3070,12 +3070,12 @@ Contains
 !----------------------------------------------------------------------
    ymin = (msf(i)+msf(j)) / Ebeam - 1._dp
    If (ymin.Lt.0._dp) Then
-    ymin = 0._dp 
+    ymin = 0._dp
     zmax = 1._dp
    Else
     zmax = (1._dp - ymin)**(0.5_dp * EtaBeam)
    End If
-   region(1:4) = 0._dp 
+   region(1:4) = 0._dp
    region(5:8) = 1._dp
    init = 0
    ncall = 15000
@@ -3102,7 +3102,7 @@ Contains
    If (zmax.Lt.-8._dp) Then
     sigma = EpEmToSelectronsTree(s) * ILee(beta,zmax)
    Else
-    zmin = -10._dp 
+    zmin = -10._dp
     sigma =  EpEmToSelectronsTree(s) * ILee(beta,zmin) &
         & + dgauss(EpEmToSelectronsISR,zmin,zmax,1.e-3_dp)
    End If
@@ -3114,7 +3114,7 @@ Contains
 !----------------------------
 ! 0.38939e12 gives fb
 !----------------------------
-  sigma = 0.38939e12_dp * sigma  
+  sigma = 0.38939e12_dp * sigma
 
   Iname = Iname - 1
 
@@ -3173,9 +3173,9 @@ Contains
   !-------------
   If ( (msf(i)+msf(j))**2.Ge.s) Then
    iname = iname - 1
-   Return 
+   Return
   End If
-  
+
   !--------------------------------------------------------------------
   ! information which are used later on
   !--------------------------------------------------------------------
@@ -3189,7 +3189,7 @@ Contains
   mK = 0._dp
   mK(1:n_n) = mN
   mk2 = mK**2
-  
+
   mSfer2(1) = msf(i)**2
   mSfer2(2) = msf(j)**2
 
@@ -3224,12 +3224,12 @@ Contains
 !----------------------------------------------------------------------
    ymin = (msf(i)+msf(j)) / Ebeam - 1._dp
    If (ymin.Lt.0._dp) Then
-    ymin = 0._dp 
+    ymin = 0._dp
     zmax = 1._dp
    Else
     zmax = (1._dp - ymin)**(0.5_dp * EtaBeam)
    End If
-   region(1:4) = 0._dp 
+   region(1:4) = 0._dp
    region(5:8) = 1._dp
    init = 0
    ncall = 15000
@@ -3252,7 +3252,7 @@ Contains
    If (zmax.Lt.-8._dp) Then
     sigma = EpEmToSelectronsTree(s) * ILee(beta,zmax)
    Else
-    zmin = -10._dp 
+    zmin = -10._dp
     sigma =  EpEmToSelectronsTree(s) * ILee(beta,zmin) &
         & + dgauss(EpEmToSelectronsISR,zmin,zmax,1.e-3_dp)
    End If
@@ -3265,7 +3265,7 @@ Contains
 !----------------------------
 ! 0.38939e12 gives fb
 !----------------------------
-  sigma = 0.38939e12_dp * sigma  
+  sigma = 0.38939e12_dp * sigma
 
   Iname = Iname - 1
 
@@ -3343,13 +3343,13 @@ Contains
      End If
     End Do
    End Do
-  End If 
+  End If
   !------------------------
   ! running couplings
   !------------------------
   Sqrts = Sqrt(s)
   Call runningCouplings(Sqrts,gin,yukin)
-  
+
   cosW2 = gin(2)**2/ (gin(1)**2 + gin(2)**2)
   sinW2 = 1._dp - cosW2
   If (GenerationMixing) Then
@@ -3389,7 +3389,7 @@ Contains
              + Re * Abs( bi(i1) )**2 * ProdPmPp(2)
     fZNi(i1) = 0._dp
    End Do
-   fgN = oo16pi * gin(2)**2 * sinW2 * fgN 
+   fgN = oo16pi * gin(2)**2 * sinW2 * fgN
    fZNr = - oo16pi * coup * fZNr
    Do i1=1,n_n
     Do i2=i1,n_n
@@ -3428,7 +3428,7 @@ Contains
           + Re * biC(i1) * bj(i1) * ProdPmPp(2)
     coupC = coup * coupC
     fZNr(i1) = Real( coupC,dp )
-    fZNi(i1) = Aimag( coupC ) 
+    fZNi(i1) = Aimag( coupC )
    End Do
    fZNr = - oo16pi * fZNr
    fZNi = - oo16pi * gmZ * fZNi
@@ -3447,11 +3447,11 @@ Contains
   Do i1=1,n_n
    Do i2=i1,n_n
     If (i1.Eq.i2) Then
-     fNN(1,i1,i2) = oo64pi * fNN(1,i1,i2) 
-     fNN(2,i1,i2) = oo64pi * fNN(2,i1,i2) 
+     fNN(1,i1,i2) = oo64pi * fNN(1,i1,i2)
+     fNN(2,i1,i2) = oo64pi * fNN(2,i1,i2)
     Else
-     fNN(1,i1,i2) = oo32pi * fNN(1,i1,i2) 
-     fNN(2,i1,i2) = oo32pi * fNN(2,i1,i2) 
+     fNN(1,i1,i2) = oo32pi * fNN(1,i1,i2)
+     fNN(2,i1,i2) = oo32pi * fNN(2,i1,i2)
     End If
    End Do
   End Do
@@ -3459,7 +3459,7 @@ Contains
 
   invPropZ = 1._dp / ( (s-mZ2)**2 + gmZ2 )
   sumGauge2 = ( fgg + ( fgZ * (s-mZ2) + fZZ * s ) * s * invPropZ ) * kappa3d2
-  sumGauge2 = sumGauge2 / s**4 
+  sumGauge2 = sumGauge2 / s**4
 
   sumGaugeN = 0._dp
   sumN2 = 0._dp
@@ -3521,28 +3521,28 @@ Contains
   ! Parameter for Beamstrahlung
   !------------------------------------------------------
   If (z(1).Ge.radprob) Then
-   x1 = 1._dp 
+   x1 = 1._dp
    BeamFactor = 1._dp !/ (1._dp - ymin)
   Else
-!   x1 = 1._dp - (1._dp - z(1) * (1._dp - ymin) / radprob)**3  
-   x1 = 1._dp - (1._dp - z(1) / radprob)**3  
-   BeamFactor = BeamElectronDistribution( z(1) ) 
+!   x1 = 1._dp - (1._dp - z(1) * (1._dp - ymin) / radprob)**3
+   x1 = 1._dp - (1._dp - z(1) / radprob)**3
+   BeamFactor = BeamElectronDistribution( z(1) )
   End If
 
   If (z(3).Ge.radprob) Then
-   x3 = 1._dp 
+   x3 = 1._dp
 !   BeamFactor = BeamFactor  / (1._dp - ymin)
   Else If (z(1).Eq.z(3)) Then
    BeamFactor = BeamFactor**2
 
   Else
-!   x3 = 1._dp - (1._dp - z(3) * (1._dp - ymin)  / radprob)**3  
-   x3 = 1._dp - (1._dp - z(3)  / radprob)**3  
-   BeamFactor = BeamFactor * BeamElectronDistribution( z(3) ) 
+!   x3 = 1._dp - (1._dp - z(3) * (1._dp - ymin)  / radprob)**3
+   x3 = 1._dp - (1._dp - z(3)  / radprob)**3
+   BeamFactor = BeamFactor * BeamElectronDistribution( z(3) )
   End If
 !  x1 = 1._dp
 !  x3 = 1._dp
-!  BeamFactor = 1._dp 
+!  BeamFactor = 1._dp
   !------------------------------------------------------
   ! Parameter for ISR
   !------------------------------------------------------
@@ -3559,8 +3559,8 @@ Contains
 !  x2 = 1._dp ! z(2)
 !  x4 = 1._dp ! z(4)
 !  ISRfactor2 = 1._dp
-  
-  s = 0.25_dp * smax * (x1 * x2 + x3 * x4)**2 
+
+  s = 0.25_dp * smax * (x1 * x2 + x3 * x4)**2
   If (s.Le.smin) Then ! kinematically forbidden
    EpEmToSelectronsBeamA = 0._dp
    Return
@@ -3623,7 +3623,7 @@ Contains
        End If
       End Do
      End Do
-    End If 
+    End If
     !------------------------
     ! running couplings
     !------------------------
@@ -3651,7 +3651,7 @@ Contains
    End Do ! i_run
    s = s_save
    CalculateSpline = .False.
-  End If !CalculateSpline 
+  End If !CalculateSpline
 
   i_near = Int( (s-smin)/DeltaS )
   If (i_near.Le.2) Then
@@ -3665,7 +3665,7 @@ Contains
    DeltaSplineY = Spline(i_near-2:i_near+2,2)
   End If
 
-  Call polint(DeltaSplineX,DeltaSplineY,s,sigmaT,dsigmaT) 
+  Call polint(DeltaSplineX,DeltaSplineY,s,sigmaT,dsigmaT)
 
   EpEmToSelectronsBeamA = BeamFactor * ISRfactor2 * sigmaT
 
@@ -3731,7 +3731,7 @@ Contains
   !-------------
   If ( (msf(i)+msf(j))**2.Ge.s) Then
    Iname = Iname - 1
-   Return 
+   Return
   End If
   !---------------------------
   ! using species informaiton
@@ -3745,16 +3745,16 @@ Contains
      e_in = -1._dp / 3._dp
    Case ('slepton')
      T3_in = -0.5_dp
-     e_in = -1._dp 
+     e_in = -1._dp
    Case ('sneutrino')
      T3_in = 0.5_dp
-     e_in = 0._dp 
+     e_in = 0._dp
    Case Default
     Write(ErrCan,*) 'Error in Subroutine EpEmToSfermionsZG.'
     Write(ErrCan,*) 'Specie '//specie//' not include.'
-    Call TerminateProgram 
+    Call TerminateProgram
   End Select
-  
+
   !-------------------------
   ! some warnings
   !-------------------------
@@ -3809,12 +3809,12 @@ Contains
 !----------------------------------------------------------------------
    ymin = (msf(i)+msf(j)) / Ebeam - 1._dp
    If (ymin.Lt.0._dp) Then
-    ymin = 0._dp 
+    ymin = 0._dp
     zmax = 1._dp
    Else
     zmax = (1._dp - ymin)**(0.5_dp * EtaBeam)
    End If
-   region(1:4) = 0._dp 
+   region(1:4) = 0._dp
    region(5:8) = 1._dp
    init = 0
    ncall = 15000
@@ -3841,7 +3841,7 @@ Contains
    If (zmax.Lt.-8._dp) Then
     sigma = EpEmToSfermionsTree(s) * ILee(beta,zmax)
    Else
-    zmin = -10._dp 
+    zmin = -10._dp
     sigma =  EpEmToSfermionsTree(s) * ILee(beta,zmin) &
         & + dgauss(EpEmToSfermionsISR,zmin,zmax,1.e-3_dp)
    End If
@@ -3856,7 +3856,7 @@ Contains
   If ((e_in.Eq.0._dp).Or.(e_in.Eq.-1._dp)) Then
    sigma = 0.38939e12_dp * pi * sigma  / 3._dp
   Else
-   sigma = 0.38939e12_dp * pi * sigma  
+   sigma = 0.38939e12_dp * pi * sigma
   End If
 
   Iname = Iname - 1
@@ -3867,8 +3867,8 @@ Contains
  Subroutine EpEmToSquarksZG(i, j, specie, mSf, Rsf, mq, mglu, Pm, Pp, s, ISR &
                           &, Beam , sigma, Design)
  !-----------------------------------------------------------------------
- ! calculates the production cross of squarks including QCD corrections, 
- ! the formula for polarized beams is taken from the Ph.D. thesis of 
+ ! calculates the production cross of squarks including QCD corrections,
+ ! the formula for polarized beams is taken from the Ph.D. thesis of
  ! Sabine Kraml (1999).
  ! input:
  !  i,j ........ the sfermion combination
@@ -3916,7 +3916,7 @@ Contains
   !-------------
   If ( (msf(i)+msf(j))**2.Ge.s) Then
    Iname = Iname - 1
-   Return 
+   Return
   End If
   !---------------------------
   ! using species informaiton
@@ -3931,9 +3931,9 @@ Contains
    Case Default
     Write(ErrCan,*) 'Error in Subroutine EpEmToSquarkssZG.'
     Write(ErrCan,*) 'Specie '//specie//' not include.'
-    Call TerminateProgram 
+    Call TerminateProgram
   End Select
-  
+
   !--------------------------------------------------------------------
   ! internal variables
   !--------------------------------------------------------------------
@@ -3991,17 +3991,17 @@ Contains
 !----------------------------------------------------------------------
    ymin = (msf(i)+msf(j)) / Ebeam - 1._dp
    If (ymin.Lt.0._dp) Then
-    ymin = 0._dp 
+    ymin = 0._dp
     zmax = 1._dp
    Else
     zmax = (1._dp - ymin)**(0.5_dp * EtaBeam)
    End If
-   region(1:4) = 0._dp 
+   region(1:4) = 0._dp
    region(5:8) = 1._dp
    init = 0
    ncall = 15000
    itmx = 10
-   nprn = -1 
+   nprn = -1
    CalculateSpline = .True.
   Call Vegas1(region,EpEmToSfermionsQCDpBeam,init,ncall,itmx,nprn,1.e-3_dp &
              &,erg,sd,chi2a)
@@ -4023,7 +4023,7 @@ Contains
    If (zmax.Lt.-8._dp) Then
     sigma = EpEmToSfermionsQCD(s) * ILee(beta,zmax)
    Else
-    zmin = -10._dp 
+    zmin = -10._dp
     sigma =  EpEmToSfermionsQCD(s) * ILee(beta,zmin)       &
         & + dgauss(EpEmToSfermionsQCDpISR,zmin,zmax,1.e-3_dp)
    End If
@@ -4036,7 +4036,7 @@ Contains
 !----------------------------
 ! 0.38939e12 gives fb
 !----------------------------
-  sigma = 0.38939e12_dp * pi * sigma  
+  sigma = 0.38939e12_dp * pi * sigma
 
   Iname = Iname - 1
 
@@ -4059,7 +4059,7 @@ Contains
   Complex(dp) :: coup, Rsf(2,2)
 
   kappa = (s-mSfer2(1)-mSfer2(2))**2 - 4._dp * mSfer2(1) * mSfer2(2)
-  kappa3d2 = kappa**1.5_dp 
+  kappa3d2 = kappa**1.5_dp
   !------------------------
   ! running couplings
   !------------------------
@@ -4127,11 +4127,11 @@ Contains
 
   Real(dp) :: gin(3), yukin(3), kappa, kappa3d2, sumI, erg, sinW2
   Real(dp) :: alpha3, SqrtS, m12, m22, del_eq, del_a, factor, aij
-  Real(dp) :: vq, aq, Le, Re, ae, ve 
+  Real(dp) :: vq, aq, Le, Re, ae, ve
   Complex(dp) :: coup
 
   kappa = (s-mSfer2(1)-mSfer2(2))**2 - 4._dp * mSfer2(1) * mSfer2(2)
-  kappa3d2 = kappa**1.5_dp 
+  kappa3d2 = kappa**1.5_dp
   !------------------------
   ! running couplings
   !------------------------
@@ -4168,7 +4168,7 @@ Contains
   ZZ = Abs(coup)**2 * fZZ
 
   !------------------
-  ! QCD correction      
+  ! QCD correction
   !------------------
   m12 = mSfer2(1)
   m22 = mSfer2(2)
@@ -4178,7 +4178,7 @@ Contains
   del_eq = 0._dp
   del_a = 0._dp
   aij = 0._dp
-  factor = fo3pi*alpha3 
+  factor = fo3pi*alpha3
   sumI = gg + ( gZ * (s-mZ2) + ZZ * s ) * s / ( (s-mZ2)**2 + gmZ2 )
 
   EpEmToSfermionsQCD = oo16pi2 * kappa3d2  &
@@ -4213,17 +4213,17 @@ Contains
   ! Parameter for Beamstrahlung
   !------------------------------------------------------
   If (z(1).Ge.radprob) Then
-   x1 = 1._dp 
-   BeamFactor = 1._dp 
+   x1 = 1._dp
+   BeamFactor = 1._dp
   Else
-   x1 = 1._dp - (1._dp - z(1) / radprob)**3  
-   BeamFactor = BeamElectronDistribution( z(1) ) 
+   x1 = 1._dp - (1._dp - z(1) / radprob)**3
+   BeamFactor = BeamElectronDistribution( z(1) )
   End If
   If (z(3).Ge.radprob) Then
-   x3 = 1._dp 
+   x3 = 1._dp
   Else
-   x3 = 1._dp - (1._dp - z(3)  / radprob)**3  
-   BeamFactor = BeamFactor * BeamElectronDistribution( z(3) ) 
+   x3 = 1._dp - (1._dp - z(3)  / radprob)**3
+   BeamFactor = BeamFactor * BeamElectronDistribution( z(3) )
   End If
   !------------------------------------------------------
   ! Parameter for ISR
@@ -4233,7 +4233,7 @@ Contains
   x4 = 1._dp - (zmax*z(4))**(2._dp / EtaBeam)
   ISRfactor2 = ISRfactor2 * ISRElectronDistribution(x4)
 
-  s = 0.25_dp * smax * (x1 * x2 + x3 * x4)**2 
+  s = 0.25_dp * smax * (x1 * x2 + x3 * x4)**2
 
   If (s.Le.smin) Then ! kinematically forbidden
    EpEmToSfermionsBeam = 0._dp
@@ -4252,7 +4252,7 @@ Contains
    End Do ! i_run
    s = s_save
    CalculateSpline = .False.
-  End If !CalculateSpline 
+  End If !CalculateSpline
 
   i_near = Int( (s-smin)/DeltaS )
   If (i_near.Le.2) Then
@@ -4266,7 +4266,7 @@ Contains
    DeltaSplineY = Spline(i_near-2:i_near+2,2)
   End If
 
-  Call polint(DeltaSplineX,DeltaSplineY,s,sigmaT,dsigmaT) 
+  Call polint(DeltaSplineX,DeltaSplineY,s,sigmaT,dsigmaT)
 
   EpEmToSfermionsBeam = BeamFactor * ISRfactor2 * sigmaT!            &
 !                     &  * kappa3d2 * alpha2 * sumI / s**4
@@ -4315,17 +4315,17 @@ Contains
   ! Parameter for Beamstrahlung
   !------------------------------------------------------
   If (z(1).Ge.radprob) Then
-   x1 = 1._dp 
-   BeamFactor = 1._dp 
+   x1 = 1._dp
+   BeamFactor = 1._dp
   Else
-   x1 = 1._dp - (1._dp - z(1) / radprob)**3  
-   BeamFactor = BeamElectronDistribution( z(1) ) 
+   x1 = 1._dp - (1._dp - z(1) / radprob)**3
+   BeamFactor = BeamElectronDistribution( z(1) )
   End If
   If (z(3).Ge.radprob) Then
-   x3 = 1._dp 
+   x3 = 1._dp
   Else
-   x3 = 1._dp - (1._dp - z(3)  / radprob)**3  
-   BeamFactor = BeamFactor * BeamElectronDistribution( z(3) ) 
+   x3 = 1._dp - (1._dp - z(3)  / radprob)**3
+   BeamFactor = BeamFactor * BeamElectronDistribution( z(3) )
   End If
   !------------------------------------------------------
   ! Parameter for ISR
@@ -4335,7 +4335,7 @@ Contains
   x4 = 1._dp - (zmax*z(4))**(2._dp / EtaBeam)
   ISRfactor2 = ISRfactor2 * ISRElectronDistribution(x4)
 
-  s = 0.25_dp * smax * (x1 * x2 + x3 * x4)**2 
+  s = 0.25_dp * smax * (x1 * x2 + x3 * x4)**2
   If (s.Le.smin) Then ! kinematically forbidden
    EpEmToSfermionsQCDpBeam = 0._dp
    Return
@@ -4354,7 +4354,7 @@ Contains
    End Do ! i_run
    s = s_save
    CalculateSpline = .False.
-  End If !CalculateSpline 
+  End If !CalculateSpline
 
   i_near = Int( (s-smin)/DeltaS )
   If (i_near.Le.2) Then
@@ -4368,10 +4368,10 @@ Contains
    DeltaSplineY = Spline(i_near-2:i_near+2,2)
   End If
 
-  Call polint(DeltaSplineX,DeltaSplineY,s,sigmaT,dsigmaT) 
+  Call polint(DeltaSplineX,DeltaSplineY,s,sigmaT,dsigmaT)
 
   EpEmtoSfermionsQCDpBeam =  BeamFactor * ISRfactor2 * sigmaT
-!  EpEmtoSfermionsQCDpBeam =  BeamFactor * ISRfactor2 * EpEmToSfermionsQCDpBeam 
+!  EpEmtoSfermionsQCDpBeam =  BeamFactor * ISRfactor2 * EpEmToSfermionsQCDpBeam
 
  End Function EpEmToSfermionsQCDpBeam
 #endif
@@ -4389,7 +4389,7 @@ Contains
   Real(dp), Intent(in) :: skin, m12, m22
   Real(dp), Intent(out) :: erg
   Real(dp) :: mui, muj, mui2, muj2, sq_laij, laij, adsq,       &
-   & la0, la1, la2, ln0, ln1, ln2, la12, la22, aux1, auxp, auxm, laij2 
+   & la0, la1, la2, ln0, ln1, ln2, la12, la22, aux1, auxp, auxm, laij2
 
   mui2 = m12/skin
   muj2 = m22/skin
@@ -4398,7 +4398,7 @@ Contains
   laij = (1._dp - mui2 -muj2)**2 - 4._dp * mui2 * muj2
   sq_laij = Sqrt(laij)
   laij2 = laij**2
-  aux1 = 1._dp - mui2 - muj2 
+  aux1 = 1._dp - mui2 - muj2
   adsq = aux1 / sq_laij
   auxp = aux1 + sq_laij
   auxm = aux1 - sq_laij
@@ -4447,17 +4447,17 @@ Contains
   ! Parameter for Beamstrahlung
   !------------------------------------------------------
   If (z(1).Ge.radprob) Then
-   x1 = 1._dp 
-   BeamFactor = 1._dp 
+   x1 = 1._dp
+   BeamFactor = 1._dp
   Else
-   x1 = 1._dp - (1._dp - z(1) / radprob)**3  
-   BeamFactor = BeamElectronDistribution( z(1) ) 
+   x1 = 1._dp - (1._dp - z(1) / radprob)**3
+   BeamFactor = BeamElectronDistribution( z(1) )
   End If
   If (z(3).Ge.radprob) Then
-   x3 = 1._dp 
+   x3 = 1._dp
   Else
-   x3 = 1._dp - (1._dp - z(3)  / radprob)**3  
-   BeamFactor = BeamFactor * BeamElectronDistribution( z(3) ) 
+   x3 = 1._dp - (1._dp - z(3)  / radprob)**3
+   BeamFactor = BeamFactor * BeamElectronDistribution( z(3) )
   End If
   !------------------------------------------------------
   ! Parameter for ISR
@@ -4467,7 +4467,7 @@ Contains
   x4 = 1._dp - (zmax*z(4))**(2._dp / EtaBeam)
   ISRfactor2 = ISRfactor2 * ISRElectronDistribution(x4)
 
-  s = 0.25_dp * smax * (x1 * x2 + x3 * x4)**2 
+  s = 0.25_dp * smax * (x1 * x2 + x3 * x4)**2
 
   If (s.Le.smin) Then ! kinematically forbidden
    EpEmToTauLeptonsBeam = 0._dp
@@ -4486,7 +4486,7 @@ Contains
    End Do ! i_run
    s = s_save
    CalculateSpline = .False.
-  End If !CalculateSpline 
+  End If !CalculateSpline
 
   i_near = Int( (s-smin)/DeltaS )
   If (i_near.Le.2) Then
@@ -4500,13 +4500,13 @@ Contains
    DeltaSplineY = Spline(i_near-2:i_near+2,2)
   End If
 
-  Call polint(DeltaSplineX,DeltaSplineY,s,sigmaT,dsigmaT) 
+  Call polint(DeltaSplineX,DeltaSplineY,s,sigmaT,dsigmaT)
 
   EpEmToTauLeptonsBeam = BeamFactor * ISRfactor2 * sigmaT
 
  End Function EpEmToTauLeptonsBeam
 
- 
+
  Subroutine EpEmToTauLeptons(Pm, Pp, s, ISR,Beam , sigma, design)
  !--------------------------------------------------------------------------
  ! calculates the cross section for top-quarj production in e+e- annihilation
@@ -4586,12 +4586,12 @@ Contains
 !----------------------------------------------------------------------
    ymin = 2._dp * mf_l(3) / Ebeam - 1._dp
    If (ymin.Lt.0._dp) Then
-    ymin = 0._dp 
+    ymin = 0._dp
     zmax = 1._dp
    Else
     zmax = (1._dp - ymin)**(0.5_dp * EtaBeam)
    End If
-   region(1:4) = 0._dp 
+   region(1:4) = 0._dp
    region(5:8) = 1._dp
    init = 0
    ncall = 15000
@@ -4609,7 +4609,7 @@ Contains
    If (zmax.Lt.-8._dp) Then
     sigma = EpEmToTauLeptonsTree(s) * ILee(beta,zmax)
    Else
-    zmin = -10._dp 
+    zmin = -10._dp
     sigma =  EpEmToTauLeptonsTree(s) * ILee(beta,zmin) &
         & + dgauss(EpEmToTauLeptonsISR,zmin,zmax,1.e-3_dp)
    End If
@@ -4660,7 +4660,7 @@ Contains
   SqrtS = Sqrt( s )
   sp_char = Sqrt( p2_char ) * SqrtS
   p_char = sp_char / s
-  
+
   sigma_ij = 0._dp
 
   invPropZ = 1._dp / ( (s-mZ2)**2 + gmZ2 )
@@ -4707,17 +4707,17 @@ Contains
   ! Parameter for Beamstrahlung
   !------------------------------------------------------
   If (z(1).Ge.radprob) Then
-   x1 = 1._dp 
-   BeamFactor = 1._dp 
+   x1 = 1._dp
+   BeamFactor = 1._dp
   Else
-   x1 = 1._dp - (1._dp - z(1) / radprob)**3  
-   BeamFactor = BeamElectronDistribution( z(1) ) 
+   x1 = 1._dp - (1._dp - z(1) / radprob)**3
+   BeamFactor = BeamElectronDistribution( z(1) )
   End If
   If (z(3).Ge.radprob) Then
-   x3 = 1._dp 
+   x3 = 1._dp
   Else
-   x3 = 1._dp - (1._dp - z(3)  / radprob)**3  
-   BeamFactor = BeamFactor * BeamElectronDistribution( z(3) ) 
+   x3 = 1._dp - (1._dp - z(3)  / radprob)**3
+   BeamFactor = BeamFactor * BeamElectronDistribution( z(3) )
   End If
   !------------------------------------------------------
   ! Parameter for ISR
@@ -4727,7 +4727,7 @@ Contains
   x4 = 1._dp - (zmax*z(4))**(2._dp / EtaBeam)
   ISRfactor2 = ISRfactor2 * ISRElectronDistribution(x4)
 
-  s = 0.25_dp * smax * (x1 * x2 + x3 * x4)**2 
+  s = 0.25_dp * smax * (x1 * x2 + x3 * x4)**2
 
   If (s.Le.smin) Then ! kinematically forbidden
    EpEmToTopQuarksBeam = 0._dp
@@ -4746,7 +4746,7 @@ Contains
    End Do ! i_run
    s = s_save
    CalculateSpline = .False.
-  End If !CalculateSpline 
+  End If !CalculateSpline
 
   i_near = Int( (s-smin)/DeltaS )
   If (i_near.Le.2) Then
@@ -4760,7 +4760,7 @@ Contains
    DeltaSplineY = Spline(i_near-2:i_near+2,2)
   End If
 
-  Call polint(DeltaSplineX,DeltaSplineY,s,sigmaT,dsigmaT) 
+  Call polint(DeltaSplineX,DeltaSplineY,s,sigmaT,dsigmaT)
 
   EpEmToTopQuarksBeam = BeamFactor * ISRfactor2 * sigmaT
 
@@ -4773,7 +4773,7 @@ Contains
  ! written by Werner Porod, 03.10.01
  ! 03.10.01: I take the formulas for chargino production, and replace the
  !           couplings to Z and photon, at the moment only tree-level,
- !           will be improved soon 
+ !           will be improved soon
  !--------------------------------------------------------------------------
  Implicit None
 
@@ -4850,12 +4850,12 @@ Contains
 !----------------------------------------------------------------------
    ymin = 2._dp * mf_u(3) / Ebeam - 1._dp
    If (ymin.Lt.0._dp) Then
-    ymin = 0._dp 
+    ymin = 0._dp
     zmax = 1._dp
    Else
     zmax = (1._dp - ymin)**(0.5_dp * EtaBeam)
    End If
-   region(1:4) = 0._dp 
+   region(1:4) = 0._dp
    region(5:8) = 1._dp
    init = 0
    ncall = 15000
@@ -4873,7 +4873,7 @@ Contains
    If (zmax.Lt.-8._dp) Then
     sigma = EpEmToTopQuarksTree(s) * ILee(beta,zmax)
    Else
-    zmin = -10._dp 
+    zmin = -10._dp
     sigma =  EpEmToTopQuarksTree(s) * ILee(beta,zmin) &
         & + dgauss(EpEmToTopQuarksISR,zmin,zmax,1.e-3_dp)
    End If
@@ -4924,7 +4924,7 @@ Contains
   SqrtS = Sqrt( s )
   sp_char = Sqrt( p2_char ) * SqrtS
   p_char = sp_char / s
-  
+
   sigma_ij = 0._dp
 
   invPropZ = 1._dp / ( (s-mZ2)**2 + gmZ2 )
@@ -4987,17 +4987,17 @@ Contains
   ! Parameter for Beamstrahlung
   !------------------------------------------------------
   If (z(1).Ge.radprob) Then
-   x1 = 1._dp 
-   BeamFactor = 1._dp 
+   x1 = 1._dp
+   BeamFactor = 1._dp
   Else
-   x1 = 1._dp - (1._dp - z(1) / radprob)**3  
-   BeamFactor = BeamElectronDistribution( z(1) ) 
+   x1 = 1._dp - (1._dp - z(1) / radprob)**3
+   BeamFactor = BeamElectronDistribution( z(1) )
   End If
   If (z(3).Ge.radprob) Then
-   x3 = 1._dp 
+   x3 = 1._dp
   Else
-   x3 = 1._dp - (1._dp - z(3)  / radprob)**3  
-   BeamFactor = BeamFactor * BeamElectronDistribution( z(3) ) 
+   x3 = 1._dp - (1._dp - z(3)  / radprob)**3
+   BeamFactor = BeamFactor * BeamElectronDistribution( z(3) )
   End If
   !------------------------------------------------------
   ! Parameter for ISR
@@ -5007,7 +5007,7 @@ Contains
   x4 = 1._dp - (zmax*z(4))**(2._dp / EtaBeam)
   ISRfactor2 = ISRfactor2 * ISRElectronDistribution(x4)
 
-  s = 0.25_dp * smax * (x1 * x2 + x3 * x4)**2 
+  s = 0.25_dp * smax * (x1 * x2 + x3 * x4)**2
 
   If (s.Le.smin) Then ! kinematically forbidden
    EpEmToWpWmBeam = 0._dp
@@ -5026,7 +5026,7 @@ Contains
    End Do ! i_run
    s = s_save
    CalculateSpline = .False.
-  End If !CalculateSpline 
+  End If !CalculateSpline
 
   i_near = Int( (s-smin)/DeltaS )
   If (i_near.Le.2) Then
@@ -5040,7 +5040,7 @@ Contains
    DeltaSplineY = Spline(i_near-2:i_near+2,2)
   End If
 
-  Call polint(DeltaSplineX,DeltaSplineY,s,sigmaT,dsigmaT) 
+  Call polint(DeltaSplineX,DeltaSplineY,s,sigmaT,dsigmaT)
 
   EpEmToWpWmBeam = BeamFactor * ISRfactor2 * sigmaT
 
@@ -5083,7 +5083,7 @@ Contains
   RmZmW4 = RmZmW2**2
 
   sinW2 = 1._dp - mW2 / mZ2
-  FacWW(1) = 0.25_dp * (1._dp-Pm) * (1._dp+Pp) 
+  FacWW(1) = 0.25_dp * (1._dp-Pm) * (1._dp+Pp)
   FacWW(2) = 0.5_dp * sinW2 * (1._dp-Pm) * (1._dp+Pp)
   FacWW(3) = sinW2**2 * (1._dp-Pm*Pp)
   FacWW = 0.25_dp * oo16Pi * FacWW
@@ -5114,12 +5114,12 @@ Contains
 !----------------------------------------------------------------------
    ymin = 2._dp * mW / Ebeam - 1._dp
    If (ymin.Lt.0._dp) Then
-    ymin = 0._dp 
+    ymin = 0._dp
     zmax = 1._dp
    Else
     zmax = (1._dp - ymin)**(0.5_dp * EtaBeam)
    End If
-   region(1:4) = 0._dp 
+   region(1:4) = 0._dp
    region(5:8) = 1._dp
    init = 0
    ncall = 15000
@@ -5137,7 +5137,7 @@ Contains
    If (zmax.Lt.-8._dp) Then
     sigma = EpEmToWpWmTree(s) * ILee(beta,zmax)
    Else
-    zmin = -10._dp 
+    zmin = -10._dp
     sigma =  EpEmToWpWmTree(s) * ILee(beta,zmin) &
         & + dgauss(EpEmToWpWmISR,zmin,zmax,1.e-3_dp)
    End If
@@ -5147,7 +5147,7 @@ Contains
   End If
 
   !---------------------
-  ! 0.38939e12 gives fb 
+  ! 0.38939e12 gives fb
   !---------------------
   sigma = 0.38939e12_dp * sigma
 
@@ -5222,7 +5222,7 @@ Contains
  ! calculates the energy distribution for the ISR corrections
  ! for particle production at e+ e- colliders. beta is defined as
  ! 2 alpha_em ( Log[s/m^2_e] - 1 ) / Pi. (1-Exp[x]) is the fraction of energy
- ! in the c.m.s. after the photon(s) has (have) been emitted. s is the total 
+ ! in the c.m.s. after the photon(s) has (have) been emitted. s is the total
  ! c.m.s.-energy squared, and m_e is the electron mass.
  ! Formulas are given by M.~Drees and K.~Hikasa, Phys.~Lett.~B252, 127 (1990)
  ! written by Werner Porod, 27.8.99
@@ -5247,7 +5247,7 @@ Contains
  ! 26.9.2000: changing to Fortran 90 form
  !-----------------------------------------------------------------------
  Implicit None
- 
+
   Real(dp) , Intent(in) :: beta,x
 
   ILee = KFactorLee * ( Exp(beta*x) * (1._dp + 0.75_dp * beta)     &
@@ -5285,7 +5285,7 @@ Contains
   !--------------------------
   ! beamstrahlung part
   !--------------------------
-  mx1 = (1._dp - x1)**(1._dp / 3._dp) 
+  mx1 = (1._dp - x1)**(1._dp / 3._dp)
   If (mx1.Eq.0._dp) mx1 = 1.e-14_dp  ! to avoid division by 0
   y = KappaBeam * (1._dp - x1) / x1
   Beam = Exp(-Ngeff-y) / (x1 * mx1 )
@@ -5316,7 +5316,7 @@ Contains
  Subroutine BeamStrahlungInitzialization(Design,E)
  !------------------------------------------------------------------
  ! initalizes the variables for the different colliders as needed
- ! for the calculation of Beamstrahlung. The data are taken from 
+ ! for the calculation of Beamstrahlung. The data are taken from
  ! the program pandora 2.1. by M. Peskin
  ! written by Werner Porod, 26.12.2000
  !------------------------------------------------------------------
@@ -5325,7 +5325,7 @@ Contains
   Real(dp), Intent(in) :: E
   Real(dp) :: N, sigmax, sigmay, sigmaz, betax, betay, Re, GammaFactor, &
                  & Dx, Dy, Hx, Hy, NuCl, NuGamma, Ncl, Ngamma, sigmaxB,      &
-                 & sigmayB 
+                 & sigmayB
 
 
   Select Case(Design)
@@ -5336,21 +5336,21 @@ Contains
        sigmaz = 90.0e-6_dp
        betax = 12.0e-3_dp
        betay = 0.12e-3_dp
-   Case ('NLC500B')        !  500 GeV JLC/NLC B   2/24/00 
+   Case ('NLC500B')        !  500 GeV JLC/NLC B   2/24/00
        N = 0.82e10_dp
        sigmax = 330.0e-9_dp
        sigmay = 4.6e-9_dp
        sigmaz = 120.0e-6_dp
        betax = 12.0e-3_dp
        betay = 0.12e-3_dp
-   Case ('NLC500C')        !  500 GeV JLC/NLC C   2/24/00 
+   Case ('NLC500C')        !  500 GeV JLC/NLC C   2/24/00
        N = 1.0e10_dp
        sigmax = 365.0e-9_dp
        sigmay = 6.2e-9_dp
        sigmaz = 140.0e-6_dp
        betax = 13.0e-3_dp
        betay = 0.15e-3_dp
-   Case ('NLC500H')        !  500 GeV JLC/NLC H   2/24/00 
+   Case ('NLC500H')        !  500 GeV JLC/NLC H   2/24/00
        N = 0.75e10_dp
        sigmax = 245.0e-9_dp
        sigmay = 2.7e-9_dp
@@ -5385,49 +5385,49 @@ Contains
        sigmaz = 110.0e-6_dp
        betax = 10.0e-3_dp
        betay = 0.12e-3_dp
-   Case ('NLC1500')        !  1500 GeV  modified RRuth Snowmass 96 
+   Case ('NLC1500')        !  1500 GeV  modified RRuth Snowmass 96
        N = 1.10e10_dp
        sigmax = 202.0e-9_dp
        sigmay = 5.1e-9_dp
        sigmaz = 150.0e-6_dp
        betax = 12.0e-3_dp
        betay = 0.20e-3_dp
-   Case ('TESLA500')        !  500 GeV TESLA as of 6/28/00 
+   Case ('TESLA500')        !  500 GeV TESLA as of 6/28/00
        N = 2.0e10_dp
        sigmax = 553.2e-9_dp
        sigmay = 5.0e-9_dp
        sigmaz = 30.0e-6_dp
        betax = 15.0e-3_dp
        betay = 0.40e-3_dp
-    Case ('TESLA800')      !  800 GeV TESLA as of 6/28/00 
+    Case ('TESLA800')      !  800 GeV TESLA as of 6/28/00
        N = 1.4e10
        sigmax = 391.e-9_dp
        sigmay = 2.0e-9_dp
        sigmaz = 30.0e-6_dp
        betax = 15.0e-3_dp
        betay = 0.30e-3_dp
-   Case ('CLIC500')        !  500 GeV CLIC as of  7/11/00  
+   Case ('CLIC500')        !  500 GeV CLIC as of  7/11/00
        N = 4.0e9
        sigmax = 202.0e-9_dp
        sigmay = 2.5e-9_dp
        sigmaz = 30.0e-6_dp
        betax = 10.0e-3_dp
        betay = 0.15e-3_dp
-   Case ('CLIC1000')        !  1000 GeV CLIC as of  7/11/00  
+   Case ('CLIC1000')        !  1000 GeV CLIC as of  7/11/00
        N = 4.0e9_dp
        sigmax = 115.0e-9_dp
        sigmay = 1.75e-9_dp
        sigmaz = 30.0e-6_dp
        betax = 10.0e-3_dp
        betay = 0.15e-3_dp
-   Case ('CLIC3000')        !  3000 GeV CLIC as of  7/11/00  
+   Case ('CLIC3000')        !  3000 GeV CLIC as of  7/11/00
        N = 4.0e9_dp
        sigmax = 43.0e-9_dp
        sigmay = 1.0e-9_dp
        sigmaz = 30.0e-6_dp
        betax = 8.0e-3_dp
        betay = 0.15e-3_dp
-   Case ('CLIC5000')        !  5000 GeV CLIC as of  7/11/00  
+   Case ('CLIC5000')        !  5000 GeV CLIC as of  7/11/00
        N = 4.0e9
        sigmax = 31.0e-9_dp
        sigmay = 0.78e-9_dp
@@ -5440,7 +5440,7 @@ Contains
     Call TerminateProgram
    End Select
 
-   Re = 2.817940e-15_dp ! classical electron radius 
+   Re = 2.817940e-15_dp ! classical electron radius
    GammaFactor = E / mf_l(1)
 
    Dx = 2 * N * Re * sigmaz / (GammaFactor * sigmax * (sigmax+sigmay) )
@@ -5457,7 +5457,7 @@ Contains
    Upsilon = 5 * Re**2 * GammaFactor * N &
            & / (6 * Alpha * sigmaz * (sigmaxB +sigmayB) )
 
-   KappaBeam = 2._dp / (3._dp * Upsilon) 
+   KappaBeam = 2._dp / (3._dp * Upsilon)
 
    NuCl = 2.5_dp * Alpha**2 * Upsilon / (Sqrt(3._dp) * Re * GammaFactor )
    NuGamma = NuCl / Sqrt(1._dp + Upsilon**(2._dp/3._dp) )
@@ -5474,7 +5474,7 @@ Contains
 #ifdef BEAMSTRAHLUNG
  Real(dp) Function ISRElectronDistribution(x1)
  !-----------------------------------------------------------------
- ! calculates the electron distribution in case of ISR. 
+ ! calculates the electron distribution in case of ISR.
  ! Is based on the program pandora by M.Peskin and his
  ! paper 'Consistent Yokoya-Chen Approximation to Bemastrahlung'
  ! LCC-0010
@@ -5493,10 +5493,10 @@ Contains
   ISR = (1._dp + x12)                                                  &
     & - 0.25_dp * EtaBeam * (0.5_dp *(1._dp + 3._dp *x12 ) * Log(x1)   &
     &                       + (1._dp - x1)**2 )
-  ISRElectronDistribution = ISRfactor * ISR 
+  ISRElectronDistribution = ISRfactor * ISR
 
  End Function ISRElectronDistribution
 #endif
- 
+
 End Module EplusEminusProduction
 

@@ -1,7 +1,7 @@
 Module SusyDecays
 ! comments
 ! In this module the routines for the decays of SUSY particles are
-! stored. 
+! stored.
 
 ! load modules
 Use Control
@@ -46,7 +46,7 @@ Contains
  !  mZ .................. mass of the Z-boson
  !  cpl_SmpZ(i,j) ....... coupling charged scalar - scalar - Z
  !  mP0(i) .............. pseudoscalar masses
- !  cpl_SmpP03(i,j,k) ... charged scalar - charged scalar - pseudo scalar 
+ !  cpl_SmpP03(i,j,k) ... charged scalar - charged scalar - pseudo scalar
  !  cpl_SmpP0W(i) ....... charged scalar - pseudo scalar - W coupling
  !  mS0(i) .............. scalar masses
  !  cpl_SmpS03(i,j,k) ... charged scalar - charged scalar - scalar coupling
@@ -89,8 +89,8 @@ Contains
     Spm(i1)%gi2 = 0._dp
    End Do
 
-  Else If ( (i_in.Ge.1).And.(i_in.Le.n_Spm) ) Then 
-   i_start = i_in 
+  Else If ( (i_in.Ge.1).And.(i_in.Le.n_Spm) ) Then
+   i_start = i_in
    i_end = i_in
    Spm(i_in)%gi2 = 0._dp
 
@@ -120,7 +120,7 @@ Contains
    m_in = mSpm(i1)
    Spm(i1)%gi2 = 0._dp
    i_count = 1
-   
+
    If (m_in.Eq.0._dp) Cycle ! massless particle
 
    !------------------
@@ -153,7 +153,7 @@ Contains
      If ((Abs(cpl_SmpDU_L(i1,i2,i3))+Abs(cpl_SmpDU_R(i1,i2,i3))).ne.0._dp) then
       Call ScalarToTwoFermions(m_in, mf_d(i2), mf_u(i3), cpl_SmpDU_L(i1,i2,i3) &
                              &, cpl_SmpDU_R(i1,i2,i3), gam )
-      gam = 3._dp * gam 
+      gam = 3._dp * gam
       Spm(i1)%gi2(i_count) = gam
       Spm(i1)%id2(i_count,1) = id_d(i2) + 1
       Spm(i1)%id2(i_count,2) = id_u(i3)
@@ -200,7 +200,7 @@ Contains
                              &, cpl_SmpCN_R(i1,i2,i3), gam )
      Spm(i1)%gi2(i_count) = gam
      Spm(i1)%id2(i_count,1) = ChiPm(i2)%id
-     Spm(i1)%id2(i_count,2) = Chi0(i3)%id 
+     Spm(i1)%id2(i_count,2) = Chi0(i3)%id
      i_count = i_count + 1
     End Do
    End Do
@@ -291,7 +291,7 @@ Contains
 
 
   End Do ! i1
- 
+
   Iname = Iname - 1
 
  End Subroutine ChargedscalarTwoBodyDecays
@@ -343,8 +343,8 @@ Contains
  !  S0(i) ............... scalar masses + decay information
  !  c_CCS0_L(i,j,k) ... left chargino scalar coupling
  !  c_CCS0_R(i,j,k) ... right chargino scalar coupling
- !  k_neut ................ if =1 .... summing over neutrinos 
- !                          if =2 .... summing over all SM-fermions 
+ !  k_neut ................ if =1 .... summing over neutrinos
+ !                          if =2 .... summing over all SM-fermions
  ! written by Werner Porod, 26.04.2001
  ! 19.09.2010: adjusting to new variable types
  !-----------------------------------------------------------------------
@@ -364,8 +364,8 @@ Contains
   Type(particle2), Intent(in) :: Sdown(:), Spm(:), P0(:)
   Type(particle23), Intent(in) :: Sneut(:), Slept(:), Sup(:), Chi0(:), S0(:)
   Type(particle23), Intent(inout) :: ChiPm(:)
- 
- 
+
+
   Integer :: i1, i2, i_start, i_end, i_count, i3
   Real(dp) :: gam, m_in, mN(n_n), mSlepton(n_sle), mSneut(n_snu), mSdown(n_sd) &
          & , mSup(n_su), mC(n_c), mS0(n_S0), mSpm(n_Spm), mP0(n_P0), x1, x2, sq1
@@ -377,7 +377,7 @@ Contains
 
 
   If (i_in.Lt.0) Then
-   i_start = 1 
+   i_start = 1
    i_end = n_c
 
    ChiPm%g = 0._dp
@@ -386,8 +386,8 @@ Contains
     ChiPm(i1)%bi2 = 0._dp
    End Do
 
-  Else If ( (i_in.Ge.1).And.(i_in.Le.n_c) ) Then 
-   i_start = i_in 
+  Else If ( (i_in.Ge.1).And.(i_in.Le.n_c) ) Then
+   i_start = i_in
    i_end = i_in
    ChiPm(i_in)%g = 0._dp
    ChiPm(i_in)%gi2 = 0._dp
@@ -466,7 +466,7 @@ Contains
       Call FermionToFermionScalar(m_in, mf_d(i3), mSup(i2) &
              & , c_CDSu_L(i1,i3,i2), c_CDSu_R(i1,i3,i2), gam)
 
-      ChiPm(i1)%gi2(i_count) = 3._dp * gam ! colour 
+      ChiPm(i1)%gi2(i_count) = 3._dp * gam ! colour
       ChiPm(i1)%id2(i_count,1) = Sup(i2)%id
       ChiPm(i1)%id2(i_count,2) = id_d(i3)+1
       i_count = i_count + 1
@@ -482,7 +482,7 @@ Contains
       Call FermionToFermionScalar(m_in, mf_u(i3), mSdown(i2) &
              & , c_CUSd_L(i1,i3,i2), c_CUSd_R(i1,i3,i2), gam)
 
-      ChiPm(i1)%gi2(i_count) = 3._dp * gam ! colour 
+      ChiPm(i1)%gi2(i_count) = 3._dp * gam ! colour
       ChiPm(i1)%id2(i_count,1) = Sdown(i2)%id+1
       ChiPm(i1)%id2(i_count,2) = id_u(i3)
       i_count = i_count + 1
@@ -589,7 +589,7 @@ Contains
    If (ChiPm(i1)%g.Gt.0._dp) ChiPm(i1)%bi2 = ChiPm(i1)%gi2 / ChiPm(i1)%g
 
   End Do ! i1
- 
+
   Iname = Iname - 1
 
  End Subroutine CharginoTwoBodyDecays
@@ -611,8 +611,8 @@ Contains
  !  cpl_UGSu_R(i,j,k) ... right u-quark gluino u-squark coupling
  !  mf_u(i) ............. u-quark masses
  !  k_neut .............. if =1 .... summing over all quarks
- !  GenerationMixing .... mixing between the generations is taken into 
- !                         account if =.TRUE. 
+ !  GenerationMixing .... mixing between the generations is taken into
+ !                         account if =.TRUE.
  ! output:
  !  depends on the values of k_neut and GenerationMixing.
  !  gP(:,:) ...... partial widths
@@ -636,7 +636,7 @@ Contains
   Type(particle23), Intent(in) :: Sup(:)
   Type(particle23), Intent(inout) :: Glu
 
-  Integer :: i1, i2, i_count 
+  Integer :: i1, i2, i_count
   Real(dp) :: mSdown(n_Sd), mGlu, gam, mSup(n_su), x1
   !-----------------
   ! Initialization
@@ -650,7 +650,7 @@ Contains
    Iname = Iname - 1
    Return
   End If
-  
+
   mSdown = Sdown%m
   mSup = Sup%m
   Glu%gi2 = 0._dp
@@ -716,8 +716,8 @@ Contains
    End Do
    If (k_neut.Eq.1) i_count = i_count + 2
   End Do
-     
- 
+
+
   !-----------------------------------------
   ! gravitino gluon
   !-----------------------------------------
@@ -743,8 +743,8 @@ Contains
  End Subroutine GluinoTwoBodyDecays
 
 
- Subroutine GluinoTwoBodyDecays_old(mGlu, mSdown, cpl_DGSd_L, cpl_DGSd_R, mf_d  &  
-                              &, mSup, cpl_UGSu_L, cpl_UGSu_R, mf_u         &  
+ Subroutine GluinoTwoBodyDecays_old(mGlu, mSdown, cpl_DGSd_L, cpl_DGSd_R, mf_d  &
+                              &, mSup, cpl_UGSu_L, cpl_UGSu_R, mf_u         &
                               &, k_neut, GenerationMixing                   &
                               &, gP, gT, BR )
  !-----------------------------------------------------------------------
@@ -760,8 +760,8 @@ Contains
  !  cpl_UGSu_R(i,j,k) ... right u-quark gluino u-squark coupling
  !  mf_u(i) ............. u-quark masses
  !  k_neut .............. if =1 .... summing over all quarks
- !  GenerationMixing .... mixing between the generations is taken into 
- !                         account if =.TRUE. 
+ !  GenerationMixing .... mixing between the generations is taken into
+ !                         account if =.TRUE.
  ! output:
  !  depends on the values of k_neut and GenerationMixing.
  !  gP(:,:) ...... partial widths
@@ -781,8 +781,8 @@ Contains
   Real(dp), Intent(inout) :: gP(:), gT
   Real(dp), Optional, Intent(inout) :: BR(:)
   Logical, Intent(in) :: GenerationMixing
- 
-  Integer :: i1, i2, i_gen, i_count 
+
+  Integer :: i1, i2, i_gen, i_count
   Real(dp) :: gam
   Complex(dp) :: coupLC, coupRC
   !-----------------
@@ -815,8 +815,8 @@ Contains
       gP(i_count) = gP(i_count) +  gam
       gP(i_count+1) = gP(i_count+1) +  gam
      Else
-      gP(i_count) = gam 
-      gP(i_count+1) = gam 
+      gP(i_count) = gam
+      gP(i_count+1) = gam
       i_count = i_count + 2
      End If
     End Do
@@ -836,13 +836,13 @@ Contains
       gP(i_count+1) = gP(i_count+1) +  gam
      Else
       gP(i_count) = gam
-      gP(i_count+1) = gam 
+      gP(i_count+1) = gam
       i_count = i_count + 2
      End If
     End Do
     If (k_neut.Eq.1) i_count = i_count + 2
    End Do
-     
+
   Else ! GenerationMixing = .FALSE.
    !------------------
    ! u-Squark u-quark
@@ -877,7 +877,7 @@ Contains
   End If ! GenerationMixing
 
   !--------------------------------------------------------------
-  ! summation over colour gives a factor 2 
+  ! summation over colour gives a factor 2
   !-------------------------------------------------------------
   gP = 2._dp * gP
   gT = Sum(gP)
@@ -945,7 +945,7 @@ Contains
  !                          no summation over neutrinos
  ! written by Werner Porod, 26.04.2001
  ! 10.09.03: give now explicitly branching ratios of charge conjugated states
- ! 17.09.10: using new type structures 
+ ! 17.09.10: using new type structures
  !-----------------------------------------------------------------------
  Implicit None
 
@@ -974,7 +974,7 @@ Contains
   NameOfUnit(Iname) = 'NeutralinoTwoBodyDecays'
 
   If (i_in.Lt.0) Then
-   i_start = 1 
+   i_start = 1
    i_end = n_n
 
    Chi0%g = 0._dp
@@ -983,8 +983,8 @@ Contains
     Chi0(i1)%bi2 = 0._dp
    End Do
 
-  Else If ( (i_in.Ge.1).And.(i_in.Le.n_n) ) Then 
-   i_start = i_in 
+  Else If ( (i_in.Ge.1).And.(i_in.Le.n_n) ) Then
+   i_start = i_in
    i_end = i_in
 
    Chi0(i_in)%g = 0._dp
@@ -1073,10 +1073,10 @@ Contains
       Call FermionToFermionScalar(m_in, mf_u(i3), mSup(i2) &
              & , c_UNSu_L(i3,i1,i2), c_UNSu_R(i3,i1,i2), gam)
 
-      Chi0(i1)%gi2(i_count) = 3._dp * gam ! colour 
+      Chi0(i1)%gi2(i_count) = 3._dp * gam ! colour
       Chi0(i1)%id2(i_count,1) = Sup(i2)%id
       Chi0(i1)%id2(i_count,2) = id_u(i3)+1
-      Chi0(i1)%gi2(i_count+1) = 3._dp * gam ! colour 
+      Chi0(i1)%gi2(i_count+1) = 3._dp * gam ! colour
       Chi0(i1)%id2(i_count+1,1) = Sup(i2)%id+1
       Chi0(i1)%id2(i_count+1,2) = id_u(i3)
 
@@ -1093,10 +1093,10 @@ Contains
       Call FermionToFermionScalar(m_in, mf_d(i3), mSdown(i2) &
              & , c_DNSd_L(i3,i1,i2), c_DNSd_R(i3,i1,i2), gam)
 
-      Chi0(i1)%gi2(i_count) = 3._dp * gam ! colour 
+      Chi0(i1)%gi2(i_count) = 3._dp * gam ! colour
       Chi0(i1)%id2(i_count,1) = Sdown(i2)%id
       Chi0(i1)%id2(i_count,2) = id_d(i3)+1
-      Chi0(i1)%gi2(i_count+1) = 3._dp * gam ! colour 
+      Chi0(i1)%gi2(i_count+1) = 3._dp * gam ! colour
       Chi0(i1)%id2(i_count+1,1) = Sdown(i2)%id+1
       Chi0(i1)%id2(i_count+1,2) = id_d(i3)
 
@@ -1228,7 +1228,7 @@ Contains
                      &       * Sqrt(1._dp-2._dp*(x1+x2)+(x1-x2)**2)         &
                      &       * ( (1._dp-x1)**2 * (1._dp + sq1)**2           &
                      &         - x2 * ( (1+sq1)**2                          &
-                     &                  * (3._dp - 2._dp*sq1 + 3._dp*x1)    & 
+                     &                  * (3._dp - 2._dp*sq1 + 3._dp*x1)    &
                      &                - x2 * (3._dp+2._dp*sq1+3._dp*x1-x2) ))
      Chi0(i1)%id2(i_count,1) = id_grav
      Chi0(i1)%id2(i_count,2) = S0(1)%id
@@ -1240,7 +1240,7 @@ Contains
    If (Chi0(i1)%g.Gt.0._dp) Chi0(i1)%bi2 = Chi0(i1)%gi2 / Chi0(i1)%g
 
   End Do ! i1
- 
+
   Iname = Iname - 1
 
  End Subroutine NeutralinoTwoBodyDecays
@@ -1291,7 +1291,7 @@ Contains
  !  cpl_P0S03(i,j,k) ..... pseudoscalar - pseudoscalar - scalar coupling
  !  cpl_P0S0Z(i,j) ....... pseudoscalar-scalar-Z coupling
  !  cpl_SmpS0W(i,j) ...... charged scalar - scalar - W coupling
- ! output: 
+ ! output:
  ! written by Werner Porod, 30.04.2001
  ! 15.11.02: adding QCD corrections for decays into fermions
  ! 14.09.03: adding charge conjugated states to output
@@ -1330,8 +1330,8 @@ Contains
     P0(i1)%gi2 = 0._dp
    End Do
 
-  Else If ( (i_in.Ge.1).And.(i_in.Le.n_P0) ) Then 
-   i_start = i_in 
+  Else If ( (i_in.Ge.1).And.(i_in.Le.n_P0) ) Then
+   i_start = i_in
    i_end = i_in
    P0(i_in)%gi2 = 0._dp
 
@@ -1501,7 +1501,7 @@ Contains
      If (i2.Eq.i3) gam = 0.5_dp * gam ! Majorana
      P0(i1)%gi2(i_count) = gam
      P0(i1)%id2(i_count,1) = Chi0(i2)%id
-     P0(i1)%id2(i_count,2) = Chi0(i3)%id 
+     P0(i1)%id2(i_count,2) = Chi0(i3)%id
      i_count = i_count + 1
     End Do
    End Do
@@ -1607,11 +1607,11 @@ Contains
    P0(i1)%id2(i_count,2) = id_ph
    i_count = i_count + 1
 
-   P0(i1)%g = Sum(P0(i1)%gi2) 
+   P0(i1)%g = Sum(P0(i1)%gi2)
    If (P0(i1)%g.Ne.0._dp) P0(i1)%bi2 = P0(i1)%gi2 / P0(i1)%g
 
   End Do ! i1
- 
+
   Iname = Iname - 1
  contains
 
@@ -1628,7 +1628,7 @@ Contains
 
     beta2 = 1._dp - 4._dp * ratio**2
     beta = Sqrt(beta2)
-    
+
     R_beta_1 = (1. - beta) / (1._dp + beta)
     Ln_beta = Log(beta)
     Ln_R_beta_1 = Log(R_beta_1)
@@ -1643,7 +1643,7 @@ Contains
       &                         + 2._dp * Ln_beta )  ) / beta
     fac =  fac - 3._dp * Log(ratio)  ! absorb large logarithms in mass
 
-    FFqcd = 1._dp + 5._dp * alpha_s * fac * oo3pi 
+    FFqcd = 1._dp + 5._dp * alpha_s * fac * oo3pi
 
   end  Function FFqcd
 
@@ -1653,9 +1653,9 @@ Contains
  Subroutine ScalarTwoBodyDecays(i_in, n_s0, n_nu, id_nu, n_l, id_l, n_d, id_d  &
        & , n_u, id_u, n_Z, id_Z, n_W, id_W, n_snu, n_sle, n_Sd, n_su, n_n, n_c &
        & , n_p0, n_Spm, id_ph, id_gl, S0, cpl_S03, cpl_GlGlS0, cpl_GGS0, mf_l  &
-       & , cpl_LLS0_L, cpl_LLS0_R, mf_d, cpl_DDS0_L, cpl_DDS0_R, mf_u          & 
+       & , cpl_LLS0_L, cpl_LLS0_R, mf_d, cpl_DDS0_L, cpl_DDS0_R, mf_u          &
        & , cpl_UUS0_L, cpl_UUS0_R, Slept, cpl_S0SlSl, Sneut, cpl_S0SnSn        &
-       & , Sdown, cpl_S0SdSd, Sup, cpl_S0SuSu, Chi0, cpl_NNS0_L, cpl_NNS0_R    & 
+       & , Sdown, cpl_S0SdSd, Sup, cpl_S0SuSu, Chi0, cpl_NNS0_L, cpl_NNS0_R    &
        & , ChiPm, cpl_CCS0_L, cpl_CCS0_R, mW, cpl_S0WW, cpl_S0WWvirt, mZ       &
        & , cpl_S0ZZ, cpl_S0ZZvirt, Spm, cpl_SmpS03, P0, cpl_P0S03, cpl_P0S0Z   &
        & , cpl_SmpS0W, mglu)
@@ -1701,9 +1701,9 @@ Contains
  !  cpl_P0S03(i,j,k) ..... pseudoscalar - pseudoscalar - scalar coupling
  !  cpl_P0S0Z(i,j) ....... pseudoscalar-scalar-Z coupling
  !  cpl_SmpS0W(i,j) ...... charged scalar - scalar - W coupling
- !  GenerationMixing ..... mixing between the generations is taken into 
- !                         account if =.TRUE. 
- ! output: 
+ !  GenerationMixing ..... mixing between the generations is taken into
+ !                         account if =.TRUE.
+ ! output:
  !  depends on the value of  GenerationMixing and also on the
  !  lengths of mN, mC, mSpm, mP0, and mS0 which are measured by n_neut,
  !  n_char, n_Spm, n_P0 and n_S0, respectively (inside the subroutine).
@@ -1745,14 +1745,14 @@ Contains
   NameOfUnit(Iname) = 'ScalarTwoBodyDecays'
 
   If (i_in.Lt.0) Then
-   i_start = 1 
+   i_start = 1
    i_end = n_S0
    Do i1=1,n_S0
     S0(i1)%gi2 = 0._dp
    End Do
 
-  Else If ( (i_in.Ge.1).And.(i_in.Le.n_S0) ) Then 
-   i_start = i_in 
+  Else If ( (i_in.Ge.1).And.(i_in.Le.n_S0) ) Then
+   i_start = i_in
    i_end = i_in
    S0(i_in)%gi2 = 0._dp
 
@@ -1947,7 +1947,7 @@ Contains
      If (i2.Eq.i3) gam = 0.5_dp * gam ! Majorana
      S0(i1)%gi2(i_count) = gam
      S0(i1)%id2(i_count,1) = Chi0(i2)%id
-     S0(i1)%id2(i_count,2) = Chi0(i3)%id 
+     S0(i1)%id2(i_count,2) = Chi0(i3)%id
      i_count = i_count + 1
     End Do
    End Do
@@ -1976,7 +1976,7 @@ Contains
    Do i2=1,n_Z
     coupC = cpl_S0ZZ(i1,i2)
     Call ScalarToTwoVectorBosons(m_in, mZ(i2), mZ(i2), coupC, gam )
-    gam = 0.5_dp * gam ! identical particles 
+    gam = 0.5_dp * gam ! identical particles
     S0(i1)%gi2(i_count) = gam
     S0(i1)%id2(i_count,1) = id_Z(i2)
     S0(i1)%id2(i_count,2) = id_Z(i2)
@@ -2007,13 +2007,13 @@ Contains
     End Do
    End Do
    !-------------------
-   ! 2 pseudoscalars 
+   ! 2 pseudoscalars
    !-------------------
    Do i2 = 2,n_P0
     Do i3 = i2,n_P0
      coupC = cpl_P0S03(i2, i3, i1)
      Call ScalarToTwoScalars(m_in, mP0(i2), mP0(i3), coupC, gam )
-     If (i2.Eq.i3) gam = 0.5_dp * gam ! identical particles 
+     If (i2.Eq.i3) gam = 0.5_dp * gam ! identical particles
      S0(i1)%gi2(i_count) = gam
      S0(i1)%id2(i_count,1) = P0(i2)%id
      S0(i1)%id2(i_count,2) = P0(i3)%id
@@ -2021,13 +2021,13 @@ Contains
     End Do
    End Do
    !-------------------
-   ! 2 scalars 
+   ! 2 scalars
    !-------------------
    Do i2 = 1,i1-1
     Do i3 = i2,i1-1
      coupC = cpl_S03(i1, i2, i3)
      Call ScalarToTwoScalars(m_in, mS0(i2), mS0(i3), coupC, gam )
-     If (i2.Eq.i3) gam = 0.5_dp * gam ! identical particles 
+     If (i2.Eq.i3) gam = 0.5_dp * gam ! identical particles
      S0(i1)%gi2(i_count) = gam
      S0(i1)%id2(i_count,1) = S0(i2)%id
      S0(i1)%id2(i_count,2) = S0(i3)%id
@@ -2106,18 +2106,18 @@ Contains
     S0(i1)%id3(i_count,1) = id_W(i2) + 1
     S0(i1)%id3(i_count,2) = id_W(i2)
     i_count = i_count + 1
-   End Do   
+   End Do
 
    !-----------------------
    ! Z Z^*
    !-----------------------
    Do i2=1,n_W
     Call  ScalarToVectorbosonsVR(m_in, mZ(i2), cpl_S0ZZvirt(i1,i2), gam )
-    S0(i1)%gi3(i_count) = gam 
+    S0(i1)%gi3(i_count) = gam
     S0(i1)%id3(i_count,1) = id_Z(i2)
     S0(i1)%id3(i_count,2) = id_Z(i2)
     i_count = i_count + 1
-   End Do   
+   End Do
 
    S0(i1)%g = Sum(S0(i1)%gi2) + Sum(S0(i1)%gi3)
    If (S0(i1)%g.Ne.0._dp) then
@@ -2126,7 +2126,7 @@ Contains
    End If
 
   End Do ! i1
- 
+
   Iname = Iname - 1
 
  Contains
@@ -2144,7 +2144,7 @@ Contains
 
     beta2 = 1._dp - 4._dp * ratio**2
     beta = Sqrt(beta2)
-    
+
     R_beta_1 = (1. - beta) / (1._dp + beta)
     Ln_beta = Log(beta)
     Ln_R_beta_1 = Log(R_beta_1)
@@ -2160,7 +2160,7 @@ Contains
 
     fac = fac - 3._dp * Log(ratio)  ! absorb large logarithms in mass
 
-    FFqcd = 1._dp + 5._dp * alpha_s * fac * oo3pi 
+    FFqcd = 1._dp + 5._dp * alpha_s * fac * oo3pi
 
   End  Function FFqcd
 
@@ -2209,7 +2209,7 @@ Contains
  !  Glu ................. Gluino mass + decay information, optional
  !  c_GQSq_L(i,j) ... left gluino quark squark coupling, optional
  !  c_GQSq_R(i,j) ... right gluino quark squark coupling, optional
- ! output: 
+ ! output:
  ! written by Werner Porod, 16.04.2001
  !  19.04.2001: adding interface for decay into gluinos
  !  18.09.2010: switiching to new variable types for SUSY + Higgs particles
@@ -2218,7 +2218,7 @@ Contains
 
   Integer, Intent(in) :: i_in, k_neut, n_f, n_n, n_g, n_c, n_fp, n_W, n_Sfp   &
         & , n_Spm, n_Z, n_P0, n_S0, n_Sf, id_f(:), id_fp(:), id_W(:), id_Z(:) &
-        & , id_grav 
+        & , id_grav
   Real(dp), Intent(in) :: mf(:), mfp(:), mW(:), mZ(:), m_grav, F_eff
   Type(particle23), Intent(in), Optional :: Glu
   Complex(dp), Intent(in) :: c_FNSf_L(:,:,:), c_FNSf_R(:,:,:)    &
@@ -2241,15 +2241,15 @@ Contains
   NameOfUnit(Iname) = 'SfermionTwoBodyDecays'
 
   If (i_in.Lt.0) Then
-   i_start = 1 
+   i_start = 1
    i_end = n_sf
    Do i1=1,n_sf
     Sf(i1)%gi2 = 0._dp
     Sf(i1)%bi2 = 0._dp
    End Do
 
-  Else If ( (i_in.Ge.1).And.(i_in.Le.n_sf) ) Then 
-   i_start = i_in 
+  Else If ( (i_in.Ge.1).And.(i_in.Le.n_sf) ) Then
+   i_start = i_in
    i_end = i_in
    Sf(i_in)%gi2 = 0._dp
 
@@ -2337,7 +2337,7 @@ Contains
        Sf(i1)%id2(i_count,1) = Glu%id
        Sf(i1)%id2(i_count,2) = id_f(1)
       Else
-       Sf(i1)%gi2(i_count) = 16._dp * gam / 3._dp ! Colour factor 
+       Sf(i1)%gi2(i_count) = 16._dp * gam / 3._dp ! Colour factor
        Sf(i1)%id2(i_count,1) = Glu%id
        Sf(i1)%id2(i_count,2) = id_f(i_gen)
        i_count = i_count + 1
@@ -2354,7 +2354,7 @@ Contains
      If (Abs(c_SfSfpW(i1, i2, i3)).ne.0._dp) then
       Call ScalarToScalarVectorBoson(m_in,mSfp(i2),mW(i3) &
              & ,c_SfSfpW(i1, i2, i3), gam)
-      Sf(i1)%gi2(i_count) = gam 
+      Sf(i1)%gi2(i_count) = gam
       Sf(i1)%id2(i_count,1) = Sfp(i2)%id
       Sf(i1)%id2(i_count,2) = id_W(i3)
       i_count = i_count + 1
@@ -2369,7 +2369,7 @@ Contains
      If (Abs(c_SmpSfSfp(i2, i1, i3)).ne.0._dp) then
       Call ScalarToTwoScalars(m_in, mSfp(i3), mSpm(i2) &
               & , c_SmpSfSfp(i2, i1, i3), gam)
-      Sf(i1)%gi2(i_count) = gam 
+      Sf(i1)%gi2(i_count) = gam
       Sf(i1)%id2(i_count,1) = Sfp(i3)%id
       Sf(i1)%id2(i_count,2) = Spm(i2)%id
       i_count = i_count + 1
@@ -2384,7 +2384,7 @@ Contains
      If (Abs(c_SfSfZ(i1, i2, i3)).ne.0._dp) then
       Call ScalarToScalarVectorBoson(m_in,mSf(i2),mZ(i3) &
              & ,c_SfSfZ(i1, i2, i3), gam)
-      Sf(i1)%gi2(i_count) = gam 
+      Sf(i1)%gi2(i_count) = gam
       Sf(i1)%id2(i_count,1) = Sf(i2)%id
       Sf(i1)%id2(i_count,2) = id_Z(i3)
       i_count = i_count + 1
@@ -2399,7 +2399,7 @@ Contains
      If (Abs(c_P0SfSf(i2, i1, i3)).ne.0._dp) then
       Call ScalarToTwoScalars(m_in, mSf(i3), mP0(i2) &
              & , c_P0SfSf(i2, i1, i3), gam)
-      Sf(i1)%gi2(i_count) = gam 
+      Sf(i1)%gi2(i_count) = gam
       Sf(i1)%id2(i_count,1) = Sf(i3)%id
       Sf(i1)%id2(i_count,2) = P0(i2)%id
       i_count = i_count + 1
@@ -2414,7 +2414,7 @@ Contains
      If (Abs(c_S0SfSf(i2, i1, i3)).ne.0._dp) then
       Call ScalarToTwoScalars(m_in, mSf(i3), mS0(i2) &
              & , c_S0SfSf(i2, i1, i3), gam)
-      Sf(i1)%gi2(i_count) = gam 
+      Sf(i1)%gi2(i_count) = gam
       Sf(i1)%id2(i_count,1) = Sf(i3)%id
       Sf(i1)%id2(i_count,2) = S0(i2)%id
       i_count = i_count + 1
@@ -2428,7 +2428,7 @@ Contains
     If ((Abs(c_GraFSf_L(i2,i1))+Abs(c_GraFSf_R(i2,i1))).ne.0._dp) then
      Call ScalarToFermionGravitino(m_in,mf(i2),m_grav,F_eff &
              & , c_GraFSf_L(i2,i1), c_GraFSf_R(i2,i1), gam)
-     Sf(i1)%gi2(i_count) = gam 
+     Sf(i1)%gi2(i_count) = gam
      Sf(i1)%id2(i_count,1) = id_grav
      Sf(i1)%id2(i_count,2) = id_f(i2)
      i_count = i_count + 1
@@ -2439,7 +2439,7 @@ Contains
    If (Sf(i1)%g.Ne.0._dp) Sf(i1)%bi2 = Sf(i1)%gi2 / Sf(i1)%g
 
   End Do ! i1
- 
+
   Iname = Iname - 1
 
  End Subroutine SfermionTwoBodyDecays
@@ -2486,18 +2486,18 @@ Contains
  !                                     final states
  !                          if =3 .... summing over fermions in the chargino
  !                                     and neutralino final states
- !  GenerationMixing ..... mixing between the generations is taken into 
- !                         account if =.TRUE. 
+ !  GenerationMixing ..... mixing between the generations is taken into
+ !                         account if =.TRUE.
  !  mG ................... Gluino mass, optional
  !  c_GQSq_L(i,j) ... left gluino quark squark coupling, optional
  !  c_GQSq_R(i,j) ... right gluino quark squark coupling, optional
- ! output: 
+ ! output:
  !  depends on the values of k_neut and GenerationMixing and also on the
  !  lengths of mN, mC, mSpm, mP0, and mS0 which are measured by n_neut,
  !  n_char, n_Spm, n_P0 and n_S0, respectively (inside the subroutine).
  !  In addition the variables n_sfer (n_sferp) give the lengths of the
  !  sfermion (sfermions') depending on the sfermion:
- !    n_sfer, n_sferp = 3 for sneutrinos and 6 otherwise 
+ !    n_sfer, n_sferp = 3 for sneutrinos and 6 otherwise
  !  gP(i,j) ...... partial widths
  !  gamT(:) ...... total width
  !  BR(:,:) the corresponding branching ratios, optional
@@ -2521,7 +2521,7 @@ Contains
 
   Integer :: i1, i2, n_sfer, n_neut, n_char, i_gen, i_start, i_end, i_count &
          & , n_sferp, n_Spm, i3, n_P0, n_S0
-  Real(dp) :: gam, m_in 
+  Real(dp) :: gam, m_in
   Complex(dp) :: coupLC, coupRC, coupC
   !-----------------
   ! Initialization
@@ -2538,13 +2538,13 @@ Contains
   n_S0 = Size(mS0)
 
   If (i_in.Lt.0) Then
-   i_start = 1 
+   i_start = 1
    i_end = n_sfer
    gT = 0._dp
    gP = 0._dp
 
-  Else If ( (i_in.Ge.1).And.(i_in.Le.n_sfer) ) Then 
-   i_start = i_in 
+  Else If ( (i_in.Ge.1).And.(i_in.Le.n_sfer) ) Then
+   i_start = i_in
    i_end = i_in
    gT(i_in) = 0._dp
    gP(i_in,:) = 0._dp
@@ -2575,9 +2575,9 @@ Contains
       coupRC = c_FNSf_R(i_gen,i2,i1)
       Call ScalarToTwoFermions(m_in, mf(i_gen), mN(i2), coupLC, coupRC, gam)
       If ((k_neut.Eq.1).Or.(k_neut.Eq.3)) Then
-       gP(i1, i_count) = gP(i1, i_count) + gam 
+       gP(i1, i_count) = gP(i1, i_count) + gam
       Else
-       gP(i1, i_count) = gam 
+       gP(i1, i_count) = gam
        gT(i1) = gT(i1) + gP(i1, i_count)
        i_count = i_count + 1
       End If
@@ -2597,9 +2597,9 @@ Contains
 
       Call ScalarToTwoFermions(m_in, mfp(i_gen), mC(i2), coupLC, coupRC, gam)
       If ((k_neut.Eq.2).Or.(k_neut.Eq.3)) Then
-       gP(i1, i_count) = gP(i1, i_count) + gam 
+       gP(i1, i_count) = gP(i1, i_count) + gam
       Else
-       gP(i1, i_count) = gam 
+       gP(i1, i_count) = gam
        gT(i1) = gT(i1) + gP(i1, i_count)
        i_count = i_count + 1
       End If
@@ -2620,8 +2620,8 @@ Contains
       If (k_neut.Eq.3) Then
        gP(i1, i_count) = gP(i1, i_count) + 16._dp * gam / 3._dp ! Colour factor
       Else
-       gP(i1, i_count) = 16._dp * gam / 3._dp ! Colour factor 
-       gT(i1) = gT(i1) + gP(i1, i_count)       
+       gP(i1, i_count) = 16._dp * gam / 3._dp ! Colour factor
+       gT(i1) = gT(i1) + gP(i1, i_count)
        i_count = i_count + 1
       End If
      End Do
@@ -2636,8 +2636,8 @@ Contains
     Do i2=1,n_sferp
      coupC = c_SfSfpW(i1, i2)
      Call ScalarToScalarVectorBoson(m_in,mSfp(i2),mW,coupC,gam)
-     gP(i1, i_count) = gam 
-     gT(i1) = gT(i1) + gP(i1, i_count)       
+     gP(i1, i_count) = gam
+     gT(i1) = gT(i1) + gP(i1, i_count)
      i_count = i_count + 1
     End Do
     !-----------------
@@ -2647,8 +2647,8 @@ Contains
      Do i3=1,n_sferp
       coupC = c_SmpSfSfp(i2, i1, i3)
       Call ScalarToTwoScalars(m_in, mSfp(i3), mSpm(i2), coupC, gam)
-      gP(i1, i_count) = gam 
-      gT(i1) = gT(i1) + gP(i1, i_count)       
+      gP(i1, i_count) = gam
+      gT(i1) = gT(i1) + gP(i1, i_count)
       i_count = i_count + 1
      End Do
     End Do
@@ -2658,8 +2658,8 @@ Contains
     Do i2=1,i1-1
      coupC = c_SfSfZ(i1, i2)
      Call ScalarToScalarVectorBoson(m_in, mSf(i2), mZ, coupC, gam)
-     gP(i1, i_count) = gam 
-     gT(i1) = gT(i1) + gP(i1, i_count)       
+     gP(i1, i_count) = gam
+     gT(i1) = gT(i1) + gP(i1, i_count)
      i_count = i_count + 1
     End Do
     !-----------------
@@ -2669,8 +2669,8 @@ Contains
      Do i3=1,i1-1
       coupC = c_P0SfSf(i2, i1, i3)
       Call ScalarToTwoScalars(m_in, mSf(i3), mP0(i2), coupC, gam)
-      gP(i1, i_count) = gam 
-      gT(i1) = gT(i1) + gP(i1, i_count)       
+      gP(i1, i_count) = gam
+      gT(i1) = gT(i1) + gP(i1, i_count)
       i_count = i_count + 1
      End Do
     End Do
@@ -2681,8 +2681,8 @@ Contains
      Do i3=1,i1-1
       coupC = c_S0SfSf(i2, i1, i3)
       Call ScalarToTwoScalars(m_in, mSf(i3), mS0(i2), coupC, gam)
-      gP(i1, i_count) = gam 
-      gT(i1) = gT(i1) + gP(i1, i_count)       
+      gP(i1, i_count) = gam
+      gT(i1) = gT(i1) + gP(i1, i_count)
       i_count = i_count + 1
      End Do
     End Do
@@ -2700,8 +2700,8 @@ Contains
      coupLC = c_FNSf_L(i_gen,i2,i1)
      coupRC = c_FNSf_R(i_gen,i2,i1)
      Call ScalarToTwoFermions(m_in, mf(i_gen), mN(i2), coupLC, coupRC, gam)
-     gP(i1, i_count) = gam 
-     gT(i1) = gT(i1) + gP(i1, i_count)       
+     gP(i1, i_count) = gam
+     gT(i1) = gT(i1) + gP(i1, i_count)
      i_count = i_count + 1
     End Do
     !--------------------------
@@ -2711,8 +2711,8 @@ Contains
      coupLC = c_CFpSf_L(i2, i_gen, i1)
      coupRC = c_CFpSf_R(i2, i_gen, i1)
      Call ScalarToTwoFermions(m_in, mfp(i_gen), mC(i2), coupLC, coupRC, gam)
-     gP(i1, i_count) = gam 
-     gT(i1) = gT(i1) + gP(i1, i_count)       
+     gP(i1, i_count) = gam
+     gT(i1) = gT(i1) + gP(i1, i_count)
      i_count = i_count + 1
     End Do
     !--------------------------
@@ -2722,8 +2722,8 @@ Contains
      coupLC = c_GQSq_L(i_gen, i1)
      coupRC = c_GQSq_R(i_gen, i1)
      Call ScalarToTwoFermions(m_in, mf(i_gen), mG, coupLC, coupRC, gam)
-     gP(i1, i_count) = 16._dp * gam / 3._dp ! Colour factor 
-     gT(i1) = gT(i1) + gP(i1, i_count)       
+     gP(i1, i_count) = 16._dp * gam / 3._dp ! Colour factor
+     gT(i1) = gT(i1) + gP(i1, i_count)
      i_count = i_count + 1
     End If
 
@@ -2733,18 +2733,18 @@ Contains
     If (n_sferp.Eq.3) Then
      coupC = c_SfSfpW(i1, i_gen)
      Call ScalarToScalarVectorBoson(m_in,mSfp(i_gen),mW,coupC,gam)
-     gP(i1, i_count) = gam 
-     gT(i1) = gT(i1) + gP(i1, i_count)       
+     gP(i1, i_count) = gam
+     gT(i1) = gT(i1) + gP(i1, i_count)
      i_count = i_count + 1
     Else
      Do i2 =1,2
       coupC = c_SfSfpW(i1, (i_gen-1)*2 + i2)
       Call ScalarToScalarVectorBoson(m_in,mSfp((i_gen-1)*2 + i2),mW,coupC,gam)
-      gP(i1, i_count) = gam 
-      gT(i1) = gT(i1) + gP(i1, i_count)       
+      gP(i1, i_count) = gam
+      gT(i1) = gT(i1) + gP(i1, i_count)
       i_count = i_count + 1
      End Do
-    End If   
+    End If
 
     !-----------------
     ! charged scalar
@@ -2753,8 +2753,8 @@ Contains
      Do i2 = 2, n_Spm
       coupC = c_SmpSfSfp(i2, i1, i_gen)
       Call ScalarToTwoScalars(m_in, mSfp(i_gen), mSpm(i2), coupC, gam)
-      gP(i1, i_count) = gam 
-      gT(i1) = gT(i1) + gP(i1, i_count)       
+      gP(i1, i_count) = gam
+      gT(i1) = gT(i1) + gP(i1, i_count)
       i_count = i_count + 1
      End Do
     Else
@@ -2763,12 +2763,12 @@ Contains
        coupC = c_SmpSfSfp(i2, i1, (i_gen-1)*2 + i3)
        Call ScalarToTwoScalars(m_in, mSfp((i_gen-1)*2+i3), mSpm(i2), coupC &
                              &, gam)
-       gP(i1, i_count) = gam 
-       gT(i1) = gT(i1) + gP(i1, i_count)       
+       gP(i1, i_count) = gam
+       gT(i1) = gT(i1) + gP(i1, i_count)
        i_count = i_count + 1
       End Do
      End Do
-    End If   
+    End If
 
     !-----------------
     ! Z-boson
@@ -2777,23 +2777,23 @@ Contains
      If (i1.Eq.2) Then
       coupC = c_SfSfZ(1, 2)
       Call ScalarToScalarVectorBoson(m_in, mSf(1), mZ, coupC, gam)
-      gP(i1, i_count) = gam 
-      gT(i1) = gT(i1) + gP(i1, i_count)       
+      gP(i1, i_count) = gam
+      gT(i1) = gT(i1) + gP(i1, i_count)
       i_count = i_count + 1
      Else If (i1.Eq.4) Then
       coupC = c_SfSfZ(3, 4)
       Call ScalarToScalarVectorBoson(m_in, mSf(3), mZ, coupC, gam)
-      gP(i1, i_count) = gam 
-      gT(i1) = gT(i1) + gP(i1, i_count)       
+      gP(i1, i_count) = gam
+      gT(i1) = gT(i1) + gP(i1, i_count)
       i_count = i_count + 1
      Else If (i1.Eq.6) Then
       coupC = c_SfSfZ(5, 6)
       Call ScalarToScalarVectorBoson(m_in, mSf(5), mZ, coupC, gam)
-      gP(i1, i_count) = gam 
-      gT(i1) = gT(i1) + gP(i1, i_count)       
+      gP(i1, i_count) = gam
+      gT(i1) = gT(i1) + gP(i1, i_count)
       i_count = i_count + 1
-     End If   
-    End If   
+     End If
+    End If
 
     !-----------------
     ! pseudoscalar
@@ -2803,24 +2803,24 @@ Contains
       If (i1.Eq.2) Then
        coupC = c_P0SfSf(i2, 1, 2)
        Call ScalarToTwoScalars(m_in, mSf(1), mP0(i2), coupC, gam)
-       gP(i1, i_count) = gam 
-       gT(i1) = gT(i1) + gP(i1, i_count)       
+       gP(i1, i_count) = gam
+       gT(i1) = gT(i1) + gP(i1, i_count)
        i_count = i_count + 1
       Else If (i1.Eq.4) Then
        coupC = c_P0SfSf(i2, 3, 4)
        Call ScalarToTwoScalars(m_in, mSf(3), mP0(i2), coupC, gam)
-       gP(i1, i_count) = gam 
-       gT(i1) = gT(i1) + gP(i1, i_count)       
+       gP(i1, i_count) = gam
+       gT(i1) = gT(i1) + gP(i1, i_count)
        i_count = i_count + 1
       Else If (i1.Eq.6) Then
        coupC = c_P0SfSf(i2, 5, 6)
        Call ScalarToTwoScalars(m_in, mSf(5), mP0(i2), coupC, gam)
-       gP(i1, i_count) = gam 
-       gT(i1) = gT(i1) + gP(i1, i_count)       
+       gP(i1, i_count) = gam
+       gT(i1) = gT(i1) + gP(i1, i_count)
        i_count = i_count + 1
-      End If   
+      End If
      End Do
-    End If   
+    End If
 
     !-----------------
     ! scalar
@@ -2830,24 +2830,24 @@ Contains
       If (i1.Eq.2) Then
        coupC = c_S0SfSf(i2, 1, 2)
        Call ScalarToTwoScalars(m_in, mSf(1), mS0(i2), coupC, gam)
-       gP(i1, i_count) = gam 
-       gT(i1) = gT(i1) + gP(i1, i_count)       
+       gP(i1, i_count) = gam
+       gT(i1) = gT(i1) + gP(i1, i_count)
        i_count = i_count + 1
       Else If (i1.Eq.4) Then
        coupC = c_S0SfSf(i2, 3, 4)
        Call ScalarToTwoScalars(m_in, mSf(3), mS0(i2), coupC, gam)
-       gP(i1, i_count) = gam 
-       gT(i1) = gT(i1) + gP(i1, i_count)       
+       gP(i1, i_count) = gam
+       gT(i1) = gT(i1) + gP(i1, i_count)
        i_count = i_count + 1
       Else If (i1.Eq.6) Then
        coupC = c_S0SfSf(i2, 5, 6)
        Call ScalarToTwoScalars(m_in, mSf(5), mS0(i2), coupC, gam)
-       gP(i1, i_count) = gam 
-       gT(i1) = gT(i1) + gP(i1, i_count)       
+       gP(i1, i_count) = gam
+       gT(i1) = gT(i1) + gP(i1, i_count)
        i_count = i_count + 1
-      End If   
+      End If
      End Do
-    End If   
+    End If
 
    End If    ! GenerationMixing
 
@@ -2859,18 +2859,18 @@ Contains
    End If
 
   End Do ! i1
- 
+
   Iname = Iname - 1
 
  End Subroutine SfermionTwoBodyDecays_old
 
  Subroutine NeutralVectorTwoBodyDecays(mV, mf_d, c_DDV_L, c_DDV_R, mf_u       &
-    & , c_UUV_L, c_UUV_R, mf_l, c_LLV_L, c_LLV_R, mf_nu, c_NuNuV_L, c_NuNuV_R & 
+    & , c_UUV_L, c_UUV_R, mf_l, c_LLV_L, c_LLV_R, mf_nu, c_NuNuV_L, c_NuNuV_R &
     & , mSdown, c_SdSdV, mSup, c_SuSuV, mSlept, c_SlSlV, mSneut, c_SnSnV      &
     & , mN, c_NNV_L, c_NNV_R, mC, c_CCV_L, c_CCV_R, mP0, mS0, c_P0S0V         &
     & , mSpm, c_SmSpV, GenerationMixing, gP, gT, BR)
  !-----------------------------------------------------------------------
- ! Calculates the 2-body decays of a heavy neutral vectorboson 
+ ! Calculates the 2-body decays of a heavy neutral vectorboson
  ! input:
  !  mV .................. mass of the vector boson
  !  mf_d(i) ............. d-quark masses
@@ -2904,11 +2904,11 @@ Contains
  !  c_P0S0V(i,j) ........ pseudoscalar - pseudoscalar - vectorboson coupling
  !  mSpm(i) ............. masses of charged scalars
  !  c_SmSpV(i,j) ........ charged scalar - charged scalar - vectorboson coupling
- !  GenerationMixing ..... mixing between the generations is taken into 
- !                         account if =.TRUE. 
- ! output: 
+ !  GenerationMixing ..... mixing between the generations is taken into
+ !                         account if =.TRUE.
+ ! output:
  !  depends on the value of  GenerationMixing and also on the
- !  lengths of mNu, mSneutm mN, mC, mSpm, mP0, and mS0 which are measured 
+ !  lengths of mNu, mSneutm mN, mC, mSpm, mP0, and mS0 which are measured
  !  by n_nu, n_snu, n_neut, n_char, n_Spm, n_P0 and n_S0, respectively
  !   (inside the subroutine).
  !  gP(:,:) ...... partial widths
@@ -2987,7 +2987,7 @@ Contains
     !------------------
     ! into leptons
     !------------------
-    Do i2 = 1,5-n_char 
+    Do i2 = 1,5-n_char
      Do i3 = i2,5-n_char
       Call VectorbosonToTwoFermions(mV, mf_l(i2), mf_l(i3), 1, c_LLV_L(i2,i3) &
                              &, c_LLV_R(i2,i3), gP(i_count) )
@@ -3213,7 +3213,7 @@ Contains
      i_count = i_count + 1
     End Do
    End Do
-   
+
    !-------------
    ! Charginos
    !-------------
@@ -3231,9 +3231,9 @@ Contains
      End If
     End Do
    End Do
-   
+
    !-------------------------
-   ! pseudoscalars + scalar 
+   ! pseudoscalars + scalar
    !-------------------------
    Do i2 = 2,n_P0
     Do i3 = 1,n_S0
@@ -3291,16 +3291,16 @@ Write(*,*) gp,g,sinw2
    Call VectorBosonToTwoFermions(mZ,mf_l(3),mf_l(3),1,cL,cR,gam)
    g_LL(3) = gam
    gT = sum(g_LL)
-         
+
    call CoupFermionZ(0.5_dp,0._dp, g,sinW2,cL,cR)
    Call VectorBosonToTwoFermions(mZ,0._dp,0._dp,1,cL,cR,gam)
    g_inv = 3._dp * gam
    gT = gT + g_inv
 
    Call CoupFermionZ(-0.5_dp,-1._dp/3._dp, g,sinW2,cL,cR)
-   Call VectorBosonToTwoFermions(mZ,0._dp,0._dp,3,cL,cR,gam) 
+   Call VectorBosonToTwoFermions(mZ,0._dp,0._dp,3,cL,cR,gam)
    g_dd(1:2) = gam
-   Call VectorBosonToTwoFermions(mZ,mf_d(3),mf_d(3),3,cL,cR,gam) 
+   Call VectorBosonToTwoFermions(mZ,mf_d(3),mf_d(3),3,cL,cR,gam)
    g_dd(3) = gam
    gT = gT + Sum(g_dd)
 
@@ -3310,7 +3310,7 @@ Write(*,*) gp,g,sinw2
    Call VectorBosonToTwoFermions(mZ,mf_u(2),mf_u(2),3,cL,cR,gam)
    g_uu(2) = gam
    gT = gT + Sum(g_uu)
- 
+
    BR_ll = g_ll / gT
    BR_inv = g_inv / gT
    BR_dd = g_dd / gT
