@@ -1,4 +1,4 @@
-SPheno
+SPheno [![Build Status](https://travis-ci.org/JP-Ellis/SPheno.svg?branch=master)](https://travis-ci.org/JP-Ellis/SPheno)
 ======
 
 SPheno stands for S(upersymmetric) Pheno(menology).
