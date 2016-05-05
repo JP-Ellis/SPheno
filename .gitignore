@@ -1,0 +1,7 @@
+# Compiled output
+bin/
+build/
+include/
+lib/
+*.o
+*.mod
