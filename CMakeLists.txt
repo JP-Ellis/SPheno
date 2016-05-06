@@ -108,7 +108,7 @@ if(MODELS)
   string(REPLACE "," ";" MODELS ${MODELS})
   foreach(MODEL ${MODELS})
     ## Generate the sanitised model name.
-    string(REPLACE "-" "" MODEL_SNT ${MODELS})
+    string(REPLACE "-" "" MODEL_SNT ${MODEL})
     ## First make sure the model directory exists.
     if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/models/${MODEL})
 
