@@ -129,7 +129,8 @@ if(MODELS)
         file(GLOB SRCS ${CMAKE_SOURCE_DIR}/models/${MODEL}/*.f90 models/${MODEL}/*.F90)
         list(REMOVE_ITEM SRCS ${SRCEXE})
 
-        add_library(${MODEL}-lib ${SRCS} ${SPHENOSRCS})
+        add_library(${MODEL}-lib ${SRCS})
+        target_link_libraries(${MODEL}-lib ${PROJECT_NAME}-lib)
         set_target_properties(${MODEL}-lib
           PROPERTIES OUTPUT_NAME ${MODEL}
           )
