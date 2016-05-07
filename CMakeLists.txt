@@ -110,8 +110,6 @@ message(STATUS "Added main SPheno target.")
 if(MODELS)
   string(REPLACE "," ";" MODELS ${MODELS})
   foreach(MODEL ${MODELS})
-    ## Generate the sanitised model name.
-    string(REPLACE "-" "" MODEL_SNT ${MODEL})
     ## First make sure the model directory exists.
     if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/models/${MODEL})
 
@@ -125,7 +123,7 @@ if(MODELS)
         ## Otherwise, we expect that SPheno${MODEL}.f90 is the main file for the
         ## executable and all other files in the directory are for destined for
         ## the library.
-        set(SRCEXE ${CMAKE_SOURCE_DIR}/models/${MODEL}/SPheno${MODEL_SNT}.f90)
+        file(GLOB SRCEXE ${CMAKE_SOURCE_DIR}/models/${MODEL}/SPheno*.f90)
         file(GLOB SRCS ${CMAKE_SOURCE_DIR}/models/${MODEL}/*.f90 models/${MODEL}/*.F90)
         list(REMOVE_ITEM SRCS ${SRCEXE})
 
