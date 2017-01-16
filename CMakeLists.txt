@@ -39,6 +39,22 @@ else(Fortran_COMPILER_NAME MATCHES "gfortran")
   message(WARNING "Fortran compiler '" ${Fortran_COMPILER_NAME} "' not supported.  Use at your own risk.")
 endif(Fortran_COMPILER_NAME MATCHES "gfortran")
 
+## Precision (double or quad)
+if(NOT DEFINED PRECISION)
+  message(STATUS "No precision specified, assuming double precision.")
+  set(PRECISION "DOUBLE")
+endif(NOT DEFINED PRECISION)
+
+if(PRECISION MATCHES "QUAD.*")
+  message(STATUS "Using quadruple precision.")
+  add_definitions(-DQUADRUPOLE)
+elseif(PRECISION MATCHES "DOUBLE")
+  message(STATUS "Using double precision.")
+  add_definitions(-DONLYDOUBLE)
+else(PRECISION MATCHES "QUAD.*")
+  message(FATAL_ERROR "Supported precisions are DOUBLE and QUAD.")
+endif(PRECISION MATCHES "QUAD.*")
+
 ## Add definitions
 add_definitions(-DGENERATIONMIXING -DONLYDOUBLE -DSEESAWIII)
 
