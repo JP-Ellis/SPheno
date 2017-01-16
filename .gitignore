@@ -37,3 +37,14 @@ lib/
 ## Ignore models files except for the README
 models/*
 !models/README.md
+
+## Ignore all outputs except for the default SPheno ouptuts
+output/*
+!output/SPheno.spc.AMSB
+!output/SPheno.spc.GMSB
+!output/SPheno.spc.SeesawI
+!output/SPheno.spc.SeesawII
+!output/SPheno.spc.SeesawIII
+!output/SPheno.spc.mNUHM
+!output/SPheno.spc.mSUGRA
+!output/SPheno.spc.mSUGRA_NUHM
