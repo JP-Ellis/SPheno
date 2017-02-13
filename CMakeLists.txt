@@ -122,9 +122,28 @@ message(STATUS "Added main SPheno target.")
 ################################################################################
 ## Generate models too
 ################################################################################
+## Helper function to get all subdirectories
+## From http://stackoverflow.com/a/7788165/1573761
+macro(subdirlist result curdir)
+  file(GLOB children RELATIVE ${curdir} ${curdir}/*)
+  set(dirlist "")
+  foreach(child ${children})
+    if(IS_DIRECTORY ${curdir}/${child})
+      list(APPEND dirlist ${child})
+    endif()
+  endforeach()
+  set(${result} ${dirlist})
+endmacro()
+
 ## The models are passed in as comma-separated list.
 if(MODELS)
-  string(REPLACE "," ";" MODELS ${MODELS})
+  ## If we are generating all models, get all of them from the models directory
+  if(${MODELS} STREQUAL "ALL")
+    subdirlist(MODELS "${CMAKE_SOURCE_DIR}/models")
+  else(${MODELS} STREQUAL "ALL")
+    string(REPLACE "," ";" MODELS ${MODELS})
+  endif(${MODELS} STREQUAL "ALL")
+
   foreach(MODEL ${MODELS})
     ## First make sure the model directory exists.
     if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/models/${MODEL})
@@ -156,10 +175,10 @@ if(MODELS)
           )
 
         install(TARGETS ${MODEL}-lib ${MODEL}-exe
-                RUNTIME DESTINATION bin
-                LIBRARY DESTINATION lib
-                ARCHIVE DESTINATION lib
-                )
+          RUNTIME DESTINATION bin
+          LIBRARY DESTINATION lib
+          ARCHIVE DESTINATION lib
+          )
 
         message(STATUS "Added model '${MODEL}'.")
 
