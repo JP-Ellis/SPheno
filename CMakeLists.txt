@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 2.8)
 ## Project name
 project(SPheno Fortran)
 ## Project version
-set(VERSION 3.4.0)
+set(VERSION 4.0.0)
 
 ################################################################################
 ## Compilation Options
@@ -66,7 +66,7 @@ endif(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 ################################################################################
 ## Main target
 ################################################################################
-set(SPHENOSRCEXE src/SPheno3.f90)
+set(SPHENOSRCEXE src/SPheno4.f90)
 set(SPHENOSRCS
   src/BranchingRatios.f90
   src/Chargino3.f90
@@ -90,6 +90,7 @@ set(SPHENOSRCS
   src/RGEs.F90
   src/RPtools.f90
   src/Slepton3Body.f90
+  src/SPheno4.f90
   src/StandardModel.f90
   src/Stop3BodyDecays.f90
   src/SugraRuns.F90
