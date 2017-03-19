@@ -279,6 +279,7 @@ Implicit None
  !------------------------------------------------------------
  If ((Write_SLHA1).And.(kont.Eq.0)) Call WriteSPhenoOutputLHA1(35, M_GUT)
 
+! call CompareSUSYHD(35)
  Call closing() ! closes the files
  If ((kont.Ne.0).And.Non_Zero_Exit) Stop 99
 
@@ -924,9 +925,7 @@ Contains
   Real(dp) :: lam_SM, g4(59), Yd(3), Yu(3), Yl(3), mZ2_run, mW2_run, lamR, ln_v &
     & , muSMR, gaugeSM(3), mudim, mH_SM, mH_SM2, g4a(59), v_mZ, v_mT, v_MSUSY   &
     & , delta_VB_MSSM, sinW2_DR, mH_SM2_tree
-  Complex(dp), Dimension(3,3) :: Al_s, M2E_s, M2L_s, Ad_s, Au_s, M2D_s, M2Q_s &
-    & , M2U_s, Y_l_SM, Y_d_SM, Y_u_SM
-  Complex :: phase
+  Complex(dp), Dimension(3,3) :: Y_l_SM, Y_d_SM, Y_u_SM
   Integer :: i1, i2, k1, k2, k3
   Logical :: Converge, UseFixedScale
 
@@ -1136,10 +1135,10 @@ Contains
     Call BoundarySM(i1, mH_SM2_tree, delta_VB_MSSM, mZ2_run, mW2_run &
                   & , 0.1_dp*delta, g1, kont)
 
-   If (kont.Ne.0) Then
-    Iname = Iname - 1
-    Return
-   End If
+    If (kont.Ne.0) Then
+     Iname = Iname - 1
+     Return
+    End If
     !-------------------------------------------------------------------
     ! now the running, in the first iteration we set lambda and mu such
     ! that we get 125 GeV for the Higgs mass; will be replaced in the
@@ -1153,48 +1152,60 @@ Contains
     End If
     ln_v = log(v_mZ)
 
-   Call GToCouplings(g1, gaugeSM, Y_l_SM, Y_d_SM, Y_u_SM)
+    Call GToCouplings(g1, gaugeSM, Y_l_SM, Y_d_SM, Y_u_SM)
 
-   Call ParametersToG59(gaugeSM, lamR, Y_u_SM, Y_d_SM, Y_l_SM, ln_v,g4)
-   tz = Log(mf_u(3)/mZ)
-   dt = tz / 50._dp
-   Call odeint(g4, 59,0._dp, tz, 0.1_dp * delta, dt, 0._dp, rge59a, kont)
+    Call ParametersToG59(gaugeSM, lamR, Y_u_SM, Y_d_SM, Y_l_SM, ln_v,g4)
 
-   Call GToParameters59(g4, gaugeSM, lamR, Y_u_SM, Y_d_SM, Y_l_SM, ln_v)
+    If (l_mt_3loop) Then
+     tz = Log(mf_u(3)/mZ)
+     dt = tz / 50._dp
+     Call odeint(g4, 59,0._dp, tz, 0.1_dp * delta, dt, 0._dp, rge59a, kont)
+
+     Call GToParameters59(g4, gaugeSM, lamR, Y_u_SM, Y_d_SM, Y_l_SM, ln_v)
    !---------------------------------------------------------------
    ! replace g_s and Y_t including higher order corrections taken
    ! from D.Buttazzo et al, 1307.3536, eqs. (57) and (60)
    !---------------------------------------------------------------
-   If (GenerationMixing) then
+    If (GenerationMixing) then
     ! replace (3,3) entry of Y_u in the CKM-basis;
     ! sqrt2 for the vev, because the mass is Y v / sqrt(2)
-    Call FermionMass(Y_u_SM, sqrt2, Yu, Uu_L, Uu_R, kont)
-    Yu(3) = 0.9369_dp + 0.00556_dp* (mf_u(3) - 173.34_dp)  &
-          & - 0.6_dp * (alphaS_mZ-0.1184_dp)
-    Do k1=1,3
-     Do k2=1,3
-      Y_u_SM(k1,k2) = 0._dp
-      Do k3=1,3
-       Y_u_SM(k1,k2) = Y_u_SM(k1,k2) + Uu_L(k3,k1)*Yu(k3)*Uu_R(k3,k2)
+     Call FermionMass(Y_u_SM, sqrt2, Yu, Uu_L, Uu_R, kont)
+     Yu(3) = 0.9369_dp + 0.00556_dp* (mf_u(3) - 173.34_dp)  &
+           & - 0.6_dp * (alphaS_mZ-0.1184_dp)
+     Do k1=1,3
+      Do k2=1,3
+       Y_u_SM(k1,k2) = 0._dp
+       Do k3=1,3
+        Y_u_SM(k1,k2) = Y_u_SM(k1,k2) + Uu_L(k3,k1)*Yu(k3)*Uu_R(k3,k2)
+       End Do
       End Do
      End Do
-    End Do
 
-   Else
-    Y_u_SM(3,3) = 0.9369_dp + 0.00556_dp* (mf_u(3) - 173.34_dp)  &
+    Else
+     Y_u_SM(3,3) = 0.9369_dp + 0.00556_dp* (mf_u(3) - 173.34_dp)  &
              & - 0.6_dp * (alphaS_mZ-0.1184_dp)
+    End If
+
+    gaugeSM(3) = 1.1666_dp + 0.00314_dp*(alphaS_mZ-0.1184_dp)/0.0007_dp &
+             & - 0.00046_dp * (mf_u(3) - 173.34_dp)
+
+    Call ParametersToG59(gaugeSM, lamR, Y_u_SM, Y_d_SM, Y_l_SM, ln_v,g4)
+
+    mudim = Sqrt(GetRenormalizationScale())
+
+    tz = Log(mudim/mf_u(3))
+    dt = tz / 50._dp
+    Call odeint(g4, 59,0._dp, tz, 0.1_dp * delta, dt, 0._dp, rge59a, kont)
+
+
+   Else ! .not. l_mt_3loop
+    mudim = Sqrt(GetRenormalizationScale())
+
+    tz = Log(mudim/mZ)
+    dt = tz / 50._dp
+    Call odeint(g4, 59,0._dp, tz, 0.1_dp * delta, dt, 0._dp, rge59a, kont)
+
    End If
-
-   gaugeSM(3) = 1.1666_dp + 0.00314_dp*(alphaS_mZ-0.1184_dp)/0.0007_dp &
-            & - 0.00046_dp * (mf_u(3) - 173.34_dp)
-
-   Call ParametersToG59(gaugeSM, lamR, Y_u_SM, Y_d_SM, Y_l_SM, ln_v,g4)
-
-   mudim = Sqrt(GetRenormalizationScale())
-
-   tz = Log(mudim/mf_u(3))
-   dt = tz / 50._dp
-   Call odeint(g4, 59,0._dp, tz, 0.1_dp * delta, dt, 0._dp, rge59a, kont)
 
    Call GToParameters59(g4, gaugeSM, lamR, Y_u_SM, Y_d_SM, Y_l_SM, ln_v)
    v_mSUSY = exp(ln_v)
@@ -1203,17 +1214,17 @@ Contains
    !--------------------------------------------
    ! calculating boundary conditions at m_SUSY
    !---------------------------------------------------------
-    ! this part needs to be improved
-    If (Atau_save.Ne.ZeroC) A_l(3,3) = Atau_save * Y_l(3,3)
-   If (At_save.Ne.ZeroC) Au_s(3,3) = At_save * Y_u(3,3)
-   If (Ab_save.Ne.ZeroC) Ad_s(3,3) = Ab_save * Y_d(3,3)
+   ! this part needs to be improved
+   If (Atau_save.Ne.ZeroC) A_l(3,3) = Atau_save * Y_l(3,3)
+   If (At_save.Ne.ZeroC) A_u(3,3) = At_save * Y_u(3,3)
+   If (Ab_save.Ne.ZeroC) A_d(3,3) = Ab_save * Y_d(3,3)
 
    !--------------------------
    ! including SUSY particles
    !--------------------------
    Call Boundary_SUSY(mudim, gaugeSM, Y_l_SM, Y_d_SM, Y_u_SM, tanb_Q      &
          &  , Mi, mu, M2_E, M2_L, A_l, M2_D, M2_Q, M2_U, A_d, A_u &
-         &  , M2_H, B, gauge, Y_l, Y_d, Y_u, kont, GenerationMixing)
+         &  , M2_H, B, gauge, Y_l, Y_d, Y_u, kont, GenerationMixing, v_mSUSY)
 
    If (kont.ne.0) then
     Iname = Iname - 1
@@ -1231,7 +1242,7 @@ Contains
         & , mC, mC2, U, V, mN, mN2, N, mS0, mS02, RS0, mP0, mP02, RP0     &
         & , mSpm, mSpm2, RSpm, mSdown, mSdown2, RSdown, mSup, mSup2       &
         & , RSup, mSlepton, mSlepton2, RSlepton, mSneut, mSneut2          &
-        & , RSneut, mGlu, PhaseGlu, M2_H, kont)
+        & , RSneut, mGlu, PhaseGlu, M2_H, kont, v_mSUSY)
 
     Else If (HighScaleModel.Eq."MSSM1") Then ! m_H2(i) are input
      Call LoopMassesMSSM(delta, tanb_mZ, tanb_Q, gauge, Y_l, Y_d, Y_u, Mi  &
@@ -1240,7 +1251,7 @@ Contains
        & , mC, mC2, U, V, mN, mN2, N, mS0, mS02, RS0, mP0, mP02, RP0       &
        & , mSpm, mSpm2, RSpm, mSdown, mSdown2, RSdown, mSup, mSup2         &
        & , RSup, mSlepton, mSlepton2, RSlepton, mSneut, mSneut2            &
-       & , RSneut, mGlu, PhaseGlu, kont)
+       & , RSneut, mGlu, PhaseGlu, kont, v_mSUSY)
 
     Else If (HighScaleModel.Eq."pMSSM") Then ! mu and on-shell m_A are input
      mP0(1) = mZ
@@ -1251,7 +1262,7 @@ Contains
         & , mC, mC2, U, V, mN, mN2, N, mS0, mS02, RS0, mP02, RP0        &
         & , mSpm, mSpm2, RSpm, mSdown, mSdown2, RSdown, mSup, mSup2     &
         & , RSup, mSlepton, mSlepton2, RSlepton, mSneut, mSneut2        &
-        & , RSneut, mGlu, PhaseGlu, M2_H, B, kont)
+        & , RSneut, mGlu, PhaseGlu, M2_H, B, kont, v_mSUSY)
 
     End If
 
@@ -1483,6 +1494,6 @@ Contains
   End If
 
  End Subroutine ReadingData
-
+!include "CompareSUSYHD.f90"
 End Program SPheno
 

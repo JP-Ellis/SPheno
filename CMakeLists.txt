@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 2.8)
 ## Project name
 project(SPheno Fortran)
 ## Project version
-set(VERSION 4.0.0)
+set(VERSION 4.0.2)
 
 ################################################################################
 ## Compilation Options

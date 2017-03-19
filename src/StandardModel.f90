@@ -105,13 +105,8 @@ Contains
 
   Real(dp) :: g9(9), g10(10), as_nf, as_nf_minus_1, as_nf_d_pi, aem , tz, dt
   Real(dp), Parameter :: zeta3 = 1.202056903159594285399738161511449990765_dp &
-     & , zeta4 = 1.082323233711138191516003696541167902775_dp                 &
-     & , B4 = -1.762800087073770864061897634679818807215_dp                   &
      & , c_as(2) = (/ 11._dp / 72._dp                                         &
-     &             , 58067._dp / 13824._dp - 82043._dp * zeta3 / 27648._dp /) &
-     & , c_m(2) = (/ 89._dp / 432._dp                                         &
-     &            , 713._dp/486._dp - B4 / 36._dp - 221._dp * zeta3 / 288._dp &
-     &          + 1.25_dp * zeta4  /)
+     &             , 58067._dp / 13824._dp - 82043._dp * zeta3 / 27648._dp /)
 
   Iname = Iname + 1
   NameOfUnit(Iname) = "CalculateRunningMasses"

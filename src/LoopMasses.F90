@@ -56,7 +56,7 @@ Contains
     & , mC, mC2, U, V, mN, mN2, N, mS0, mS02, RS0, mP0, mP02, RP0             &
     & , mSpm, mSpm2, RSpm, mDsquark, mDsquark2, RDsquark, mUsquark, mUsquark2 &
     & , RUsquark, mSlepton, mSlepton2, RSlepton, mSneutrino, mSneutrino2      &
-    & , RSneutrino, mGlu, phase_glu, kont)
+    & , RSneutrino, mGlu, phase_glu, kont, vevQ)
  !-----------------------------------------------------------------------
  ! In this Subroutine the 1-loop masses within the MSSM are calculated
  ! It is assumed that the parameters are provided at the same renormalisation
@@ -80,6 +80,7 @@ Contains
     & , A_d(3,3), A_u(3,3), M2_E(3,3), M2_L(3,3), M2_D(3,3), M2_Q(3,3)       &
     & , M2_U(3,3), phase_mu
   Real(dp), Intent(in) :: delta0, g(3), M2_H(2)
+  Real(dp), Intent(in), optional :: vevQ
   Real(dp), Intent(inout) :: tanb_mZ, tanb_Q
 
   Real(dp), Intent(out) :: mC(2), mN(4), mS0(2), mP0(2), mSpm(2)   &
@@ -259,20 +260,28 @@ Contains
   !----------------------
   ! mZ(mZ)
   !----------------------
-   Call PiZZT1(mZ2, g(2), sinW2_DR, vevs_DR, mZ2, mW2, mS02, RS0, mP02, RP0 &
-      &  , mSpm2, RSpm, mSneutrino2, RSneutrino, mSlepton2, RSlepton        &
-      &  , mUSquark2, RUSquark, mDSquark2, RDSquark, mf_l2, mf_u2, mf_d2    &
-      &  , mC, mC2, U, V, mN, mN2, N ,dmZ2)
-   vev2 =  4._dp * Real(mZ2+dmZ2,dp) / (g(1)**2 + g(2)**2)
-   vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
-   vevs_DR(2) = tanbQ * vevs_DR(1)
-   mZ2_mZ = Real(dmZ2+mZ2,dp)
-   mW2_run = mZ2_mZ * (1._dp - sinW2_DR)
+   If (Present(vevQ)) Then
+    vev2 = vevQ**2
+    vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
+    vevs_DR(2) = tanbQ * vevs_DR(1)
+    mZ2_mZ = 0.25_dp * (g(1)**2+g(2)**2) * vev2
+    mW2_run = 0.25_dp * g(2)**2 * vev2
+   Else
+    Call PiZZT1(mZ2, g(2), sinW2_DR, vevs_DR, mZ2, mW2, mS02, RS0, mP02, RP0 &
+       &  , mSpm2, RSpm, mSneutrino2, RSneutrino, mSlepton2, RSlepton        &
+       &  , mUSquark2, RUSquark, mDSquark2, RDSquark, mf_l2, mf_u2, mf_d2    &
+       &  , mC, mC2, U, V, mN, mN2, N ,dmZ2)
+    vev2 =  4._dp * Real(mZ2+dmZ2,dp) / (g(1)**2 + g(2)**2)
+    vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
+    vevs_DR(2) = tanbQ * vevs_DR(1)
+    mZ2_mZ = Real(dmZ2+mZ2,dp)
+    mW2_run = mZ2_mZ * (1._dp - sinW2_DR)
 
-   If (mZ2_mZ.Lt.0._dp) Then
-    WriteWert = mZ2_mZ
-    Call WriteLoopMassesError(4, "LoopMassesMSSM", kont)
-    mZ2_mZ = mZ2
+    If (mZ2_mZ.Lt.0._dp) Then
+     WriteWert = mZ2_mZ
+     Call WriteLoopMassesError(4, "LoopMassesMSSM", kont)
+     mZ2_mZ = mZ2
+    End If
    End If
    !------------------------------------------------
    ! replacing fermion pole masses by running masses
@@ -338,20 +347,28 @@ Contains
   !----------------------
   ! mZ(mZ)
   !----------------------
-   Call PiZZT1(mZ2, g(2), sinW2_DR, vevs_DR, mZ2, mW2, mS02, RS0, mP02, RP0 &
-      &  , mSpm2, RSpm, mSneutrino2, RSneutrino, mSlepton2, RSlepton        &
-      &  , mUSquark2, RUSquark, mDSquark2, RDSquark, mf_l2, mf_u2, mf_d2    &
-      &  , mC, mC2, U, V, mN, mN2, N ,dmZ2)
-   vev2 =  4._dp * Real(mZ2+dmZ2,dp) / (g(1)**2 + g(2)**2)
-   vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
-   vevs_DR(2) = tanbQ * vevs_DR(1)
-   mZ2_mZ = Real(dmZ2+mZ2,dp)
-   mW2_run = mZ2_mZ * (1._dp - sinW2_DR)
+   If (Present(vevQ)) Then
+    vev2 = vevQ**2
+    vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
+    vevs_DR(2) = tanbQ * vevs_DR(1)
+    mZ2_mZ = 0.25_dp * (g(1)**2+g(2)**2) * vev2
+    mW2_run = 0.25_dp * g(2)**2 * vev2
+   Else
+    Call PiZZT1(mZ2, g(2), sinW2_DR, vevs_DR, mZ2, mW2, mS02, RS0, mP02, RP0 &
+       &  , mSpm2, RSpm, mSneutrino2, RSneutrino, mSlepton2, RSlepton        &
+       &  , mUSquark2, RUSquark, mDSquark2, RDSquark, mf_l2, mf_u2, mf_d2    &
+       &  , mC, mC2, U, V, mN, mN2, N ,dmZ2)
+    vev2 =  4._dp * Real(mZ2+dmZ2,dp) / (g(1)**2 + g(2)**2)
+    vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
+    vevs_DR(2) = tanbQ * vevs_DR(1)
+    mZ2_mZ = Real(dmZ2+mZ2,dp)
+    mW2_run = mZ2_mZ * (1._dp - sinW2_DR)
 
-   If (mZ2_mZ.Lt.0._dp) Then
-    WriteWert = mZ2_mZ
-    Call WriteLoopMassesError(4, "LoopMassesMSSM", kont)
-    mZ2_mZ = mZ2
+    If (mZ2_mZ.Lt.0._dp) Then
+     WriteWert = mZ2_mZ
+     Call WriteLoopMassesError(4, "LoopMassesMSSM", kont)
+     mZ2_mZ = mZ2
+    End If
    End If
    !------------------------------------------------
    ! replacing fermion pole masses by running masses
@@ -1021,7 +1038,7 @@ Contains
    & , mC, mC2, U, V, mN, mN2, N, mS0, mS02, RS0, mP02, RP0                   &
    & , mSpm, mSpm2, RSpm, mDsquark, mDsquark2, RDsquark, mUsquark, mUsquark2  &
    & , RUsquark, mSlepton, mSlepton2, RSlepton, mSneutrino, mSneutrino2       &
-   & , RSneutrino, mGlu, phase_glu, M2_H, B, kont)
+   & , RSneutrino, mGlu, phase_glu, M2_H, B, kont, vevQ)
 !-----------------------------------------------------------------------
 ! In this Subroutine the 1-loop masses within the MSSM are calculated
 ! It is assumed that the parameters are provided at the same renormalisation
@@ -1047,6 +1064,7 @@ Contains
       , A_d(3,3), A_u(3,3), M2_E(3,3), M2_L(3,3), M2_D(3,3), M2_Q(3,3)       &
       , M2_U(3,3), mu, Mi(3)
   Real(dp), Intent(in) :: delta, g(3), mP02(2)
+  Real(dp), Intent(in), Optional :: vevQ
   Real(dp), Intent(inout) :: tanb_mZ, tanb_Q
 
   Real(dp), Intent(out) :: mC(2), mN(4), mS0(2), mSpm(2), mglu   &
@@ -1201,20 +1219,28 @@ Contains
 !----------------------
 ! mZ(mZ)
 !----------------------
-  Call PiZZT1(mZ2, g(2), sinW2_DR, vevSM, mZ2, mW2, mS02, RS0, mP02_T, RP0_T &
-   , mSpm2 , RSpm, mSneutrino2, RSneutrino, mSlepton2, RSlepton, mUSquark2   &
-   , RUSquark, mDSquark2, RDSquark, mf_l2, mf_u2, mf_d2, mC, mC2, U, V       &
-   , mN, mN2, N ,dmZ2)
-  vev2 =  4._dp * Real(mZ2+dmZ2,dp) / (g(1)**2 + g(2)**2)
-  vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
-  vevs_DR(2) = tanbQ * vevs_DR(1)
-  mZ2_mZ = Real(dmZ2+mZ2,dp)
-  mW2_run = mZ2_mZ * (1._dp - sinW2_DR)
+  If (Present(vevQ)) Then
+   vev2 = vevQ**2
+   vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
+   vevs_DR(2) = tanbQ * vevs_DR(1)
+   mZ2_mZ = 0.25_dp * (g(1)**2+g(2)**2) * vev2
+   mW2_run = 0.25_dp * g(2)**2 * vev2
+  Else
+   Call PiZZT1(mZ2, g(2), sinW2_DR, vevSM, mZ2, mW2, mS02, RS0, mP02_T, RP0_T &
+    , mSpm2 , RSpm, mSneutrino2, RSneutrino, mSlepton2, RSlepton, mUSquark2   &
+    , RUSquark, mDSquark2, RDSquark, mf_l2, mf_u2, mf_d2, mC, mC2, U, V       &
+    , mN, mN2, N ,dmZ2)
+   vev2 =  4._dp * Real(mZ2+dmZ2,dp) / (g(1)**2 + g(2)**2)
+   vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
+   vevs_DR(2) = tanbQ * vevs_DR(1)
+   mZ2_mZ = Real(dmZ2+mZ2,dp)
+   mW2_run = mZ2_mZ * (1._dp - sinW2_DR)
 
-  If (mZ2_mZ.Lt.0._dp) Then
-   WriteWert = mZ2_mZ
-   Call WriteLoopMassesError(4, "LoopMassesMSSM_2", kont)
-   mZ2_mZ = mZ2
+   If (mZ2_mZ.Lt.0._dp) Then
+    WriteWert = mZ2_mZ
+    Call WriteLoopMassesError(4, "LoopMassesMSSM_2", kont)
+    mZ2_mZ = mZ2
+   End If
   End If
 !------------------------------------------------
 ! replacing fermion pole masses by running masses
@@ -1243,31 +1269,38 @@ Contains
   !-------------------------------------------------------------
   ! tree level masses and mixings using the loop corrected vevs
   !-------------------------------------------------------------
+   If (Present(vevQ)) Then
+    vev2 = vevQ**2
+    vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
+    vevs_DR(2) = tanbQ * vevs_DR(1)
+    mZ2_mZ = 0.25_dp * (g(1)**2+g(2)**2) * vev2
+    mW2_run = 0.25_dp * g(2)**2 * vev2
+   Else
 
-   Call PiZZT1(mZ2, g(2), sinW2_DR, vevs_DR, mZ2_mZ, mW2_run, mS02, RS0, mP02_T&
-           , RP0_T, mSpm2, RSpm, mSneutrino2, RSneutrino, mSlepton2, RSlepton  &
-           , mUSquark2 , RUSquark, mDSquark2, RDSquark, mf_l2, mf_u2, mf_d2    &
-           , mC, mC2, U, V, mN, mN2, N ,dmZ2)
-   vev2 =  4._dp * Real(mZ2+dmZ2,dp) / (g(1)**2 + g(2)**2)
-   vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
-   vevs_DR(2) = tanbQ * vevs_DR(1)
-   mZ2_mZ = Real(dmZ2+mZ2,dp)
-   mW2_run = mZ2_mZ * (1._dp - sinW2_DR)
+    Call PiZZT1(mZ2, g(2), sinW2_DR, vevs_DR, mZ2_mZ, mW2_run, mS02, RS0, mP02_T&
+            , RP0_T, mSpm2, RSpm, mSneutrino2, RSneutrino, mSlepton2, RSlepton  &
+            , mUSquark2 , RUSquark, mDSquark2, RDSquark, mf_l2, mf_u2, mf_d2    &
+            , mC, mC2, U, V, mN, mN2, N ,dmZ2)
+    vev2 =  4._dp * Real(mZ2+dmZ2,dp) / (g(1)**2 + g(2)**2)
+    vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
+    vevs_DR(2) = tanbQ * vevs_DR(1)
+    mZ2_mZ = Real(dmZ2+mZ2,dp)
+    mW2_run = mZ2_mZ * (1._dp - sinW2_DR)
 
-   vev_Q = Sqrt(vev2) ! for output
-
-   If (mZ2_mZ.Lt.0._dp) Then
-    WriteWert = mZ2_mZ
-    Call WriteLoopMassesError(-4, "LoopMassesMSSM_2", kont)
-    Iname = Iname - 1
-    mf_d = mf_d_save
-    mf_l = mf_l_save
-    mf_u = mf_u_save
-    mf_d2 = mf_d**2
-    mf_l2 = mf_l**2
-    mf_u2 = mf_u**2
-    Return
+    If (mZ2_mZ.Lt.0._dp) Then
+     WriteWert = mZ2_mZ
+     Call WriteLoopMassesError(-4, "LoopMassesMSSM_2", kont)
+     Iname = Iname - 1
+     mf_d = mf_d_save
+     mf_l = mf_l_save
+     mf_u = mf_u_save
+     mf_d2 = mf_d**2
+     mf_l2 = mf_l**2
+     mf_u2 = mf_u**2
+     Return
+    End If
    End If
+   vev_Q = Sqrt(vev2) ! for output
    !------------------------------------------------
    ! replacing fermion pole masses by running masses
    !------------------------------------------------
@@ -1852,7 +1885,7 @@ Contains
    & , mC, mC2, U, V, mN, mN2, N, mS0, mS02, RS0, mP0, mP02, RP0             &
    & , mSpm, mSpm2, RSpm, mDsquark, mDsquark2, RDsquark, mUsquark, mUsquark2 &
    & , RUsquark, mSlepton, mSlepton2, RSlepton, mSneutrino, mSneutrino2      &
-   & , RSneutrino, mGlu, phase_glu, M2_H, kont)
+   & , RSneutrino, mGlu, phase_glu, M2_H, kont, vevQ)
 !-----------------------------------------------------------------------
 ! In this Subroutine the 1-loop masses within the MSSM are calculated
 ! It is assumed that the parameters are provided at the same renormalisation
@@ -1878,6 +1911,7 @@ Contains
       , A_d(3,3), A_u(3,3), M2_E(3,3), M2_L(3,3), M2_D(3,3), M2_Q(3,3)       &
       , M2_U(3,3), mu, B, Mi(3)
   Real(dp), Intent(in) :: g(3), delta
+  Real(dp), Intent(in), Optional :: vevQ
   Real(dp), Intent(inout) :: tanb_mZ, tanb_Q
 
   Real(dp), Intent(out) :: mC(2), mN(4), mS0(2), mSpm(2), mP0(2), mP02(2)   &
@@ -2033,20 +2067,28 @@ Contains
 !----------------------
 ! mZ(mZ)
 !----------------------
-  Call PiZZT1(mZ2, g(2), sinW2_DR, vevSM, mZ2, mW2, mS02, RS0, mP02, RP0      &
+  If (Present(vevQ)) Then
+   vev2 = vevQ**2
+   vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
+   vevs_DR(2) = tanbQ * vevs_DR(1)
+   mZ2_mZ = 0.25_dp * (g(1)**2+g(2)**2) * vev2
+   mW2_run = 0.25_dp * g(2)**2 * vev2
+  Else
+   Call PiZZT1(mZ2, g(2), sinW2_DR, vevSM, mZ2, mW2, mS02, RS0, mP02, RP0     &
       , mSpm2 , RSpm, mSneutrino2, RSneutrino, mSlepton2, RSlepton, mUSquark2 &
       , RUSquark, mDSquark2, RDSquark, mf_l2, mf_u2, mf_d2, mC, mC2, U, V     &
       , mN, mN2, N ,dmZ2)
-  vev2 =  4._dp * Real(mZ2+dmZ2,dp) / (g(1)**2 + g(2)**2)
-  vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
-  vevs_DR(2) = tanbQ * vevs_DR(1)
-  mZ2_mZ = Real(dmZ2+mZ2,dp)
-  mW2_run = mZ2_mZ * (1._dp - sinW2_DR)
+   vev2 =  4._dp * Real(mZ2+dmZ2,dp) / (g(1)**2 + g(2)**2)
+   vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
+   vevs_DR(2) = tanbQ * vevs_DR(1)
+   mZ2_mZ = Real(dmZ2+mZ2,dp)
+   mW2_run = mZ2_mZ * (1._dp - sinW2_DR)
 
-  If (mZ2_mZ.Lt.0._dp) Then
-   WriteWert = mZ2_mZ
-   Call WriteLoopMassesError(4, "LoopMassesMSSM_3", kont)
-   mZ2_mZ = mZ2
+   If (mZ2_mZ.Lt.0._dp) Then
+    WriteWert = mZ2_mZ
+    Call WriteLoopMassesError(4, "LoopMassesMSSM_3", kont)
+    mZ2_mZ = mZ2
+   End If
   End If
   !------------------------------------------------
   ! replacing fermion pole masses by running masses
@@ -2082,27 +2124,35 @@ Contains
   !-------------------------------------------------------------
   ! tree level masses and mixings using the loop corrected vevs
   !-------------------------------------------------------------
-   Call PiZZT1(mZ2, g(2), sinW2_DR, vevs_DR, mZ2_mZ, mW2_run, mS02, RS0, mP02 &
-            , RP0, mSpm2, RSpm, mSneutrino2, RSneutrino, mSlepton2, RSlepton  &
-            , mUSquark2 , RUSquark, mDSquark2, RDSquark, mf_l2, mf_u2, mf_d2  &
-            , mC, mC2, U, V, mN, mN2, N ,dmZ2)
-   vev2 =  4._dp * Real(mZ2+dmZ2,dp) / (g(1)**2 + g(2)**2)
-   vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
-   vevs_DR(2) = tanbQ * vevs_DR(1)
-   mZ2_mZ = Real(dmZ2+mZ2,dp)
-   mW2_run = mZ2_mZ * (1._dp - sinW2_DR)
+   If (Present(vevQ)) Then
+    vev2 = vevQ**2
+    vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
+    vevs_DR(2) = tanbQ * vevs_DR(1)
+    mZ2_mZ = 0.25_dp * (g(1)**2+g(2)**2) * vev2
+    mW2_run = 0.25_dp * g(2)**2 * vev2
+   Else
+    Call PiZZT1(mZ2, g(2), sinW2_DR, vevs_DR, mZ2_mZ, mW2_run, mS02, RS0, mP02 &
+             , RP0, mSpm2, RSpm, mSneutrino2, RSneutrino, mSlepton2, RSlepton  &
+             , mUSquark2 , RUSquark, mDSquark2, RDSquark, mf_l2, mf_u2, mf_d2  &
+             , mC, mC2, U, V, mN, mN2, N ,dmZ2)
+    vev2 =  4._dp * Real(mZ2+dmZ2,dp) / (g(1)**2 + g(2)**2)
+    vevs_DR(1) = Sqrt(vev2 / (1._dp+tanbQ**2) )
+    vevs_DR(2) = tanbQ * vevs_DR(1)
+    mZ2_mZ = Real(dmZ2+mZ2,dp)
+    mW2_run = mZ2_mZ * (1._dp - sinW2_DR)
 
-   If (mZ2_mZ.Lt.0._dp) Then
-    WriteWert = mZ2_mZ
-    Call WriteLoopMassesError(-4, "LoopMassesMSSM_3", kont)
-    Iname = Iname - 1
-    mf_d = mf_d_save
-    mf_l = mf_l_save
-    mf_u = mf_u_save
-    mf_d2 = mf_d**2
-    mf_l2 = mf_l**2
-    mf_u2 = mf_u**2
-    Return
+    If (mZ2_mZ.Lt.0._dp) Then
+     WriteWert = mZ2_mZ
+     Call WriteLoopMassesError(-4, "LoopMassesMSSM_3", kont)
+     Iname = Iname - 1
+     mf_d = mf_d_save
+     mf_l = mf_l_save
+     mf_u = mf_u_save
+     mf_d2 = mf_d**2
+     mf_l2 = mf_l**2
+     mf_u2 = mf_u**2
+     Return
+    End If
    End If
 
    Call TreeMassesMSSM2(g(1), g(2), vevs_DR, Mi(1), Mi(2), Mi(3), mu_T, B_T  &
@@ -4073,9 +4123,8 @@ Contains
 
 
  Subroutine PiScalarSM(p2, c_DDS0_L, c_UUS0_L, c_LLS0_L, c_S0WW, c_S0ZZ &
-     & , c_S0S0WW, c_S0S0ZZ, c_SpSmS0S0, c_SpSmS0, c_P0P0S0S0, c_P0S0S0 &
-     & , c_S03, c_S04, mS02, mZ2, mW2, mf_d2, mf_u2, mf_l2, Yt, g3, lam &
-     & , mG2, P2_2L, mH_2L, WriteOut, res)
+     & , c_S03, mS02, mZ2, mW2, mf_d2, mf_u2, mf_l2, Yt, g3, lam, mG2 &
+     & , P2_2L, mH_2L, WriteOut, res)
  !-------------------------------------------------------------------------
  ! calculates the 1-loop self energies of higgs bosons
  ! The formulae of J. Bagger et al, Nucl. Phys. B491 are used.
@@ -4093,15 +4142,14 @@ Contains
  !           thanks to F. Staub
  !-----------------------------------------------------------------------
  Implicit None
-  Real(dp), Intent(in) :: p2, mS02, c_S0S0WW, c_S0S0ZZ, c_P0S0S0, c_S03, c_S04 &
-     & ,  mZ2, mW2, mf_d2(3), mf_u2(3), mf_l2(3), c_SpSmS0S0, c_P0P0S0S0       &
-     & , c_SpSmS0, C_S0WW, C_S0ZZ, c_DDS0_L(3), c_UUS0_L(3), c_LLS0_L(3), Yt   &
-     & , g3, lam, mG2
+  Real(dp), Intent(in) :: p2, mS02, mZ2, mW2, mf_d2(3), mf_u2(3), mf_l2(3)  &
+     & , C_S0WW, C_S0ZZ, c_DDS0_L(3), c_UUS0_L(3), c_LLS0_L(3), Yt, g3, lam &
+     & , mG2, c_S03
   Logical, Intent(in) :: WriteOut, P2_2L, mH_2L
   Real(dp), Intent(inout) :: res
 
   Integer :: i1
-  Complex(dp) :: sumI, sumIGauge, resGauge
+  Complex(dp) :: sumI
 
   Real(dp) :: A0m2, F0m2, t, s, q, logTQ, logGT
 
@@ -4135,49 +4183,27 @@ Contains
  !--------------------------------------------------
  ! gauge bosons, pseudo Goldstone bosons and ghosts
  !--------------------------------------------------
-  F0m2 =   Real( Floop(p2,mW2,mW2),dp )             &
-       & + 7._dp * mW2 * Real( B0(p2,mW2,mW2),dp )  &
-       & - 4._dp * mW2
-  sumIGauge = c_S0WW**2 * F0m2
-  If (WriteOut) Write(ErrCan,*) "S0 W+ W-",sumIGauge
-  res =  res + sumIGauge
+  F0m2 = (6._dp *mW2 - 2._dp* p2 + mS02**2/(2*mW2)) *Real(B0(p2,mW2,mW2),dp) &
+       & + (3._dp + mS02/(2*mW2) ) * A0(mW2) - 6._dp * mW2
+  sumI = c_S0WW**2 * F0m2
+  If (WriteOut) Write(ErrCan,*) "S0 W+ W- ",sumI
+  res =  res + sumI
 
-  F0m2 =  Real( Floop(p2,mZ2,mZ2),dp )             &
-       & + 7._dp * mZ2 * Real( B0(p2,mZ2,mZ2),dp ) &
-       & - 4._dp * mZ2
+  F0m2 = (6._dp *mZ2 - 2._dp* p2 + mS02**2/(2*mZ2)) *Real(B0(p2,mZ2,mZ2),dp) &
+       & + (3._dp + mS02/(2 *mZ2) ) * A0(mZ2) - 6._dp * mZ2
 
-  sumIGauge = c_S0ZZ**2 * F0m2
+  sumI = c_S0ZZ**2 * F0m2
   If (WriteOut) Write(ErrCan,*) "S0 Z Z",sumI
-  resGauge = sumIGauge
-
-  SumIGauge = c_S0S0WW * A0(mW2) + c_S0S0ZZ * A0(mZ2)
-  If (WriteOut) Write(ErrCan,*) "S0 S0 WW, ZZ",sumI
-  resGauge = resGauge + sumIGauge
-
-  sumI = c_SpSmS0S0 * A0( mW2)
-  If (WriteOut) Write(ErrCan,*) "Sp Sm S0 S0",sumI
-  res = res + sumI
-
-  sumI = c_SpSmS0**2 * Real( B0(p2, mW2, mW2),dp )
-  res = res + sumI
-
-
-  sumI = c_P0P0S0S0 * A0( mZ2 )
-  If (WriteOut) Write(ErrCan,*) "P0 P0 S0 S0",sumI
-  res = res + sumI
-
-  sumI = 2._dp * c_P0S0S0**2 * Real( B0(p2, mZ2, mZ2),dp )
   res = res + sumI
 
  !-----------------
  ! neutral Higgs
  !-----------------
-   A0m2 = - 0.5_dp * A0( mS02 )
-   sumI = c_S04 * A0m2
+   sumI = 0.75_dp * lam * A0( mS02 )
    If (WriteOut) Write(ErrCan,*) "S0 S0 S0 S0",sumI
    res = res + sumI
 
-   sumI = c_S03**2 * Real( B0(p2,mS02, mS02),dp )
+   sumI = 2.25_dp * c_S03**2 * Real( B0(p2,mS02, mS02),dp )
    If (WriteOut) Write(ErrCan,*) "S0 S0 S0",sumI
    res = res + sumI
 
@@ -4319,8 +4345,8 @@ Contains
   !----------------------
   ! gauge bosons
   !----------------------
-  sumI = 1.5_dp *  gSU2**2 * A0(mW2) + 0.75_dp * (gSU2**2 + gU1**2) * A0(mZ2) ! &
-!       & - gSU2**2 * mW2 + 0.375_dp * (gSU2**2 + gU1**2) * mZ2
+  sumI = 1.5_dp *  gSU2**2 * A0(mW2) + 0.75_dp * (gSU2**2 + gU1**2) * A0(mZ2)  &
+       & - gSU2**2 * mW2 - 0.5_dp * (gSU2**2 + gU1**2) * mZ2
   sumI = sumI * vev_DR
   If (WriteOut) Write(ErrCan,*) "gauge bosons",sumI
   tadpole = tadpole + sumI
@@ -4520,20 +4546,7 @@ Contains
   c_S0WW = gSU2*ooSqrt2
   c_S0ZZ = gSU2*0.5_dp/cosW_DR
 
-  c_S0S0WW = 2 * gSU2**2
-  c_S0S0ZZ = (gSU2**2+gU1**2)
-
-  c_SpSmS0S0 = -lam ! charged Goldstone two scalar coupling
-
-  c_SpSmS0 = - lam*vev_T ! charged Goldstone scalar coupling
-
-  c_P0S0S0 = - lam*vev_T ! neutral Goldstone scalar scalar coupling
-
-  c_P0P0S0S0 = -lam ! two neutral Goldstone two scalars coupling
-
- c_S04 = -3*lam !4 scalar coupling
-
- c_S03 = -3*lam*vev_T !3 scalar coupling
+  c_S03 = lam*vev_T !3 scalar coupling
 
    mf_u2 = (c_UUS0_L * vev_T)**2
    mf_d2 = (c_DDS0_L * vev_T)**2
@@ -4549,9 +4562,8 @@ Contains
   ! now the loop calculation, 2-point function
   !------------------------------------------------------------
 
-   Call PiScalarSM(mS02, c_DDS0_L, c_UUS0_L, c_LLS0_L, c_S0WW, c_S0ZZ, c_S0S0WW &
-     & , c_S0S0ZZ, c_SpSmS0S0, c_SpSmS0, c_P0P0S0S0, c_P0S0S0, c_S03, c_S04     &
-     & , mS02, mZ2, mW2,mf_d2,mf_u2,mf_l2, Y_u(3), gSU3, lam, tadpole, P2_2L    &
+   Call PiScalarSM(mS02, c_DDS0_L, c_UUS0_L, c_LLS0_L, c_S0WW, c_S0ZZ &
+     & , c_S03, mS02, mZ2, mW2,mf_d2,mf_u2,mf_l2, Y_u(3), gSU3, lam, tadpole, P2_2L    &
      & , mH_2L, .False., PiS1)
 
 
@@ -4566,8 +4578,7 @@ Contains
   !------------------------------------------------
   ! shift of p^2 part from tree-level to loop mass
   !------------------------------------------------
-  Call PiScalarSM(mass2, c_DDS0_L, c_UUS0_L, c_LLS0_L, c_S0WW, c_S0ZZ, c_S0S0WW  &
-     & , c_S0S0ZZ, c_SpSmS0S0, c_SpSmS0, c_P0P0S0S0, c_P0S0S0, c_S03, c_S04  &
+  Call PiScalarSM(mass2, c_DDS0_L, c_UUS0_L, c_LLS0_L, c_S0WW, c_S0ZZ, c_S03 &
      & , mS02, mZ2, mW2,mf_d2,mf_u2,mf_l2, Y_u(3), gSU3, lam, tadpole, P2_2L &
      & , mH_2L, .False., PiS1)
 
@@ -10442,7 +10453,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  Subroutine PiWWT1(p2, gSU2, sinW2, mS02, RS0, mSpm2, RSpm, vevs            &
          & , mP02, RP0, mSneutrino2, RSneutrino, mSlepton2, RSlepton        &
          & , mUSquark2, RUSquark, mDSquark2, RDSquark, mf_l2, mf_u2, mf_d2  &
-         & , CKM, mN, mN2, N, mC, mC2, U, V, mZ2, mW2, res)
+         & , CKM, mN, mN2, N, mC, mC2, U, V, mZ2, mW2, res, no_SM)
  !-----------------------------------------------------------------------
  ! Calculates the 1-loop self energy of Z-boson.
  ! The formula of J. Bagger et al, Nucl.Phys.B is used. The renormalization
@@ -10477,13 +10488,14 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   Complex(dp), Intent(in) :: N(:,:), U(:,:), V(:,:), RSpm(:,:)         &
     &  , RUSquark(6,6), RDSquark(6,6), RSlepton(:,:), RSneutrino(:,:)  &
     &  , CKM(3,3)
+  Logical, Intent(in), Optional :: no_SM
   Complex(dp), Intent(out) :: res
 
   Integer :: i1, i2, i3
   Real(dp) :: cosW2, g2, coup
   Complex(dp) :: sumI, coupC, coupLC, coupRC
 
-  Logical :: WriteOut
+  Logical :: WriteOut, exclude_SM
 
   Iname = Iname + 1
   NameOfUnit(Iname) = "PiWWT1"
@@ -10498,6 +10510,9 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   Else
    WriteOut = .False.
   End If
+
+  exclude_SM = .False.
+  if (present(no_SM)) exclude_SM=no_SM
  !-----------------------
  ! intialisation
  !-----------------------
@@ -10507,14 +10522,22 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  !--------------------------
  ! gauge bosons
  !--------------------------
-  sumI = - g2 * ( ( (4._dp * p2 + mW2 + mZ2) * cosW2 - mZ2 * sinW2**2 )  &
-     &            * B0(p2,mZ2,mW2)  &
-     &          + ( 1._dp + 8._dp * cosW2 ) * B22(p2,mZ2,mW2) )
+  If (exclude_SM) then
+   sumI = 0._dp
+  Else
+   sumI = - g2 * ( ( (4._dp * p2 + mW2 + mZ2) * cosW2 - mZ2 * sinW2**2 )  &
+      &            * B0(p2,mZ2,mW2)  &
+      &          + ( 1._dp + 8._dp * cosW2 ) * B22(p2,mZ2,mW2) )
+  End If
   If (WriteOut) Write(ErrCan,*) "Z",sumI
   res = res + sumI
 
-  sumI = - g2 * sinW2 * ( 8._dp * B22(p2,mW2,0._dp)     &
-       &                +  4._dp * p2 * B0(p2,mW2,0._dp) )
+  If (exclude_SM) then
+   sumI = 0._dp
+  Else
+   sumI = - g2 * sinW2 * ( 8._dp * B22(p2,mW2,0._dp)     &
+        &                +  4._dp * p2 * B0(p2,mW2,0._dp) )
+  End If
   If (WriteOut) Write(ErrCan,*) "photon",sumI
   res = res + sumI
   !--------------------------
@@ -10522,13 +10545,21 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   !--------------------------
   Do i1=1,n_S0
    Do i2=1,n_Spm
-    Call CoupChargedScalarScalarW(i2, i1, gSU2, RSpm, RS0, coupC)
-    sumI = - 4._dp * Abs(coupC)**2 * B22(p2,mS02(i1), mSpm2(i2) )
+    If (exclude_SM.and.(i1.eq.1).and.(i2.eq.1)) then
+     sumI = 0._dp
+    Else
+     Call CoupChargedScalarScalarW(i2, i1, gSU2, RSpm, RS0, coupC)
+     sumI = - 4._dp * Abs(coupC)**2 * B22(p2,mS02(i1), mSpm2(i2) )
+    End If
     If (WriteOut) Write(ErrCan,*) "S0 S+",i1,i2,sumI
     res = res + sumI
    End Do
-   Call CoupScalarW(i1, gSU2, vevs, RS0, coup)
-   sumI = Abs(coup)**2 * B0(p2,mW2,mS02(i1))
+   If (exclude_SM.and.(i1.eq.1)) then
+    sumI = 0._dp
+   Else
+    Call CoupScalarW(i1, gSU2, vevs, RS0, coup)
+    sumI = Abs(coup)**2 * B0(p2,mW2,mS02(i1))
+   End If
    If (WriteOut) Write(ErrCan,*) "S0",i1,sumI
    res = res + sumI
   End Do
@@ -10600,36 +10631,38 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
 #ifdef GENERATIONMIXING
  End If
 #endif
-  !--------------------------
-  ! neutrinos/leptons
-  !--------------------------
-  Do i1 = 1,5-n_char ! number of leptons depend on model
-   sumI = 0.5_dp * g2 * HLoop(p2,mf_l2(i1), 0._dp)
-   If (WriteOut) Write(ErrCan,*) "Nu L",i1,sumI
-   res = res + sumI
-  End Do
-  !--------------------------
-  ! quarks
-  !--------------------------
-#ifdef GENERATIONMIXING
-  If (GenerationMixing) Then
-   Do i1 = 1,3
-    Do i2 = 1,3
-     sumI = 1.5_dp * g2 * Abs(CKM(i1,i2))**2 * HLoop(p2, mf_u2(i1), mf_d2(i2))
-     If (WriteOut) Write(ErrCan,*) "U D",i1,i2,sumI
-     res = res + sumI
-    End Do
-   End Do
-  Else
-#endif
-   Do i1 = 1,3
-    sumI = 1.5_dp * g2 * HLoop(p2, mf_u2(i1), mf_d2(i1))
-    If (WriteOut) Write(ErrCan,*) "U D",i1,sumI
+  If (.not.exclude_SM) then
+   !--------------------------
+   ! neutrinos/leptons
+   !--------------------------
+   Do i1 = 1,5-n_char ! number of leptons depend on model
+    sumI = 0.5_dp * g2 * HLoop(p2,mf_l2(i1), 0._dp)
+    If (WriteOut) Write(ErrCan,*) "Nu L",i1,sumI
     res = res + sumI
    End Do
+   !--------------------------
+   ! quarks
+   !--------------------------
 #ifdef GENERATIONMIXING
-  End If
+   If (GenerationMixing) Then
+    Do i1 = 1,3
+     Do i2 = 1,3
+      sumI = 1.5_dp * g2 * Abs(CKM(i1,i2))**2 * HLoop(p2, mf_u2(i1), mf_d2(i2))
+      If (WriteOut) Write(ErrCan,*) "U D",i1,i2,sumI
+      res = res + sumI
+     End Do
+    End Do
+   Else
 #endif
+    Do i1 = 1,3
+     sumI = 1.5_dp * g2 * HLoop(p2, mf_u2(i1), mf_d2(i1))
+     If (WriteOut) Write(ErrCan,*) "U D",i1,sumI
+     res = res + sumI
+    End Do
+#ifdef GENERATIONMIXING
+   End If
+#endif
+  End If ! exclude_SM
   !--------------------------
   ! charginos/neutralinos
   !--------------------------
@@ -10707,21 +10740,22 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   sumI = - g2 * ( ( (4._dp * p2 + mW2 + mZ2) * cosW2 - mZ2 * sinW2**2 )  &
      &            * B0(p2,mZ2,mW2)                                       &
      &          + ( 1._dp + 8._dp * cosW2 ) * B22(p2,mZ2,mW2)            &
-     &          + rMS * (cosW2 * 2._dp * (p2/3._dp - 2._dp*(mW2 + mZ2))  &
-     &                  - (mW2+mZ2)/6._dp )    )
+     &          + rMS * 2._dp * (cosW2 * (p2 / 3._dp - mW2) + mW2) )
+
   If (WriteOut) Write(ErrCan,*) "Z",sumI
   res = res + sumI
 
   sumI = - g2 * sinW2 * ( 8._dp * B22(p2,mW2,0._dp)                &
        &                + 4._dp * p2 * B0(p2,mW2,0._dp)            &
-       &                + rMS * 2._dp * (p2 - 2._dp * mW2) / 3._dp )
+       &                + rMS * 2._dp * (p2 / 3._dp - mW2) )
+
   If (WriteOut) Write(ErrCan,*) "photon",sumI
   res = res + sumI
   !--------------------------
   !  Higgs bosons
   !--------------------------
-  sumI = - g2 * ( B22(p2,mS02,mW2) - mW2 * B0(p2,mW2,mS02) &
-       &        - rMS * (mW2+mS02)/6._dp )
+  sumI = - g2 * ( B22(p2,mS02,mW2) - mW2 * B0(p2,mW2,mS02))
+
   If (WriteOut) Write(ErrCan,*) "S0",sumI
   res = res + sumI
   !--------------------------
@@ -10820,7 +10854,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   Complex(dp), Intent(out) :: res
   Logical, Intent(in), Optional :: NMSSM, no_SM
 
-  Integer :: i1, i2, i3, i_in
+  Integer :: i1, i2, i3
   Real(dp) :: cosW, cosW2, coup, coup2
   Complex(dp) :: sumI, coupC, coupC2, RSf(2,2)
   Logical :: WriteOut, exclude_SM
@@ -10848,20 +10882,23 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   !--------------------------
   ! neutral Higgs bosons
   !--------------------------
-  If (exclude_SM) then
-   i_in = 2
-  Else
-   i_in = 1
-  end If
-  Do i1=i_in,n_S0
+  Do i1=1,n_S0
    Do i2=1,n_P0
-    Call CoupPseudoscalarScalarZ(i2, i1, gSU2, cosW, RP0, RS0, coupC)
-    sumI = - 4._dp * Abs(coupC)**2 * B22(p2, mP02(i2), mS02(i1) )
+    If (exclude_SM.and.(i1.eq.1).and.(i2.eq.1)) then
+     sumI = 0._dp
+    Else
+     Call CoupPseudoscalarScalarZ(i2, i1, gSU2, cosW, RP0, RS0, coupC)
+     sumI = - 4._dp * Abs(coupC)**2 * B22(p2, mP02(i2), mS02(i1) )
+    End If
     If (WriteOut) Write(ErrCan,*) "S0, P0", i1,i2,sumI
     res = res + sumI
    End Do
-   Call CoupScalarZ(i1, gSU2, cosW2, vevSM, RS0, coup )
-   sumI = coup**2 * B0(p2, mZ2, mS02(i1))
+   If (exclude_SM.and.(i1.eq.1)) then
+    sumI = 0._dp
+   Else
+    Call CoupScalarZ(i1, gSU2, cosW2, vevSM, RS0, coup )
+    sumI = coup**2 * B0(p2, mZ2, mS02(i1))
+   End If
    If (WriteOut) Write(ErrCan,*) "S0", i1,sumI
    res = res + sumI
   End Do
@@ -11155,8 +11192,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   !--------------------------
   ! neutral Higgs bosons
   !--------------------------
-  sumI = - gSU2**2 * ( B22(p2,mS02,mZ2) - mZ2 * B0(p2,mZ2,mS02) &
-       &             - rMS * (mZ2+mS02)/6._dp ) / cosW2
+  sumI = - gSU2**2 * ( B22(p2,mS02,mZ2) - mZ2 * B0(p2,mZ2,mS02) ) / cosW2
   If (WriteOut) Write(ErrCan,*) "S0", sumI
   res = res + sumI
 
@@ -11164,12 +11200,11 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   ! W boson
   !--------------------------
   sumI = - gSU2**2 * ( 2._dp * ( (2._dp * p2 + mW2)*cosW2 - mZ2 * sinW2**2 )   &
-   &                         * B0(p2,mW2,mW2) /   cosW2                        &
+   &                         * B0(p2,mW2,mW2)                                  &
    &                 + ( 8._dp * cosW2 + (cosW2-sinW2)**2/cosW2 )              &
    &                    * B22(p2,mW2,mW2)                                      &
-   &                 + rMS * ( (1._dp/cosW2 - 8._dp - 12._dp*cosW2)*p2/18._dp  &
-   &                         + ((cosW2-sinW2)**2/cosW2 +8._dp*cosW2)*mW2/3._dp &
-   &                         ) )
+   &                 + rmS * cosW2 * p2 * 2._dp / 3._dp )
+
   If (WriteOut) Write(ErrCan,*) "W", sumI
   res = res + sumI
   !--------------------------
@@ -11184,7 +11219,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   !--------------------------
   Call CoupFermionZ(-0.5_dp, -1._dp, gSU2, sinW2, coup, coup2)
   Do i1 = 1,3
-   sumI = ( coup**2 + coup2**2 ) * HLoop(p2, mf_l2(i1), mf_l2(i1))   &
+   sumI = ( coup**2 + coup2**2 ) * HLoop(p2, mf_l2(i1), mf_l2(i1)) &
       & + 4._dp * coup * coup2 * mf_l2(i1) * B0(p2,mf_l2(i1),mf_l2(i1))
    If (WriteOut) Write(ErrCan,*) "Leptons",i1, sumI
    res = res + sumI
@@ -11194,7 +11229,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
   !--------------------------
   Call CoupFermionZ(0.5_dp, 2._dp/3._dp, gSU2, sinW2, coup, coup2)
   Do i1 = 1,3
-   sumI = ( coup**2 + coup2**2 ) * HLoop(p2, mf_u2(i1), mf_u2(i1))   &
+   sumI = ( coup**2 + coup2**2 ) * HLoop(p2, mf_u2(i1), mf_u2(i1)) &
       & + 4._dp * coup * coup2 * mf_u2(i1) * B0(p2,mf_u2(i1),mf_u2(i1))
    sumI = 3._dp * sumI
    If (WriteOut) Write(ErrCan,*) "u-quarks",i1, sumI
@@ -11205,7 +11240,7 @@ If (WriteOut) Write(ErrCan,*) "N N S0",i1,i2,sumI(1,1),sumI(1,2)&
  !--------------------------
   Call CoupFermionZ(-0.5_dp, -1._dp/3._dp, gSU2, sinW2, coup, coup2)
   Do i1 = 1,3
-   sumI = ( coup**2 + coup2**2 ) * HLoop(p2, mf_d2(i1), mf_d2(i1))   &
+   sumI = ( coup**2 + coup2**2 ) * HLoop(p2, mf_d2(i1), mf_d2(i1))     &
       & + 4._dp * coup * coup2 * mf_d2(i1) * B0(p2,mf_d2(i1),mf_d2(i1))
    sumI = 3._dp * sumI
    If (WriteOut) Write(ErrCan,*) "d-quarks",i1, sumI

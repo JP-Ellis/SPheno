@@ -30,8 +30,6 @@ Character(len=80), Save :: Old_Data=""
 Real(dp), Save :: Qout=0._dp, Qin, Q_PDG_out(36)
 Integer, Save :: n_Q_out = 0
 Logical, Save :: l_Q_out = .False., l_PDG_out(36) = .False., Calc_Mass=.False.
-! switch on SM decoupling
-Logical, Save :: l_SM_decoupling = .True.
 ! using 1st SLHA2 output with flavour ordered states
 Logical, Save, Private :: Use_Flavour_States = .False.
 ! branching ratios larger than BrMin are written out
@@ -874,6 +872,7 @@ Contains
       End If
      End If
      If ((i_model.Eq.3).And.(Sum(set_mod_par(1:4)).Eq.4)) kont = 0 ! AMSB
+     If ((i_model.Eq.4).And.(Sum(set_mod_par(3:4)).Eq.2)) kont = 0 ! Mirrage
      If (kont.Ne.0) Call AddError(Abs(kont))
 
   Else If (i_particles.Eq.2) Then  ! MSSM + nu_R particle content
@@ -2264,7 +2263,10 @@ Contains
      Case(42) ! W-boson width
       gamW = wert
 
-     Case(50) ! switch on SM decoupling
+     Case(48) ! switch on SM decoupling
+      if (wert.eq.1._dp) l_mt_3loop = .True.
+
+     Case(49) ! switch on SM decoupling
       if (wert.eq.1._dp) l_SM_decoupling = .False.
 
      Case(80) ! exit for sure with non-zero value if a problem occurs
@@ -2828,7 +2830,7 @@ Contains
       End If
 
      Else If (i_par.Eq.4) Then
-      If ((i_model.Ge.0).And.(i_model.Le.3)) Then ! MSSM, mSugra, GMSB, AMSB, sign_mu
+      If ((i_model.Ge.0).And.(i_model.Le.4)) Then ! MSSM, mSugra, GMSB, AMSB, sign_mu
        set_mod_par(4) = 1
        If (i_c.Eq.0) phase_mu = Cmplx(wert, Aimag(phase_mu),dp)
        If (i_c.Eq.1) phase_mu = Cmplx(Real(phase_mu, dp),  wert, dp)
