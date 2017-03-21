@@ -101,7 +101,7 @@ set(SPHENOSRCS
   src/TwoLoopHiggsMass.f90
   )
 
-add_library(${PROJECT_NAME}-lib ${SPHENOSRCS})
+add_library(${PROJECT_NAME}-lib SHARED ${SPHENOSRCS})
 set_target_properties(${PROJECT_NAME}-lib
   PROPERTIES OUTPUT_NAME ${PROJECT_NAME}
   )
@@ -163,7 +163,7 @@ if(MODELS)
         file(GLOB_RECURSE SRCS ${CMAKE_SOURCE_DIR}/models/${MODEL}/*.f90 models/${MODEL}/*.F90)
         list(REMOVE_ITEM SRCS ${SRCEXE})
 
-        add_library(${MODEL}-lib ${SRCS})
+        add_library(${MODEL}-lib SHARED ${SRCS})
         target_link_libraries(${MODEL}-lib ${PROJECT_NAME}-lib)
         set_target_properties(${MODEL}-lib
           PROPERTIES OUTPUT_NAME ${MODEL}
