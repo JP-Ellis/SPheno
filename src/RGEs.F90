@@ -15443,7 +15443,7 @@ gammaL2(i1,i2) = -9._dp*TrYb3adjYb3*adjYb3Yb3(i1,i2)/100._dp - &
 
 If(i1.eq.i2) Then
  gammaL2(i1,i2) =  gammaL2(i1,i2) + 657._dp*g1**4/100._dp + 9._dp*g1p2*g2p2/10._dp &
-	& + 105._dp*g2**4/4._dp
+  & + 105._dp*g2**4/4._dp
 End If
 
 End Do
@@ -20520,4 +20520,3 @@ End Subroutine rge365
 
 
 End Module RGEs
-

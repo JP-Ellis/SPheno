@@ -41,17 +41,15 @@ Real(dp), Private :: mudim2=1._dp, divergence=0._dp, lambda2 = 1._dp
 !               determined at runtime by ffinit (IEEE: 2.e-308)
 !       xclogm: same for complex.
 !       xalog2: xalogm**2
-!       xclog2: xclogm**2
 !       reqprc: not used
-!	   the precision wanted in the complex D0 (and hence E0) when
-!	   nschem=7, these are calculated via Taylor exoansion in the real
-!	   one and hence expensive.
+!    the precision wanted in the complex D0 (and hence E0) when
+!    nschem=7, these are calculated via Taylor exoansion in the real
+!    one and hence expensive.
 !       pi:     pi
 !       pi6:    pi**2/6
 !       pi12:   pi**2/12
 !       xlg2:   log(2)
 !       bf:     factors in the expansion of dilog (~Bernouilli numbers)
-!       xninv:  1/n
 !       xn2inv: 1/n**2
 !       xinfac: 1/n!
 !       fpij2:  vi.vj for 2point function 1-2: si, 3-3:  pi
@@ -59,7 +57,6 @@ Real(dp), Private :: mudim2=1._dp, divergence=0._dp, lambda2 = 1._dp
 !       fpij4:  vi.vj for 4point function 1-4: si, 5-10: pi
 !       fpij5:  vi.vj for 5point function 1-5: si, 6-15: pi
 !       fpij6:  vi.vj for 6point function 1-6: si, 7-21: pi
-!       fdel2:  del2 = delta_(p1,p2)^(p1,p2) = p1^2.p2^2 - p1.p2^2 in C0
 !       fdel3:  del3 = delta_(p1,p2,p3)^(p1,p2,p3) in D0
 !       fdel4s: del4s = delta_(s1,s2,s3,s4)^(s1,s2,s3,s4) in D0
 !       fdel4:  del4 = delta_(p1,p2,p3,p4)^(p1,p2,p3,p4) in E0
@@ -82,8 +79,8 @@ Real(dp), Private :: mudim2=1._dp, divergence=0._dp, lambda2 = 1._dp
 !       fidl4i: ier of dl4i (is not included in F0)
 !
 Real(dp), Private :: xloss = 0.125_dp, precx,precc,xalogm,xclogm,xalog2 &
- & ,xclog2,bf(20), xninv(30),xn2inv(30),xinfac(30), &
- &  fpij2(3,3),fpij3(6,6),fdel2, xlg2
+ & ,bf(20), xn2inv(30),xinfac(30), &
+ &  fpij2(3,3),fpij3(6,6), xlg2
 ! Real(dp), Private ::  reqprc=1.e-8_dp,fpij4(10,10),fpij5(15,15), &
 ! &  fpij6(21,21),fdel3,fdel4s,fdel4,fdl3i(5), &
 ! &  fdl4si(5),fdl3ij(6,6),fd4sij(6,6),fdl4i(6),fodel2, &
@@ -93,7 +90,6 @@ Real(dp), Private :: xloss = 0.125_dp, precx,precc,xalogm,xclogm,xalog2 &
 !
 !	c[zero1]:0,1 complex
 !	c2ipi:	2*i*pi
-!	cipi2:	i*pi**2
 !	cfp..:	complex version of fp..., only defined in ff[cz]*
 !	cmipj:	(internal only) mi^2 - pj^2 in C0
 !	c2sisj:	(internal only) 2*si.sj in D0
@@ -101,7 +97,7 @@ Real(dp), Private :: xloss = 0.125_dp, precx,precc,xalogm,xclogm,xalog2 &
 !	ca1:	(internal only) complex A1
 !	csdl2p: (internal only) complex transformed sqrt(del2)
 !
-Complex(dp), Private :: czero,cone,c2ipi,cipi2,cmipj(3,3)
+Complex(dp), Private :: czero,cone,c2ipi,cmipj(3,3)
 ! Complex(dp), Private :: ,ca1,cfdl4s,c2sisj(4,4), cfpij6(21,21), cfpij2(3,3) &
 !  & , cfpij3(6,6), cfpij4(10,10),cfpij5(15,15)
 
@@ -111,19 +107,19 @@ Logical, Private :: PrintToScreen = .False.
 Character(len=80) :: St_Error(N_err)
 Integer, Private :: ErrorOccur(N_err) = 0
 !
-!	        if .TRUE. then                        default (ffinit)
+!         if .TRUE. then                        default (ffinit)
 !	l4also: in C0 (and higher), also consider the algorithm with 16
-!	        dilogs                                .TRUE.
+!         dilogs                                .TRUE.
 !	ldc3c4: in D0 (and higher), also consider possible cancellations
-!	        between the C0s                      .TRUE.
+!         between the C0s                      .TRUE.
 !	lmem:   before computing the C0 and higher, first check whether
-!	        it has already been done recently     .FALSE.
+!         it has already been done recently     .FALSE.
 !	ldot:   leave the dotproducts and some determinants in common
-!	                                              .FALSE.
+!                                               .FALSE.
 !	onshel: (in ffz?0 only): use onshell momenta  .TRUE.
 !	lsmug:  internal use
-!	  a flag to indicate the validity of d  Ifferences smuggled to the
-!    	  IR routines in the C0 (ff internal only)
+!   a flag to indicate the validity of d  Ifferences smuggled to the
+!       IR routines in the C0 (ff internal only)
 !	lnasty: internal use
 !
 Logical, Private :: l4also = .False., ldot = .False. ,lsmug = .False.
@@ -161,11 +157,7 @@ Complex(dp), Private, Save :: ca0i(2), cb0, cb1
 !	id:	identifier of scalar function (to be set by user)
 !	idsub:	internal identifier to pinpoint errors
 !	inx:	in D0: p(inx(i,j)) = isgn(i,j)*(s(i)-s(j))
-!	inx5:	in E0: p(inx5(i,j)) = isgn5(i,j)*(s(i)-s(j))
-!	inx6:	in F0: p(inx6(i,j)) = isgn6(i,j)*(s(i)-s(j))
 !	isgn:	see inx
-!	isgn5:	see inx5
-!	isgn6:	see inx6
 !	iold:	rotation matrix for 4point function
 !	isgrot:	signs to iold
 !	isgn34:	+1 or -1: which root to choose in the transformation (D0)
@@ -176,8 +168,7 @@ Complex(dp), Private, Save :: ca0i(2), cb0, cb1
 !	irota5:	same for the E0
 !	irota6:	same for the F0
 !
-Integer, Private :: id,idsub,inx(4,4),isgn(4,4),inx5(5,5)  &
-        & , isgn5(5,5),inx6(6,6),isgn6(6,6),isgnal=1  &
+Integer, Private :: id,idsub,inx(4,4),isgn(4,4),isgnal=1  &
         & , irota3 !,nevent = 0,ner,isgn34=1,irota4,irota5,irota6
 !Integer, Private ::  iold(13,12)  = Reshape(  Source = (/ &
 !  & 1,2,3,4, 5,6,7,8,9,10, 11,12,13, 4,1,2,3, 8,5,6,7,10,9, 11,13,12,  &
@@ -1557,17 +1548,17 @@ Contains
  !	recipe in 't Hooft & Veltman, NP B(183) 1979.
  !	Bjorken and Drell metric is used nowadays!
  !
- !	    p2	| |
+ !      p2	| |
  !		v |
- !		 / \
- !	      m2/   \m3
+ !     / \
+ !        m2/   \m3
  !	p1     /     \	p3
  !	->    /  m1   \ <-
  !	------------------------
  !
- !		1   /			     1
- !	    = ----- \d^4Q----------------------------------------
- !	      ipi^2 /	 [Q^2-m1^2][(Q+p1)^2-m2^2][(Q-p3)^2-m3^2]
+ !		1   /          1
+ !      = ----- \d^4Q----------------------------------------
+ !        ipi^2 /  [Q^2-m1^2][(Q+p1)^2-m2^2][(Q-p3)^2-m3^2]
  !
  !	If the function is infra-red divergent (p1=m2,p3=m3,m1=0 or
  !	cyclic) the function is calculated with a user-supplied cutoff
@@ -1626,7 +1617,7 @@ Contains
  Implicit None
   Real(dp), Intent(inout) :: xpi(6), dpipj(6,6)
 
-  Real(dp) :: xqi(6), dqiqj(6,6), qiDqj(6,6), dum66(6,6), del2, fdel2, del3 &
+  Real(dp) :: xqi(6), dqiqj(6,6), qiDqj(6,6), dum66(6,6), del2, del3 &
     & , del2s(3), delpsi(3), del3mi(3), xmax, alph(3),etalam,etami(6),sdel2 &
     & , blph(3)
   Complex(dp) :: cs3(80),cs,clogi(3),cslam,cetalm,cetami(6),cel2s(3)      &
@@ -1662,8 +1653,6 @@ Contains
 
  ! some determinats
   del2 = FFdel2(qiDqj,4,5,6)
-
-  If ( ldot ) fdel2 = del2
 
   If ( del2 .Gt. 0 ) Then
    If ( .Not.(xqi(4).Lt.0 .And. xqi(5).Lt.0 .And. xqi(6).Lt.0) ) Then
@@ -2020,8 +2009,7 @@ Contains
   Real(dp), Intent(in) :: m12, m22, m32, m42
 
   Integer, Parameter :: ord=9
-  Real(dp) :: Dm, x, ci(ord), di(ord), diff31, diff41, diff32 &
-    & , xl2, xh2, yl2, yh2
+  Real(dp) :: Dm, x, ci(ord), di(ord), diff31, diff41, diff32
   !-------------------------------------------------------------------
   ! recursion s1(i1+1) = (-1)^i1 * s1(i1) * i1 (i1+3)/(i1+1)**2
   !-------------------------------------------------------------------
@@ -2032,33 +2020,14 @@ Contains
   Integer :: i1, i2
 
 
-  If (     ((m12.eq.0._dp).and.(m22.eq.0._dp))  &
-     & .or.((m12.eq.0._dp).and.(m32.eq.0._dp))  &
-     & .or.((m12.eq.0._dp).and.(m42.eq.0._dp))  &
-     & .or.((m22.eq.0._dp).and.(m32.eq.0._dp))  &
-     & .or.((m22.eq.0._dp).and.(m42.eq.0._dp))  &
-     & .or.((m32.eq.0._dp).and.(m42.eq.0._dp)) )  then
+  If (     ((m12.Eq.0._dp).And.(m22.Eq.0._dp))  &
+     & .Or.((m12.Eq.0._dp).And.(m32.Eq.0._dp))  &
+     & .Or.((m12.Eq.0._dp).And.(m42.Eq.0._dp))  &
+     & .Or.((m22.Eq.0._dp).And.(m32.Eq.0._dp))  &
+     & .Or.((m22.Eq.0._dp).And.(m42.Eq.0._dp))  &
+     & .Or.((m32.Eq.0._dp).And.(m42.Eq.0._dp)) )  Then
    D0_Bagger = Huge(1._dp) ! infinity
-   return
-  Else ! resorting according to the symmetries
-       ! m12 <-> m22, m32 <-> m42
-
-
-   If (m12.le.m22) then
-    xl2 = m12
-    xh2 = m22
-   Else
-    xl2 = m22
-    xh2 = m12
-   end if
-
-   If (m32.le.m42) then
-    yl2 = m32
-    yh2 = m42
-   Else
-    yl2 = m42
-    yh2 = m32
-   end if
+   Return
 
   End If
 
@@ -2082,7 +2051,7 @@ Contains
 
   Else If ((m12.Eq.m22).And.(m12.Eq.m42)) Then
 
-   If (Abs((m32-m42)/m42).Lt.1.e-3_dp) then
+   If (Abs((m32-m42)/m42).Lt.1.e-3_dp) Then
     x = 1._dp - m42/m32
     D0_Bagger = 1._dp / Real((ord+1)*(ord+2),dp)
     Do i1=ord-1,1,-1
@@ -2097,7 +2066,7 @@ Contains
 
   Else If ((m12.Eq.m32).And.(m12.Eq.m42)) Then
 
-   If (Abs((m12-m22)/m22).Lt.1.e-3_dp) then
+   If (Abs((m12-m22)/m22).Lt.1.e-3_dp) Then
     x = 1._dp - m22/m12
     D0_Bagger = 1._dp / Real((ord+1)*(ord+2),dp)
     Do i1=ord-1,1,-1
@@ -2112,7 +2081,7 @@ Contains
 
   Else If ((m12.Eq.m22).And.(m12.Eq.m32)) Then
 
-   If (Abs((m32-m42)/m42).Lt.1.e-3_dp) then
+   If (Abs((m32-m42)/m42).Lt.1.e-3_dp) Then
     x = 1._dp - m42/m32
     D0_Bagger =  Real(ord,dp) / Real(2*(ord+2),dp)
     Do i1=ord-1,1,-1
@@ -2127,7 +2096,7 @@ Contains
 
   Else If ((m22.Eq.m32).And.(m22.Eq.m42)) Then
 
-   If (Abs((m12-m22)/m22).Lt.1.e-3_dp) then
+   If (Abs((m12-m22)/m22).Lt.1.e-3_dp) Then
     x = 1._dp - m22/m12
     D0_Bagger =  Real(ord,dp) / Real(2*(ord+2),dp)
     Do i1=ord-1,1,-1
@@ -2142,7 +2111,7 @@ Contains
 
   Else If (m12.Eq.m22) Then
 
-   If ( (Abs((m42-m32)/m42)).Lt.1.e-5_dp) then
+   If ( (Abs((m42-m32)/m42)).Lt.1.e-5_dp) Then
     x = m42 / m32 - 1._dp
     diff31 = m32 - m12
 
@@ -2174,7 +2143,7 @@ Contains
     D0_Bagger = ( m42 * Log(m42/m12) / (m12-m42)**2                 &
               & - m32 * Log(m32/m12) / (m12-m32)**2 ) / (m32-m42)   &
               & - 1._dp / ( (m12-m32) * (m12-m42) )
-   end If
+   End If
 
   Else If (m32.Eq.m42) Then
 
@@ -2183,10 +2152,10 @@ Contains
     diff31 = m32 - m12
 
     ci = 0._dp
-    If (ord.gt.9) then
+    If (ord.Gt.9) Then
      Write(ErrCan,*) "Warning from D0_Bagger: for m32=m42, m22=m12(1+x)"
      Write(ErrCan,*) "the ci coefficients are only included up to order 9"
-    end if
+    End If
 
     ci(1) = - 2._dp
     ci(2) = 2.5_dp * m12 + 0.5_dp * m32
@@ -2213,7 +2182,7 @@ Contains
     Do i1=1,ord
      di(i1) = (m12/diff31)**(i1-1) * (m12 + i1*m32)/diff31**3
      ci(i1) = ci(i1) / (-diff31)**(i1+1)
-    end do
+    End Do
 
     di = di * Log(m32/m12)
 
@@ -2238,7 +2207,7 @@ Contains
    Do i1=1,ord-1
     ci(i1+1) = (-1)**(1+i1) / (diff31 * (1+i1)) + (m12*ci(i1))/diff31
     di(i1+1) = (-1)**i1 / (diff41 * (1+i1)) + (m12*di(i1))/diff41
-   End do
+   End Do
    ci = ci * m32
    di = di * m42
    D0_Bagger = ci(ord) + di(ord)
@@ -3106,9 +3075,9 @@ Contains
  !
  !	Calculate
  !
- !	/ si mu	 mu nu \2
+ !	/ si mu  mu nu \2
  !	|d	d      |
- !	\ sj sk	 sm sn /
+ !	\ sj sk  sm sn /
  !
  !	=   si.sj^2*sk.sm^2*sn.sn
  !	- 2*si.sj^2*sk.sm*sk.sn*sm.sn
@@ -3122,10 +3091,10 @@ Contains
  !	+   si.sk^2*sj.sn^2*sm.sm
  !
  !	Input:	xpi(ns)			as usual
- !		dpipj(ns,ns)		  -"-
- !		piDpj(ns,ns)		  -"-
+ !		dpipj(ns,ns)      -"-
+ !		piDpj(ns,ns)      -"-
  !		i,j,k,kj,iskj		see above
- !		m,n,nm,isnm		 -"-
+ !		m,n,nm,isnm    -"-
  !
  !	Output:	dl2d22			see above
  !
@@ -3221,18 +3190,18 @@ Contains
  !
  !	Calculate
  !
- !	 si mu	 mu sl
+ !   si mu   mu sl
  !	d	d	= si.sj*sk.sm*sl.sn - si.sk*sj.sm*sl.sn
- !	 sj sk	 sm sn		- si.sj*sk.sn*sl.sm + si.sk*sj.sn*sl.sm
+ !   sj sk   sm sn		- si.sj*sk.sn*sl.sm + si.sk*sj.sn*sl.sm
  !
  !	with p(kj) = iskj*(sk-sj)
  !	with p(nm) = isnm*(sn-sm)
  !
  !	Input:	xpi(ns)			as usual
- !		dpipj(ns,ns)		  -"-
- !		piDpj(ns,ns)		  -"-
+ !		dpipj(ns,ns)      -"-
+ !		piDpj(ns,ns)      -"-
  !		i,j,k,kj,iskj		see above
- !		l,m,n,nm,isnm		  -"-
+ !		l,m,n,nm,isnm     -"-
  !
  !	Output:	del2d2			see above
  !		del2n			it is needed in fftran anyway
@@ -3366,20 +3335,20 @@ Contains
  !
  !	Calculate
  !
- !	 si mu	 mu nu	 mu sn
+ !   si mu   mu nu   mu sn
  !	d	d	d	= ...
- !	 sj sk	 sl sm	 so sp
+ !   sj sk   sl sm   so sp
  !
  !	with p(kj) = iskj*(sk-sj)
- !	     p(ml) = isml*(sm-sl)
- !	     p(po) = ispo*(sp-so)
+ !       p(ml) = isml*(sm-sl)
+ !       p(po) = ispo*(sp-so)
  !
  !	Input:	xpi(ns)			as usual
- !		dpipj(ns,ns)		  -"-
- !		piDpj(ns,ns)		  -"-
+ !		dpipj(ns,ns)      -"-
+ !		piDpj(ns,ns)      -"-
  !		i,j,k,kj,iskj		see above
- !		l,m,ml,isml		  -"-
- !		n,o,p,po,ispo		  -"-
+ !		l,m,ml,isml     -"-
+ !		n,o,p,po,ispo     -"-
  !
  !	Output:	del3d2			see above
  !
@@ -3535,10 +3504,10 @@ Contains
  !	recipe in 't Hooft & Veltman, NP B(183) 1979.
  !	Bjorken and Drell metric is used nowadays!
  !
- !	    p2	^ |
+ !      p2	^ |
  !		| |
- !		 / \
- !	      m2/   \m3
+ !     / \
+ !        m2/   \m3
  !	p1     /     \	p3
  !	<-    /  m1   \ ->
  !	------------------------
@@ -3549,10 +3518,10 @@ Contains
  !		cpipj(6,6)   (complex)	cpi(i)-cpi(j)
  !		cpiDpj(6,6)   (complex)	pi(i).pi(j)
  !
- !	Output: cs3	 (complex)(48)	C0, not yet summed.
- !		ipi12	 (  Integer)(3)	factors pi^2/12, not yet summed
- !		cslam	 (complex)	lambda(p1,p2,p3).
- !		isoort	 (  Integer)(3)	indication of he method used
+ !	Output: cs3  (complex)(48)	C0, not yet summed.
+ !		ipi12  (  Integer)(3)	factors pi^2/12, not yet summed
+ !		cslam  (complex)	lambda(p1,p2,p3).
+ !		isoort   (  Integer)(3)	indication of he method used
  !
  !	Calls:	ffcel2,ffcoot,ffccyz,ffcdwz,ffcs3,ffcs4
  !------------------------------------------------------------------------
@@ -3577,10 +3546,10 @@ Contains
   End If
   Do i=1,3
  !
- !	    get roots (y,z)
+ !      get roots (y,z)
  !
    ip = i+3
- !	    first get the roots
+ !      first get the roots
    j = i+1
    If ( j == 4 ) j = 1
    csdl2i(i) = Sqrt(-cel2si(i))
@@ -3738,7 +3707,7 @@ Contains
  !  #] logarithms for 4point function:
  !  #[ integrals:
   If ( .Not. l4 .Or. .Not. l4pos ) Then
- !	    normal case
+ !      normal case
       Do i=1,3
        j = 2*i-1
         If ( isoort(2*i-1) /= 0 ) Then
@@ -3929,8 +3898,8 @@ Contains
   If ( l == 1 ) Then
       If ( j1 == 1 ) Then
         If ( absc(csdeli(1)+csdel2) < xloss*absc(csdel2) ) Then
- !		    for example in e-> e g* with eeg loop
- !		    first get the d  Ifference of csdeli(1) and csdel2:
+ !        for example in e-> e g* with eeg loop
+ !        first get the d  Ifference of csdeli(1) and csdel2:
         cs(1) = cpi(4)*cdpipj(2,5)
         cs(2) = -cpiDpj(4,3)*cpiDpj(4,2)
         cs(3) = cpiDpj(4,3)*cpiDpj(4,5)
@@ -4004,8 +3973,8 @@ Contains
         xmax = Max(xmax,absc(cs(i)))
       End Do
       If ( absc(csum) < xloss*xmax ) Then
- !		    this result is not used   If it is not accurate (see
- !		    ffxc0p)
+ !        this result is not used   If it is not accurate (see
+ !        ffxc0p)
         ier = ier + 1
         xmax = xmax/absc(calpha*cpi(5))
         If ( xmax < Min(absc(cz(j1)),absc(cz(j1+2))) ) Then
@@ -4218,11 +4187,11 @@ Contains
  !--------------------------------------------------------------------
  !	Calculate xpi(i)*del2 - del3(piDpj)
  !
- !	  /  si	mu \2		(This appears to be one of the harder
- !	= | d	   |		 determinants to calculate accurately.
- !	  \  p1	p2 /		 Note that we allow a loss of xloss^2)
+ !    /  si	mu \2		(This appears to be one of the harder
+ !	= | d    |     determinants to calculate accurately.
+ !    \  p1	p2 /     Note that we allow a loss of xloss^2)
  !
- !	Input:	ldel		  Iff .true. del2 and del3 exist
+ !	Input:	ldel      Iff .true. del2 and del3 exist
  !		del3		\delta^{s(1),p1,p2}_{s(1),p1,p2}
  !		del2		\delta^{p1,p2}_{p1,p2}
  !		xpi(ns)		standard
@@ -4255,12 +4224,12 @@ Contains
   If ( init == 0 ) Then
     init = 1
  !
- !	    Fill the array with adjacent values:   If
+ !      Fill the array with adjacent values:   If
  !		x = iadj(i,j)
  !		k = abs(mod(k,100))
  !		jsgnk = sign(x)
  !		jsgnj = 1-2*theta(x-100)  (ie -1   Iff |x|>100)
- !	    then
+ !      then
  !		pi(k) = jsgnk*( p(i) - jsgnj*pi(j) )
  !
       Do nm=3,4
@@ -4307,7 +4276,7 @@ Contains
     isi = i+is-1
     lmax = .False.
  !
- !	    get xpi(isi)*del2 - del3 ...   If del3 and del2 are defined
+ !      get xpi(isi)*del2 - del3 ...   If del3 and del2 are defined
  !
       If ( ldel ) Then
       s(1) = xpi(isi)*del2
@@ -4337,7 +4306,7 @@ Contains
         lmax = .True.
         End If
  !
- !		  If there are cancellations between two of the terms:
+ !      If there are cancellations between two of the terms:
  !		we try mixing with isi.
  !
  !		First map cancellation to s(2)+s(3) (  Do not mess up
@@ -4395,7 +4364,7 @@ Contains
             k = iadj(ipn,ip2,nm)
               If ( k /= 0 ) Then
               iqn = Abs(k)
- !not used		    jsgnq = isign(1,k)
+ !not used        jsgnq = isign(1,k)
                 If ( iqn > 100 ) Then
                 iqn = iqn - 100
                 jsgn2 = -1
@@ -4412,8 +4381,8 @@ Contains
                 Else
                 jsgn3 = 0
                 End If
- !			    we need one condition on the signs for this
- !			    to work
+ !          we need one condition on the signs for this
+ !          to work
                 If ( ip3/=0 .And. jsgn1*jsgn2==jsgnn*&
                 &jsgn3 .And. absc(s(3))<xloss*smax ) Then
                 s(1) = piDpj(ip1,isi)**2*dpipj(iqn,ipn)
@@ -4477,7 +4446,7 @@ Contains
  !  #] easy tries:
  !  #[ choose the best value:
  !
- !	    These values are the best found:
+ !      These values are the best found:
  !
  30   som = xsom
     smax = xmax
@@ -4494,18 +4463,18 @@ Contains
  !	Here both can be d  Ifferent.	Also we skip an intermediat
  !	level.
  !
- !	input:	cy(4)	     (complex)	cy,1-cy in S with s3,s4
- !		cz(4)	     (complex)	cz,1-cz in S with s3,s4
+ !	input:	cy(4)      (complex)	cy,1-cy in S with s3,s4
+ !		cz(4)      (complex)	cz,1-cz in S with s3,s4
  !		cdyz(2,2)    (complex)	cy - cz
- !		cd2yzz	     (complex)	2*cy - cz+ - cz-
+ !		cd2yzz       (complex)	2*cy - cz+ - cz-
  !		cdyzzy(4)    (complex)	cy(i,4)*cz(i,4)-cy(i,3)*cz(i,4)
  !		cpiDpj(6,6)  (complex)	usual
- !		cs3	     (complex)	assumed zero.
+ !		cs3      (complex)	assumed zero.
  !
- !	output: cs3	     (complex)	mod factors pi^2/12, in array
- !		ipi12	     (  Integer)	these factors
- !		isoort	     (  Integer)	returns kind of action taken
- !		ier	     (  Integer)	number of digits lost
+ !	output: cs3      (complex)	mod factors pi^2/12, in array
+ !		ipi12      (  Integer)	these factors
+ !		isoort       (  Integer)	returns kind of action taken
+ !		ier      (  Integer)	number of digits lost
  !--------------------------------------------------------------------
  Implicit None
   Complex(dp) :: cs3
@@ -4528,7 +4497,7 @@ Contains
       If ( Real(c,dp) > -Abs(Aimag(c)) ) Then
         clogy = zfflog(c,0,czero)
       Else
- !		    take out the factor 2*pi^2
+ !        take out the factor 2*pi^2
         cc = c+1
         If ( absc(cc) < xloss ) Then
           c2y1 = -cd2yzz - cz(1) + cz(4)
@@ -4569,11 +4538,11 @@ Contains
  !	r(y0,y1,iesp) = \ dy --------------------------------
  !			/0		y-y0
  !
- !	    = li2(c1) - li2(c2)
+ !      = li2(c1) - li2(c2)
  !		+ eta(-y1,1/(y0-y1))*log(c1)
  !		- eta(1-y1,1/(y0-y1))*log(c2)
  !	with
- !	    c1 = y0 / (y0-y1), c2 = (y0-1) / (y0-y1)
+ !      c1 = y0 / (y0-y1), c2 = (y0-1) / (y0-y1)
  !
  !	the factors pi^2/12 are passed separately in the integer ipi12
  !	ier is a status flag: 0=ok, 1=numerical problems, 2=error
@@ -4612,7 +4581,7 @@ Contains
     xprec = precx
 !    bndtay = ffbnd(2,18,xn2inv)
     bndtay = (precx*Abs(xn2inv(2)/xn2inv(20)))**(1./18._dp)
- !	    print *,'bndtay = ',bndtay
+ !      print *,'bndtay = ',bndtay
   End If
  !  #] initialisations:
  !  #[ real case:
@@ -4660,7 +4629,7 @@ Contains
   xr = Real(cc1,dp)
   xa = absc(cc1)
   If ( xa > 1 .And. xa < 1+Sqrt(2.) ) Then
- !	    we need a more accurate estimate
+ !      we need a more accurate estimate
     xa = xr**2 + Aimag(cc1)**2
   End If
   If ( ld2yzz .And. absc(cc1+1) < xloss/2 ) Then
@@ -4712,11 +4681,11 @@ Contains
  !	throw together   If they are close
  !
   If ( iclas1 /= iclas2 .And. absc(cc1-cc2) < 2*xloss ) Then
- !	    we   Don't want trouble with iclasn = 4
+ !      we   Don't want trouble with iclasn = 4
     If ( iclas1 == 4 ) iclas1 = 1
     If ( iclas2 == 4 ) iclas2 = 1
     If ( iclas1 == iclas2 ) Goto 5
- !	    go on
+ !      go on
     If ( iclas1 <= iclas2 ) Then
       iclas2 = iclas1
       If ( iclas1 == 1 ) Then
@@ -4746,7 +4715,7 @@ Contains
       If ( Aimag(cz) == 0 .Or. Aimag(cz1) == 0 ) Then
         If ( Aimag(cz1) == 0 ) Then
           If ( Aimag(cz) == 0 ) Then
- !		    cz is really real, the hard case:
+ !        cz is really real, the hard case:
             If ( cz == 0 ) Then
  !			multiplied with log(1), so   Don't care:
               n1 = 0
@@ -4769,14 +4738,14 @@ Contains
           n2 = nffet1(cz1,cfact,cz1*cfact,ier)
         End If
       Else
- !	    the imaginary part of cc1, cc1p is often very unstable.
- !	    make sure it agrees with the actual sign used.
+ !      the imaginary part of cc1, cc1p is often very unstable.
+ !      make sure it agrees with the actual sign used.
         If ( iclas1 == 2 ) Then
           If ( Aimag(cc1p) == 0 ) Then
- !		      If y (or y1 further on) is purely imaginary
- !		    give a ran  Dom sh  Ift, this will also be used in
- !		    the transformation terms.  Checked 7-mar-94 that it
- !		    is independent of the sign used.
+ !          If y (or y1 further on) is purely imaginary
+ !        give a ran  Dom sh  Ift, this will also be used in
+ !        the transformation terms.  Checked 7-mar-94 that it
+ !        is independent of the sign used.
             If ( Real(cy,dp)==0 ) cy = cy +isgnal*Real(precc,dp)*Aimag(cy)
             n1 = nffet1(-cz,cfact,Cmplx(0._dp,ieps*Real(cy,dp),dp), ier)
           Else
@@ -4817,8 +4786,8 @@ Contains
     .Or. lreal .And. Abs(Real(cc1p-cc2p,dp)) < 2*xloss*Abs(Real(cc1p,dp))&
     & .And. (Abs(Real(cc2p,dp)) +Aimag(cc2p)**2/4) < xloss .And.&
     & Abs(Aimag(cc2p)) < bndtay ) ) Then
- !	    Close together:
- ! -#[	    handle dilog's:
+ !      Close together:
+ ! -#[      handle dilog's:
       If ( .Not. lreal .And. absc(cc2p) > xloss&
       & .Or. lreal .And. ( (Abs(Real(cc2p,dp)) + Aimag(cc2p)**2/4) &
       > xloss .Or. Abs(Aimag(cc2p)) > bndtay ) ) Then
@@ -4854,11 +4823,11 @@ Contains
       Else
  !--#[		Taylor expansion:
  !
- !		  If the points are close to zero   Do a Taylor
+ !      If the points are close to zero   Do a Taylor
  !		expansion of the first and last dilogarithm
  !
  !			Li2(cc1p) - Li2(cc2p)
- !			  = sum cc1p^i ( 1-(1-cd2)^i ) /i^2
+ !        = sum cc1p^i ( 1-(1-cd2)^i ) /i^2
  !
  !		with cd2 = 1-cc2p/cc1p = ...
  !
@@ -4894,8 +4863,8 @@ Contains
  !--#]		Taylor expansion:
       End If
  !
- ! -#]	    handle dilog's:
- ! -#[	    handle eta + transformation terms:
+ ! -#]      handle dilog's:
+ ! -#[      handle eta + transformation terms:
       If ( iclas1==1 .Or. iclas1==4 ) Then
  !--#[		no transformation:
  !
@@ -4918,7 +4887,7 @@ Contains
           n3 = nffeta(cc2,1/cc1,ier)
           If ( n3 /= 0 ) Then
             crr(7) = n2*n3*c2ipi**2
- !		      Else
+ !          Else
  !			crr(7) = 0
           End If
         End If
@@ -4959,7 +4928,7 @@ Contains
  !
         clog2p = zfflog(-cc2p,ieps,cy1)
         If ( Aimag(cc2p)==0 .Or. Aimag(cc1)==0 ) Then
- !		    we chose the eta's already equal, no worry.
+ !        we chose the eta's already equal, no worry.
           n3 = 0
           n3p = 0
         Else
@@ -4967,8 +4936,8 @@ Contains
           n3p = nffet1(cc2p,cc1,-cy/cy1,ier)
         End If
         If ( n3/=0 .Or. n3p/=0 .Or. n1/=n2 ) Then
- !		    for the time being the normal terms, I'll have to think of
- !		    something smarter one day
+ !        for the time being the normal terms, I'll have to think of
+ !        something smarter one day
           clog1p = zfflog(-cc1p,ieps,-cy)
           crr(5) = -clog1p**2/2
           crr(6) = +clog2p**2/2
@@ -4978,8 +4947,8 @@ Contains
         End If
  !--#]		transform 1/x:
       End If
- ! -#]	    handle eta + transformation terms:
- ! -#[	    add up:
+ ! -#]      handle eta + transformation terms:
+ ! -#[      add up:
       If ( iclas1 == 1 .Or. iclas1 == 4 ) Then
         crr(1) = cli1
         crr(2) = cli2
@@ -4991,13 +4960,13 @@ Contains
         crr(3) = cli3
         crr(4) = - chill
       End If
- ! -#]	    add up:
+ ! -#]      add up:
   Else
- !	    Normal case:
- ! -#[	    handle dilogs:
+ !      Normal case:
+ ! -#[      handle dilogs:
  !
- !	    the dilogs will not come close together so just go on
- !	    only the special case cc1p ~ (-1,0) needs special attention
+ !      the dilogs will not come close together so just go on
+ !      only the special case cc1p ~ (-1,0) needs special attention
  !
       If ( iclas1 /= 4 .Or. .Not. ld2yzz ) Then
         Call ffzli2(cli1,clo1,cc1p)
@@ -5026,10 +4995,10 @@ Contains
         Call ffzli2(cli3,clo3,-cd2*cfact)
         Call ffzli2(cli4,clo4,cd2)
       End If
- ! -#]	    handle dilogs:
- ! -#[	    handle eta terms:
+ ! -#]      handle dilogs:
+ ! -#[      handle eta terms:
  !
- !	    the eta's
+ !      the eta's
  !
       If ( n1 /= 0 ) Then
         If ( iclas1 /= 2 .Or. absc(cc1p) > xloss ) Then
@@ -5060,7 +5029,7 @@ Contains
           clog1 = Log1minusX(cc1p)
         End If
         crr(5) = n1*c2ipi*clog1
- !	      Else
+ !        Else
  !		crr(5) = 0
       End If
       If ( n2 /= 0 ) Then
@@ -5092,13 +5061,13 @@ Contains
           clog2 = Log1minusX(cc2p)
         End If
         crr(6) = n2*c2ipi*clog2
- !	      Else
+ !        Else
  !		crr(6) = 0
       End If
- ! -#]	    handle eta terms:
- ! -#[	    handle transformation terms:
+ ! -#]      handle eta terms:
+ ! -#[      handle transformation terms:
  !
- !	    transformation of cc1
+ !      transformation of cc1
  !
       If ( iclas1 == 1 ) Then
  !		crr(3) = 0
@@ -5119,7 +5088,7 @@ Contains
         Call WriteLFerror(27)
       End If
  !
- !	    transformation of cc2
+ !      transformation of cc2
  !
       If ( iclas2 == 1 ) Then
       Else If( iclas2 == 2 ) Then
@@ -5138,13 +5107,13 @@ Contains
       Else
         Call WriteLFerror(28)
       End If
- ! -#]	    handle transformation terms:
- ! -#[	    sum:
+ ! -#]      handle transformation terms:
+ ! -#[      sum:
       crr(1) = cli1
       crr(2) = - cli2
       crr(6) = - crr(6)
- !	    crr(7) = 0
- ! -#]	    sum:
+ !      crr(7) = 0
+ ! -#]      sum:
   End If
  !  #] calculations:
   End Subroutine ffcrr
@@ -5153,29 +5122,29 @@ Contains
  !--------------------------------------------------------------------
  !	calculates the s3 as defined in appendix b.
  !
- !		  log( cpi(ii+3)*y^2 + (cpi(ii+3)+cpi(ii)-cpi(ii+1))*y
- !	     /1 		     +	cpi(ii+1))  - log( ... ) |y=cyi
+ !      log( cpi(ii+3)*y^2 + (cpi(ii+3)+cpi(ii)-cpi(ii+1))*y
+ !       /1          +	cpi(ii+1))  - log( ... ) |y=cyi
  !	s3 = \ dy ----------------------------------------------------
- !	     /0 			y - cyi
+ !       /0       y - cyi
  !									*
- !	   = r(cyi,cy+) + r(cyi,cy-) +  ( eta(-cy-,-cy+) -
+ !     = r(cyi,cy+) + r(cyi,cy-) +  ( eta(-cy-,-cy+) -
  !		eta(1-cy-,1-cy+) - eta(...) )*log(1-1/cyi)
  !
  !	with y+- the roots of the argument of the logarithm.
  !
- !	input:	cy(4)	 (complex)  cy(1)=y^-,cy(2)=y^+,cy(i+2)=1-cy(1)
- !		cz(4)	 (complex)  cz(1)=z^-,cz(2)=z^+,cz(i+2)=1-cz(1)
+ !	input:	cy(4)  (complex)  cy(1)=y^-,cy(2)=y^+,cy(i+2)=1-cy(1)
+ !		cz(4)  (complex)  cz(1)=z^-,cz(2)=z^+,cz(i+2)=1-cz(1)
  !		cpi(6)   (complex)  masses & momenta (B&D)
- !		ii	 (  Integer)  position of cp,cma,cmb in cpi
- !		ns	 (  Integer)  size of arrays
+ !		ii   (  Integer)  position of cp,cma,cmb in cpi
+ !		ns   (  Integer)  size of arrays
  !		isoort(2)(  Integer)  returns the kind of action taken
- !		cs3	 (complex)(14)	assumed zero.
+ !		cs3  (complex)(14)	assumed zero.
  !
- !	output: cs3	 (complex)  mod factors ipi12
+ !	output: cs3  (complex)  mod factors ipi12
  !		ipi12(2) (  Integer)  these factors
- !		ier	 (  Integer)  0=ok, 1=numerical problems, 2=error
+ !		ier  (  Integer)  0=ok, 1=numerical problems, 2=error
  !
- !	  Calls:	ffcrr,Aimag,Real,zfflog
+ !    Calls:	ffcrr,Aimag,Real,zfflog
  !--------------------------------------------------------------------
  Implicit None
   Integer :: ipi12(2),ii,ns,isoort(2),ier
@@ -5194,8 +5163,8 @@ Contains
   If ( isoort(2) /= 0 .And. Max(absc(cy(2)),absc(cy(4))) <&
     &    xloss*Min(absc(cz(1)),absc(cz(2)))/2 ) Then
  !
- !	    we will obtain cancellations of the type Li_2(x) + Li_2(-x)
- !	    with x small.
+ !      we will obtain cancellations of the type Li_2(x) + Li_2(-x)
+ !      with x small.
  !
     cyy = cdyz(2,1)/cd2yzz
     cyy1 = cdyz(2,2)/cd2yzz
@@ -5204,7 +5173,7 @@ Contains
         czz = cz(2)*cyy*Cmplx(1/Real(cy(2),dp),0._dp,dp)
         cdyyzz = cyy*cdyz(2,2)*Cmplx(1/Real(cy(2),dp),0._dp,dp)
       Else If ( cy(2) == 0 .And. cz(2) /= 0 .And. cyy/= 0 ) Then
- !		    the answer IS zero
+ !        the answer IS zero
         Goto 30
       End If
     Else
@@ -5216,7 +5185,7 @@ Contains
  !		no eta terms.
       ieps0 = 99
     Else
- !		  Do not know the im part
+ !      Do not know the im part
       ieps0 = 0
     End If
     Call ffcrr(cs3(1),ipi12(1),cyy,cyy1,czz,czz1,cdyyzz,.False., &
@@ -5227,7 +5196,7 @@ Contains
         czz = cz(4)*cyy*Cmplx(1/Real(cy(4),dp),0._dp,dp)
         cdyyzz = -cyy*cdyz(2,2)*Cmplx(1/Real(cy(4),dp),0._dp,dp)
       Else If ( cy(4) == 0 .And. cz(4) /= 0 .And. cyy/= 0 ) Then
- !		    the answer IS zero
+ !        the answer IS zero
         Goto 50
       End If
      Else
@@ -5241,13 +5210,13 @@ Contains
       cs3(i) = -cs3(i)
      End Do
  !
- !	    And now the remaining Li_2(x^2) terms
- !	    stupid Gould NP1
+ !      And now the remaining Li_2(x^2) terms
+ !      stupid Gould NP1
  !
   50  c = cy(2)*cy(2)/(cdyz(2,1)*cdyz(2,1))
      zdilog = CLi2(c)
      cs3(15) = +zdilog/2
- !	    stupid Gould NP1
+ !      stupid Gould NP1
      c = cy(4)*cy(4)/(cdyz(2,1)*cdyz(2,1))
      zdilog = CLi2(c)
      cs3(16) = -zdilog/2
@@ -5261,7 +5230,7 @@ Contains
     ld2yzz = .True.
   End If
   If ( isoort(1) == 0 ) Then
- !	      Do nothing
+ !        Do nothing
   Else If ( Mod(isoort(1),10)==0 .Or. Mod(isoort(1),10)==-1&
       &  .Or. Mod(isoort(1),10)==-3 ) Then
    Call ffcrr(cs3(1),ipi12(1),cy(2),cy(4),cz(1),cz(3), &
@@ -5284,7 +5253,7 @@ Contains
       Call WriteLFerror(20)
   End If
   If ( isoort(2) == 0 ) Then
- !	      Do nothing
+ !        Do nothing
   Else If ( Mod(isoort(2),5) == 0 ) Then
     Do i=1,7
       cs3(i) = 2*Real(cs3(i),dp)
@@ -5317,15 +5286,15 @@ Contains
       Print *,'ffcxs3: error: I assumed both would be real!'
       ier = ier + 50
       End If
- !	    we   Called ffcxr - no eta's
+ !      we   Called ffcxr - no eta's
   Else If ( Aimag(cpi(ip))==0 ) Then
     Call ffgeta(ni,cz(1),cdyz(1,1), cpi(ip),cpiDpj(ii,ip),ieps,isoort,ier)
     ntot = ni(1) + ni(2) + ni(3) + ni(4)
     If ( ntot /= 0 ) Call ffclgy(cs3(15),ipi12(2),ntot, cy(1),cz(1),cd2yzz,ier)
   Else
  !
- !	    cpi(ip) is really complex (occurs in transformed
- !	    4pointfunction)
+ !      cpi(ip) is really complex (occurs in transformed
+ !      4pointfunction)
  !
     Print *,'THIS PART IS NOT READY ', 'and should not be reached'
     Call TerminateProgram()
@@ -5410,7 +5379,7 @@ Contains
         If ( Real(c,dp) > -Abs(Aimag(c)) ) Then
           clogy = zfflog(c,0,czero)
         Else
- !		    take out the factor 2*pi^2
+ !        take out the factor 2*pi^2
           cc = c+1
           If ( absc(cc) < xloss ) Then
             c2y1 = -cd2yzz - cz(1) + cz(4)
@@ -5445,11 +5414,11 @@ Contains
  !------------------------------------------------------------------------
  !	calculates R as defined in appendix b:
  !
- !		   /1    log(x-z+i*eps) - log(y-z+i*eps)
+ !       /1    log(x-z+i*eps) - log(y-z+i*eps)
  !	r(y,z)  =  \ dx  -----------------------------------
- !		   /0		      x-y
+ !       /0         x-y
  !
- !	    = li2(y/(y-z)+i*eps') - li2((y-1)/(y-z)+i*eps')
+ !      = li2(y/(y-z)+i*eps') - li2((y-1)/(y-z)+i*eps')
  !
  !	y,z are real, ieps  integer denoting the sign of i*eps.
  !	factors pi^2/12 are passed in the   Integer ipi12.
@@ -5460,7 +5429,7 @@ Contains
  !		z1	(real)		1-z
  !		dyz	(real)		y-z
  !
- !		ld2yzz	(logical)	  If .TRUE. also defined are:
+ !		ld2yzz	(logical)   If .TRUE. also defined are:
  !		d2yzz	(real)		2*y - z^+ - z^-
  !		zz	(real)		the other z-root
  !		zz1	(real)		1 - zz
@@ -5554,7 +5523,7 @@ Contains
  !	throw together   If they are close
  !
   If ( iclas1 /= iclas2 .And. Abs(xx1-xx2) < 2*xloss ) Then
- !	    we   Don't want trouble with iclasn = 4,5
+ !      we   Don't want trouble with iclasn = 4,5
     If ( iclas1 == 4 ) Then
       iclas1 = 1
     Else If ( iclas1 == 5 ) Then
@@ -5568,7 +5537,7 @@ Contains
       xx2p = 1/xx2
     End If
     If ( iclas1 == iclas2 ) Goto 5
- !	    go on
+ !      go on
       If ( iclas1 <= iclas2 ) Then
       iclas2 = iclas1
       If ( iclas1 == 1 ) Then
@@ -5589,9 +5558,9 @@ Contains
  !  #[ calculations:
 5   If ( iclas1 == iclas2 .And.Abs(xx1p-xx2p) < &
        &  2*xloss*Max(Abs(xx1p),Abs(xx2p)) .And. iclas1 /= 5 ) Then
- !		      |----->temporary!
- !	    Close together:
- ! -#[	    handle dilog's:
+ !          |----->temporary!
+ !      Close together:
+ ! -#[      handle dilog's:
       If ( Abs(xx2p) > xloss ) Then
  !--#[		Hill identity:
  !
@@ -5625,11 +5594,11 @@ Contains
       Else
  !--#[		Taylor expansion:
  !
- !		  If the points are close to zero   Do a Taylor
+ !      If the points are close to zero   Do a Taylor
  !		expansion of the first and last dilogarithm
  !
  !			Li2(xx1p) - Li2(xx2p)
- !			  = sum xx1p^i ( 1-(1-d2)^i ) /i^2
+ !        = sum xx1p^i ( 1-(1-d2)^i ) /i^2
  !
  !		with d2 = 1-xx2p/xx1p = ...
  !
@@ -5673,8 +5642,8 @@ Contains
  !--#]		Taylor expansion:
       End If
  !
- ! -#]	    handle dilog's:
- ! -#[	    handle transformation terms:
+ ! -#]      handle dilog's:
+ ! -#[      handle transformation terms:
       If ( iclas1 == 1 .Or. iclas1 == 4 ) Then
  !
  !		no transformation was made.
@@ -5700,8 +5669,8 @@ Contains
         clog2p = zxfflg(-xx2p,-ieps,-y1)
         crr(5) = Real(xlo1,dp)*(clog2p - Real(xlo1,dp)/2)
       End If
- ! -#]	    handle transformation terms:
- ! -#[	    add up and print out:
+ ! -#]      handle transformation terms:
+ ! -#[      add up and print out:
       If ( iclas1 == 1 .Or. iclas1 == 4 ) Then
         crr(1) = xli1
         crr(2) = xli2
@@ -5713,14 +5682,14 @@ Contains
         crr(3) = xli3
         crr(4) = - xhill
       End If
- ! -#]	    add up and print out:
+ ! -#]      add up and print out:
   Else
- !	    Normal case:
- ! -#[	    handle dilogs:
+ !      Normal case:
+ ! -#[      handle dilogs:
  !
- !	    the dilogs will not come close together so just go on
- !	    only the special case xx1p ~ -1 needs special attention
- !	    - and the special case xx1 ~ 2 also needs special attention
+ !      the dilogs will not come close together so just go on
+ !      only the special case xx1p ~ -1 needs special attention
+ !      - and the special case xx1 ~ 2 also needs special attention
  !
       If ( iclas1 == 4 ) Then
         d2 = d2yzz + zz
@@ -5765,10 +5734,10 @@ Contains
       Else
         Call ffxli2(xli2,xlo2,xx2p)
       End If
- ! -#]	    handle dilogs:
- ! -#[	    handle transformation terms xx1:
+ ! -#]      handle dilogs:
+ ! -#[      handle transformation terms xx1:
  !
- !	    transformation of c1
+ !      transformation of c1
  !
       If ( iclas1 == 1 ) Then
         crr(1) = xli1
@@ -5796,10 +5765,10 @@ Contains
       Else
         Call WriteLFerror(26)
       End If
- ! -#]	    handle transformation terms xx1:
- ! -#[	    handle transformation terms xx2:
+ ! -#]      handle transformation terms xx1:
+ ! -#[      handle transformation terms xx2:
  !
- !	    transformation of c2
+ !      transformation of c2
  !
       If ( iclas2 == 1 ) Then
         crr(2) = -xli2
@@ -5827,7 +5796,7 @@ Contains
       Else
         Call  WriteLFerror(30)
       End If
- ! -#]	    handle transformation terms xx2:
+ ! -#]      handle transformation terms xx2:
   End If
  !  #] calculations:
   End Subroutine ffcxr
@@ -5839,12 +5808,12 @@ Contains
  !	calculates the s3 as defined in appendix b.
  !		(ip = ii+3, is1 = ii, is2 = ii+1)
  !
- !		  log( xk*y^2 + (-xk+xm1-xm2)*y + xm2 - i*eps )
- !	     /1 				  - log( ... ) |y=yi
+ !      log( xk*y^2 + (-xk+xm1-xm2)*y + xm2 - i*eps )
+ !       /1           - log( ... ) |y=yi
  !	s3 = \ dy --------------------------------------------------
- !	     /0 			y - yi
+ !       /0       y - yi
  !
- !	    = r(yi,y-,+) + r(yi,y+,-)
+ !      = r(yi,y-,+) + r(yi,y+,-)
  !
  !	with y+- the roots of the argument of the logarithm.
  !	the sign of the argument to the logarithms in r is passed
@@ -5859,13 +5828,13 @@ Contains
  !		ns	(  Integer)	size of arrays
  !		isoort	(  Integer)	returns kind of action taken
  !		cs3	(complex)(20)	assumed zero.
- !		ccy	(complex)(3)	  If i0 != 0: complex y
+ !		ccy	(complex)(3)    If i0 != 0: complex y
  !
  !	output: cs3	(complex)	mod factors pi^2/12, in array
  !		ipi12	(  Integer)	these factors
  !		ier	(  Integer)	0=ok 1=inaccurate 2=error
  !
- !	  Calls:	ffcrr,ffcxr,real/Real,Cmplx,log,ffadd1,ffadd2,ffadd3
+ !    Calls:	ffcrr,ffcxr,real/Real,Cmplx,log,ffadd1,ffadd2,ffadd3
  !--------------------------------------------------------------------
  Implicit None
   Integer :: ipi12(2),ii,ns,isoort(2),ier
@@ -5898,8 +5867,8 @@ Contains
   If ( xpi(ip)<0 .And. Max(Abs(y(2)),Abs(y(4))) < &
     &  xloss*Min(Abs(z(1)), Abs(z(2)))/2 ) Then
  !
- !	    we will obtain cancellations of the type Li_2(x) + Li_2(-x)
- !	    with x small.
+ !      we will obtain cancellations of the type Li_2(x) + Li_2(-x)
+ !      with x small.
  !
     yy = dyz(2,1)/d2yzz
     yy1 = dyz(2,2)/d2yzz
@@ -5920,7 +5889,7 @@ Contains
         cs3(i) = -cs3(i)
       End Do
     End If
- !	    And now the remaining Li_2(x^2) terms
+ !      And now the remaining Li_2(x^2) terms
     xdilog = Li2((y(2)/dyz(2,1))**2)
     cs3(15) = +xdilog/2
     xdilog = Li2((y(4)/dyz(2,1))**2)
@@ -6247,13 +6216,13 @@ Contains
  !  #] trivial case:
  !  #[ normal case:
  !
- !	  If no cancellations are expected OR the imaginary signs differ
+ !    If no cancellations are expected OR the imaginary signs differ
  !	and are sign  Ificant
  !
   Else If ( absc(cdw) > xloss .Or. (iepsz/=iepsw .And. &
       (Real(cy/cdyz,dp)>1._dp .Or. Real(-cy1/cdyz,dp)>1._dp) ) ) Then
- !	    nothing's the matter
- !	    special case to avoid bug found 15-oct=1995
+ !      nothing's the matter
+ !      special case to avoid bug found 15-oct=1995
       If ( iepsz==iepsw ) Then
         If ( Aimag(cz)==0 .And. Aimag(cz1)==0 ) Then
           Print *,'ffdcrr: flipping sign iepsz'
@@ -6277,7 +6246,7 @@ Contains
  !  #] normal case:
  !  #[ only cancellations in cw, not in cy:
   Else If ( absc(cd2) > xloss ) Then
- !	    there are no cancellations the other way:
+ !      there are no cancellations the other way:
     cyy = cdwy/cdwz
     czz = cz*cyy/cy
     cyy1 = cdyz/cdwz
@@ -6288,8 +6257,8 @@ Contains
     Else
       ieps1 = +3*iepsz
     End If
- !	    Often 2y-z-z is relevant, but 2*yy-zz-zz is not, solve by
- !	    introducing zzp.
+ !      Often 2y-z-z is relevant, but 2*yy-zz-zz is not, solve by
+ !      introducing zzp.
     czzp = czp*cyy/cy
     cd2yyz = cd2yzz*cyy/cy
     czzp1 = 1 - czzp
@@ -6324,7 +6293,7 @@ Contains
       cs3(i) = -cs3(i)
     End Do
     ipi12(2) = -ipi12(2)
- !	    eta terms (are not calculated in ffcrr as ieps = 3)
+ !      eta terms (are not calculated in ffcrr as ieps = 3)
     cfactz = 1/cdyz
     If ( Aimag(cz) == 0 ) Then
       If ( Aimag(cy) == 0 ) Then
@@ -6352,13 +6321,13 @@ Contains
       n5 = nffeta(cw1,cfactw,ier)
     End If
  !
- !	    we assume that cs3(15-17) are not used, this is always true
+ !      we assume that cs3(15-17) are not used, this is always true
  !
     n3 = 0
     n6 = 0
     If ( n1==n4 ) Then
       If ( n1==0 ) Then
- !		    nothing to   Do
+ !        nothing to   Do
       Else
         cc1 = cdwz/cdyz
         If ( absc(cc1) < xloss ) Then
@@ -6387,7 +6356,7 @@ Contains
     End If
     If ( n2==n5 ) Then
       If ( n2==0 ) Then
- !		    nothing to   Do
+ !        nothing to   Do
       Else
         cc1 = cdwz/cdyz
         If ( absc(cc1) < xloss ) Then
@@ -6419,7 +6388,7 @@ Contains
   Else If (  ( 1>xloss*absc(cy) .Or. absc(cc1)>xloss ) &
       .And. ( 1>xloss*absc(cz) .Or. absc(cz/cdyz)>xloss ) &
       .And. ( 1>xloss*absc(cy) .Or. absc(cdyz/cy)>xloss ) ) Then
- !	      Do a Hill identity on the cy,cy-1 direction
+ !        Do a Hill identity on the cy,cy-1 direction
     cyy = -cy*cw1/cdwy
     cyy1 = cw*cy1/cdwy
     czz = -cz*cw1/cdwz
@@ -6439,7 +6408,7 @@ Contains
       cs3(i) = -cs3(i)
     End Do
     ipi12(2) = -ipi12(2)
- !	    the extra logarithms ...
+ !      the extra logarithms ...
     If ( 1 < xloss*absc(cw) ) Then
       chulp = Log1MinusX(1/cw)
     Else
@@ -6449,7 +6418,7 @@ Contains
  !  #] Hill identity:
  !  #[ Taylor expansion:
   Else
- !	    Do a Taylor expansion
+ !      Do a Taylor expansion
     If ( absc(cc1) < xloss ) Then
       cd3 = cdwz/cdwy
  !		isign = 1
@@ -6544,7 +6513,7 @@ Contains
  !  #] trivial case:
  !  #[ normal case:
   Else If ( Abs(dw) > xloss .Or. again ) Then
- !	    nothing's the matter
+ !      nothing's the matter
     Call ffcxr(cs3( 1),ipi12(1),y,y1,z,z1,dyz, &
       .True.,d2yzz,zp,zp1,.False.,x00,iepsz,ier)
     Call ffcxr(cs3(11),ipi12(2),y,y1,w,w1,-dwy, &
@@ -6556,7 +6525,7 @@ Contains
  !  #] normal case:
  !  #[ only cancellations in w, not in y:
   Else If ( Abs(d2) > xloss ) Then
- !	    there are no cancellations the other way:
+ !      there are no cancellations the other way:
     If ( iepsz /= iepsw .And. ( y/dyz > 1 .Or.-y/dwy >1 ) ) Then
       again = .True.
       Goto 123
@@ -6592,7 +6561,7 @@ Contains
   Else If (  ( 1 > xloss*Abs(y) .Or. Abs(xx1) > xloss ) &
       .And. ( 1 > xloss*Abs(z) .Or. Abs(z/dyz) > xloss ) &
       .And. ( 1 > xloss*Abs(y) .Or. Abs(dyz/y) > xloss ) ) Then
- !	      Do a Hill identity on the y,y-1 direction
+ !        Do a Hill identity on the y,y-1 direction
     yy = -y*w1/dwy
     yy1 = w*y1/dwy
     zz = -z*w1/dwz
@@ -6616,7 +6585,7 @@ Contains
       cs3(i) = -cs3(i)
     End Do
     ipi12(2) = -ipi12(2)
- !	    the extra logarithms ...
+ !      the extra logarithms ...
     If ( 1 < xloss*Abs(w) ) Then
       chulp = Log1MinusX(1/w)
     Else If ( w1 < 0 .Or. w < 0 ) Then
@@ -6628,7 +6597,7 @@ Contains
  !  #] Hill identity:
  !  #[ Taylor expansion:
   Else If ( (w<0..Or.w1<0) .And. (z<0..Or.z1<0) ) Then
- !	      Do a Taylor expansion
+ !        Do a Taylor expansion
     If ( Abs(xx1) < xloss ) Then
       d3 = dwz/dwy
       xx1n = xx1
@@ -6712,7 +6681,7 @@ Contains
 
  Real(dp) Function ffdel3(piDpj)
  !------------------------------------------------------------------------
- ! 	Calculate del3(piDpj) = det(si.sj)	with
+ !  Calculate del3(piDpj) = det(si.sj)	with
  !	the momenta as follows:
  !	p(1-3) = s(i)
  !	p(4-6) = p(i)
@@ -6915,7 +6884,7 @@ Contains
  !		\delta_{si,sj}^{sk,sl}
  !
  !	with p(ji) = isji*(sj-si)
- !	     p(lk) = islk*(sl-sk)
+ !       p(lk) = islk*(sl-sk)
  !---------------------------------------------------------------------
  Implicit None
   Integer :: in,jn,jin,isji,kn,ln,lkn,islk,ns
@@ -6957,7 +6926,7 @@ Contains
     lk = ihlp
    End Do
  !
- !	    and the ii's
+ !      and the ii's
    If ( ji == 0 ) Exit
    ihlp = i
    i = j
@@ -7523,8 +7492,8 @@ outer:  Do i=1,itime
         xmax = Max(xmax,Abs(s(i)))
       End Do
       If ( Abs(sum) < xloss*xmax ) Then
- !		    this result is not used   If it is not accurate (see
- !		    ffxc0p)
+ !        this result is not used   If it is not accurate (see
+ !        ffxc0p)
         ier = ier + 1
         xmax = xmax/Abs(alpha*xpi(5))
         dwz(i1,j1) = sum/(alpha*xpi(5))
@@ -7548,10 +7517,10 @@ outer:  Do i=1,itime
  !		cd2yzz	complex(2)	2y-(z-)-(z+)
  !		cp	complex		p^2
  !		cpDs	complex		p.s
- !		ieps	  Integer(2)	the assumed im part if Im(z)=0
- !		isoort	  Integer(2)	which type of Ri
+ !		ieps    Integer(2)	the assumed im part if Im(z)=0
+ !		isoort    Integer(2)	which type of Ri
  !
- !	Output:	ni	  Integer(4)	eta()/(2*pi*i)
+ !	Output:	ni    Integer(4)	eta()/(2*pi*i)
  !--------------------------------------------------------------------
  Implicit None
   Integer :: ni(4),ieps(2),isoort(2),ier
@@ -7574,7 +7543,7 @@ outer:  Do i=1,itime
  !
   If ( isoort(1) > 0 ) Then
  !
- !	    really a real case
+ !      really a real case
  !
     ni(1) = 0
     ni(2) = 0
@@ -7583,8 +7552,8 @@ outer:  Do i=1,itime
   Else If ( Mod(isoort(1),10) /= 0 .And. isoort(2) /= 0 ) Then
     cmip = Cmplx(0._DP,-Real(cp,dp),dp)
  !
- !	    ni(1) = eta(p2,(x-z-)(x-z+)) = 0 by definition (see ni(3))
- !	    ni(2) = eta(x-z-,x-z+)
+ !      ni(1) = eta(p2,(x-z-)(x-z+)) = 0 by definition (see ni(3))
+ !      ni(2) = eta(x-z-,x-z+)
  !
     ni(1) = 0
     If ( ieps(1) > 0 .Neqv. ieps(2) > 0 ) Then
@@ -7597,8 +7566,8 @@ outer:  Do i=1,itime
       End If
     End If
  !
- !	    ni(3) compensates for whatever convention we chose in ni(1)
- !	    ni(4) = -eta(y-z-,y-z+)
+ !      ni(3) compensates for whatever convention we chose in ni(1)
+ !      ni(4) = -eta(y-z-,y-z+)
  !
     If ( Mod(isoort(1),10)==-3 ) Then
  !		follow the i*epsilon prescription as (y-z-)(y-z+) real
@@ -7640,9 +7609,9 @@ outer:  Do i=1,itime
  !	Input:	cz	complex(4)	the roots z-,z+,1-z-,1-z+
  !		cp	complex		p^2
  !		cpDs	complex		p.s
- !		isoort	  Integer(2)	which type of Ri
+ !		isoort    Integer(2)	which type of Ri
  !
- !	Output:	ieps	  Integer(2)	z -> z-ieps*i*epsilon
+ !	Output:	ieps    Integer(2)	z -> z-ieps*i*epsilon
  !					will give correct im part
  !--------------------------------------------------------------------
  Implicit None
@@ -7651,7 +7620,7 @@ outer:  Do i=1,itime
  !
  !  #[ work:
   If ( Aimag(cp) /= 0 ) Then
- !	      Do not calculate ANY eta terms, we'll do them ourselves.
+ !        Do not calculate ANY eta terms, we'll do them ourselves.
     ieps(1) = 99
     ieps(2) = 99
   Else If ( isoort(2) /= 0 ) Then
@@ -7809,10 +7778,10 @@ outer:  Do i=1,itime
    End Do
   Endif
 
- !DEBUG	  If ( iflag .eq. 3 .and. lsmug ) then
+ !DEBUG   If ( iflag .eq. 3 .and. lsmug ) then
   If ( lsmug ) Then
  !
- !	      Do not forget to rotate the smuggled d  Ifferences
+ !        Do not forget to rotate the smuggled d  Ifferences
  !
     Do j=1,3
       Do i=1,3
@@ -7834,11 +7803,11 @@ outer:  Do i=1,itime
  !	rotates the arrays clogi,ilogi also over irota (idir=+1) or
  !	back (-1)
  !
- !	Input:	irota	  (Integer)	index in rotation array
+ !	Input:	irota   (Integer)	index in rotation array
  !		clogi(3)  (complex)	only if idir=-1
  !		ilogi(3)  (Integer)	indicates which clogi are needed
  !					(idir=+1), i*pi terms (idir=-1)
- !		idir	  (Integer)	direction: forward (+1) or
+ !		idir    (Integer)	direction: forward (+1) or
  !					backward (-1)
  !	Output:	clogip(3)  (Integer)	clogi rotated
  !		ilogip(3)  (Integer)	ilogi rotated
@@ -7972,7 +7941,6 @@ outer:  Do i=1,itime
  !  #[ calculations:
  !
   del2 = ffdel2(qiDqj,1,2,4)
-  If ( ldot ) fdel2 = del2
  !
  !	the case del2=0 is hopeless - this is really a two-point function
  !
@@ -8080,7 +8048,7 @@ outer:  Do i=1,itime
  !
   If ( .Not.lsmug ) Then
  !
- !	    Here we dropped the term log(lam/delta)*log(-zm/zm1)
+ !      Here we dropped the term log(lam/delta)*log(-zm/zm1)
  !
     If ( Abs(zm1) > 1/xloss ) Then
       clog1 = Log1MinusX(1/zm1)
@@ -8092,15 +8060,15 @@ outer:  Do i=1,itime
     End If
     hulp = zm*zm1*4*del2/delta**2
  !
- !	    14-jan-1994:   Do not count when this is small, this was
- !	    meant to be so by the user carefully adjusting delta
+ !      14-jan-1994:   Do not count when this is small, this was
+ !      meant to be so by the user carefully adjusting delta
  !
     If ( hulp==0 )   Call WriteLfError(40)
     clog2 = zxfflg(hulp,2,0._DP)
     cs(8) = -clog1*clog2/2
   Else
  !
- !	    checked 4-aug-1992, but found Yet Another Bug 30-sep-1992
+ !      checked 4-aug-1992, but found Yet Another Bug 30-sep-1992
  !
     cdyzm = cel3*Real(1/(-2*sdel2*del2),dp)
     dyzm = del3/(-2*sdel2*del2)
@@ -8156,10 +8124,10 @@ outer:  Do i=1,itime
  !  #[ the log(lam) Si:
   If ( .Not.lsmug ) Then
  !
- !	    Next the divergent S_i (easy).
- !	    The term -2*log(lam/delta)*log(xpi(2)/xpi(1)) has been discarded
- !	    with lam the photon mass (regulator).
- !	    If delta = sqrt(xpi(1)*xpi(2)) the terms cancel as well
+ !      Next the divergent S_i (easy).
+ !      The term -2*log(lam/delta)*log(xpi(2)/xpi(1)) has been discarded
+ !      with lam the photon mass (regulator).
+ !      If delta = sqrt(xpi(1)*xpi(2)) the terms cancel as well
  !
     If ( dpipj(1,2)/=0 .And. xloss*Abs(xpi(1)*xpi(2)-delta**2) &
            >precx*delta**2 ) Then
@@ -8184,12 +8152,12 @@ outer:  Do i=1,itime
  !  #[ the off-shell S3:
   Else
  !
- !	    the divergent terms in the offshell regulator scheme - not
- !	    quite as easy
- !	    wm = p3.p2/sqrtdel - 1 = -s1.s2/sqrtdel - 1
- !	    wp = p3.p2/sqrtdel + 1 = -s1.s2/sqrtdel + 1
- !	    Note that we took the choice sdel2<0 in S1 when
- !	    \delta^{p1 s2}_{p1 p2} < 0 by using yp=zm
+ !      the divergent terms in the offshell regulator scheme - not
+ !      quite as easy
+ !      wm = p3.p2/sqrtdel - 1 = -s1.s2/sqrtdel - 1
+ !      wp = p3.p2/sqrtdel + 1 = -s1.s2/sqrtdel + 1
+ !      Note that we took the choice sdel2<0 in S1 when
+ !      \delta^{p1 s2}_{p1 p2} < 0 by using yp=zm
  !
     wm = -1 - piDpj(1,2)/sdel2
     wp = wm + 2
@@ -8199,7 +8167,7 @@ outer:  Do i=1,itime
       wp = -xpi(5)*xpi(6)/(del2*wm)
     End If
  !
- !	    the im sign
+ !      the im sign
  !
     If ( -Real(cmipj(1,3),dp) > 0 ) Then
       ieps = -1
@@ -8320,7 +8288,7 @@ outer:  Do i=1,itime
  !  #] the off-shell S3:
  !  #[ the off-shell S2:
  !
- !	    the im sign
+ !      the im sign
  !
     If ( -Real(cmipj(2,2)) > 0 ) Then
       ieps = -1
@@ -8466,10 +8434,10 @@ outer:  Do i=1,itime
  !	recipe in 't Hooft & Veltman, NP B(183) 1979.
  !	Bjorken and Drell metric is used nowadays!
  !
- !	    p2	^ |
+ !      p2	^ |
  !		| |
- !		 / \
- !	      m2/   \m3
+ !     / \
+ !        m2/   \m3
  !	p1     /     \	p3
  !	<-    /  m1   \ ->
  !	------------------------
@@ -8478,20 +8446,20 @@ outer:  Do i=1,itime
  !		xpi(4-6)     (real)	internal mass squared
  !		dpipj(6,6)   (real)	xpi(i)-xpi(j)
  !		piDpj(6,6)   (real)	pi(i).pi(j)
- !		sdel2	     (real)	sqrt(delta_{p_1 p_2}^{p_1 p_2})
+ !		sdel2      (real)	sqrt(delta_{p_1 p_2}^{p_1 p_2})
  !		del2s(3)     (real)	delta_{p_i s_i}^{p_i s_i}
- !		etalam	     (real)	delta_{s_1 s_2 s_3}^{s_1 s_2 s_3}
- !					  /delta_{p_1 p_2}^{p_1 p_2}
+ !		etalam       (real)	delta_{s_1 s_2 s_3}^{s_1 s_2 s_3}
+ !            /delta_{p_1 p_2}^{p_1 p_2}
  !		etami(6)     (real)	m_i^2 - etalam
- !		alph(3)	     (real)	alph(1)=alpha, alph(3)=1-alpha
+ !		alph(3)      (real)	alph(1)=alpha, alph(3)=1-alpha
  !
- !	Output: cs3(80)	     (complex)	C0, not yet summed.
+ !	Output: cs3(80)      (complex)	C0, not yet summed.
  !		ipi12(8)     (Integer)  factors pi^2/12, not yet summed
- !		slam	     (complex)	lambda(p1,p2,p3).
+ !		slam       (complex)	lambda(p1,p2,p3).
  !		isoort(8)    (Integer)	indication of he method used
  !		clogi(3)     (complex)	log(-dyz(2,1,i)/dyz(2,2,i))
  !		ilogi(3)     (Integer)	factors i*pi in this
- !		ier	     (Integer)	number of digits inaccurate in
+ !		ier      (Integer)	number of digits inaccurate in
  !					answer
  !
  !	Calls:	ffroot,ffxxyz,ffcxyz,ffdwz,ffcdwz,
@@ -8539,11 +8507,11 @@ outer:  Do i=1,itime
  !  #] IR case:
  !  #[ get roots etc:
  !  #[   get z-roots:
- !	  If ( npoin .eq. 3 ) then
+ !    If ( npoin .eq. 3 ) then
   l4pos = l4also
- !	  Else
- !	    l4pos = .FALSE.
- !	  End If
+ !    Else
+ !      l4pos = .FALSE.
+ !    End If
   lcompl = .False.
   ier1 = ier
   Do i=1,3
@@ -8552,7 +8520,7 @@ outer:  Do i=1,itime
  !	-1=complex
  !
    ip = i+3
- !	    first get the roots
+ !      first get the roots
    ier0 = ier
    If ( del2s(i) <= 0 ) Then
  !		real case
@@ -8591,7 +8559,7 @@ outer:  Do i=1,itime
   l4 = .False.
   lcpi = .False.
   If ( isoort(4) == 0 ) Then
- !	    no error message; just bail out
+ !      no error message; just bail out
     Write(ErrCan,*) "unreliable numerical result in ffxc0p"
     ierw = ierw + 100
 
@@ -8631,7 +8599,7 @@ outer:  Do i=1,itime
         End Do
       End Do
      Else
- !	    convert to complex ...
+ !      convert to complex ...
       jsoort(2*iw-1) = -10
       jsoort(2*iw) = -10
       If ( isoort(4)>=0 .And. (iw==1 .Or. isoort(2)>=0) ) Then
@@ -8702,9 +8670,9 @@ outer:  Do i=1,itime
  !  #]   get w-roots:
  !  #[   which case:
   If ( l4 ) Then
- !	    21-aug-1995.  added check for isoort(2*i-1).eq.0 to avoid
- !	    undefined variables etc in ffdcs, ffdcrr.  They should be
- !	    able to handle this, but are not (yet?)
+ !      21-aug-1995.  added check for isoort(2*i-1).eq.0 to avoid
+ !      undefined variables etc in ffdcs, ffdcrr.  They should be
+ !      able to handle this, but are not (yet?)
     If ( ierw >= 1 .Or. isoort(1)==0 .Or. isoort(3)==0.Or. isoort(5)==0 ) Then
       l4pos = .False.
     Else
@@ -8793,7 +8761,7 @@ outer:  Do i=1,itime
  !  #] real case integrals:
  !  #[ complex case integrals:
   Else
- !	    convert xpi
+ !      convert xpi
     If ( .Not.lcpi ) Then
       Do i=1,6
         cpi(i) = xpi(i)
@@ -8887,7 +8855,7 @@ outer:  Do i=1,itime
     End If
   Else
  !
- !	    may have to be improved
+ !      may have to be improved
  !
     If ( Abs(Real(chulp1,dp))+Abs(Aimag(chulp1)) < xloss ) Then
       clg = Log1MinusX(chulp1)
@@ -9117,7 +9085,7 @@ outer:  Do i=1,itime
   End Do
   If ( iwarn /= 0 ) Then
  !
- !	    we should import the d  Ifferences, but later...
+ !      we should import the d  Ifferences, but later...
  !
     If ( Abs(dpipj(is3,ip1)) < xloss*xpi(is3) &
       .And. Abs(dpipj(is1,is2)) < xloss*Abs(xpi(ip1))) Then
@@ -9597,7 +9565,7 @@ Goto 200
  !	Computes the dilogarithm (Li2, Sp) for any (real) x
  !	to precision precx. If an error message is given add
  !	more bf's. For x > 1 the imaginary part is
- !	 -/+i*pi*log(x), corresponding to x+ieps.
+ !   -/+i*pi*log(x), corresponding to x+ieps.
  !	The number of factors pi^2/12 is passed separately in
  !	ipi12 for accuracy.  We also calculate log(1-x)
  !	which is likely to be needed.
@@ -10780,7 +10748,6 @@ End function vertexC0tildeaux
   End Do
   If (xclogm.Eq.0._dp) xclogm = Tiny(1._dp)
   xalog2 = Sqrt(xalogm)
-  xclog2 = Sqrt(xclogm)
 
   ! the precision to which real calculations are done is
   precx = 1._dp
@@ -10816,14 +10783,12 @@ End function vertexC0tildeaux
   czero =(0._dp, 0._dp)
   cone=(1._dp, 0._dp)
   c2ipi = Cmplx(0._dp, 2._dp * Pi, dp)
-  cipi2 = Cmplx(0._dp, Pi**2, dp)
 
  !
  !	inverses of   Integers:
  !
   Do i=1,30
-    xninv(i) = 1._dp/i
-    xn2inv(i) = 1._dp/(i*i)
+    xn2inv(i) = 1._dp/Real((i*i),dp)
   End Do
  !
  !	inverses of faculties of   Integers:
@@ -10867,98 +10832,6 @@ End function vertexC0tildeaux
   isgn(2,4) = -1
   isgn(3,4) = -1
   isgn(4,4) = -9999
-  inx5(1,1) = -9999
-  inx5(1,2) =  6
-  inx5(1,3) = 11
-  inx5(1,4) = 14
-  inx5(1,5) = 10
-  inx5(2,1) =  6
-  inx5(2,2) = -9999
-  inx5(2,3) =  7
-  inx5(2,4) = 12
-  inx5(2,5) = 15
-  inx5(3,1) = 11
-  inx5(3,2) =  7
-  inx5(3,3) = -9999
-  inx5(3,4) =  8
-  inx5(3,5) = 13
-  inx5(4,1) = 14
-  inx5(4,2) = 12
-  inx5(4,3) =  8
-  inx5(4,4) = -9999
-  inx5(4,5) =  9
-  inx5(5,1) = 10
-  inx5(5,2) = 15
-  inx5(5,3) = 13
-  inx5(5,4) =  9
-  inx5(5,5) = -9999
- !	isgn5 is not yet used.
-  Do i=1,5
-      Do j=1,5
-      isgn5(i,j) = -9999
-      End Do
-  End Do
- !
-  inx6(1,1) = -9999
-  inx6(1,2) =  7
-  inx6(1,3) = 13
-  inx6(1,4) = 19
-  inx6(1,5) = 17
-  inx6(1,6) = 12
-  inx6(2,1) =  7
-  inx6(2,2) = -9999
-  inx6(2,3) =  8
-  inx6(2,4) = 14
-  inx6(2,5) = 20
-  inx6(2,6) = 18
-  inx6(3,1) = 13
-  inx6(3,2) =  8
-  inx6(3,3) = -9999
-  inx6(3,4) =  9
-  inx6(3,5) = 15
-  inx6(3,6) = 21
-  inx6(4,1) = 19
-  inx6(4,2) = 14
-  inx6(4,3) =  9
-  inx6(4,4) = -9999
-  inx6(4,5) = 10
-  inx6(4,6) = 16
-  inx6(5,1) = 17
-  inx6(5,2) = 20
-  inx6(5,3) = 15
-  inx6(5,4) = 10
-  inx6(5,5) = -9999
-  inx6(5,6) = 11
-  inx6(6,1) = 12
-  inx6(6,2) = 18
-  inx6(6,3) = 21
-  inx6(6,4) = 16
-  inx6(6,5) = 11
-  inx6(6,6) = -9999
- !	isgn6 is used.
-  Do i=1,6
-      Do j=1,6
-      ji = j-i
-        If ( ji>+3 ) ji = ji - 6
-        If ( ji<-3 ) ji = ji + 6
-        If ( ji==0 ) Then
-        isgn6(j,i) = -9999
-        Else If ( Abs(ji)==3 ) Then
-          If ( i<0 ) Then
-          isgn6(j,i) = -1
-          Else
-          isgn6(j,i) = +1
-          End If
-        Else If ( ji>0 ) Then
-        isgn6(j,i) = +1
-        Else If ( ji<0 ) Then
-        isgn6(j,i) = -1
-        Else
-        Write(ErrCan,*) "InitialzeLoopFunctions: internal error in isgn6"
-        Call TerminateProgram()
-        End If
-      End Do
-  End Do
 !
  !      calculate the coefficients of the series expansion
  !      li2(x) = sum bn*z^n/(n+1)!, z = -log(1-x), bn are the
@@ -11647,9 +11520,9 @@ End function vertexC0tildeaux
         If ( cx /= 0 )   Call WriteLFerror(17)
         zfflog = 0
       Else If ( Real(cx) < 0 .And. Aimag(cx) == 0 ) Then
-    !     +		 abs(Aimag(cx)) .lt. precc*abs(Real(cx)) ) then
+    !     +    abs(Aimag(cx)) .lt. precc*abs(Real(cx)) ) then
         xlog1p = Log(-Real(cx,dp))
-    !	    checked imaginary parts 19-May-1988
+    !     checked imaginary parts 19-May-1988
         If ( Abs(ieps) == 1 ) Then
           If ( ieps*Real(cy) < 0 ) Then
            zfflog = Cmplx(xlog1p,-pi,dp)
@@ -11671,7 +11544,7 @@ End function vertexC0tildeaux
        ctroep = cx*Real(1._dp/xa,dp)
        zfflog = Log(ctroep) + Real(Log(xa),dp)
       Else
-    !	    print *,'zfflog: neem log van ',cx
+    !     print *,'zfflog: neem log van ',cx
        zfflog = Log(cx)
       End If
     !  #] calculations:
@@ -13514,11 +13387,7 @@ End Function C12m
 Real(dp) Function C22m(m1, m2, m3)
 Implicit None
 Real(dp), Intent(in) :: m1, m2, m3
-Real(dp) :: r1, r2
 Real(dp) :: eps=1E-10_dp, large = 1E+5_dp
-
-r1 = m2/m1
-r2 = m3/m1
 
 If ((SmallDifference(m1,m2)).And.(SmallDifference(m1,m3))) Then ! all masse equal
   If (Abs(m1).lt.eps) Then
