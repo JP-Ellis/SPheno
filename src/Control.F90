@@ -631,7 +631,11 @@ Contains
   Do i1=ErrCan,ErrCan+NumberOfOpenFiles-1
    Close(i1)
   End Do
-  Stop "Subroutine TerminateProgram"
+  If (Non_Zero_Exit) Then
+     Error Stop "Subroutine TerminateProgram"
+  Else
+     Stop "Subroutine TerminateProgram"
+  End If
 
  End Subroutine TerminateProgram
 
