@@ -125,7 +125,7 @@ Contains
    Do n2=1,n1-1
     Do n3=n2+1,n1
      If (Abs(wr(n2)).Gt.Abs(wr(n3))) Then
-      work(1) = wr(n2)
+      work(1) = wr(n2) 
       wr(n2) = wr(n3)
       wr(n3) = work(1)
       Do i1=1,n1
@@ -140,7 +140,7 @@ Contains
    Do i1=1,N1
     EigenValues(i1) = WR(i1)
     Do i2=1,n2
-     EigenVectors(i1,i2) = AR(i2,i1)
+     EigenVectors(i1,i2) = AR(i2,i1) 
     End Do
    End Do
    ! now  a test
@@ -161,7 +161,7 @@ Contains
       If ( test(1).Lt.Abs( testR(i1,i2) ) ) test(1) = Abs( testR(i1,i2) )
      Else
       If ( test(2).Lt.Abs( testR(i1,i2) ) ) test(2) = Abs( testR(i1,i2) )
-     End If
+     End If 
     End Do
    End Do
 
@@ -210,7 +210,7 @@ Contains
    Do n2=1,2*n1-1
     Do n3=n2+1,2*n1
      If (wr(n2).Gt.wr(n3)) Then
-      work(1) = wr(n2)
+      work(1) = wr(n2) 
       wr(n2) = wr(n3)
       wr(n3) = work(1)
       work = zr(:,n2)
@@ -242,7 +242,7 @@ Contains
       If ( test(1).Lt.Abs( Ctest(i1,i2) ) ) test(1) = Abs( Ctest(i1,i2) )
      Else
       If ( test(2).Lt.Abs( Ctest(i1,i2) ) ) test(2) = Abs( Ctest(i1,i2) )
-     End If
+     End If 
     End Do
    End Do
 
@@ -340,7 +340,7 @@ Contains
    Do n2=1,n1-1
     Do n3=n2+1,n1
      If (Abs(wr(n2)).Gt.Abs(wr(n3))) Then
-      work(1) = wr(n2)
+      work(1) = wr(n2) 
       wr(n2) = wr(n3)
       wr(n3) = work(1)
       work = ar(:,n2)
@@ -353,7 +353,7 @@ Contains
    EigenValues = WR
    Do i1=1,N1
     Do i2=1,n2
-     EigenVectors(i1,i2) = AR(i2,i1)
+     EigenVectors(i1,i2) = AR(i2,i1) 
     End Do
    End Do
 
@@ -400,7 +400,7 @@ Contains
    Do n2=1,2*n1-1
     Do n3=n2+1,2*n1
      If (wr(n2).Gt.wr(n3)) Then
-      work(1) = wr(n2)
+      work(1) = wr(n2) 
       wr(n2) = wr(n3)
       wr(n3) = work(1)
       work = zr(:,n2)
@@ -498,17 +498,17 @@ Contains
    Return
   End If
 
-  If (Is_NaN(Real(Matrix,dp)).or.Is_NaN(Aimag(Matrix))) Then !
+  If (Is_NaN(Real(Matrix,dp)).or.Is_NaN(Aimag(Matrix))) Then !  
    Write(ErrCan,*) 'Error in Subroutine '//NameOfUnit(Iname)
    Write(ErrCan,*) 'matrix contains NaN'
    If (ErrorLevel.Ge.-1) Call TerminateProgram
    kont = -31
    Call AddError(31)
    Iname = Iname - 1
-   Return
+   Return 
   End If
 
-  Allocate(AR(N1,N1))
+  Allocate(AR(N1,N1)) 
   Allocate(AI(N1,N1))
   Allocate(Ctest(N1,N1))
   Allocate(Ctest2(N1,N1))
@@ -535,7 +535,7 @@ Contains
    Do n2=1,n1-1
     Do n3=n2+1,n1
      If (wr(n2).Gt.wr(n3)) Then
-      work(1) = wr(n2)
+      work(1) = wr(n2) 
       wr(n2) = wr(n3)
       wr(n3) = work(1)
       work = ar(:,n2)
@@ -547,7 +547,7 @@ Contains
 
    EigenValues = WR
    Ctest = Ar
-   EigenVectors = Transpose(AR)
+   EigenVectors = Transpose(AR) 
 
   Else ! complex matrix
    l_complex = .True.
@@ -571,12 +571,12 @@ Contains
     Return
    End If
    Call HTRIBK_QP(AR, AI, WORK2, ZR, ZI)
-
+   
 
    Do n2=1,n1-1
     Do n3=n2+1,n1
      If (wr(n2).Gt.wr(n3)) Then
-      work(1) = wr(n2)
+      work(1) = wr(n2) 
       wr(n2) = wr(n3)
       wr(n3) = work(1)
       work = zr(:,n2)
@@ -624,7 +624,7 @@ Contains
      kont = -14
      Call AddError(14)
     End If
-   Else
+   Else 
     If ( (test(2)/test(1)).Gt.MinimalPrecision) then
      kont = -14
      Call AddError(14)
@@ -770,7 +770,7 @@ Contains
  ! Output
  !  EigenValues ..... n sorted EigenValues: |m_1| < |m_2| < .. < |m_n|
  !  EigenVectors .... n times n matrix with the eigenvectors
- ! written by Werner Porod, 11.11.2000
+ ! written by Werner Porod, 11.11.2000 
  !---------------------------------------------------------------------
  Implicit None
   Real(dp), Intent(in) :: Matrix(:,:)
@@ -779,7 +779,7 @@ Contains
 
   Integer :: N1,N2,N3, i1, i2, i3, i4, n4
   Real(qp), Allocatable :: AR(:,:), WR(:), WORK(:), testR(:,:), work2(:,:)
-
+ 
   Iname = Iname + 1
   NameOfUnit(Iname) = 'RealEigenSystem_DP'
 
@@ -794,7 +794,7 @@ Contains
    If (ErrorLevel.Ge.-1) Call TerminateProgram
    kont = -1005
    Call AddError(1005)
-   Return
+   Return 
   End If
 
   Allocate(AR(N1,N1))
@@ -814,7 +814,7 @@ Contains
   Do n2=1,n1-1
    Do n3=n2+1,n1
     If (wr(n2).Gt.wr(n3)) Then
-     work(1) = wr(n2)
+     work(1) = wr(n2) 
      wr(n2) = wr(n3)
      wr(n3) = work(1)
      Do n4=1,n1
@@ -849,7 +849,7 @@ Contains
       If ( test(1).Lt.Abs( testR(i1,i2) ) ) test(1) = Abs( testR(i1,i2) )
      Else
       If ( test(2).Lt.Abs( testR(i1,i2) ) ) test(2) = Abs( testR(i1,i2) )
-     End If
+     End If 
     End Do
    End Do
 
@@ -876,7 +876,7 @@ Contains
  ! Output
  !  EigenValues ..... n sorted EigenValues: |m_1| < |m_2| < .. < |m_n|
  !  EigenVectors .... n times n matrix with the eigenvectors
- ! written by Werner Porod, 11.11.2000
+ ! written by Werner Porod, 11.11.2000 
  !---------------------------------------------------------------------
  Implicit None
   Real(qp), Intent(in) :: Matrix(:,:)
@@ -885,7 +885,7 @@ Contains
 
   Integer :: N1,N2,N3, nrot
   Real(qp), Allocatable :: AR(:,:), WR(:), WORK(:,:)
-
+ 
   Iname = Iname + 1
   NameOfUnit(Iname) = 'RealEigenSystem_QP'
 
@@ -900,7 +900,7 @@ Contains
    If (ErrorLevel.Ge.-1) Call TerminateProgram
    kont = -1007
    Call AddError(1007)
-   Return
+   Return 
   End If
 
   Allocate(AR(N1,N1))
@@ -914,7 +914,7 @@ Contains
   Do n2=1,n1-1
    Do n3=n2+1,n1
     If (wr(n2).Gt.wr(n3)) Then
-     work(1,1) = wr(n2)
+     work(1,1) = wr(n2) 
      wr(n2) = wr(n3)
      wr(n3) = work(1,1)
      work(:,1) = ar(:,n2)
@@ -925,7 +925,7 @@ Contains
   End Do
 
   EigenValues = WR
-  EigenVectors = Transpose(AR)
+  EigenVectors = Transpose(AR) 
 
   Deallocate(AR,WR,Work)
 
@@ -1092,7 +1092,7 @@ Contains
 
  End Subroutine tqli_QP
 
-
+  
   Subroutine HTRIBK_QP(AR, AI, TAU, ZR, ZI)
   Implicit None
    Real(qp) :: AR(:,:), AI(:,:), TAU(:,:), ZR(:,:), ZI(:,:)

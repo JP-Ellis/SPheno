@@ -31,12 +31,12 @@ Use StandardModel, Only: CKM
        & , CoupChargedScalarSfermion3Eps1, CoupChargedScalarSfermion3Eps3  &
        & , CoupChargedScalarSfermion3MSSM3
  End Interface
-
+ 
  Interface CoupChargedScalarSfermion4
   Module Procedure CoupChargedScalarSfermion4MSSM1                       &
        & , CoupChargedScalarSfermion4MSSM3
  End Interface
-
+ 
  Interface CoupCharginoPseudoScalar
   Module Procedure CoupCharginoPseudoScalarMSSM,   &
          &         CoupCharginoPseudoScalarEps1,   &
@@ -45,65 +45,65 @@ Use StandardModel, Only: CKM
          &         CoupCharginoPseudoScalarSpon1,  &
          &         Coup_Chip_Chim_P0_NMSSM
  End Interface
-
+ 
  Interface CoupCharginoPseudoScalara
   Module Procedure CoupCharginoPseudoScalarMSSMa
  End Interface
-
+ 
  Interface CoupCharginoScalar
   Module Procedure CoupCharginoScalarMSSM,  CoupCharginoScalarEps1  &
     &   , CoupCharginoScalarEps3, CoupCharginoScalarLam3            &
     &   , CoupCharginoScalarSpon1, Coup_Chip_Chim_S0_NMSSM
  End Interface
-
+ 
  Interface CoupCharginoScalara
   Module Procedure CoupCharginoScalarMSSMa
  End Interface
-
+ 
  Interface CoupCharginoSfermion
   Module Procedure CoupCharginoSfermion1, CoupCharginoSfermion3   &
-    &             , CoupCharginoSfermion3Lam
+    &             , CoupCharginoSfermion3Lam 
  End Interface
-
+ 
  Interface CoupFermionPseudoScalar
   Module Procedure CoupFermionPseudoScalar1, CoupDquarkPseudoScalar1expl, &
                  & CoupDquarkPseudoScalar3expl, CoupFermionPseudoScalar3
  End Interface
-
+ 
  Interface CoupFermionScalar
   Module Procedure CoupFermionScalar1, CoupDquarkScalar1expl, &
                  & CoupDquarkScalar3expl, CoupFermionScalar3
  End Interface
-
+ 
  Interface CoupGluinoSquark
   Module Procedure CoupGluinoSquark1, CoupGluinoSquark3
  End Interface
-
+ 
  Interface CoupGravitinoSfermion
   Module Procedure CoupGravitinoSfermion1, CoupGravitinoSfermion3
  End Interface
-
+ 
  Interface CoupNeutralinoSfermion
-  Module Procedure CoupNeutralinoSfermion1, CoupNeutralinoSfermion3
+  Module Procedure CoupNeutralinoSfermion1, CoupNeutralinoSfermion3 
  End Interface
-
+ 
  Interface CoupNeutralinoSdown
   Module Procedure CoupNeutralinoSdown1, CoupNeutralinoSdown3  &
                & , CoupNeutralinoSdown3Expl
  End Interface
-
+ 
  Interface CoupNeutralinoSlepton
-  Module Procedure CoupNeutralinoSlepton1, CoupNeutralinoSlepton3
+  Module Procedure CoupNeutralinoSlepton1, CoupNeutralinoSlepton3 
  End Interface
-
+ 
  Interface CoupNeutralinoSneutrino
-  Module Procedure CoupNeutralinoSneutrino1, CoupNeutralinoSneutrino3
+  Module Procedure CoupNeutralinoSneutrino1, CoupNeutralinoSneutrino3 
  End Interface
-
+ 
  Interface CoupNeutralinoSup
-  Module Procedure CoupNeutralinoSup1, CoupNeutralinoSup3
+  Module Procedure CoupNeutralinoSup1, CoupNeutralinoSup3 
  End Interface
-
+ 
  Interface CoupPseudoScalarSfermion3
   Module Procedure CoupPseudoScalarSfermion3_1, CoupPseudoScalarSfermion3_3  &
                 & , Coup_P0_Sf_Sf_NMSSM_1
@@ -119,7 +119,7 @@ Use StandardModel, Only: CKM
 
  Interface CoupScalarSfermion3
   Module Procedure CoupScalarSfermion3MSSM_1, CoupScalarSfermion3MSSM_3 &
-                &, CoupScalarSfermion3Eps_1, Coup_S0_Sf_Sf_NMSSM_1
+                &, CoupScalarSfermion3Eps_1, Coup_S0_Sf_Sf_NMSSM_1      
  End Interface
 
  Interface CoupScalarSfermion3a
@@ -130,11 +130,11 @@ Use StandardModel, Only: CKM
  Interface CoupScalarSfermion4
   Module Procedure CoupScalarSfermion4MSSM_1, CoupScalarSfermion4MSSM_3
  End Interface
-
+ 
  Interface CoupScalarW
   Module Procedure CoupScalarWMSSM, CoupScalarWRP
  End Interface
-
+ 
  Interface CoupScalarZ
   Module Procedure CoupScalarZMSSM, CoupScalarZrp
  End Interface
@@ -152,15 +152,15 @@ Use StandardModel, Only: CKM
   Module Procedure CoupSfermion4G_13, CoupSfermionSelf4G_13
  End Interface
 ! interfaces
-
+ 
 Contains
 
 
  Subroutine CoupChargedScalarFermion1(i, RSpm, yukD, yukU, coupL, coupR)
  !-----------------------------------------------------------------------
  ! calculates the coupling between charged scalars and fermions
- ! valid for the MSSM, 1-generation epsilon model,
- ! 3-generation epsilon model, and the model where R-parity is broken
+ ! valid for the MSSM, 1-generation epsilon model, 
+ ! 3-generation epsilon model, and the model where R-parity is broken 
  ! spontaneously
  !
  ! the lagrangian: H^-_i \bar(d) [ yuk_d R^*_i1 P_L +  yuk^*_u R_i2 P_L ] u
@@ -183,7 +183,7 @@ Contains
 
  If ((i.Lt.1).Or.(i.Gt.n_Spm)) Then
   Write(ErrCan,*) 'Problem in Subroutine '//NameOfUnit(Iname)
-  Write(ErrCan,*) 'index i out of range: (i,n_Spm) = ',i,n_Spm
+  Write(ErrCan,*) 'index i out of range: (i,n_Spm) = ',i,n_Spm 
   Call TerminateProgram
  End If
 
@@ -199,9 +199,9 @@ Contains
  !-----------------------------------------------------------------------
  ! calculates the coupling between charged scalars and fermions
  ! valid for the 3-generation MSSM, and the
- ! 3-generation epsilon model, and the model where R-parity is broken
+ ! 3-generation epsilon model, and the model where R-parity is broken 
  ! spontaneously
- !  i .......... index of charged scalar
+ !  i .......... index of charged scalar 
  !  j .......... index of down-type fermion
  !  k .......... index of up-type fermion
  !  RSpm(i,j) .. mixing matrix of charged scalar bosons
@@ -233,7 +233,7 @@ Contains
 
  If ((i.Lt.1).Or.(i.Gt.n_Spm)) Then
   Write(ErrCan,*) 'Problem in Subroutine '//NameOfUnit(Iname)
-  Write(ErrCan,*) 'index i out of range: (i,n_Spm) = ',i,n_Spm
+  Write(ErrCan,*) 'index i out of range: (i,n_Spm) = ',i,n_Spm 
   Call TerminateProgram
  End If
 
@@ -284,7 +284,7 @@ Contains
   End Do
 
  Case (110)
-  coupL = yukD(k,j)
+  coupL = yukD(k,j) 
   Do i1=1,3
    Do i2 = 1,3
     coupR = coupR + Conjg( yukU(i1,i2) ) * RdL(j,i1) * RuR(k,i2)
@@ -348,7 +348,7 @@ Contains
   End Do
 
  End Select
-
+ 
  coupL = coupL * Conjg( RSpm(i,1) )
  coupR = coupR * RSpm(i,2)
 
@@ -362,8 +362,8 @@ Contains
  ! the W-boson
  ! valid for the MSSM, NMSSM, 1-generation epsilon model, and
  ! 3-generation epsilon model
- !  i .......... index of charged scalar
- !  j .......... index of pseudoscalar
+ !  i .......... index of charged scalar 
+ !  j .......... index of pseudoscalar 
  !  g .......... SU(2) gauge coupling
  !  RSpm(i,j) .. mixing matrix of charged scalar bosons
  !  RP0(i,j) ... mixing matrix of pseudoscalar bosons
@@ -394,14 +394,14 @@ Contains
     &     .Or.((n_P0.Eq.12).And.(n_Spm.Eq.8))  & ! full model
     &     .Or.((n_P0.Eq.6).And.(n_Spm.Eq.8))   & ! Munyoz Model
     &     .Or.((n_P0.Eq.7).And.(n_Spm.Eq.8))   & ! Munyoz Model 2 nuC
-    &     ) ) Then
+    &     ) ) Then 
   Write(ErrCan,*) 'Error in Subroutine ',NameOfUnit(Iname)
   Write(ErrCan,*) 'model is not consistent, (n_P0,n_Spm) = ',n_P0,n_Spm
   Call TerminateProgram
  End If
  If ((i.Lt.1).Or.(i.Gt.n_Spm)) Then
   Write(ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname)
-  Write(ErrCan,*) 'index i out of range: (i,n_Spm) = ',i,n_Spm
+  Write(ErrCan,*) 'index i out of range: (i,n_Spm) = ',i,n_Spm 
   Call TerminateProgram
  End If
  If ((j.Lt.1).Or.(j.Gt.n_P0)) Then
@@ -421,7 +421,7 @@ Contains
  Else If ( (n_P0.Eq.3).And.(n_Spm.Eq.4) ) Then
   coup = Conjg( RSpm(i,1) ) * RP0(j,1)  &
     &  + Conjg( RSpm(i,2) ) * RP0(j,2)  &
-    &  + Conjg( RSpm(i,3) ) * RP0(j,3)
+    &  + Conjg( RSpm(i,3) ) * RP0(j,3)  
 
  Else If ( ( ((n_P0.ge.5).and.(n_P0.le.7)).Or.(n_P0.Eq.12)) .And. (n_Spm.Eq.8) )&
  & Then
@@ -450,7 +450,7 @@ Contains
  ! the W-boson
  ! valid for the MSSM, NMSSM, 1-generation epsilon model, and
  ! 3-generation epsilon model
- !  i .......... index of charged scalar
+ !  i .......... index of charged scalar 
  !  j .......... index of scalar boson
  !  g .......... SU(2) gauge coupling
  !  RSpm(i,j) .. mixing matrix of charged scalar bosons
@@ -488,7 +488,7 @@ Contains
  End If
  If ((i.Lt.1).Or.(i.Gt.n_Spm)) Then
   Write(ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname)
-  Write(ErrCan,*) 'index i out of range: (i,n_Spm) = ',i,n_Spm
+  Write(ErrCan,*) 'index i out of range: (i,n_Spm) = ',i,n_Spm 
   Call TerminateProgram
  End If
  If ((j.Lt.1).Or.(j.Gt.n_S0)) Then
@@ -508,7 +508,7 @@ Contains
  Else If ( (n_S0.Eq.3).And.(n_Spm.Eq.4) ) Then
   coup = Conjg( RSpm(i,1) ) * RS0(j,1)  &
     &  - Conjg( RSpm(i,2) ) * RS0(j,2)  &
-    &  + Conjg( RSpm(i,3) ) * RS0(j,3)
+    &  + Conjg( RSpm(i,3) ) * RS0(j,3)  
 
  Else If ( ( ((n_S0.Ge.5).And.(n_S0.Le.7)).Or.(n_S0.Eq.12)) .And. (n_Spm.Eq.8) )&
  &Then
@@ -534,7 +534,7 @@ Contains
   Subroutine CoupChargedScalarZ(i, j, g, sinW2, RSpm, coup)
  !-----------------------------------------------------------------------
  ! calculates the coupling between charged scalar bosons and the Z-boson
- ! valid for the MSSM, 1-generation epsilon model,
+ ! valid for the MSSM, 1-generation epsilon model, 
  ! 3-generation epsilon model, and the spontaneously broken model
  !  i .......... index of pseudoscalar boson
  !  j .......... index of scalar boson
@@ -560,12 +560,12 @@ Contains
 
   If ((i.Lt.1).Or.(i.Gt.n_Spm)) Then
    Write(ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname)
-   Write(ErrCan,*) 'index i out of range: (i,n_Spm) = ',i,n_Spm
+   Write(ErrCan,*) 'index i out of range: (i,n_Spm) = ',i,n_Spm 
    Call TerminateProgram
   End If
   If ((j.Lt.1).Or.(j.Gt.n_Spm)) Then
    Write(ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname)
-   Write(ErrCan,*) 'index j out of range: (j,n_Spm) = ',j,n_Spm
+   Write(ErrCan,*) 'index j out of range: (j,n_Spm) = ',j,n_Spm 
    Call TerminateProgram
   End If
 
@@ -650,7 +650,7 @@ Contains
    End If
 
    coupL = - U(i,1) * Conjg( N(j,2) ) - U(i,2) * Conjg( N(j,3) ) * oosqrt2
-
+ 
   !------
   ! NMSSM
   !------
@@ -665,7 +665,7 @@ Contains
    End If
 
    coupL = - U(i,1) * Conjg( N(j,2) ) - U(i,2) * Conjg( N(j,3) ) * oosqrt2
-
+ 
   !----------------------------
   ! 1-generation epsilon model
   !----------------------------
@@ -679,7 +679,7 @@ Contains
     Call TerminateProgram
    End If
 
-   coupL = - U(i,1) * Conjg( N(j,2) )         &
+   coupL = - U(i,1) * Conjg( N(j,2) )         & 
          & - ( U(i,2) * Conjg( N(j,3) ) + U(i,3) * Conjg( N(j,5) ) ) * oosqrt2
 
   !----------------------------
@@ -695,7 +695,7 @@ Contains
     Call TerminateProgram
    End If
 
-  coupL = - U(i,1) * Conjg( N(j,2) )                                &
+  coupL = - U(i,1) * Conjg( N(j,2) )                                & 
         & - ( U(i,2) * Conjg( N(j,3) ) + U(i,3) * Conjg( N(j,5) )   &
         &   + U(i,4) * Conjg( N(j,6) ) + U(i,5) * Conjg( N(j,7) ) ) * oosqrt2
 
@@ -712,7 +712,7 @@ Contains
     Call TerminateProgram
    End If
 
-  coupL = - U(i,1) * Conjg( N(j,2) )                                &
+  coupL = - U(i,1) * Conjg( N(j,2) )                                & 
         & - ( U(i,2) * Conjg( N(j,3) ) + U(i,3) * Conjg( N(j,5) )   &
         &   + U(i,4) * Conjg( N(j,6) ) + U(i,5) * Conjg( N(j,7) ) ) * oosqrt2
 
@@ -729,7 +729,7 @@ Contains
     Call TerminateProgram
    End If
 
-  coupL = - U(i,1) * Conjg( N(j,2) )                                &
+  coupL = - U(i,1) * Conjg( N(j,2) )                                & 
         & - ( U(i,2) * Conjg( N(j,3) ) + U(i,3) * Conjg( N(j,5) )   &
         &   + U(i,4) * Conjg( N(j,6) ) + U(i,5) * Conjg( N(j,7) ) ) * oosqrt2
 
@@ -746,7 +746,7 @@ Contains
     Call TerminateProgram
    End If
 
-  coupL = - U(i,1) * Conjg( N(j,2) )                                &
+  coupL = - U(i,1) * Conjg( N(j,2) )                                & 
         & - ( U(i,2) * Conjg( N(j,3) ) + U(i,3) * Conjg( N(j,5) )   &
         &   + U(i,4) * Conjg( N(j,6) ) + U(i,5) * Conjg( N(j,7) ) ) * oosqrt2
 
@@ -757,7 +757,7 @@ Contains
    Call TerminateProgram
   End If
 
-  coupR = - Conjg( V(i,1) ) * N(j,2) + Conjg( V(i,2) ) * N(j,4)  * oosqrt2
+  coupR = - Conjg( V(i,1) ) * N(j,2) + Conjg( V(i,2) ) * N(j,4)  * oosqrt2 
 
   coupL = g * coupL
   coupR = g * coupR
@@ -774,7 +774,7 @@ Contains
  !  i,j ........ index of chargino, first index is an electroweak eigenstate
  !  U,V ........ mixing matrices of the chargino
  !  g .......... SU(2) gauge coupling
- !  cosW ....... cos(weak mixing angle)
+ !  cosW ....... cos(weak mixing angle) 
  ! output
  !  coupL ...... the left coupling(i,j)
  !  coupR ...... the right coupling(i,j)
@@ -803,7 +803,7 @@ Contains
    Call TerminateProgram
   End If
 
-  If (i.Eq.1) Then
+  If (i.Eq.1) Then 
    coupL = g * cosW * Conjg( U(j,1) )
    coupR = g * cosW * V(j,1)
   Else
@@ -825,7 +825,7 @@ Contains
  !  i,j ........ index of chargino
  !  U,V ........ mixing matrices of the chargino
  !  g .......... SU(2) gauge coupling
- !  cosW ....... cos(weak mixing angle)
+ !  cosW ....... cos(weak mixing angle) 
  ! output
  !  coupL ...... the left coupling(i,j)
  !  coupR ...... the right coupling(i,j)
@@ -854,7 +854,7 @@ Contains
    Write(ErrCan,*) 'index j out of range: (j,n_char) = ',j,n_char
    Call TerminateProgram
   End If
-
+ 
   coupL = U(i,1) * Conjg( U(j,1) )
   Do i1=2,n_char
    coupL = coupL + 0.5_dp * U(i,i1) * Conjg( U(j,i1) )
@@ -896,7 +896,7 @@ Contains
   Real(dp), Intent(in) :: T3,e,g,sinW2
   Real(dp), Intent(out) :: coupL,coupR
   Real(dp) :: oocosW
-
+ 
   oocosW = 1._dp / Sqrt(1._dp - sinW2)
   coupL = g * ( -T3 + e*sinW2) * oocosW
   coupR = g * e*sinW2 * oocosW
@@ -906,8 +906,8 @@ Contains
 
  Subroutine CoupNeutralinoPseudoScalara(i,j,k,N,RP0,gp,g,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between Neutralinos and pseudocalar bosons
- ! valid for the MSSM, 1-generation epsilon model, and
+ ! calculates the coupling between Neutralinos and pseudocalar bosons 
+ ! valid for the MSSM, 1-generation epsilon model, and 
  ! 3-generation epsilon model, assuming that the first neutralino index i
  ! corresponds to a electroweak eigenstate
  ! input
@@ -980,8 +980,8 @@ Contains
   If (i.Gt.2) Then
    sumI = (0._dp,0.5_dp) * ( gp * N(j,1) - g * N(j,2) )
    sumI_j = Conjg( sumI )
-
-  Else If (n_N.Eq.4) Then ! MSSM
+  
+  Else If (n_N.Eq.4) Then ! MSSM 
    sumI_j = Conjg(N(j,3)) * RP0(k,1) - Conjg(N(j,4)) * RP0(k,2)
 
   Else If (n_N.Eq.5) Then ! 1-generation epsilon model
@@ -993,7 +993,7 @@ Contains
       &   + Conjg(N(j,5)) * RP0(k,3) + Conjg(N(j,6)) * RP0(k,4)  &
       &   + Conjg(N(j,7)) * RP0(k,5)
 
-  End If
+  End If 
 
   Select Case(i)
   Case(1)
@@ -1014,8 +1014,8 @@ Contains
 
  Subroutine CoupNeutralinoPseudoScalar(i,j,k,N,RP0,gp,g,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between Neutralinos and pseudocalar bosons
- ! valid for the MSSM, 1-generation epsilon model, and
+ ! calculates the coupling between Neutralinos and pseudocalar bosons 
+ ! valid for the MSSM, 1-generation epsilon model, and 
  ! 3-generation epsilon model
  ! input
  !  i,j ........ index of Neutralino
@@ -1083,13 +1083,13 @@ Contains
    Write(ErrCan,*) 'index k out of range:',k
    Call TerminateProgram
   End If
-
+ 
   sumI = (0._dp,0.5_dp) * ( gp * N(i,1) - g * N(i,2) )
   sumI_i = Conjg( sumI )
   sumI = (0._dp,0.5_dp) * ( gp * N(j,1) - g * N(j,2) )
   sumI_j = Conjg( sumI )
 
-  If (n_N.Eq.4) Then ! MSSM
+  If (n_N.Eq.4) Then ! MSSM 
    coupL = sumI_i * ( Conjg(N(j,3)) * RP0(k,1) - Conjg(N(j,4)) * RP0(k,2) ) &
       &  + sumI_j * ( Conjg(N(i,3)) * RP0(k,1) - Conjg(N(i,4)) * RP0(k,2) )
 
@@ -1107,7 +1107,7 @@ Contains
       &             + Conjg(N(i,5)) * RP0(k,3) + Conjg(N(i,6)) * RP0(k,4)  &
       &             + Conjg(N(i,7)) * RP0(k,5) )
 
-  End If
+  End If 
   coupR = Conjg( coupL )
 
   Iname = Iname - 1
@@ -1117,8 +1117,8 @@ Contains
 
  Subroutine CoupNeutralinoScalara(i,j,k,N,RS0,gp,g,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between Neutralinos and Scalar bosons
- ! valid for the MSSM, 1-generation epsilon model, and
+ ! calculates the coupling between Neutralinos and Scalar bosons 
+ ! valid for the MSSM, 1-generation epsilon model, and 
  ! 3-generation epsilon model, assuming that the first neutralino index i
  ! corresponds to a electroweak eigenstate
  ! input
@@ -1188,12 +1188,12 @@ Contains
    Write(ErrCan,*) 'index k out of range:',k
    Call TerminateProgram
   End If
-
+ 
   If (i.Gt.2) Then
    sumI = 0.5_dp * ( gp * N(j,1) - g * N(j,2) )
    sumI_j = Conjg( sumI )
-
-  Else If (n_N.Eq.4) Then ! MSSM
+  
+  Else If (n_N.Eq.4) Then ! MSSM 
    sumI_j = Conjg(N(j,3)) * RS0(k,1) - Conjg(N(j,4)) * RS0(k,2)
 
   Else If (n_N.Eq.5) Then ! 1-generation epsilon model
@@ -1205,7 +1205,7 @@ Contains
       &   + Conjg(N(j,5)) * RS0(k,3) + Conjg(N(j,6)) * RS0(k,4)  &
       &   + Conjg(N(j,7)) * RS0(k,5)
 
-  End If
+  End If 
 
   Select Case(i)
   Case(1)
@@ -1226,8 +1226,8 @@ Contains
 
 Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between Neutralinos and Scalar bosons
- ! valid for the MSSM, 1-generation epsilon model, and
+ ! calculates the coupling between Neutralinos and Scalar bosons 
+ ! valid for the MSSM, 1-generation epsilon model, and 
  ! 3-generation epsilon model
  ! input
  !  i,j ........ index of Neutralino
@@ -1297,7 +1297,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Write(ErrCan,*) 'index k out of range:',k
    Call TerminateProgram
   End If
-
+ 
   sumI = 0.5_dp * ( gp * N(i,1) - g * N(i,2) )
   sumI_i = Conjg( sumI )
   sumI = 0.5_dp * ( gp * N(j,1) - g * N(j,2) )
@@ -1321,7 +1321,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       &             + Conjg(N(i,5)) * RS0(k,3) + Conjg(N(i,6)) * RS0(k,4)  &
       &             + Conjg(N(i,7)) * RS0(k,5) )
 
-  End If
+  End If 
 
   coupR = Conjg( coupL )
 
@@ -1332,8 +1332,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupNeutralinoZa(i,j,N,g,cosW,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between Neutralinos and Scalar bosons
- ! valid for the MSSM, 1-generation epsilon model, and
+ ! calculates the coupling between Neutralinos and Scalar bosons 
+ ! valid for the MSSM, 1-generation epsilon model, and 
  ! 3-generation epsilon model, assuming that the first neutralino index i
  ! corresponds to a electroweak eigenstate
  ! input
@@ -1408,8 +1408,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupNeutralinoZ(i,j,N,g,cosW,coupL,coupR, NMSSM)
  !-----------------------------------------------------------------------
- ! calculates the coupling between Neutralinos and Scalar bosons
- ! valid for the MSSM, 1-generation epsilon model, and
+ ! calculates the coupling between Neutralinos and Scalar bosons 
+ ! valid for the MSSM, 1-generation epsilon model, and 
  ! 3-generation epsilon model
  ! input
  !  i,j ........ index of Neutralino
@@ -1474,7 +1474,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Call TerminateProgram
 
   End If
-
+ 
   If (n_N.Eq.4) Then ! MSSM
    coupL = N(i,4) * Conjg( N(j,4) ) - N(i,3) * Conjg( N(j,3) )
 
@@ -1491,7 +1491,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
        & - N(i,5) * Conjg( N(j,5) ) - N(i,6) * Conjg( N(j,6) )  &
        & - N(i,7) * Conjg( N(j,7) )
 
-  End If
+  End If 
 
   coupL = 0.5_dp * g * coupL / cosW
   coupR = - Conjg( coupL )
@@ -1527,7 +1527,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   n_S0 = Size(RS0, dim=1)
 
   If (n_S0.Eq.2) Then
-   coup = RP0(i,1)*RS0(j,1) - RP0(i,2)*RS0(j,2)
+   coup = RP0(i,1)*RS0(j,1) - RP0(i,2)*RS0(j,2) 
 
   Else If (n_S0.Eq.3) Then
    coup = RP0(i,1)*RS0(j,1) - RP0(i,2)*RS0(j,2) + RP0(i,3)*RS0(j,3)
@@ -1631,7 +1631,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
   Else
    coup = 0._dp
-   Do i1 = 1,3
+   Do i1 = 1,3  
     coup = coup + g * Rsf(i,i1) * Conjg( Rsfp(j,i1) ) * oosqrt2
    End Do
 
@@ -1646,7 +1646,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !-----------------------------------------------------------------------
  ! calculates the coupling between sfermions and Z-boson
  ! valid for the MSSM, 1-generation epsilon model, and
- ! 3-generation epsilon model
+ ! 3-generation epsilon model 
  !  i .......... index of sfermion being an electroweak eigenstate
  !  j .-........ index of sfermion being a mass eigenstate
  !  g .......... SU(2) gauge coupling
@@ -1687,8 +1687,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   End If
 
   If (n_sfer.Eq.2) Then
-   If (i.Eq.1) Then
-    coup = (T3 - e * sinW2 ) * Rsf(j,1)
+   If (i.Eq.1) Then 
+    coup = (T3 - e * sinW2 ) * Rsf(j,1) 
    Else
     coup = - e * sinW2 * Rsf(j,2)
    End If
@@ -1696,7 +1696,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Else If (n_sfer.Eq.3) Then ! sneutrinos
    coup = T3 * Rsf(j,i)
 
-  Else If (n_sfer.Eq.6) Then
+  Else If (n_sfer.Eq.6) Then 
    If (i.Le.3) Then
     coup = (T3 - e * sinW2 ) * Rsf(j,i)
    Else
@@ -1754,14 +1754,14 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Call TerminateProgram
   End If
 
-  If (n_sfer.Eq.2) Then
+  If (n_sfer.Eq.2) Then  
    if (i.eq.j) coup = - e * sinW2
    coup = coup + T3 * Conjg( Rsf(i,1) ) * Rsf(j,1)
 
   Else If (n_sfer.Eq.3) Then ! sneutrinos
    if (i.eq.j) coup = T3
 
-  Else If (n_sfer.Eq.6) Then
+  Else If (n_sfer.Eq.6) Then 
    if (i.eq.j)  coup = - e * sinW2
    Do i1=1,3
     coup = coup + T3 * Conjg( Rsf(i,i1) ) * Rsf(j,i1)
@@ -1942,8 +1942,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !                                  U....u-quark
  !                                  Z....Z-boson
  ! In addition, an _L or _R is added in the case of fermions indicated
- ! if it is the left-handed or right-handed coupling.
- ! written by Werner Porod,
+ ! if it is the left-handed or right-handed coupling. 
+ ! written by Werner Porod, 
  ! 01.03.2001: taking InitializeDecaysMSSM as basis
  !          - charged Higgs -sfermion-sfermion, 1 Gen., MSSM
  ! 12.09.2002: changing interface to avoid global variables
@@ -1977,11 +1977,11 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       & , cpl_UUZ_L, cpl_UUZ_R, cpl_NuNuZ_L, cpl_NuNuZ_R
   Complex(dp), Intent(out) :: cpl_CCZ_L(2,2), cpl_CCZ_R(2,2)           &
       & , cpl_NNZ_L(4,4), cpl_NNZ_R(4,4), cpl_NNS0_L(4,4,2)            &
-      & , cpl_NNS0_R(4,4,2), cpl_NNP0_L(4,4,2), cpl_NNP0_R(4,4,2)
+      & , cpl_NNS0_R(4,4,2), cpl_NNP0_L(4,4,2), cpl_NNP0_R(4,4,2) 
   Complex(dp), Intent(out) :: cpl_GDSd_L(3,6), cpl_GDSd_R(3,6)          &
       & , cpl_DNSd_L(3,4,6), cpl_DNSd_R(3,4,6), cpl_GUSu_L(3,6)         &
       & , cpl_GUSu_R(3,6), cpl_UNSu_L(3,4,6), cpl_UNSu_R(3,4,6)         &
-      & , cpl_LNSl_L(3,4,6), cpl_LNSl_R(3,4,6), cpl_NuNSn_L(3,4,3)      &
+      & , cpl_LNSl_L(3,4,6), cpl_LNSl_R(3,4,6), cpl_NuNSn_L(3,4,3)      & 
       & , cpl_NuNSn_R(3,4,3), cpl_DDP0_L(3,3,2), cpl_LLP0_L(3,3,2)      &
       & , cpl_UUP0_L(3,3,2), cpl_DDP0_R(3,3,2), cpl_LLP0_R(3,3,2)       &
       & , cpl_UUP0_R(3,3,2), cpl_DDS0_L(3,3,2), cpl_LLS0_L(3,3,2)       &
@@ -1992,7 +1992,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       & , cpl_CLSn_R(2,3,3), cpl_CNuSl_L(2,3,6), cpl_CNuSl_R(2,3,6)
   Complex(dp), Intent(out) :: cpl_GlGlS0(2)
   Complex(dp) :: cpl_P0SdSd(2,6,6), cpl_P0SuSu(2,6,6), cpl_P0SlSl(2,6,6) &
-      & , cpl_P0SnSn(2,3,3), cpl_P0S0Z(2,2)
+      & , cpl_P0SnSn(2,3,3), cpl_P0S0Z(2,2) 
   Real(dp), Intent(out) :: cpl_P0S03(2,2,2)
   Complex(dp), Intent(out) :: cpl_S0SdSd(2,6,6), cpl_S0SuSu(2,6,6) &
       & , cpl_S0SlSl(2,6,6), cpl_S0SnSn(2,3,3), cpl_LNuW(3,3)
@@ -2004,7 +2004,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       & , cpl_CCS0_L(2,2,2), cpl_CCS0_R(2,2,2), cpl_CNW_L(2,4)        &
       & , cpl_CNW_R(2,4), cpl_SmpCN_L(2,2,4), cpl_SmpCN_R(2,2,4)
 
-  Integer :: n_char, n_neut, n_S0, n_P0, n_Spm
+  Integer :: n_char, n_neut, n_S0, n_P0, n_Spm 
   Integer :: i1, i2, i3, i4
   Real(dp) :: gU1, gSU2, gSU3, e_d, e_u, sinW2, cosW2, cosW
   Complex(dp) :: Rsd(2,2), Rsu(2,2), Rsl(2,2), coupLC, coupRC, Yuk, Yukp, &
@@ -2391,7 +2391,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
      Call CoupGluinoSquark(gSU3, phase_glu, i2, Rsu, coupLC, coupRC)
      cpl_GUSu_L(i1, (i1-1)*2 + i2) = coupLC
      cpl_GUSu_R(i1, (i1-1)*2 + i2) = coupRC
-    End Do
+    End Do  
    End Do
 
   !-------------------
@@ -2466,7 +2466,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Call Adjungate(cpl_SlSnW, cpl_SnSlW)
 
   !---------------------------
-  ! Pseudoscalar - scalar
+  ! Pseudoscalar - scalar 
   !---------------------------
   cpl_P0S03 = 0._dp
   Do i1=1,n_P0
@@ -2488,7 +2488,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     End Do
    End Do
   !-------------------------------------
-  ! Pseudoscalar - sfermion - sfermion
+  ! Pseudoscalar - sfermion - sfermion 
   !-------------------------------------
   cpl_P0SdSd = 0._dp
   cpl_P0SuSu = 0._dp
@@ -2561,7 +2561,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   End Do
 
   !-------------------------------------
-  ! scalar - sfermion - sfermion
+  ! scalar - sfermion - sfermion 
   !-------------------------------------
   cpl_S0SdSd = 0._dp
   cpl_S0SuSu = 0._dp
@@ -2647,7 +2647,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       Call CoupSupZ(i2, i3, gSU2, sinW2, Rsu, coupC )
       cpl_SuSuZ( (i1-1)*2+i2, (i1-1)*2+i3 ) = coupC
      End Do
-    End Do
+    End Do    
    End Do
 
   Iname = Iname - 1
@@ -2696,7 +2696,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  coup = (0._dp, 0.25_dp) * g**2 * (vevs(2) * RP0(k,1) + vevs(1) * RP0(k,2) ) &
       &  * (Conjg( Rspm(i,2) ) * Rspm(j,1) - Conjg( Rspm(i,1) ) * Rspm(j,2) )
-
+ 
  Iname = Iname - 1
 
  End Subroutine CoupChargedScalarPseudoscalar3
@@ -2744,7 +2744,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
      & - g2 * (Conjg(RSpm(i,2))*RSpm(j,1) + Conjg(RSpm(i,1))* RSpm(j,2) ) &
      &      * (RP0(k,1) * RP0(l,2) + RP0(k,2) * RP0(l,1) )
   End If
-
+ 
  coup = 0.25_dp * coup
 
  Iname = Iname - 1
@@ -2795,7 +2795,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Call TerminateProgram
  End If
 
- g2 = 0.25_dp * g**2
+ g2 = 0.25_dp * g**2 
  gp2 = 0.25_dp * gp**2
  g2diff = g2 - gp2
  g2sum =  g2 + gp2
@@ -2812,8 +2812,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    &              + g2sum * Rspm(i,2) * Conjg( Rspm(j,2) ) )
  sum2 = sum2 * RS0(k,2)
 
- coup =  sum1 + sum2
-
+ coup =  sum1 + sum2 
+ 
  Iname = Iname - 1
 
  End Subroutine CoupChargedScalarScalar3
@@ -2861,7 +2861,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
      & + g2 * (Conjg(RSpm(i,2))*RSpm(j,1) +  Conjg(RSpm(i,1))* RSpm(j,2) ) &
      &      * (RS0(k,1) * RS0(l,2) + RS0(k,2) * RS0(l,1) )
   End If
-
+ 
  coup = 0.25_dp * coup
 
  Iname = Iname - 1
@@ -2872,7 +2872,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupCharginoPseudoScalarMSSMa(i,j,k,U,V,RP0,g,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between charginos and pseudoscalar bosons
+ ! calculates the coupling between charginos and pseudoscalar bosons 
  ! valid for the MSSM
  !  i,j ........ index of chargino, first index is a electroweak eigenstate
  !  k .......... index of the pseudo scalar
@@ -2909,7 +2909,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Write(ErrCan,*) 'index k out of range:',k
    Call TerminateProgram
   End If
-
+ 
   If (i.Eq.1) Then
    coupL = RP0(k,1) * Conjg(U(j,2) )
    coupR = RP0(k,2) * V(j,2)
@@ -2917,9 +2917,9 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    coupL = RP0(k,2) * Conjg(U(j,1))
    coupR = RP0(k,1) * V(j,1)
   End If
-
+ 
   coupL = g * coupL * (0._dp,1._dp) * oosqrt2
-  coupR = g * coupR * (0._dp,-1._dp) * oosqrt2
+  coupR = g * coupR * (0._dp,-1._dp) * oosqrt2 
 
   Iname = Iname - 1
 
@@ -2928,7 +2928,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupCharginoPseudoScalarMSSM(i,j,k,U,V,RP0,g,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between charginos and pseudoscalar bosons
+ ! calculates the coupling between charginos and pseudoscalar bosons 
  ! valid for the MSSM
  !  i,j ........ index of chargino
  !  k .......... index of the pseudo scalar
@@ -2965,14 +2965,14 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Write(ErrCan,*) 'index k out of range:',k
    Call TerminateProgram
   End If
-
+ 
   coupL = g * ( RP0(k,1) * Conjg( V(i,1) * U(j,2) )             &
         &     + RP0(k,2) * Conjg( V(i,2) * U(j,1) ) ) * oosqrt2
   coupR = g * ( RP0(k,1) * V(j,1) * U(i,2)             &
         &     + RP0(k,2) * V(j,2) * U(i,1) ) * oosqrt2
-
+ 
   coupL = coupL * (0._dp,1._dp)
-  coupR = coupR * (0._dp,-1._dp)
+  coupR = coupR * (0._dp,-1._dp) 
 
   Iname = Iname - 1
 
@@ -2982,7 +2982,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupCharginoScalarMSSMa(i,j,k,U,V,RS0,g,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between charginos and scalar bosons
+ ! calculates the coupling between charginos and scalar bosons 
  ! valid for the MSSM
  !  i,j ........ index of chargino, first index is an electroweak eigenstate
  !  k .......... index of the pseudo scalar
@@ -3019,7 +3019,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Write(ErrCan,*) 'index k out of range:',k
    Call TerminateProgram
   End If
-
+ 
   If (i.Eq.1) Then
    coupL = RS0(k,1) * Conjg( U(j,2) )
    coupR = RS0(k,2) * Conjg( V(j,2) )
@@ -3027,7 +3027,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    coupL = RS0(k,2) * Conjg( U(j,1) )
    coupR = RS0(k,1) * Conjg( V(j,1) )
   End If
-
+ 
   coupL = - g * coupL * oosqrt2
   coupR = - g * Conjg( coupR ) * oosqrt2
 
@@ -3038,7 +3038,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupCharginoScalarMSSM(i,j,k,U,V,RS0,g,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between charginos and scalar bosons
+ ! calculates the coupling between charginos and scalar bosons 
  ! valid for the MSSM
  !  i,j ........ index of chargino
  !  k .......... index of the pseudo scalar
@@ -3076,12 +3076,12 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Write(ErrCan,*) 'index k out of range:',k
    Call TerminateProgram
   End If
-
+ 
   coupL = g * ( RS0(k,1) * Conjg( V(i,1) * U(j,2) )             &
         &     + RS0(k,2) * Conjg( V(i,2) * U(j,1) ) ) * oosqrt2
   coupR = g * ( RS0(k,1) * Conjg( V(j,1) * U(i,2) )             &
         &     + RS0(k,2) * Conjg( V(j,2) * U(i,1) ) ) * oosqrt2
-
+ 
   coupL = - coupL
   coupR = - Conjg( coupR )
 
@@ -3100,8 +3100,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !  g .......... SU(2) gauge coupling
  !  T3 ......... weak isospin of the fermion
  !  RSf(i,j) ... mixing matrix of the sfermion
- !  YukD ....... Yukawa coupling of the T3=-0.5 fermion
- !  YukU ....... Yukawa coupling of the T3=0.5 fermion
+ !  YukD ....... Yukawa coupling of the T3=-0.5 fermion 
+ !  YukU ....... Yukawa coupling of the T3=0.5 fermion 
  !  U,V ........ mixing matrices of the chargino
  ! output
  !  coupL ...... the left coupling(i,j)
@@ -3121,7 +3121,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Integer :: n_char
 
   Iname = Iname + 1
-  NameOfUnit(Iname) = 'CoupCharginoSfermion1'
+  NameOfUnit(Iname) = 'CoupCharginoSfermion1' 
 
   n_char = Size(U, Dim=1)
 
@@ -3129,12 +3129,12 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Write(ErrCan,*) 'Error in Subroutine ',NameOfUnit(Iname)
    Write(ErrCan,*) 'index i out of range: (i,n_char) = ',i,n_char
    Call TerminateProgram
-  End If
+  End If 
   If ((j.Lt.1).Or.(j.Gt.2)) Then
    Write(ErrCan,*) 'Error in Subroutine ',NameOfUnit(Iname)
    Write(ErrCan,*) 'index j out of range: ',j
    Call TerminateProgram
-  End If
+  End If 
 
   If ( T3.Gt.0.) Then
    coupL = YukU * Conjg( RSf(j,1) ) * Conjg( V(i,2) )
@@ -3157,7 +3157,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
                                        &, gp, g, coupL, coupR)
  !-----------------------------------------------------------------------
  ! calculates the coupling between charginos, neutralinos, and
- ! charged scalar bosons
+ ! charged scalar bosons 
  ! valid for the MSSM
  !  i .......... index of chargino
  !  j .......... index of the neutralino
@@ -3210,7 +3210,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   coupL = - RSpm(k,2) * ( g * Conjg( V(i,1) * N(j,4) ) &
         &               + Conjg( V(i,2) ) * sumIC)
   coupR = RSpm(k,1) * (- g * U(i,1) * N(j,3) + U(i,2) * sumI )
-
+ 
   Iname = Iname - 1
 
  End Subroutine CoupCSCharginoNeutralinoMSSM
@@ -3219,7 +3219,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupFermionPseudoscalar1(i,T3,yuk,RP0,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between SM-fermions and pseudoscalar bosons
+ ! calculates the coupling between SM-fermions and pseudoscalar bosons 
  ! valid for the MSSM, 1-generation epsilon model, and
  ! 3-generation epsilon model
  !  i .......... index of the pseudoscalar boson
@@ -3237,7 +3237,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Complex(dp), Intent(in) :: yuk
   Complex(dp), Intent(out) :: coupL,coupR
   Integer, Intent(in) :: i
-
+ 
   If (T3.Gt.0._dp) Then
    coupL = - (0._dp,1._dp) * yuk * RP0(i,2) * oosqrt2
   Else
@@ -3250,7 +3250,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupFermionScalar1(i,T3,yuk,RS0,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between SM-fermions and scalar bosons
+ ! calculates the coupling between SM-fermions and scalar bosons 
  ! valid for the MSSM, 1-generation epsilon model, and
  ! 3-generation epsilon model, and the spontaneously broken model
  !  i .......... index of scalar boson
@@ -3268,21 +3268,21 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Complex(dp), Intent(in) :: yuk
   Complex(dp), Intent(out) :: coupL,coupR
   Integer, Intent(in) :: i
-
+ 
   If (T3.Gt.0._dp) Then
    coupL = - yuk * RS0(i,2) * oosqrt2
   Else
    coupL = - yuk * RS0(i,1) * oosqrt2
   End If
-  coupR = Conjg(coupL)
+  coupR = Conjg(coupL) 
 
  End Subroutine CoupFermionScalar1
 
  Subroutine CoupGravitinoSfermion1(j, RSf, coupL, coupR)
  !-----------------------------------------------------------------------
- ! calculates the overall coupling gravitino-sfermion-fermion
+ ! calculates the overall coupling gravitino-sfermion-fermion 
  ! and without the generator T^a_ij, the Lagrangian is given by:
- !  L = \bar{f_i} (coupR P_R + coupL P_L) gamma_mu gamma^nu G^mu D_\nu
+ !  L = \bar{f_i} (coupR P_R + coupL P_L) gamma_mu gamma^nu G^mu D_\nu 
  !            *  \tilde f_j / (Sqrt[2] m_Planck)
  ! input:
  !  g3 ............ SU(3) coupling
@@ -3343,19 +3343,19 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  Subroutine CoupNeutralinoSdown1(i,j,gp,g,RSf,Yuk,N,coupL,coupR)
  !-----------------------------------------------------------------------
  ! calculates the coupling between neutralino, down, and sdown
- ! valid for the MSSM, 1-generation epsilon model,
+ ! valid for the MSSM, 1-generation epsilon model, 
  ! 3-generation epsilon model, and the full spontaneously broken model
  !  i .......... index of neutralino
  !  j .......... index of sdown
  !  g .......... SU(2) gauge coupling
  !  gp ......... U(1) gauge coupling
  !  RSf(i,j) ... mixing matrix of the sdown
- !  Yuk ........ Yukawa coupling of the down
+ !  Yuk ........ Yukawa coupling of the down 
  !  N .......... mixing matrix of the neutralino
  ! output
  !  coupL ...... the left coupling(i,j)
  !  coupR ...... the right coupling(i,j)
- !    L = \bar(f) ( coupL P_L + coupR P_R) chi^0_i \tilde(f)_j
+ !    L = \bar(f) ( coupL P_L + coupR P_R) chi^0_i \tilde(f)_j  
  ! written by Werner Porod, 6.8.1999
  ! 23.3.2000: including the full model with spontaneously broken R-parity
  ! 9.10.2000: porting to f90
@@ -3394,7 +3394,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !  T3 ......... weak isospin of the fermion
  !  e .......... charge of the fermion
  !  RSf(i,j) ... mixing matrix of the sfermion
- !  Yuk ........ Yukawa coupling of the fermion
+ !  Yuk ........ Yukawa coupling of the fermion 
  !  N .......... mixing matrix of the neutralino
  ! output
  !  coupL ...... the left coupling(i,j)
@@ -3404,7 +3404,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  ! 23.3.2000: including the full model with spontaneously broken R-parity
  ! 9.10.2000: porting to f90
  ! the corresponding Lagrangian is given by:
- !    L = \bar(f) ( coupL P_L + coupR P_R) chi^0_i \tilde(f)_j
+ !    L = \bar(f) ( coupL P_L + coupR P_R) chi^0_i \tilde(f)_j  
  !-----------------------------------------------------------------------
  Implicit None
 
@@ -3426,10 +3426,10 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   hr = Conjg(hl)
 
   fL = - sqrt2 *( (e-T3) * gp * N(i,1) + T3 * g * N(i,2) )
-  fR = sqrt2 * e * gp * Conjg( N(i,1) )
+  fR = sqrt2 * e * gp * Conjg( N(i,1) ) 
 
-  coupL = Conjg( Rsf(j,1) ) * hl +  Conjg( Rsf(j,2) ) * fr
-  coupR = Conjg( Rsf(j,1) ) * fl +  Conjg( Rsf(j,2) ) * hr
+  coupL = Conjg( Rsf(j,1) ) * hl +  Conjg( Rsf(j,2) ) * fr 
+  coupR = Conjg( Rsf(j,1) ) * fl +  Conjg( Rsf(j,2) ) * hr 
 
   Iname = Iname - 1
 
@@ -3446,12 +3446,12 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !  g .......... SU(2) gauge coupling
  !  gp ......... U(1) gauge coupling
  !  RSf(i,j) ... mixing matrix of the slepton
- !  Yuk ........ Yukawa coupling of the lepton
+ !  Yuk ........ Yukawa coupling of the lepton 
  !  N .......... mixing matrix of the neutralino
  ! output
  !  coupL ...... the left coupling(i,j)
  !  coupR ...... the right coupling(i,j)
- !    L = \bar(f) ( coupL P_L + coupR P_R) chi^0_i \tilde(f)_j
+ !    L = \bar(f) ( coupL P_L + coupR P_R) chi^0_i \tilde(f)_j  
  ! written by Werner Porod, 6.8.1999
  ! 23.3.2000: including the full model with spontaneously broken R-parity
  ! 9.10.2000: porting to f90
@@ -3469,7 +3469,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   NameOfUnit(Iname) = 'CoupNeutralinoSlepton1'
 
   T3 = -0.5_dp
-  e = -1._dp
+  e = -1._dp 
 
   Call CoupNeutralinoSfermion1(i,j,gp,g,T3,e,RSf,Yuk,N,coupL,coupR)
 
@@ -3522,7 +3522,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !  g .......... SU(2) gauge coupling
  !  gp ......... U(1) gauge coupling
  !  RSf(i,j) ... mixing matrix of the sup
- !  Yuk ........ Yukawa coupling of the up
+ !  Yuk ........ Yukawa coupling of the up 
  !  N .......... mixing matrix of the neutralino
  ! output
  !  coupL ...... the left coupling(i,j)
@@ -3575,10 +3575,10 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  Real(dp), Intent(in) :: RS0(2,2), RP0(2,2), vevs(2), g, gp
  Real(dp), Intent(out) :: coup
 
- coup = - 0.125_dp * (g**2 + gp**2)                               &
+ coup = - 0.125_dp * (g**2 + gp**2)                               & 
       &           * (RP0(i,1) * RP0(j,1) - RP0(i,2) * RP0(j,2))  &
       &           * (vevs(1) * RS0(k,1) - vevs(2) * RS0(k,2) )
-
+ 
  End Subroutine CoupPseudoScalarScalar3
 
 
@@ -3602,10 +3602,10 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  Real(dp), Intent(in) :: RS0(2,2), RP0(2,2), g, gp
  Real(dp), Intent(out) :: coup
 
- coup = - 0.125_dp * (g**2 + gp**2)                                &
+ coup = - 0.125_dp * (g**2 + gp**2)                                & 
       &            * (RP0(i,1) * RP0(j,1) - RP0(i,2) * RP0(j,2) )  &
       &            * (RS0(l,1) * RS0(k,1) - RS0(l,2) * RS0(k,2) )
-
+ 
  End Subroutine CoupPseudoScalarScalar4
 
 
@@ -3644,7 +3644,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
   coup = ZeroC
 
-  n_P0 =  Size(RP0, Dim=1)
+  n_P0 =  Size(RP0, Dim=1) 
 
   ayuk = Conjg( yuk )
   aA = Conjg( A )
@@ -3718,7 +3718,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
   coup = ZeroC
 
-  n_P0 =  Size(RP0, Dim=1)
+  n_P0 =  Size(RP0, Dim=1) 
 
   ayuk = Conjg( yuk )
   aA = Conjg( A )
@@ -3815,7 +3815,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   If (T3.Gt.0._dp) Then
    parts(1) = -  Dterm
 
-   parts(2) = Dterm                  &
+   parts(2) = Dterm                  & 
           & - 0.5_dp * yuk2          &
           &   * ( Rsf(l,1) * Conjg( Rsf(k,1) ) + Rsf(l,2) * Conjg( Rsf(k,2) ) )
 
@@ -3871,8 +3871,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 ! n_S0 = Size( RS0, Dim = 1)
 
  If (i.Eq.1) Then
-  sumIJ = RS0(j,1)
-  sumIK = RS0(k,1)
+  sumIJ = RS0(j,1) 
+  sumIK = RS0(k,1) 
   sumJK = RS0(j,1) * RS0(k,1) - RS0(j,2) * RS0(k,2)
 
   coup = vevSM(1) * ( sumJK + RS0(j,1)*sumIK + RS0(k,1)*sumIJ ) &
@@ -3889,7 +3889,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  End If
 
  coup = - 0.25_dp * (g**2 + gp**2) * coup
-
+ 
  End Subroutine CoupScalar3a
 
 
@@ -3938,7 +3938,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 ! end do
 
  coup = - 0.25_dp * (g**2 + gp**2) * coup
-
+ 
  End Subroutine CoupScalar3
 
 
@@ -3954,7 +3954,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  ! output
  !  coup ....... the coupling(i,j,k)
  ! written by Werner Porod, 2.10.1999
- ! 09.11.01: poratation to f90
+ ! 09.11.01: poratation to f90 
  !-----------------------------------------------------------------------
  Implicit None
 
@@ -4243,7 +4243,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  Integer, Intent(in) :: i
  Real(dp), Intent(in) :: g, vevs(2), RS0(:,:)
  Real(dp), Intent(out) :: coup
-
+ 
  coup = 0.5_dp * g**2 * (vevs(1) * RS0(i,1) + vevs(2) * RS0(i,2) )
 
  End Subroutine CoupScalarWMSSM
@@ -4284,8 +4284,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !  j ........... index of the adjungated sfermion 1
  !  k ........... index of the sfermion 2
  !  l ........... index of the adjungated sfermion 2
- !  gp .......... U(1) gauge coupling
- !  g ........... SU(2) gauge coupling
+ !  gp .......... U(1) gauge coupling 
+ !  g ........... SU(2) gauge coupling 
  !  T3_1, e1 .... isospin and charge of sfermion 1
  !  Rsf1(i,j) ... mixing matrix of the sfermions 1
  !  T3_2, e2 .... isospin and charge of sfermion 2
@@ -4307,8 +4307,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
   Integer :: i1, i2, n_sf1, n_sf2
   Real(dp) :: YL12, YR12, YL1R2, YR1L2, g2sq
-
-  Iname = Iname + 1
+  
+  Iname = Iname + 1 
   NameOfUnit(Iname) = "CoupSfermion4G_13"
 
   YL12 = gp**2 * (T3_1 - e1) * (T3_2 - e2) * k_sf2 &
@@ -4392,7 +4392,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    If (ErrorLevel.Ge.0) Call TerminateProgram
   End If
 
-  Iname = Iname - 1
+  Iname = Iname - 1 
 
  End Subroutine CoupSfermion4G_13
 
@@ -4400,7 +4400,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  Subroutine CoupSfermionSelf4G_13(i, j, k, l, gp, g, e, T3, Rsf, k_sf &
                                 &, coup, self)
  !-----------------------------------------------------------------------
- ! calculates the 4-sfermion gauge self coupling
+ ! calculates the 4-sfermion gauge self coupling 
  ! valid for the MSSM, 1-generation epsilon model, and
  ! 3-generation epsilon model
  !  i,k ........ index of sfermions
@@ -4427,7 +4427,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Integer :: i1, i2, n_sf
   Real(dp) :: YL2, YR2, YLR2
 
-  Iname = Iname + 1
+  Iname = Iname + 1 
   NameOfUnit(Iname) = "CoupSfermionSelf4G_13"
 
   YL2 = 0.25_dp * g**2 + gp**2 * (T3 - e)**2
@@ -4445,7 +4445,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     Else If ((i.Eq.2).And.(j.Eq.2)) Then
      coup = - YR2 * (1._dp + k_sf) * Rsf(l,2) * Conjg(Rsf(k,2))     &
           & - YLR2 * k_sf * Rsf(l,1) * Conjg(Rsf(k,1))
-    Else
+    Else 
      coup = - YLR2 * Rsf(l,i) * Conjg(Rsf(k,j))
     End If
    Else
@@ -4468,7 +4468,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
      End Do
     End Do
    End If
-   coup = - YL2 * coup
+   coup = - YL2 * coup 
 
   Else If (n_sf.Eq.6) Then ! sfermion with left right mixing
    If (Present(self)) Then
@@ -4512,10 +4512,10 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Write(ErrCan,*) "does not match any theory"
    If (ErrorLevel.Ge.0) Call TerminateProgram
   End If
-
+  
   coup = coup
-
-  Iname = Iname - 1
+  
+  Iname = Iname - 1 
 
  End Subroutine CoupSfermionSelf4G_13
 
@@ -4561,7 +4561,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupSfermionSelf4Y_1(i, j, k, l, Yuk, Rsf, nc, coup, self)
  !-----------------------------------------------------------------------
- ! calculates the 4-sfermion Yukawa self coupling
+ ! calculates the 4-sfermion Yukawa self coupling 
  ! valid for the MSSM, 1-generation epsilon model, and
  ! 3-generation epsilon model
  !  i,k ........ index of sfermions
@@ -4575,7 +4575,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  ! written by Werner Porod, 31.12.01
  ! 17.03.03: bug fixing due to SU(3) structure, assumed that colour
  !           index for i is the samke as j, and k has the same colour
- !           index as l
+ !           index as l 
  !     if (self==1) then we assume that the sfermions with indices i and j
  !     are electroweak eigenstates
  !-----------------------------------------------------------------------
@@ -4648,8 +4648,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !                                  U....u-quark
  !                                  Z....Z-boson
  ! In addition, an _L or _R is added in the case of fermions indicated
- ! if it is the left-handed or right-handed coupling.
- ! written by Werner Porod,
+ ! if it is the left-handed or right-handed coupling. 
+ ! written by Werner Porod, 
  ! 01.03.2001: taking InitializeDecaysMSSM as basis
  !          - charged Higgs -sfermion-sfermion, 1 Gen., MSSM
  ! 12.09.2002: changing interface to avoid global variables
@@ -4692,11 +4692,11 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       & , cpl_UUZ_L, cpl_UUZ_R, cpl_NuNuZ_L, cpl_NuNuZ_R
   Complex(dp), Intent(out) :: cpl_CCZ_L(2,2), cpl_CCZ_R(2,2)           &
       & , cpl_NNZ_L(4,4), cpl_NNZ_R(4,4), cpl_NNS0_L(4,4,2)            &
-      & , cpl_NNS0_R(4,4,2), cpl_NNP0_L(4,4,2), cpl_NNP0_R(4,4,2)
+      & , cpl_NNS0_R(4,4,2), cpl_NNP0_L(4,4,2), cpl_NNP0_R(4,4,2) 
   Complex(dp), Intent(out) :: cpl_GDSd_L(3,6), cpl_GDSd_R(3,6)          &
       & , cpl_DNSd_L(3,4,6), cpl_DNSd_R(3,4,6), cpl_GUSu_L(3,6)         &
       & , cpl_GUSu_R(3,6), cpl_UNSu_L(3,4,6), cpl_UNSu_R(3,4,6)         &
-      & , cpl_LNSl_L(3,4,6), cpl_LNSl_R(3,4,6), cpl_NuNSn_L(3,4,3)      &
+      & , cpl_LNSl_L(3,4,6), cpl_LNSl_R(3,4,6), cpl_NuNSn_L(3,4,3)      & 
       & , cpl_NuNSn_R(3,4,3), cpl_DDP0_L(3,3,2), cpl_LLP0_L(3,3,2)      &
       & , cpl_UUP0_L(3,3,2), cpl_DDP0_R(3,3,2), cpl_LLP0_R(3,3,2)       &
       & , cpl_UUP0_R(3,3,2), cpl_DDS0_L(3,3,2), cpl_LLS0_L(3,3,2)       &
@@ -4707,7 +4707,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       & , cpl_CLSn_R(2,3,3), cpl_CNuSl_L(2,3,6), cpl_CNuSl_R(2,3,6)
   Complex(dp), Intent(out) :: cpl_GlGlS0(2)
   Complex(dp) :: cpl_P0SdSd(2,6,6), cpl_P0SuSu(2,6,6), cpl_P0SlSl(2,6,6) &
-      & , cpl_P0SnSn(2,3,3), cpl_P0S0Z(2,2)
+      & , cpl_P0SnSn(2,3,3), cpl_P0S0Z(2,2) 
   Real(dp), Intent(out) :: cpl_P0S03(2,2,2)
   Complex(dp), Intent(out) :: cpl_S0SdSd(2,6,6), cpl_S0SuSu(2,6,6) &
       & , cpl_S0SlSl(2,6,6), cpl_S0SnSn(2,3,3), cpl_LNuW(3,3)
@@ -4721,7 +4721,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Complex(dp), Intent(out), Dimension(3,6) :: c_GraDSd_L, c_GraDSd_R, c_GraUSu_L &
       & , c_GraUSu_R, c_GraLSl_L, c_GraLSl_R
   Complex(dp), Intent(out), Dimension(3,3) :: c_GraNuSn_L, c_GraNuSn_R
-  Integer :: n_char, n_neut, n_S0, n_P0, n_Spm
+  Integer :: n_char, n_neut, n_S0, n_P0, n_Spm 
   Integer :: i1, i2, i3, i4
   Real(dp) :: gU1, gSU2, gSU3, e_d, e_u, sinW2, cosW2, cosW
   Complex(dp) :: Rsd(2,2), Rsu(2,2), Rsl(2,2), coupLC, coupRC, Yuk, Yukp, &
@@ -4994,7 +4994,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    End Do
 
   Else
-
+   
    Do i1=1,3
     Rsd = RSdown(2*(i1-1)+1:2*(i1-1)+2, 2*(i1-1)+1:2*(i1-1)+2)
     Rsu = RSup(2*(i1-1)+1:2*(i1-1)+2, 2*(i1-1)+1:2*(i1-1)+2)
@@ -5031,7 +5031,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     End Do
 
    End Do
-  End If
+  End If 
 
   !-------------------------
   ! chargino - neutralino W
@@ -5250,7 +5250,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    End Do
 
   Else
-
+   
    Do i1=1,3
     Rsd = RSdown(2*(i1-1)+1:2*(i1-1)+2, 2*(i1-1)+1:2*(i1-1)+2)
     Rsu = RSup(2*(i1-1)+1:2*(i1-1)+2, 2*(i1-1)+1:2*(i1-1)+2)
@@ -5270,7 +5270,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     End Do
    End Do
 
-  End If
+  End If 
 
   !--------------------------
   ! Gluino
@@ -5306,10 +5306,10 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
      Call CoupGluinoSquark(gSU3, phase_glu, i2, Rsu, coupLC, coupRC)
      cpl_GUSu_L(i1, (i1-1)*2 + i2) = coupLC
      cpl_GUSu_R(i1, (i1-1)*2 + i2) = coupRC
-    End Do
+    End Do  
    End Do
 
-  End If
+  End If 
 
   !-------------------
   ! Gluon Gluon scalar
@@ -5396,7 +5396,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Call Adjungate(cpl_SlSnW, cpl_SnSlW)
 
   !---------------------------
-  ! Pseudoscalar - scalar
+  ! Pseudoscalar - scalar 
   !---------------------------
   cpl_P0S03 = 0._dp
   Do i1=1,n_P0
@@ -5418,7 +5418,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     End Do
    End Do
   !-------------------------------------
-  ! Pseudoscalar - sfermion - sfermion
+  ! Pseudoscalar - sfermion - sfermion 
   !-------------------------------------
   cpl_P0SdSd = 0._dp
   cpl_P0SuSu = 0._dp
@@ -5492,7 +5492,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   End Do
 
   !-------------------------------------
-  ! scalar - sfermion - sfermion
+  ! scalar - sfermion - sfermion 
   !-------------------------------------
   cpl_S0SdSd = 0._dp
   cpl_S0SuSu = 0._dp
@@ -5592,7 +5592,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     Do i2=1,3
      Call CoupSneutrinoZ(i1, i2, gSU2, sinW2, Rsneut, cpl_SnSnZ(i1, i2) )
     End Do
-   End Do
+   End Do 
    Do i1=1,6
     Do i2=1,6
      Call CoupSleptonZ(i1, i2, gSU2, sinW2, Rslepton, cpl_SlSlZ(i1, i2) )
@@ -5600,7 +5600,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
      Call CoupSupZ(i1, i2, gSU2, sinW2, Rsup, cpl_SuSuZ(i1, i2) )
     End Do
    End Do
-
+ 
   Else
    Call CoupSneutrinoZ(gSU2, sinW2, cpl_SnSnZ(1,1) )
    Do i1=1,3
@@ -5617,7 +5617,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       Call CoupSupZ(i2, i3, gSU2, sinW2, Rsu, coupC )
       cpl_SuSuZ( (i1-1)*2+i2, (i1-1)*2+i3 ) = coupC
      End Do
-    End Do
+    End Do    
    End Do
 
   End If
@@ -5706,7 +5706,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
      coup = coup &
         & + oosqrt2 * RSfu(k,i3) * RSda(j,i1)                        &
         &           * ( yukD(i1,i2) * yukDa(i3,i2) * vevs(1) * RSp1  &
-        &             + yukU(i1,i2) * yukUa(i3,i2) * vevs(2) * RSp2C )
+        &             + yukU(i1,i2) * yukUa(i3,i2) * vevs(2) * RSp2C ) 
     End Do
    !-----------------
    ! right d left u
@@ -5750,7 +5750,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !  T3 ......... isospin of the left-sfermion
  !  e .......... electric charge of sfermion
  !  yuk(i,j) ... Yukawa coupling of the sfermion
- !  yukb(i,j) .. Yukawa coupling of the other sfermion in the SU(2) doublett
+ !  yukb(i,j) .. Yukawa coupling of the other sfermion in the SU(2) doublett 
  !  Rsf(i,j) ... mixing matrix of the sfermions
  !  gp ......... U(1) gauge coupling
  !  g .......... SU(2) gauge coupling
@@ -5787,7 +5787,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
   Dterm = 0._dp
 
-  If (i_sf.Eq.6) Then
+  If (i_sf.Eq.6) Then 
    Do i1=1,3
     Dterm = Dterm                                                             &
         & + 0.5_dp * ( (T3 * g2 + YL * gp2) * Rsf(l,i1) * Conjg( Rsf(k,i1) )  &
@@ -5798,7 +5798,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    if (l.eq.k)  Dterm = 0.5_dp * (T3 * g2 + YL * gp2)
   End If
 
-  If (T3.Gt.0._dp) Then
+  If (T3.Gt.0._dp) Then   
    parts(1) = Dterm
    parts(2) = - Dterm
    If (i_sf.Eq.6) Then
@@ -5911,8 +5911,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
   parts(1,1) = - ( vevs(1) * Rspm(i,1) * (0.5_dp*g2 - yukd2) &
            &     + vevs(2) * Rspm(i,2) * (0.5_dp*g2 - yuku2) ) * oosqrt2
-
-  parts(1,2) = yuku * Conjg( mu ) * Rspm(i,1) + Au * Rspm(i,2)
+ 
+  parts(1,2) = yuku * Conjg( mu ) * Rspm(i,1) + Au * Rspm(i,2) 
 
   parts(2,1) = Conjg(Ad) * RSpm(i,1) + Conjg( yukd ) * mu * RSpm(i,2)
 
@@ -5941,7 +5941,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !  T3 ......... isospin of the left-sfermion
  !  e .......... electric charge of sfermion
  !  yuk ........ Yukawa coupling of the sfermion
- !  yukb ....... Yukawa coupling of the other sfermion in the SU(2) doublett
+ !  yukb ....... Yukawa coupling of the other sfermion in the SU(2) doublett 
  !  Rsf(i,j) ... mixing matrix of the sfermions
  !  gp ......... U(1) gauge coupling
  !  g .......... SU(2) gauge coupling
@@ -6007,8 +6007,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !  g .......... SU(2) gauge coupling
  !  T3 ......... weak isospin of the fermion
  !  RSf(i,j) ... mixing matrix of the sfermion
- !  YukD ....... Yukawa coupling of the T3=-0.5 fermion
- !  YukU ....... Yukawa coupling of the T3=0.5 fermion
+ !  YukD ....... Yukawa coupling of the T3=-0.5 fermion 
+ !  YukU ....... Yukawa coupling of the T3=0.5 fermion 
  !  U,V ........ mixing matrices of the chargino
  ! output
  !  coupL ...... the left coupling(i,j,k)
@@ -6028,7 +6028,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Integer :: n_char, i1, i2, n_sf
 
   Iname = Iname + 1
-  NameOfUnit(Iname) = 'CoupCharginoSfermion3'
+  NameOfUnit(Iname) = 'CoupCharginoSfermion3' 
 
   n_char = Size(U, Dim=1)
   n_sf = Size(Rsf, Dim=1)
@@ -6038,17 +6038,17 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     Write(ErrCan,*) 'Error in Subroutine ',NameOfUnit(Iname)
     Write(ErrCan,*) 'index i out of range: (i,n_char) = ',i,n_char
     Call TerminateProgram
-   End If
+   End If 
    If ((j.Lt.1).Or.(j.Gt.3)) Then
     Write(ErrCan,*) 'Error in Subroutine ',NameOfUnit(Iname)
     Write(ErrCan,*) 'index j out of range: ',j
     Call TerminateProgram
-   End If
+   End If 
    If ((k.Lt.1).Or.(k.Gt.6)) Then
     Write(ErrCan,*) 'Error in Subroutine ',NameOfUnit(Iname)
     Write(ErrCan,*) 'index k out of range: ',k
     Call TerminateProgram
-   End If
+   End If 
   End If
 
   coupL = 0._dp
@@ -6094,8 +6094,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    End If
    coupL = coupL * Conjg( V(i,2) )
 
-  Else If (n_sf.Eq.3) Then ! T3 < 0, and sneutrinos
-
+  Else If (n_sf.Eq.3) Then ! T3 < 0, and sneutrinos 
+ 
    If ( CompareMatrices(RfL,id3C,NearlyZero) .And. &
       & CompareMatrices(RfR,id3C,NearlyZero)       ) Then
     coupR = - g * Conjg( RSf(k,j) ) * V(i,1)
@@ -6128,7 +6128,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    coupL = coupL * Conjg( U(i,2) )
 
   Else  ! T3 < 0
-
+ 
    If ( CompareMatrices(RfL,id3C,NearlyZero) .And. &
       & CompareMatrices(RfR,id3C,NearlyZero)       ) Then
     coupR = - g * Conjg( RSf(k,j) ) * V(i,1)
@@ -6195,7 +6195,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Complex(dp), Intent(in) :: yuk(3,3), RFl(3,3), RFr(3,3)
   Complex(dp), Intent(out) :: coupL, coupR
   Integer, Intent(in) :: i, j, k
-
+ 
   Integer :: i1, i2
 
   coupL = ZeroC
@@ -6261,7 +6261,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Complex(dp), Intent(in) :: yuk(3,3), RFl(3,3), RFr(3,3)
   Complex(dp), Intent(out) :: coupL, coupR
   Integer, Intent(in) :: i, j, k
-
+ 
   Integer :: i1, i2
 
   coupL = ZeroC
@@ -6324,7 +6324,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Complex(dp), Intent(in) :: yuk(3,3), RFl(3,3), RFr(3,3)
   Complex(dp), Intent(out) :: coupL, coupR
   Integer, Intent(in) :: i, j, k
-
+ 
   Integer :: i1, i2
 
   coupL = ZeroC
@@ -6333,12 +6333,12 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   If ( CompareMatrices(id3C,RFl,NearlyZero).And. &
      & CompareMatrices(id3C,RFr,NearlyZero)      ) Then
      coupL = yuk(j,i)
-     coupR = Conjg(yuk(i,j))
+     coupR = Conjg(yuk(i,j)) 
 
   Else If (CompareMatrices(id3C,RFl,NearlyZero) ) Then
    Do i2=1,3
     coupL = coupL + yuk(j,i2) * Conjg(RFr(i,i2))
-    coupR = coupR + Conjg(yuk(i,i2)) * RFr(j,i2)
+    coupR = coupR + Conjg(yuk(i,i2)) * RFr(j,i2)    
    End Do
 
   Else If (CompareMatrices(id3C,RFr,NearlyZero) ) Then
@@ -6390,7 +6390,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Complex(dp), Intent(in) :: yuk(3,3), RFl(3,3), RFr(3,3)
   Complex(dp), Intent(out) :: coupL, coupR
   Integer, Intent(in) :: i, j, k
-
+ 
   Integer :: i1, i2
 
   coupL = ZeroC
@@ -6399,16 +6399,16 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   If ( CompareMatrices(id3C,RFl,NearlyZero).And. &
      & CompareMatrices(id3C,RFr,NearlyZero)      ) Then
      coupL = yuk(j,i)
-     coupR = Conjg(yuk(i,j))
+     coupR = Conjg(yuk(i,j)) 
 
   Else If (CompareMatrices(id3C,RFl,NearlyZero) ) Then
    coupL = yuk(j,i)
    Do i2=1,3
-    coupR = coupR + Conjg(yuk(i,i2)) * RFr(j,i2)
+    coupR = coupR + Conjg(yuk(i,i2)) * RFr(j,i2)    
    End Do
 
   Else If (CompareMatrices(id3C,RFr,NearlyZero) ) Then
-   coupR = Conjg(yuk(i,j))
+   coupR = Conjg(yuk(i,j)) 
    Do i1=1,3
     coupL = coupL + Conjg(RFl(j,i1)) * yuk(i1,i)
    End Do
@@ -6496,9 +6496,9 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupGravitinoSfermion3(i, j, RSf, RL, RR, coupL, coupR)
  !-----------------------------------------------------------------------
- ! calculates the overall coupling gravitino-sfermion-fermion
+ ! calculates the overall coupling gravitino-sfermion-fermion 
  ! and without the generator T^a_ij, the Lagrangian is given by:
- !  L = \bar{f_i} (coupR P_R + coupL P_L) gamma_mu gamma^nu G^mu D_\nu
+ !  L = \bar{f_i} (coupR P_R + coupL P_L) gamma_mu gamma^nu G^mu D_\nu 
  !            *  \tilde f_j / (Sqrt[2] m_Planck)
  ! input:
  !  g3 ............ SU(3) coupling
@@ -6567,13 +6567,13 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !  RfL(i,j) ... mixing matrix of the left-handed down quarks
  !  RfR(i,j) ... mixing matrix of the right-handed down quarks
  !  RSf(i,j) ... mixing matrix of the sdowns
- !  Yuk ........ down Yukawa coupling
+ !  Yuk ........ down Yukawa coupling 
  !  N .......... mixing matrix of the neutralino
  ! output
  !  coupL ...... the left coupling(i,j,k)
  !  coupR ...... the right coupling(i,j,k)
  ! the corresponding Lagrangian is given by:
- !    L = \bar(f_i) ( coupL P_L + coupR P_R) chi^0_j \tilde(f)_k
+ !    L = \bar(f_i) ( coupL P_L + coupR P_R) chi^0_j \tilde(f)_k  
  ! written by Werner Porod, 19.04.2001
  !-----------------------------------------------------------------------
  Implicit None
@@ -6615,13 +6615,13 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !  RfL(i,j) ... mixing matrix of the left-handed fermions
  !  RfR(i,j) ... mixing matrix of the right-handed fermions
  !  RSf(i,j) ... mixing matrix of the sfermion
- !  Yuk ........ Yukawa coupling of the fermion
+ !  Yuk ........ Yukawa coupling of the fermion 
  !  N .......... mixing matrix of the neutralino
  ! output
  !  coupL ...... the left coupling(i,j,k)
  !  coupR ...... the right coupling(i,j,k)
  ! the corresponding Lagrangian is given by:
- !    L = \bar(f_i) ( coupL P_L + coupR P_R) chi^0_j \tilde(f)_k
+ !    L = \bar(f_i) ( coupL P_L + coupR P_R) chi^0_j \tilde(f)_k  
  ! written by Werner Porod, 11.04.2001
  !-----------------------------------------------------------------------
  Implicit None
@@ -6646,7 +6646,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   hr = Conjg(hl)
 
   fL = - sqrt2 *( (e-T3) * gp * N(j,1) + T3 * g * N(j,2) )
-  fR = sqrt2 * e * gp * Conjg( N(j,1) )
+  fR = sqrt2 * e * gp * Conjg( N(j,1) ) 
 
   coupL = 0._dp
   coupR = 0._dp
@@ -6656,7 +6656,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    coupL = Conjg( Rsf(k,i+3) ) * fr
    coupR = Conjg( Rsf(k,i)   ) * fl
    Do i2 = 1,3
-    coupL = coupL + Conjg( Rsf(k,i2) ) * hl(i2,i)
+    coupL = coupL + Conjg( Rsf(k,i2) ) * hl(i2,i) 
     coupR = coupR + Conjg( Rsf(k,i2+3)) * hr(i,i2)
    End Do
 
@@ -6666,14 +6666,14 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     coupL = coupL + Conjg( Rsf(k,i1+3) * RfR(i,i1) ) * fr
     coupR = coupR + Conjg( Rsf(k,i1+3)) * hr(i,i1)
     Do i2 = 1,3
-     coupL = coupL + Conjg( Rsf(k,i1) * RfR(i,i2) ) * hl(i1,i2)
+     coupL = coupL + Conjg( Rsf(k,i1) * RfR(i,i2) ) * hl(i1,i2) 
     End Do
    End Do
 
   Else If (CompareMatrices(id3C,RfR,NearlyZero)) Then
    coupL = Conjg( Rsf(k,i+3) ) * fr
    Do i1 = 1,3
-    coupL = coupL + Conjg( Rsf(k,i1) ) * hl(i1,i)
+    coupL = coupL + Conjg( Rsf(k,i1) ) * hl(i1,i) 
     coupR = coupR + Conjg( Rsf(k,i1) ) * RfL(i,i1) * fl
     Do i2 = 1,3
      coupR = coupR + Conjg( Rsf(k,i2+3) ) * RfL(i,i1) * hr(i1,i2)
@@ -6685,7 +6685,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     coupL = coupL + Conjg( Rsf(k,i1+3) * RfR(i,i1) ) * fr
     coupR = coupR + Conjg( Rsf(k,i1) ) * RfL(i,i1) * fl
     Do i2 = 1,3
-     coupL = coupL + Conjg( Rsf(k,i1) * RfR(i,i2) ) * hl(i1,i2)
+     coupL = coupL + Conjg( Rsf(k,i1) * RfR(i,i2) ) * hl(i1,i2) 
      coupR = coupR + Conjg( Rsf(k,i2+3)) * RfL(i,i1) * hr(i1,i2)
     End Do
    End Do
@@ -6709,13 +6709,13 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !  RfL(i,j) ... mixing matrix of the left-handed leptons
  !  RfR(i,j) ... mixing matrix of the right-handed leptons
  !  RSf(i,j) ... mixing matrix of the slepton
- !  Yuk ........ Yukawa coupling of the lepton
+ !  Yuk ........ Yukawa coupling of the lepton 
  !  N .......... mixing matrix of the neutralino
  ! output
  !  coupL ...... the left coupling(i,j,k)
  !  coupR ...... the right coupling(i,j,k)
  ! the corresponding Lagrangian is given by:
- !    L = \bar(f_i) ( coupL P_L + coupR P_R) chi^0_j \tilde(f)_k
+ !    L = \bar(f_i) ( coupL P_L + coupR P_R) chi^0_j \tilde(f)_k  
  ! written by Werner Porod, 15.04.2001
  !-----------------------------------------------------------------------
  Implicit None
@@ -6732,7 +6732,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   NameOfUnit(Iname) = 'CoupNeutralinoSlepton3'
 
   T3 = -0.5_dp
-  e = -1._dp
+  e = -1._dp 
   Call CoupNeutralinoSfermion3(i, j, k, gp, g, T3, e, RSf, RfL, RfR, Yuk, N &
                               &, coupL, coupR)
 
@@ -6775,10 +6775,10 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
   Else If ( CompareMatrices(Rsneut,id3C,NearlyZero) ) Then
    coupR = Rnu(i,k)
-
+ 
   Else If ( CompareMatrices(Rnu,id3C,NearlyZero) ) Then
    coupR = Conjg( Rsneut(k,i) )
-
+ 
   Else
    Do i1= 1,3
     coupR = coupR + Conjg( Rsneut(k,i1) ) * Rnu(i,i1)
@@ -6805,13 +6805,13 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !  RfL(i,j) ... mixing matrix of the left-handed up quarks
  !  RfR(i,j) ... mixing matrix of the right-handed up quarks
  !  RSf(i,j) ... mixing matrix of the sups
- !  Yuk ........ up Yukawa coupling
+ !  Yuk ........ up Yukawa coupling 
  !  N .......... mixing matrix of the neutralino
  ! output
  !  coupL ...... the left coupling(i,j,k)
  !  coupR ...... the right coupling(i,j,k)
  ! the corresponding Lagrangian is given by:
- !    L = \bar(f_i) ( coupL P_L + coupR P_R) chi^0_j \tilde(f)_k
+ !    L = \bar(f_i) ( coupL P_L + coupR P_R) chi^0_j \tilde(f)_k  
  ! written by Werner Porod, 19.04.2001
  !-----------------------------------------------------------------------
  Implicit None
@@ -6869,7 +6869,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
   coup = ZeroC
 
-  n_P0 =  Size(RP0, Dim=1)
+  n_P0 =  Size(RP0, Dim=1) 
 
   ayuk = Conjg( yuk )
   aA = Conjg( A )
@@ -6882,7 +6882,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     Do i2 = 1,3
      parts(1) = parts(1)                                                  &
             & - ayuk(i1,i2) * bi(1) * Rsf(k,i1) * Conjg( Rsf(j,i2+3) )    &
-            & + yuk(i1,i2) * abi(1) * Rsf(k,i2+3) * Conjg( Rsf(j,i1) )
+            & + yuk(i1,i2) * abi(1) * Rsf(k,i2+3) * Conjg( Rsf(j,i1) ) 
 
      parts(2) = parts(2) + A(i1,i2) * Rsf(k,i2+3) * Conjg( Rsf(j,i1) )    &
             &            - aA(i1,i2) * Rsf(k,i1) * Conjg( Rsf(j,i2+3) )
@@ -6904,7 +6904,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
      parts(2) = parts(2)                                                  &
             & - ayuk(i1,i2) * bi(1) * Rsf(k,i1) * Conjg( Rsf(j,i2+3) )    &
-            & + yuk(i1,i2) * abi(1) * Rsf(k,i2+3) * Conjg( Rsf(j,i1) )
+            & + yuk(i1,i2) * abi(1) * Rsf(k,i2+3) * Conjg( Rsf(j,i1) ) 
 
     End Do
    End Do
@@ -6954,7 +6954,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
   coup = ZeroC
 
-  n_P0 =  Size(RP0, Dim=1)
+  n_P0 =  Size(RP0, Dim=1) 
 
   ayuk = Conjg( yuk )
   aA = Conjg( A )
@@ -6967,7 +6967,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     Do i2 = 1,3
      parts(1) = parts(1)                                                  &
             & - ayuk(i1,i2) * bi(1) * Rsf(k,i1) * Conjg( id6c(j,i2+3) )    &
-            & + yuk(i1,i2) * abi(1) * Rsf(k,i2+3) * Conjg( id6c(j,i1) )
+            & + yuk(i1,i2) * abi(1) * Rsf(k,i2+3) * Conjg( id6c(j,i1) ) 
 
      parts(2) = parts(2) + A(i1,i2) * Rsf(k,i2+3) * Conjg( id6c(j,i1) )    &
             &            - aA(i1,i2) * Rsf(k,i1) * Conjg( id6c(j,i2+3) )
@@ -6989,7 +6989,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
      parts(2) = parts(2)                                                  &
             & - ayuk(i1,i2) * bi(1) * Rsf(k,i1) * Conjg( id6c(j,i2+3) )    &
-            & + yuk(i1,i2) * abi(1) * Rsf(k,i2+3) * Conjg( id6c(j,i1) )
+            & + yuk(i1,i2) * abi(1) * Rsf(k,i2+3) * Conjg( id6c(j,i1) ) 
 
     End Do
    End Do
@@ -7011,7 +7011,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    &                                    Rsf, gp, g, coup)
  !-----------------------------------------------------------------------
  ! calculates the 4-coupling between pseudoscalar and sfermions
- ! valid for the 3-generation MSSM,  3-generation epsilon model and the
+ ! valid for the 3-generation MSSM,  3-generation epsilon model and the 
  ! full RP model
  !  i,j ........ index of pseudoscalar boson
  !  k .......... index of the sfermion \tilde{f}
@@ -7077,7 +7077,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Else ! Sneutrinos
    if (l.eq.k) then
     Dterm = 0.125_dp * (g2 + gp2)
-   else
+   else 
     Dterm = 0._dp
    end if
 
@@ -7159,25 +7159,25 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   If (T3.Gt.0._dp) Then
    If (n_sfer.Eq.3) Then ! Sneutrino
     if (j.eq.k) then
-     Dterm = 0.5_dp * (g2*T3 - YL * gp2)
+     Dterm = 0.5_dp * (g2*T3 - YL * gp2) 
      parts(1) = parts(1) - vevSM(1) * Dterm
      parts(2) = parts(2) + vevSM(2) * Dterm
     else
      parts(1:2) = 0._dp
     end if
 
-   Else
+   Else 
     Do i1=1,3
      Dterm = 0.5_dp * ( (g2*T3 - YL * gp2) * Rsf(k,i1) * Conjg( Rsf(j,i1) ) &
          &         - YR * gp2 * Rsf(k,i1+3) * Conjg( Rsf(j,i1+3) ) )
      parts(1) = parts(1) - vevSM(1) * Dterm
      parts(2) = parts(2) + vevSM(2) * Dterm
-
-     Do i2=1,3
+ 
+     Do i2=1,3 
       parts(1) = parts(1)                                                 &
         & + ( yuk(i1,i2) * muC * Rsf(k,i2+3) * Conjg( Rsf(j,i1) )         &
         &   + ayuk(i1,i2) * mu * Rsf(k,i1) * Conjg( Rsf(j,i2+3) ) ) * oosqrt2
-
+ 
       parts(2) = parts(2)                                                 &
         & - ( A(i1,i2) * Rsf(k,i2+3) * Conjg( Rsf(j,i1) )                 &
         &   + aA(i1,i2) * Rsf(k,i1) * Conjg( Rsf(j,i2+3) ) ) * oosqrt2
@@ -7198,7 +7198,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     parts(1) = parts(1) - vevSM(1) * Dterm
     parts(2) = parts(2) + vevSM(2) * Dterm
 
-    Do i2=1,3
+    Do i2=1,3 
      parts(1) = parts(1)                                                 &
        & - ( A(i1,i2) * Rsf(k,i2+3) * Conjg( Rsf(j,i1) )                 &
        &   + aA(i1,i2) * Rsf(k,i1) * Conjg( Rsf(j,i2+3) ) ) * oosqrt2
@@ -7279,23 +7279,23 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   If (T3.Gt.0._dp) Then
    If (n_sfer.Eq.3) Then ! Sneutrino
     Do i1=1,3
-     Dterm = 0.5_dp * (g2*T3 - YL * gp2) * Rsf(k,i1) * Conjg( id3c(j,i1) )
+     Dterm = 0.5_dp * (g2*T3 - YL * gp2) * Rsf(k,i1) * Conjg( id3c(j,i1) ) 
      parts(1) = parts(1) - vevSM(1) * Dterm
      parts(2) = parts(2) + vevSM(2) * Dterm
    End Do
 
-   Else
+   Else 
     Do i1=1,3
      Dterm = 0.5_dp * ( (g2*T3 - YL * gp2) * Rsf(k,i1) * Conjg( id6c(j,i1) ) &
          &         - YR * gp2 * Rsf(k,i1+3) * Conjg( id6c(j,i1+3) ) )
      parts(1) = parts(1) - vevSM(1) * Dterm
      parts(2) = parts(2) + vevSM(2) * Dterm
-
-     Do i2=1,3
+ 
+     Do i2=1,3 
       parts(1) = parts(1)                                                 &
         & + ( yuk(i1,i2) * muC * Rsf(k,i2+3) * Conjg( id6c(j,i1) )         &
         &   + ayuk(i1,i2) * mu * Rsf(k,i1) * Conjg( id6c(j,i2+3) ) ) * oosqrt2
-
+ 
       parts(2) = parts(2)                                                 &
         & - ( A(i1,i2) * Rsf(k,i2+3) * Conjg( id6c(j,i1) )                 &
         &   + aA(i1,i2) * Rsf(k,i1) * Conjg( id6c(j,i2+3) ) ) * oosqrt2
@@ -7316,7 +7316,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     parts(1) = parts(1) - vevSM(1) * Dterm
     parts(2) = parts(2) + vevSM(2) * Dterm
 
-    Do i2=1,3
+    Do i2=1,3 
      parts(1) = parts(1)                                                 &
        & - ( A(i1,i2) * Rsf(k,i2+3) * Conjg( id6c(j,i1) )                 &
        &   + aA(i1,i2) * Rsf(k,i1) * Conjg( id6c(j,i2+3) ) ) * oosqrt2
@@ -7403,7 +7403,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
         & + 0.25_dp * ( T3 * g2 - YL * gp2)        &
         &          * Rsf(l,i1) * Conjg( Rsf(k,i1) )
    End Do
-  End If
+  End If 
 
   If (T3.Gt.0._dp) Then
    parts(1) = - Dterm
@@ -7421,7 +7421,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       End Do
      End Do
     End Do
-   End If
+   End If 
 
   Else
 
@@ -7523,7 +7523,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     End Do
    End Do
 
-  Else
+  Else 
    Do i1=1,3
     Do i2=1,3
      Do i3=1,3
@@ -7545,14 +7545,14 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupSfermionSelf4Y_3(i, j, k, l, Yuk, Rsf, nc, coup, self)
  !-----------------------------------------------------------------------
- ! calculates the 4-sfermion self coupling
+ ! calculates the 4-sfermion self coupling 
  ! valid for the MSSM, 1-generation epsilon model, and
  ! 3-generation epsilon model
  !  i,k ........ index of sfermions
  !  j,l ........ index of the adjungated sfermions
  !  Yuk ........ Yukawa coupling
  !  Rsf(i,j) ... mixing matrix of the sfermions
- !  nc ......... number of colours
+ !  nc ......... number of colours 
  !  self ....... integer, if present it is assumed that the first two
  !               indices belong to an electroweak eigenstate sfermion
  ! output
@@ -7560,7 +7560,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  ! written by Werner Porod, 31.12.01
  ! 17.03.03: bug fixing due to SU(3) structure, assumed that colour
  !           index for i is the samke as j, and k has the same colour
- !           index as l
+ !           index as l 
  !     if (self==1) then we assume that the sfermions with indices i and j
  !     are electroweak eigenstates
  !-----------------------------------------------------------------------
@@ -7624,9 +7624,9 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    matr33 = Real(parts,dp)
    Do i1=9,1,-1
     if (matr33(ii(i1), jj(i1)).lt.0._dp) then
-     coupN = coupN + parts(ii(i1), jj(i1))
+     coupN = coupN + parts(ii(i1), jj(i1)) 
     else
-     coupP = coupP + parts(ii(i1), jj(i1))
+     coupP = coupP + parts(ii(i1), jj(i1)) 
     end if
    End Do
    coup = coupN + coupP
@@ -7694,7 +7694,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !                                  Z....Z-boson
  !  in the case that fermions are involved, _L and _R refer to left- and
  !  right couplings
- ! written by Werner Porod,
+ ! written by Werner Porod, 
  ! 05.09.2001: taking AllCouplingsMSSM as basis
  ! 12.09.2002: changing interface to avoid global variables
  !--------------------------------------------------------------------------
@@ -7736,11 +7736,11 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       & , cpl_UUZ_L, cpl_UUZ_R, cpl_NuNuZ_L, cpl_NuNuZ_R
   Complex(dp), Intent(out) :: cpl_CCZ_L(3,3), cpl_CCZ_R(3,3)           &
       & , cpl_NNZ_L(5,5), cpl_NNZ_R(5,5), cpl_NNS0_L(5,5,3)            &
-      & , cpl_NNS0_R(5,5,3), cpl_NNP0_L(5,5,3), cpl_NNP0_R(5,5,3)
+      & , cpl_NNS0_R(5,5,3), cpl_NNP0_L(5,5,3), cpl_NNP0_R(5,5,3) 
   Complex(dp), Intent(out) :: cpl_GDSd_L(3,6), cpl_GDSd_R(3,6)          &
       & , cpl_DNSd_L(3,5,6), cpl_DNSd_R(3,5,6), cpl_GUSu_L(3,6)         &
       & , cpl_GUSu_R(3,6), cpl_UNSu_L(3,5,6), cpl_UNSu_R(3,5,6)         &
-      & , cpl_LNSl_L(3,5,6), cpl_LNSl_R(3,5,6), cpl_NuNSn_L(3,5,3)      &
+      & , cpl_LNSl_L(3,5,6), cpl_LNSl_R(3,5,6), cpl_NuNSn_L(3,5,3)      & 
       & , cpl_NuNSn_R(3,5,3), cpl_DDP0_L(3,3,3), cpl_LLP0_L(3,3,3)      &
       & , cpl_UUP0_L(3,3,3), cpl_DDP0_R(3,3,3), cpl_LLP0_R(3,3,3)       &
       & , cpl_UUP0_R(3,3,3), cpl_DDS0_L(3,3,3), cpl_LLS0_L(3,3,3)       &
@@ -7751,10 +7751,10 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       & , cpl_CLSn_R(3,3,3), cpl_CNuSl_L(3,3,6), cpl_CNuSl_R(3,3,6)
   Complex(dp), Intent(out) :: cpl_GlGlS0(3)
   Complex(dp) :: cpl_P0SdSd(3,6,6), cpl_P0SuSu(3,6,6), cpl_P0SlSl(3,6,6) &
-      & , cpl_P0SnSn(3,3,3), cpl_P0S0Z(3,3)
+      & , cpl_P0SnSn(3,3,3), cpl_P0S0Z(3,3) 
   Real(dp), Intent(out) :: cpl_P0S03(3,3,3)
   Complex(dp), Intent(out) :: cpl_S0SdSd(3,6,6), cpl_S0SuSu(3,6,6) &
-      & , cpl_S0SlSl(3,6,6), cpl_S0SnSn(3,3,3)
+      & , cpl_S0SlSl(3,6,6), cpl_S0SnSn(3,3,3) 
   Real(dp), Intent(out) :: cpl_S03(3,3,3), cpl_S0WW(3), cpl_S0ZZ(3), cpl_FFpW &
       & , cpl_LNuW(3,3)
   Complex(dp), Intent(out) :: cpl_SdSuW(6,6), cpl_SuSdW(6,6), cpl_SlSnW(6,3) &
@@ -7764,7 +7764,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       & , cpl_CCS0_L(3,3,3), cpl_CCS0_R(3,3,3), cpl_CNW_L(3,5)        &
       & , cpl_CNW_R(3,5), cpl_SmpCN_L(4,3,5), cpl_SmpCN_R(4,3,5)
 
-  Integer :: n_char, n_neut, n_S0, n_P0, n_Spm
+  Integer :: n_char, n_neut, n_S0, n_P0, n_Spm 
   Integer :: i1, i2, i3, i4
   Real(dp) :: gU1, gSU2, gSU3, e_d, e_u, sinW2, cosW2, cosW, vL(1)
   Complex(dp) :: Rsd(2,2), Rsu(2,2), Rsl(2,2), coupLC, coupRC, Yuk, Yukp, &
@@ -8044,7 +8044,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     End Do
    End Do
 
-  End If
+  End If 
 
   !-------------------------
   ! chargino - neutralino W
@@ -8257,10 +8257,10 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
      Call CoupGluinoSquark(gSU3, phase_glu, i2, Rsu, coupLC, coupRC)
      cpl_GUSu_L(i1, (i1-1)*2 + i2) = coupLC
      cpl_GUSu_R(i1, (i1-1)*2 + i2) = coupRC
-    End Do
+    End Do  
    End Do
 
-  End If
+  End If 
 
   !-------------------
   ! Gluon Gluon scalar
@@ -8337,7 +8337,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Call Adjungate(cpl_SdSuW, cpl_SuSdW)
 
   !---------------------------
-  ! Pseudoscalar - scalar
+  ! Pseudoscalar - scalar 
   !---------------------------
   cpl_P0S03 = 0._dp
 !  Do i1=1,n_P0
@@ -8357,9 +8357,9 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Do i2=1,n_S0
     Call CoupPseudoscalarScalarZ(i1, i2, gSU2, cosW, RP0, RS0,cpl_P0S0Z(i1,i2))
     End Do
-   End Do
+   End Do 
   !-------------------------------------
-  ! Pseudoscalar - sfermion - sfermion
+  ! Pseudoscalar - sfermion - sfermion 
   !-------------------------------------
   cpl_P0SdSd = 0._dp
   cpl_P0SuSu = 0._dp
@@ -8435,7 +8435,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   End Do
 
   !-------------------------------------
-  ! scalar - sfermion - sfermion
+  ! scalar - sfermion - sfermion 
   !-------------------------------------
   cpl_S0SdSd = 0._dp
   cpl_S0SuSu = 0._dp
@@ -8514,7 +8514,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
      Call CoupSupZ(i1, i2, gSU2, sinW2, Rsup, cpl_SuSuZ(i1, i2) )
     End Do
    End Do
-
+ 
   Else
    Do i1=1,3
     Rsd = RSdown(2*(i1-1)+1:2*(i1-1)+2, 2*(i1-1)+1:2*(i1-1)+2)
@@ -8526,7 +8526,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       Call CoupSupZ(i2, i3, gSU2, sinW2, Rsu, coupC )
       cpl_SuSuZ( (i1-1)*2+i2, (i1-1)*2+i3 ) = coupC
      End Do
-    End Do
+    End Do    
    End Do
 
   End If
@@ -8600,7 +8600,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
            & + vevs(2) * Rspm(i,2) * (0.5_dp * g2 - yuku2)  &
            & + vevs(3) * Rspm(i,3) * 0.5_dp * g2
   parts(1,1) = - parts(1,1) * oosqrt2
-
+ 
   parts(1,2) = yuku * ( Conjg( bi(1) ) * Rspm(i,1)        &
              &        + Au * Rspm(i,2)                     &
              &        - Conjg( bi(2) ) * Rspm(i,3) )
@@ -8624,13 +8624,13 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupCharginoPseudoScalarEps1(i,j,k,U,V,RP0,Yuk,g,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between charginos and pseduoscalar bosons
+ ! calculates the coupling between charginos and pseduoscalar bosons 
  ! valid for 1-generation epsilon model
  !  i,j ........ index of chargino
  !  k .......... index of the pseudo scalar
  !  U,V ........ mixing matrices of the chargino
  !  RP0(i,j) ... mixing matrix of pseudoscalar bosons
- !  Yuk ........ tau yukawa couplings:
+ !  Yuk ........ tau yukawa couplings: 
  !  g .......... SU(2) gauge coupling
  ! output
  !  coupL ...... the left coupling(i,j)
@@ -8664,7 +8664,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Write(ErrCan,*) 'index k out of range:',k
    Call TerminateProgram
   End If
-
+ 
   yukC = Conjg( yuk )
   coupL = ( RP0(k,1) * ( g * Conjg( V(i,1) * U(j,2) )       &
         &              - yuk * Conjg( V(i,3) * U(j,3) ) )   &
@@ -8677,7 +8677,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
         &              + yukC * V(j,3) * U(i,2)  ) ) * oosqrt2
 
   coupL = coupL * (0._dp,1._dp)
-  coupR = coupR * (0._dp,-1._dp)
+  coupR = coupR * (0._dp,-1._dp) 
 
   Iname = Iname - 1
 
@@ -8686,13 +8686,13 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupCharginoScalarEps1(i,j,k,U,V,RS0,Yuk,g,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between charginos and scalar bosons
+ ! calculates the coupling between charginos and scalar bosons 
  ! valid for 1-generation epsilon model
  !  i,j ........ index of chargino
  !  k .......... index of the pseudo scalar
  !  U,V ........ mixing matrices of the chargino
  !  RS0(i,j) ... mixing matrix of scalar bosons
- !  Yuk ........ tau yukawa couplings:
+ !  Yuk ........ tau yukawa couplings: 
  !  g .......... SU(2) gauge coupling
  ! output
  !  coupL ...... the left coupling(i,j)
@@ -8725,7 +8725,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Write(ErrCan,*) 'index k out of range:',k
    Call TerminateProgram
   End If
-
+ 
   coupL = ( RS0(k,1) * ( g * Conjg( V(i,1) * U(j,2) )        &
      &                 + yuk * Conjg( V(i,3) * U(j,3) ) )    &
      &    + g * RS0(k,2) * Conjg( V(i,2) * U(j,1) )          &
@@ -8750,7 +8750,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
                                        &, coupL, coupR)
  !-----------------------------------------------------------------------
  ! calculates the coupling between charginos, neutralinos, and
- ! charged scalar bosons
+ ! charged scalar bosons 
  ! valid for the MSSM, 1-generation epsilon model,
  ! 3-generation epsilon model
  !   k .......... index of the charged scalar
@@ -8821,9 +8821,9 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   If (n_Spm.Eq.2) Then
    ql(2) = - (g * Conjg( V(i,1) * N(j,4)) + Conjg( V(i,2) ) * sumIC * oosqrt2)
    qr(1) = - g * U(i,1) * N(j,3) + U(i,2) * sumI * oosqrt2
-   coupL = RSpm(k,2) * ql(2)
+   coupL = RSpm(k,2) * ql(2) 
    coupR = RSpm(k,1) * qr(1)
-
+ 
   !----------------------------
   ! 1-generation epsilon model
   !----------------------------
@@ -8832,9 +8832,9 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    ql(2) = - (g * Conjg( V(i,1) * N(j,4)) + Conjg( V(i,2) ) * sumIC * oosqrt2)
    ql(3) = - Yuk(3) * Conjg( V(i,3) * N(j,3) )
    ql(4) = - sqrt2 * gp * Conjg( V(i,3) * N(j,1) )
-   qr(1) = - g * U(i,1) * N(j,3) + U(i,2) * sumI * oosqrt2
+   qr(1) = - g * U(i,1) * N(j,3) + U(i,2) * sumI * oosqrt2 
    qr(2) = ZeroC
-   qr(3) = - g * U(i,1) * N(j,5) + U(i,3) * sumI * oosqrt2
+   qr(3) = - g * U(i,1) * N(j,5) + U(i,3) * sumI * oosqrt2 
    qr(4) = Conjg(Yuk(3) )  * ( U(i,2) * N(j,5) - U(i,3) * N(j,3) )
 
    Do i1=1,4
@@ -8855,11 +8855,11 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    ql(6) = - sqrt2 * gp * Conjg( V(i,3) * N(j,1) )
    ql(7) = - sqrt2 * gp * Conjg( V(i,4) * N(j,1) )
    ql(8) = - sqrt2 * gp * Conjg( V(i,5) * N(j,1) )
-   qr(1) = - g * U(i,1) * N(j,3) + U(i,2) * sumI * oosqrt2
+   qr(1) = - g * U(i,1) * N(j,3) + U(i,2) * sumI * oosqrt2 
    qr(2) = ZeroC
-   qr(3) = - g * U(i,1) * N(j,5) + U(i,3) * sumI * oosqrt2
-   qr(4) = - g * U(i,1) * N(j,6) + U(i,4) * sumI * oosqrt2
-   qr(5) = - g * U(i,1) * N(j,7) + U(i,5) * sumI * oosqrt2
+   qr(3) = - g * U(i,1) * N(j,5) + U(i,3) * sumI * oosqrt2 
+   qr(4) = - g * U(i,1) * N(j,6) + U(i,4) * sumI * oosqrt2 
+   qr(5) = - g * U(i,1) * N(j,7) + U(i,5) * sumI * oosqrt2 
    qr(6) = Conjg(Yuk(1) ) * ( U(i,2) * N(j,5) - U(i,3) * N(j,3) )
    qr(7) = Conjg(Yuk(2) ) * ( U(i,2) * N(j,6) - U(i,4) * N(j,3) )
    qr(8) = Conjg(Yuk(3) ) * ( U(i,2) * N(j,7) - U(i,5) * N(j,3) )
@@ -8914,7 +8914,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
   coup = ZeroC
 
-  n_S0 =  Size(RS0, Dim=1)
+  n_S0 =  Size(RS0, Dim=1) 
 
   ayuk = Conjg( yuk )
   aA = Conjg( A )
@@ -9006,7 +9006,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
   coup = ZeroC
 
-  n_S0 =  Size(RS0, Dim=1)
+  n_S0 =  Size(RS0, Dim=1) 
 
   ayuk = Conjg( yuk )
   aA = Conjg( A )
@@ -9080,12 +9080,12 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  Integer, Intent(in) :: i
  Real(dp), Intent(in) :: g, vevs(2), vevL(:), RS0(:,:)
  Real(dp), Intent(out) :: coup
-
+ 
  Integer :: n, i1
 
  n = size(vevL)
 
- coup = vevs(1) * RS0(i,1) + vevs(2) * RS0(i,2)
+ coup = vevs(1) * RS0(i,1) + vevs(2) * RS0(i,2) 
 
  Do i1=1,n
   coup = coup + vevL(i1) * RS0(i,i1+2)
@@ -9175,7 +9175,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !                                  Z....Z-boson
  !  in the case that fermions are involved, _L and _R refer to left- and
  !  right couplings
- ! written by Werner Porod,
+ ! written by Werner Porod, 
  ! 05.09.2001: taking AllCouplingsMSSM as basis
  ! 12.09.2002: changing interface to avoid global variables
  !-----------------------------------------------------------------
@@ -9212,7 +9212,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Real(dp), Intent(out) :: cpl_DDZ_L, cpl_DDZ_R, cpl_UUZ_L, cpl_UUZ_R
   Complex(dp), Intent(out) :: cpl_CCZ_L(5,5), cpl_CCZ_R(5,5)           &
       & , cpl_NNZ_L(7,7), cpl_NNZ_R(7,7), cpl_NNS0_L(7,7,5)            &
-      & , cpl_NNS0_R(7,7,5), cpl_NNP0_L(7,7,5), cpl_NNP0_R(7,7,5)
+      & , cpl_NNS0_R(7,7,5), cpl_NNP0_L(7,7,5), cpl_NNP0_R(7,7,5) 
   Complex(dp), Intent(out) :: cpl_GDSd_L(3,6), cpl_GDSd_R(3,6)          &
       & , cpl_DNSd_L(3,7,6), cpl_DNSd_R(3,7,6), cpl_GUSu_L(3,6)         &
       & , cpl_GUSu_R(3,6), cpl_UNSu_L(3,7,6), cpl_UNSu_R(3,7,6)         &
@@ -9222,7 +9222,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Complex(dp), Intent(out) :: cpl_CUSd_L(5,3,6), cpl_CUSd_R(5,3,6)      &
       & , cpl_CDSu_L(5,3,6), cpl_CDSu_R(5,3,6)
   Complex(dp), Intent(out) :: cpl_GlGlS0(5)
-  Complex(dp) :: cpl_P0SdSd(5,6,6), cpl_P0SuSu(5,6,6), cpl_P0S0Z(5,5)
+  Complex(dp) :: cpl_P0SdSd(5,6,6), cpl_P0SuSu(5,6,6), cpl_P0S0Z(5,5) 
   Real(dp), Intent(out) :: cpl_P0S03(5,5,5)
   Complex(dp), Intent(out) :: cpl_S0SdSd(5,6,6), cpl_S0SuSu(5,6,6)
   Real(dp), Intent(out) :: cpl_S03(5,5,5), cpl_S0WW(5), cpl_S0ZZ(5)
@@ -9232,7 +9232,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       & , cpl_CCS0_L(5,5,5), cpl_CCS0_R(5,5,5), cpl_CNW_L(5,7)        &
       & , cpl_CNW_R(5,7), cpl_SmpCN_L(8,5,7), cpl_SmpCN_R(8,5,7)
 
-  Integer :: n_char, n_neut, n_S0, n_P0, n_Spm
+  Integer :: n_char, n_neut, n_S0, n_P0, n_Spm 
   Integer :: i1, i2, i3, i4
   Real(dp) :: gU1, gSU2, gSU3, e_d, e_u, sinW2, cosW2, cosW
   Complex(dp) :: Rsd(2,2), Rsu(2,2), coupLC, coupRC, Yuk, Yukp, &
@@ -9485,7 +9485,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     End Do
 
    End Do
-  End If
+  End If 
 
   !-------------------------
   ! chargino - neutralino W
@@ -9662,10 +9662,10 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
      Call CoupGluinoSquark(gSU3, phase_glu, i2, Rsu, coupLC, coupRC)
      cpl_GUSu_L(i1, (i1-1)*2 + i2) = coupLC
      cpl_GUSu_R(i1, (i1-1)*2 + i2) = coupRC
-    End Do
+    End Do  
    End Do
 
-  End If
+  End If 
 
   !-------------------
   ! Gluon Gluon scalar
@@ -9739,7 +9739,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Call Adjungate(cpl_SdSuW, cpl_SuSdW)
 
   !---------------------------
-  ! Pseudoscalar - scalar
+  ! Pseudoscalar - scalar 
   !---------------------------
   cpl_P0S03 = 0._dp
 !  Do i1=1,n_P0
@@ -9761,7 +9761,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    End Do
   End Do
   !-------------------------------------
-  ! Pseudoscalar - sfermion - sfermion
+  ! Pseudoscalar - sfermion - sfermion 
   !-------------------------------------
   cpl_P0SdSd = 0._dp
   cpl_P0SuSu = 0._dp
@@ -9819,7 +9819,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 !  End Do
 
   !-------------------------------------
-  ! scalar - sfermion - sfermion
+  ! scalar - sfermion - sfermion 
   !-------------------------------------
   cpl_S0SdSd = 0._dp
   cpl_S0SuSu = 0._dp
@@ -9894,7 +9894,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
      Call CoupSupZ(i1, i2, gSU2, sinW2, Rsup, cpl_SuSuZ(i1, i2) )
     End Do
    End Do
-
+ 
   Else
    Do i1=1,3
     Rsd = RSdown(2*(i1-1)+1:2*(i1-1)+2, 2*(i1-1)+1:2*(i1-1)+2)
@@ -9906,7 +9906,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       Call CoupSupZ(i2, i3, gSU2, sinW2, Rsu, coupC )
       cpl_SuSuZ( (i1-1)*2+i2, (i1-1)*2+i3 ) = coupC
      End Do
-    End Do
+    End Do    
    End Do
 
   End If
@@ -10012,7 +10012,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupCharginoPseudoScalarEps3(i,j,k,U,V,RP0,Yuk,g,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between charginos and pseudoscalar bosons
+ ! calculates the coupling between charginos and pseudoscalar bosons 
  ! valid for 3-generation epsilon model
  !  i,j ........ index of chargino
  !  k .......... index of the scalar
@@ -10053,7 +10053,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Call TerminateProgram
   End If
 
-  yukC = Conjg( yuk )
+  yukC = Conjg( yuk ) 
 
   coupL = ( RP0(k,1) * ( g * Conjg( V(i,1) * U(j,2) )         &
         &              - yuk(1) * Conjg( V(i,3) * U(j,3) )    &
@@ -10076,10 +10076,10 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
         & + RP0(k,4) * ( g *  V(j,1) * U(i,4)            &
         &              + yukC(2) * V(j,4) * U(i,2) )     &
         & + RP0(k,5) * ( g * V(j,1) * U(i,5)             &
-        &              + yukC(3) * V(j,5) * U(i,2) ) ) * oosqrt2
+        &              + yukC(3) * V(j,5) * U(i,2) ) ) * oosqrt2 
 
   coupL = coupL * (0._dp,1._dp)
-  coupR = coupR * (0._dp,-1._dp)
+  coupR = coupR * (0._dp,-1._dp) 
 
   Iname = Iname - 1
 
@@ -10089,7 +10089,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupCharginoScalarEps3(i,j,k,U,V,RS0,Yuk,g,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between charginos and scalar bosons
+ ! calculates the coupling between charginos and scalar bosons 
  ! valid for 3-generation epsilon model
  !  i,j ........ index of chargino
  !  k .......... index of the scalar
@@ -10128,7 +10128,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Write(ErrCan,*) 'index k out of range:',k
    Call TerminateProgram
   End If
-
+ 
   coupL = ( RS0(k,1) * ( g * Conjg( V(i,1) * U(j,2) )             &
      &                 + yuk(1) * Conjg( V(i,3) * U(j,3) )        &
      &                 + yuk(2) * Conjg( V(i,4) * U(j,4) )        &
@@ -10198,7 +10198,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !                                  W....W-boson
  !                                  U....u-quark
  !                                  Z....Z-boson
- ! written by Werner Porod,
+ ! written by Werner Porod, 
  ! 07.09.2001: taking AllCouplingsEps as basis
  ! 12.09.2002: changing interface to avoid global variables
  !-----------------------------------------------------------------
@@ -10237,7 +10237,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Real(dp), Intent(out) :: cpl_DDZ_L, cpl_DDZ_R, cpl_UUZ_L, cpl_UUZ_R
   Complex(dp), Intent(out) :: cpl_CCZ_L(5,5), cpl_CCZ_R(5,5)           &
       & , cpl_NNZ_L(7,7), cpl_NNZ_R(7,7), cpl_NNS0_L(7,7,5)            &
-      & , cpl_NNS0_R(7,7,5), cpl_NNP0_L(7,7,5), cpl_NNP0_R(7,7,5)
+      & , cpl_NNS0_R(7,7,5), cpl_NNP0_L(7,7,5), cpl_NNP0_R(7,7,5) 
   Complex(dp), Intent(out) :: cpl_GDSd_L(3,6), cpl_GDSd_R(3,6)          &
       & , cpl_DNSd_L(3,7,6), cpl_DNSd_R(3,7,6), cpl_GUSu_L(3,6)         &
       & , cpl_GUSu_R(3,6), cpl_UNSu_L(3,7,6), cpl_UNSu_R(3,7,6)         &
@@ -10247,7 +10247,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Complex(dp), Intent(out) :: cpl_CUSd_L(5,3,6), cpl_CUSd_R(5,3,6)      &
       & , cpl_CDSu_L(5,3,6), cpl_CDSu_R(5,3,6)
   Complex(dp), Intent(out) :: cpl_GlGlS0(5)
-  Complex(dp) :: cpl_P0SdSd(5,6,6), cpl_P0SuSu(5,6,6), cpl_P0S0Z(5,5)
+  Complex(dp) :: cpl_P0SdSd(5,6,6), cpl_P0SuSu(5,6,6), cpl_P0S0Z(5,5) 
   Real(dp), Intent(out) :: cpl_P0S03(5,5,5)
   Complex(dp), Intent(out) :: cpl_S0SdSd(5,6,6), cpl_S0SuSu(5,6,6)
   Real(dp), Intent(out) :: cpl_S03(5,5,5), cpl_S0WW(5), cpl_S0ZZ(5)
@@ -10257,7 +10257,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       & , cpl_CCS0_L(5,5,5), cpl_CCS0_R(5,5,5), cpl_CNW_L(5,7)        &
       & , cpl_CNW_R(5,7), cpl_SmpCN_L(8,5,7), cpl_SmpCN_R(8,5,7)
 
-  Integer :: n_char, n_neut, n_S0, n_P0, n_Spm
+  Integer :: n_char, n_neut, n_S0, n_P0, n_Spm 
   Integer :: i1, i2, i3 !, i4
   Real(dp) :: gU1, gSU2, gSU3, e_d, e_u, sinW2, cosW2, cosW
   Complex(dp) :: Rsd(2,2), Rsu(2,2), coupLC, coupRC, Yuk, Yukp, &
@@ -10507,7 +10507,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     End Do
 
    End Do
-  End If
+  End If 
 
   !-------------------------
   ! chargino - neutralino W
@@ -10685,10 +10685,10 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
      Call CoupGluinoSquark(gSU3, phase_glu, i2, Rsu, coupLC, coupRC)
      cpl_GUSu_L(i1, (i1-1)*2 + i2) = coupLC
      cpl_GUSu_R(i1, (i1-1)*2 + i2) = coupRC
-    End Do
+    End Do  
    End Do
 
-  End If
+  End If 
 
   !-------------------
   ! Gluon Gluon scalar
@@ -10763,7 +10763,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Call Adjungate(cpl_SdSuW, cpl_SuSdW)
 
   !---------------------------
-  ! Pseudoscalar - scalar
+  ! Pseudoscalar - scalar 
   !---------------------------
   cpl_P0S03 = 0._dp
 !  Do i1=1,n_P0
@@ -10785,7 +10785,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     End Do
    End Do
   !-------------------------------------
-  ! Pseudoscalar - sfermion - sfermion
+  ! Pseudoscalar - sfermion - sfermion 
   !-------------------------------------
   cpl_P0SdSd = 0._dp
   cpl_P0SuSu = 0._dp
@@ -10843,7 +10843,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 !  End Do
 
   !-------------------------------------
-  ! scalar - sfermion - sfermion
+  ! scalar - sfermion - sfermion 
   !-------------------------------------
   cpl_S0SdSd = 0._dp
   cpl_S0SuSu = 0._dp
@@ -10918,7 +10918,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
      Call CoupSupZ(i1, i2, gSU2, sinW2, Rsup, cpl_SuSuZ(i1, i2) )
     End Do
    End Do
-
+ 
   Else
    Do i1=1,3
     Rsd = RSdown(2*(i1-1)+1:2*(i1-1)+2, 2*(i1-1)+1:2*(i1-1)+2)
@@ -10930,7 +10930,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       Call CoupSupZ(i2, i3, gSU2, sinW2, Rsu, coupC )
       cpl_SuSuZ( (i1-1)*2+i2, (i1-1)*2+i3 ) = coupC
      End Do
-    End Do
+    End Do    
    End Do
 
   End If
@@ -10944,9 +10944,9 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !-----------------------------------------------------------------------
  ! calculates the coupling between charged scalars and fermions
  ! valid for the 3-generation MSSM, and the
- ! 3-generation epsilon model, and the model where R-parity is broken
+ ! 3-generation epsilon model, and the model where R-parity is broken 
  ! spontaneously
- !  i ............. index of charged scalar
+ !  i ............. index of charged scalar 
  !  j ............. index of down-type fermion
  !  k ............. index of up-type fermion
  !  RSpm(i,j) ..... mixing matrix of charged scalar bosons
@@ -10981,7 +10981,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  If ((i.Lt.1).Or.(i.Gt.n_Spm)) Then
   Write(ErrCan,*) 'Problem in Subroutine '//NameOfUnit(Iname)
-  Write(ErrCan,*) 'index i out of range: (i,n_Spm) = ',i,n_Spm
+  Write(ErrCan,*) 'index i out of range: (i,n_Spm) = ',i,n_Spm 
   Call TerminateProgram
  End If
 
@@ -11112,7 +11112,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupCharginoPseudoScalarLam3(i,j,k,U,V,RP0,Yuk,lam,g,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between charginos and pseudoscalar bosons
+ ! calculates the coupling between charginos and pseudoscalar bosons 
  ! valid for 3-generation epsilon model including trilinear couplings
  !  i,j ........ index of chargino
  !  k .......... index of the scalar
@@ -11188,7 +11188,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   End Do
 
   coupL = coupL * (0._dp,1._dp) * oosqrt2
-  coupR = coupR * (0._dp,-1._dp) * oosqrt2
+  coupR = coupR * (0._dp,-1._dp) * oosqrt2 
 
   Iname = Iname - 1
 
@@ -11196,7 +11196,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupCharginoScalarLam3(i,j,k,U,V,RS0,Yuk,lam,g,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between charginos and scalar bosons
+ ! calculates the coupling between charginos and scalar bosons 
  ! valid for 3-generation epsilon model including trilinear couplings
  !  i,j ........ index of chargino
  !  k .......... index of the scalar
@@ -11281,15 +11281,15 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
                                 &, RfR, lamp, U, V, coupL, coupR)
  !-----------------------------------------------------------------------
  ! calculates the coupling between chargino, fermion, and sfermion'
- ! valid for the 3-generation model with explicit R-parity breaking
+ ! valid for the 3-generation model with explicit R-parity breaking 
  !  i .......... index of chargino
  !  j .......... index of fermion
  !  k .......... index of sfermion
  !  g .......... SU(2) gauge coupling
  !  T3 ......... weak isospin of the fermion
  !  RSf(i,j) ... mixing matrix of the sfermion
- !  YukD ....... Yukawa coupling of the T3=-0.5 fermion
- !  YukU ....... Yukawa coupling of the T3=0.5 fermion
+ !  YukD ....... Yukawa coupling of the T3=-0.5 fermion 
+ !  YukU ....... Yukawa coupling of the T3=0.5 fermion 
  !  U,V ........ mixing matrices of the chargino
  !  lamp(i,j,k) . lambda' coupling LQD
  ! output
@@ -11310,7 +11310,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Integer :: n_char, i1, i2, i3
 
   Iname = Iname + 1
-  NameOfUnit(Iname) = 'CoupCharginoSfermion3Lam'
+  NameOfUnit(Iname) = 'CoupCharginoSfermion3Lam' 
 
   n_char = Size(U, Dim=1)
 
@@ -11319,17 +11319,17 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     Write(ErrCan,*) 'Error in Subroutine ',NameOfUnit(Iname)
     Write(ErrCan,*) 'index i out of range: (i,n_char) = ',i,n_char
     Call TerminateProgram
-   End If
+   End If 
    If ((j.Lt.1).Or.(j.Gt.3)) Then
     Write(ErrCan,*) 'Error in Subroutine ',NameOfUnit(Iname)
     Write(ErrCan,*) 'index j out of range: ',j
     Call TerminateProgram
-   End If
+   End If 
    If ((k.Lt.1).Or.(k.Gt.6)) Then
     Write(ErrCan,*) 'Error in Subroutine ',NameOfUnit(Iname)
     Write(ErrCan,*) 'index k out of range: ',k
     Call TerminateProgram
-   End If
+   End If 
   End If
 
   coupL = 0._dp
@@ -11353,7 +11353,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     Do i1=1,3
      coupR = coupR + Conjg( YukD(j,i1) * RSf(k,i1+3) ) * U(i,2)
      Do i2=1,3
-      coupL = coupL + YukU(i1,i2) * Conjg( RSf(k,i1) ) * RfR(j,i2)
+      coupL = coupL + YukU(i1,i2) * Conjg( RSf(k,i1) ) * RfR(j,i2) 
       coupR = coupR + Conjg(lamp(i2,i1,j) * RSf(k,3+i1)) * U(i,2+i2)
      End Do
     End Do
@@ -11375,7 +11375,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     Do i1=1,3
      coupR = coupR - g * Conjg( RSf(k,i1) ) * RfL(j,i1) * U(i,1)
      Do i2=1,3
-      coupL = coupL + YukU(i1,i2) * Conjg( RSf(k,i1) ) * RfR(j,i2)
+      coupL = coupL + YukU(i1,i2) * Conjg( RSf(k,i1) ) * RfR(j,i2) 
       coupR = coupR + Conjg( YukD(i1,i2) * RSf(k,i2+3) ) * RfL(j,i1) * U(i,2)
       Do i3=1,3
        coupR = coupR   &
@@ -11388,7 +11388,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    coupL = coupL * Conjg( V(i,2) )
 
   Else  ! T3 < 0
-
+ 
    If ( CompareMatrices(RfL,id3C,NearlyZero) .And. &
       & CompareMatrices(RfR,id3C,NearlyZero)       ) Then
     coupR = - g * Conjg( RSf(k,j) ) * V(i,1)
@@ -11452,7 +11452,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
                                        &, lam, coupL, coupR)
  !-----------------------------------------------------------------------
  ! calculates the coupling between charginos, neutralinos, and
- ! charged scalar bosons
+ ! charged scalar bosons 
  ! valid for the 3 generation model with explicit R-parity breaking
  !   k ............ index of the charged scalar
  !  i ............ index of chargino
@@ -11476,7 +11476,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Integer, Intent(in) :: i, j, k
   Real(dp), Intent(in) :: g, gp
   Complex(dp), Intent(in) :: N(:,:), U(:,:), V(:,:), RSpm(:,:), yuk(3,3) &
-                          &, lam(3,3,3)
+                          &, lam(3,3,3)   
   Complex(dp), Intent(out) :: coupL, coupR
 
   Complex(dp) :: sumI, sumIC, ql(8), qr(8)
@@ -11519,18 +11519,18 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   ql = zeroC
   qr = zeroC
   ql(2) = - (g * Conjg( V(i,1) * N(j,4)) + Conjg( V(i,2) ) * sumIC * oosqrt2)
-  qr(1) = - g * U(i,1) * N(j,3) + U(i,2) * sumI * oosqrt2
+  qr(1) = - g * U(i,1) * N(j,3) + U(i,2) * sumI * oosqrt2 
    Do i1=1,3
     ql(5+i1) = - sqrt2 * gp * Conjg( V(i,i1+2) * N(j,1) )
-    qr(2+i1) = - g * U(i,1) * N(j,i1+4) + U(i,i1+2) * sumI * oosqrt2
+    qr(2+i1) = - g * U(i,1) * N(j,i1+4) + U(i,i1+2) * sumI * oosqrt2 
     Do i2=1,3
      ql(1) = ql(1) + Yuk(i1,i2) * Conjg( V(i,i2+2) * N(j,i1+4) )
      ql(2+i1) = ql(2+i1) - Yuk(i1,i2) * Conjg( V(i,i2+2) * N(j,3) )
      qr(5+i1) = qr(5+i1) + Conjg(Yuk(i2,i1)) * U(i,2) * N(j,i2+4)    &
-              &          - Conjg(Yuk(i1,i2)) * U(i,i2+2) * N(j,3)
+              &          - Conjg(Yuk(i1,i2)) * U(i,i2+2) * N(j,3) 
      Do i3=1,3
       qr(5+i1) = qr(5+i1) + Conjg(lam(i2,i3,i1) - lam(i3,i2,i1))     &
-               &            * U(i,i2+2) * N(j,i3+4)
+               &            * U(i,i2+2) * N(j,i3+4) 
      End Do
     End Do
    End Do
@@ -11584,7 +11584,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       &           * RSpm(k1, 2)
 
   coupR = - g * N(k3, 3) * U(k2, 1) * RSpm(k1, 1)                           &
-      & + oosqrt2 * (gp * N(k3, 1) + g * N(k3, 2)) * U(k2, 2) * RSpm(k1, 1)
+      & + oosqrt2 * (gp * N(k3, 1) + g * N(k3, 2)) * U(k2, 2) * RSpm(k1, 1) 
 
   Do i=1,3
    coupL = coupL - gp * sqrt2 * Conjg(N(k3,1) * V(k2,2 + i)) * RSpm(k1, 5 + i)
@@ -11594,13 +11594,13 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     coupL = coupL + Yl(i,j) * ( Conjg(N(k3,4+i) * V(k2,2 + j)) * RSpm(k1, 1) &
         &                     - Conjg( N(k3,3) * V(k2,2 + j)) * RSpm(k1,2+i) )
     coupR = coupR + Conjg(Yl(i,j)) * RSpm(k1, 5 + j)                         &
-          &          * ( N(k3,4+i) * U(k2, 2) - N(k3, 3) * U(k2,2 + i))
+          &          * ( N(k3,4+i) * U(k2, 2) - N(k3, 3) * U(k2,2 + i)) 
 
     Do k=1,3
      coupL = coupL - Conjg(N(k3,4+i) * V(k2,2+k)) *  RSpm(k1,2+j) &
          &                              * lambda(i,j,k)  *2._dp
      coupR = coupR + N(k3, 4 + i) * U(k2, 2 + j) * RSpm(k1, 5 + k)        &
-         &                        * Conjg(lambda(j, i, k)) * 2._dp
+         &                        * Conjg(lambda(j, i, k)) * 2._dp 
     end do
    end do
   end do
@@ -11612,7 +11612,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupDquarkPseudoScalar1expl(i,yuk,yukRP,RP0,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between d-quarks and pseudoscalar bosons
+ ! calculates the coupling between d-quarks and pseudoscalar bosons 
  ! valid for 1-generation model with explicitly broken R-parity
  !  i .......... index of scalar boson
  !  Yuk ........ d-quark yukawa couplings
@@ -11628,10 +11628,10 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Complex(dp), Intent(in) :: yuk,yukRP
   Complex(dp), Intent(out) :: coupL,coupR
   Integer, Intent(in) :: i
-
+ 
   coupL = - (0._dp,1._dp) * (yuk * RP0(i,1) + yukRP * RP0(i,3) ) * oosqrt2
 
-  coupR = Conjg(coupL)
+  coupR = Conjg(coupL) 
 
  End Subroutine CoupDquarkPseudoScalar1expl
 
@@ -11640,7 +11640,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  Subroutine CoupDquarkPseudoScalar3expl(i,j,k,yuk,yukRP,Rdl,Rdr,RP0 &
                                    &   ,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between d-quarks and pseudoscalar bosons
+ ! calculates the coupling between d-quarks and pseudoscalar bosons 
  ! valid for 3-generation model with explicitly broken R-parity
  !  i,j ........ generation index of the d-quarks
  !  k .......... index of scalar boson
@@ -11659,7 +11659,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Complex(dp), Intent(in) :: yuk(3,3),yukRP(3,3,3),Rdl(3,3),Rdr(3,3)
   Complex(dp), Intent(out) :: coupL, coupR
   Integer, Intent(in) :: i,j,k
-
+ 
   Integer :: i1, i2, i3
   Complex(dp) :: wert
 
@@ -11676,7 +11676,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   End Do
   coupL = - (0._dp,1._dp) * coupL * oosqrt2
 
-  coupR = Conjg(coupL)
+  coupR = Conjg(coupL) 
 
  End Subroutine CoupDquarkPseudoScalar3expl
 
@@ -11684,7 +11684,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupDquarkScalar1expl(i,yuk,yukRP,RS0,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between d-quarks and scalar bosons
+ ! calculates the coupling between d-quarks and scalar bosons 
  ! valid for 1-generation model with explicitly broken R-parity
  !  i .......... index of scalar boson
  !  Yuk ........ d-quark yukawa couplings
@@ -11700,10 +11700,10 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Complex(dp), Intent(in) :: yuk,yukRP
   Complex(dp), Intent(out) :: coupL,coupR
   Integer, Intent(in) :: i
-
+ 
   coupL = - (yuk * RS0(i,1) + yukRP * RS0(i,3)) * oosqrt2
 
-  coupR = Conjg(coupL)
+  coupR = Conjg(coupL) 
 
  End Subroutine CoupDquarkScalar1expl
 
@@ -11711,7 +11711,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupDquarkScalar3expl(i,j,k,yuk,yukRP,Rdl,Rdr,RS0,coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between d-quarks and scalar bosons
+ ! calculates the coupling between d-quarks and scalar bosons 
  ! valid for 3-generation model with explicitly broken R-parity
  !  i,j ........ generation index of the d-quarks
  !  k .......... index of scalar boson
@@ -11730,7 +11730,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Complex(dp), Intent(in) :: yuk(3,3),yukRP(3,3,3),Rdl(3,3),Rdr(3,3)
   Complex(dp), Intent(out) :: coupL, coupR
   Integer, Intent(in) :: i,j,k
-
+ 
   Integer :: i1, i2, i3
   Complex(dp) :: wert
 
@@ -11747,7 +11747,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   End Do
   coupL = - coupL * oosqrt2
 
-  coupR = Conjg(coupL)
+  coupR = Conjg(coupL) 
 
  End Subroutine CoupDquarkScalar3expl
 
@@ -11764,14 +11764,14 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !  RfL(i,j) ..... mixing matrix of the left-handed down quarks
  !  RfR(i,j) ..... mixing matrix of the right-handed down quarks
  !  RSf(i,j) ..... mixing matrix of the sdowns
- !  Yuk .......... down Yukawa coupling
+ !  Yuk .......... down Yukawa coupling 
  !  N ............ mixing matrix of the neutralino
  !  lamp(a,b,c) .. trilinear R-partiy breaking coupling lambda'
  ! output
  !  coupL ...... the left coupling(i,j,k)
  !  coupR ...... the right coupling(i,j,k)
  ! the corresponding Lagrangian is given by:
- !    L = \bar(f_i) ( coupL P_L + coupR P_R) chi^0_j \tilde(f)_k
+ !    L = \bar(f_i) ( coupL P_L + coupR P_R) chi^0_j \tilde(f)_k  
  ! written by Werner Porod, 19.04.2001
  !-----------------------------------------------------------------------
  Implicit None
@@ -11805,7 +11805,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   hr = Conjg(hl)
 
   fL = - sqrt2 *( (e-T3) * gp * N(j,1) + T3 * g * N(j,2) )
-  fR = sqrt2 * e * gp * Conjg( N(j,1) )
+  fR = sqrt2 * e * gp * Conjg( N(j,1) ) 
 
   coupL = 0._dp
   coupR = 0._dp
@@ -11826,14 +11826,14 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     coupL = coupL + Conjg( Rsf(k,i1+3) * RfR(i,i1) ) * fr
     coupR = coupR + Conjg( Rsf(k,i1+3)) * hr(i,i1)
     Do i2 = 1,3
-     coupL = coupL + Conjg( Rsf(k,i1) * RfR(i,i2) ) * hl(i1,i2)
+     coupL = coupL + Conjg( Rsf(k,i1) * RfR(i,i2) ) * hl(i1,i2) 
     End Do
    End Do
 
   Else If (CompareMatrices(id3C,RfR,NearlyZero)) Then
    coupL = coupL + Conjg( Rsf(k,i+3) ) * fr
    Do i1 = 1,3
-    coupL = coupL + Conjg( Rsf(k,i1) ) * hl(i1,i)
+    coupL = coupL + Conjg( Rsf(k,i1) ) * hl(i1,i) 
     coupR = coupR + Conjg( Rsf(k,i1) ) * RfL(i,i1) * fl
     Do i2 = 1,3
      coupR = coupR + Conjg( Rsf(k,i2+3) ) * RfL(i,i1) * hr(i1,i2)
@@ -11845,7 +11845,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     coupL = coupL + Conjg( Rsf(k,i1+3) * RfR(i,i1) ) * fr
     coupR = coupR + Conjg( Rsf(k,i1) ) * RfL(i,i1) * fl
     Do i2 = 1,3
-     coupL = coupL + Conjg( Rsf(k,i1) * RfR(i,i2) ) * hl(i1,i2)
+     coupL = coupL + Conjg( Rsf(k,i1) * RfR(i,i2) ) * hl(i1,i2) 
      coupR = coupR + Conjg( Rsf(k,i2+3)) * RfL(i,i1) * hr(i1,i2)
     End Do
    End Do
@@ -11858,8 +11858,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupChi0P0(i, j, k, N, RP0, gp, g, h0, h, Y_nu, lam, coupL, coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between Neutralinos and Scalar bosons
- ! valid for the MSSM, 1-generation epsilon model, and
+ ! calculates the coupling between Neutralinos and Scalar bosons 
+ ! valid for the MSSM, 1-generation epsilon model, and 
  ! 3-generation epsilon model
  ! input
  !  i,j ........ index of Neutralino
@@ -11911,7 +11911,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Write(ErrCan,*) 'index k out of range:',k
    Call TerminateProgram
   End If
-
+ 
   sumI = -0.5_dp * ( gp * N(i,1) - g * N(i,2) )
   sumI_i = Conjg( sumI )
   sumI = -0.5_dp * ( gp * N(j,1) - g * N(j,2) )
@@ -11944,7 +11944,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       &     + (Conjg(N(i,4)*N(j,8)) + Conjg(N(j,4)*N(i,8))) * RP0(k,2+i1)      &
       &     + (Conjg(N(i,i1+4)*N(j,8)) + Conjg(N(j,i1+4)*N(i,8))) * RP0(k,2) )
   End Do
-  coupL = coupL - oosqrt2 * lam * Conjg(N(i,10)*N(j,10)) * RP0(k,6)
+  coupL = coupL - oosqrt2 * lam * Conjg(N(i,10)*N(j,10)) * RP0(k,6) 
 
   coupL = (0._dp,1._dp) * coupL
   coupR = Conjg( coupL )
@@ -11956,8 +11956,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine CoupChi0S0(i, j, k, N, RS0, gp, g, h0, h, Y_nu, lam, coupL, coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between Neutralinos and Scalar bosons
- ! valid for the MSSM, 1-generation epsilon model, and
+ ! calculates the coupling between Neutralinos and Scalar bosons 
+ ! valid for the MSSM, 1-generation epsilon model, and 
  ! 3-generation epsilon model
  ! input
  !  i,j ........ index of Neutralino
@@ -12009,7 +12009,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Write(ErrCan,*) 'index k out of range:',k
    Call TerminateProgram
   End If
-
+ 
   sumI = 0.5_dp * ( gp * N(i,1) - g * N(i,2) )
   sumI_i = Conjg( sumI )
   sumI = 0.5_dp * ( gp * N(j,1) - g * N(j,2) )
@@ -12041,7 +12041,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       &     + (Conjg(N(i,4)*N(j,8)) + Conjg(N(j,4)*N(i,8))) * RS0(k,2+i1)      &
       &     + (Conjg(N(i,i1+4)*N(j,8)) + Conjg(N(j,i1+4)*N(i,8))) * RS0(k,2) )
   End Do
-  coupL = coupL - oosqrt2 * lam * Conjg(N(i,10)*N(j,10)) * RS0(k,6)
+  coupL = coupL - oosqrt2 * lam * Conjg(N(i,10)*N(j,10)) * RS0(k,6) 
 
   coupR = Conjg( coupL )
 
@@ -12054,7 +12054,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
                                        &, coupL, coupR)
  !-----------------------------------------------------------------------
  ! calculates the coupling between charginos, neutralinos, and
- ! charged scalar bosons
+ ! charged scalar bosons 
  ! valid for the spontaneous model of R-parity breaking
  !   k .......... index of the charged scalar
  !  i .......... index of chargino
@@ -12127,12 +12127,12 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    ql(5) = - Yuk(3) * Conjg( V(i,5) * N(j,3) )
    ql(6) = - sqrt2 * gp * Conjg( V(i,3) * N(j,1) )
    ql(7) = - sqrt2 * gp * Conjg( V(i,4) * N(j,1) )
-   ql(8) = - sqrt2 * gp * Conjg( V(i,5) * N(j,1) )
-   qr(1) = - g * U(i,1) * N(j,3) + U(i,2) * sumI * oosqrt2
+   ql(8) = - sqrt2 * gp * Conjg( V(i,5) * N(j,1) ) 
+   qr(1) = - g * U(i,1) * N(j,3) + U(i,2) * sumI * oosqrt2 
    qr(2) = - h0 * U(i,2) * N(j,10)
-   qr(3) = - g * U(i,1) * N(j,5) + U(i,3) * sumI * oosqrt2
-   qr(4) = - g * U(i,1) * N(j,6) + U(i,4) * sumI * oosqrt2
-   qr(5) = - g * U(i,1) * N(j,7) + U(i,5) * sumI * oosqrt2
+   qr(3) = - g * U(i,1) * N(j,5) + U(i,3) * sumI * oosqrt2 
+   qr(4) = - g * U(i,1) * N(j,6) + U(i,4) * sumI * oosqrt2 
+   qr(5) = - g * U(i,1) * N(j,7) + U(i,5) * sumI * oosqrt2 
    qr(6) = Conjg(Yuk(1) ) * ( U(i,2) * N(j,5) - U(i,3) * N(j,3) )
    qr(7) = Conjg(Yuk(2) ) * ( U(i,2) * N(j,6) - U(i,4) * N(j,3) )
    qr(8) = Conjg(Yuk(3) ) * ( U(i,2) * N(j,7) - U(i,5) * N(j,3) )
@@ -12150,7 +12150,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  Subroutine CoupCharginoPseudoScalarSpon1(i, j, k, U, V, RP0, Yuk, g, h0, hnu &
                                         & , coupL, coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between charginos and pseudoscalar bosons
+ ! calculates the coupling between charginos and pseudoscalar bosons 
  ! valid for 3-generation epsilon model
  !  i,j ........ index of chargino
  !  k .......... index of the scalar
@@ -12178,8 +12178,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   NameOfUnit(Iname) = 'CoupCharginoPseudoScalarSpon1'
 
 
-  yukC = Conjg( yuk )
-  hnuC = Conjg( hnu )
+  yukC = Conjg( yuk ) 
+  hnuC = Conjg( hnu ) 
 
   coupL = ( RP0(k,1) * ( g * Conjg( V(i,1) * U(j,2) )         &
         &              - yuk(1) * Conjg( V(i,3) * U(j,3) )    &
@@ -12215,7 +12215,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
         &     ) * oosqrt2
 
   coupL = coupL * (0._dp,1._dp)
-  coupR = coupR * (0._dp,-1._dp)
+  coupR = coupR * (0._dp,-1._dp) 
 
   Iname = Iname - 1
 
@@ -12224,7 +12224,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  Subroutine CoupCharginoScalarSpon1(i, j, k, U, V, RS0, Yuk, g, h0, hnu &
                                  & ,coupL, coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between charginos and scalar bosons
+ ! calculates the coupling between charginos and scalar bosons 
  ! valid for 3-generation epsilon model
  !  i,j ........ index of chargino
  !  k .......... index of the scalar
@@ -12249,7 +12249,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Iname = Iname + 1
   NameOfUnit(Iname) = 'CoupCharginoScalarSpon1'
 
-
+ 
   coupL = ( RS0(k,1) * ( g * Conjg( V(i,1) * U(j,2) )             &
      &                 + yuk(1) * Conjg( V(i,3) * U(j,3) )        &
      &                 + yuk(2) * Conjg( V(i,4) * U(j,4) )        &
@@ -12341,7 +12341,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    C_H0A0A0(1,5,8)=-(h0*vp*hn(3))/2._dp-(muhat*hn(3)) /sqrt2
 
    C_H0A0A0(1,6,6)=-(h0**2*vd)-(h0*lmbd*vu)/2._dp
-   C_H0A0A0(1,6,8)= 0.5_dp * h0 * Dot_vL_hn
+   C_H0A0A0(1,6,8)= 0.5_dp * h0 * Dot_vL_hn 
 
    C_H0A0A0(1,7,8)=-(h*h0*vu)/2._dp
 
@@ -12371,7 +12371,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    C_H0A0A0(2,5,8)=Ahn(3)/sqrt2
 
    C_H0A0A0(2,6,6)=-(h0*lmbd*vd)/2._dp-h0**2*vu
-   C_H0A0A0(2,6,7)= 0.5_dp * h * Dot_vL_hn
+   C_H0A0A0(2,6,7)= 0.5_dp * h * Dot_vL_hn 
 
    C_H0A0A0(2,7,8)=-(h*h0*vd)/2._dp
 
@@ -12421,7 +12421,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    C_H0A0A0(5,1,6)=-(h0*vR*hn(3))/2._dp
    C_H0A0A0(5,1,8)=(h0*vp*hn(3))/2._dp+(muhat*hn(3))/sqrt2
 
-   C_H0A0A0(5,2,2)=((g2+gp2)*vL(3))/4._dp-hn(3)*Dot_vL_hn
+   C_H0A0A0(5,2,2)=((g2+gp2)*vL(3))/4._dp-hn(3)*Dot_vL_hn 
    C_H0A0A0(5,2,6)=-(h*vS*hn(3))/2._dp
    C_H0A0A0(5,2,7)=-(h*vp*hn(3))/2._dp-(MR*hn(3))/sqrt2
    C_H0A0A0(5,2,8)=Ahn(3)/sqrt2
@@ -12444,13 +12444,13 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    C_H0A0A0(6,1,5)=(h0*vR*hn(3))/2._dp
    C_H0A0A0(6,1,6)=(h0*lmbd*vu)/2._dp
    C_H0A0A0(6,1,8)=0.5_dp * h0 * Dot_vL_hn
-
+ 
    C_H0A0A0(6,2,2)=-(h0**2*vp)-h0*muhat*sqrt2
    C_H0A0A0(6,2,3)=(h*vS*hn(1))/2._dp
    C_H0A0A0(6,2,4)=(h*vS*hn(2))/2._dp
    C_H0A0A0(6,2,5)=(h*vS*hn(3))/2._dp
    C_H0A0A0(6,2,6)=(h0*lmbd*vd)/2._dp
-   C_H0A0A0(6,2,7)=-0.5_dp * h * Dot_vL_hn
+   C_H0A0A0(6,2,7)=-0.5_dp * h * Dot_vL_hn 
 
    C_H0A0A0(6,3,7)=-(h*vu*hn(1))/2._dp
    C_H0A0A0(6,3,8)=-(h0*vd*hn(1))/2._dp
@@ -12532,7 +12532,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Do i1=1,8
     Do i2=1,8
      Do i3=1,8
-      coup = coup + C_H0A0A0(i1,i2,i3) * RS0(k,i1) * RP0(j,i2) * RP0(i,i3)
+      coup = coup + C_H0A0A0(i1,i2,i3) * RS0(k,i1) * RP0(j,i2) * RP0(i,i3) 
      End Do
     End Do
    End Do
@@ -12706,7 +12706,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Do i1=1,8
     Do i2=1,8
      Do i3=1,8
-      coup = coup + C_H0H0H0(i1,i2,i3) * RS0(k,i1) * RS0(j,i2) * RS0(i,i3)
+      coup = coup + C_H0H0H0(i1,i2,i3) * RS0(k,i1) * RS0(j,i2) * RS0(i,i3) 
      End Do
     End Do
    End Do
@@ -12738,7 +12738,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     & , c_GraLSl_L, c_GraLSl_R, c_GraNuSn_L, c_GraNuSn_R, GenerationMixing)
  !-----------------------------------------------------------------
  ! Routine for calculating all couplings of the MSSM
- ! output:
+ ! output: 
  ! Couplings, the start generically with cpl_ and the remaining letters
  ! indicate the particles involved: C....chargino
  !                                  D....d-quark
@@ -12758,8 +12758,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  !                                  U....u-quark
  !                                  Z....Z-boson
  ! In addition, an _L or _R is added in the case of fermions indicated
- ! if it is the left-handed or right-handed coupling.
- ! written by Werner Porod,
+ ! if it is the left-handed or right-handed coupling. 
+ ! written by Werner Porod, 
  ! 01.03.2001: taking InitializeDecaysMSSM as basis
  !          - charged Higgs -sfermion-sfermion, 1 Gen., MSSM
  ! 12.09.2002: changing interface to avoid global variables
@@ -12807,11 +12807,11 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       & , cpl_UUZ_L, cpl_UUZ_R, cpl_NuNuZ_L, cpl_NuNuZ_R
   Complex(dp), Intent(out) :: cpl_CCZ_L(2,2), cpl_CCZ_R(2,2)           &
       & , cpl_NNZ_L(5,5), cpl_NNZ_R(5,5), cpl_NNS0_L(5,5,3)            &
-      & , cpl_NNS0_R(5,5,3), cpl_NNP0_L(5,5,3), cpl_NNP0_R(5,5,3)
+      & , cpl_NNS0_R(5,5,3), cpl_NNP0_L(5,5,3), cpl_NNP0_R(5,5,3) 
   Complex(dp), Intent(out) :: cpl_GDSd_L(3,6), cpl_GDSd_R(3,6)          &
       & , cpl_DNSd_L(3,5,6), cpl_DNSd_R(3,5,6), cpl_GUSu_L(3,6)         &
       & , cpl_GUSu_R(3,6), cpl_UNSu_L(3,5,6), cpl_UNSu_R(3,5,6)         &
-      & , cpl_LNSl_L(3,5,6), cpl_LNSl_R(3,5,6), cpl_NuNSn_L(3,5,3)      &
+      & , cpl_LNSl_L(3,5,6), cpl_LNSl_R(3,5,6), cpl_NuNSn_L(3,5,3)      & 
       & , cpl_NuNSn_R(3,5,3), cpl_DDP0_L(3,3,3), cpl_LLP0_L(3,3,3)      &
       & , cpl_UUP0_L(3,3,3), cpl_DDP0_R(3,3,3), cpl_LLP0_R(3,3,3)       &
       & , cpl_UUP0_R(3,3,3), cpl_DDS0_L(3,3,3), cpl_LLS0_L(3,3,3)       &
@@ -12822,7 +12822,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       & , cpl_CLSn_R(2,3,3), cpl_CNuSl_L(2,3,6), cpl_CNuSl_R(2,3,6)
   Complex(dp), Intent(out) :: cpl_GlGlS0(3)
   Complex(dp) :: cpl_P0SdSd(3,6,6), cpl_P0SuSu(3,6,6), cpl_P0SlSl(3,6,6) &
-      & , cpl_P0SnSn(3,3,3), cpl_P0S0Z(3,3)
+      & , cpl_P0SnSn(3,3,3), cpl_P0S0Z(3,3) 
   Real(dp), Intent(out) :: cpl_P0S03(3,3,3)
   Complex(dp), Intent(out) :: cpl_S0SdSd(3,6,6), cpl_S0SuSu(3,6,6) &
       & , cpl_S0SlSl(3,6,6), cpl_S0SnSn(3,3,3), cpl_LNuW(3,3)
@@ -12837,7 +12837,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       & , c_GraUSu_R, c_GraLSl_L, c_GraLSl_R
   Complex(dp), Intent(out), Dimension(3,3) :: c_GraNuSn_L, c_GraNuSn_R
 
-  Integer :: n_char, n_neut, n_S0, n_P0, n_Spm
+  Integer :: n_char, n_neut, n_S0, n_P0, n_Spm 
   Integer :: i1, i2, i3, i4
   Real(dp) :: gU1, gSU2, gSU3, sinW2, cosW2, cosW
   Complex(dp) :: Rsd(2,2), Rsu(2,2), Rsl(2,2), coupLC, coupRC, Yuk, Yukp, &
@@ -13149,7 +13149,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     End Do
 
    End Do
-  End If
+  End If 
 
   !-------------------------
   ! chargino - neutralino W
@@ -13369,7 +13369,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    End Do
 
   Else
-
+   
    Do i1=1,3
     Rsd = RSdown(2*(i1-1)+1:2*(i1-1)+2, 2*(i1-1)+1:2*(i1-1)+2)
     Rsu = RSup(2*(i1-1)+1:2*(i1-1)+2, 2*(i1-1)+1:2*(i1-1)+2)
@@ -13389,7 +13389,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     End Do
    End Do
 
-  End If
+  End If 
 
   !--------------------------
   ! Gluino
@@ -13425,10 +13425,10 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
      Call CoupGluinoSquark(gSU3, phase_glu, i2, Rsu, coupLC, coupRC)
      cpl_GUSu_L(i1, (i1-1)*2 + i2) = coupLC
      cpl_GUSu_R(i1, (i1-1)*2 + i2) = coupRC
-    End Do
+    End Do  
    End Do
 
-  End If
+  End If 
 
   !-------------------
   ! Gluon Gluon scalar
@@ -13515,7 +13515,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
   Call Adjungate(cpl_SlSnW, cpl_SnSlW)
 
   !---------------------------
-  ! Pseudoscalar - scalar
+  ! Pseudoscalar - scalar 
   !---------------------------
   cpl_P0S03 = 0._dp
 !   Do i1=1,n_P0
@@ -13537,7 +13537,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     End Do
    End Do
   !-------------------------------------
-  ! Pseudoscalar - sfermion - sfermion
+  ! Pseudoscalar - sfermion - sfermion 
   !-------------------------------------
   cpl_P0SdSd = 0._dp
   cpl_P0SuSu = 0._dp
@@ -13557,7 +13557,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 !      End Do
 !     End Do
 !    End Do
-!
+! 
 !   Else
    Do i1=1,n_P0
     Do i2=1,3
@@ -13609,7 +13609,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 !   End Do
 
   !-------------------------------------
-  ! scalar - sfermion - sfermion
+  ! scalar - sfermion - sfermion 
   !-------------------------------------
   cpl_S0SdSd = 0._dp
   cpl_S0SuSu = 0._dp
@@ -13636,7 +13636,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 !      End Do
 !     End Do
 !    End Do
-!
+! 
 !   Else
    Do i1=1,n_S0
     Do i2=1,3
@@ -13709,7 +13709,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
     Do i2=1,3
      Call CoupSneutrinoZ(i1, i2, gSU2, sinW2, Rsneut, cpl_SnSnZ(i1, i2) )
     End Do
-   End Do
+   End Do 
    Do i1=1,6
     Do i2=1,6
      Call CoupSleptonZ(i1, i2, gSU2, sinW2, Rslepton, cpl_SlSlZ(i1, i2) )
@@ -13717,7 +13717,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
      Call CoupSupZ(i1, i2, gSU2, sinW2, Rsup, cpl_SuSuZ(i1, i2) )
     End Do
    End Do
-
+ 
   Else
    Call CoupSneutrinoZ(gSU2, sinW2, cpl_SnSnZ(1,1) )
    Do i1=1,3
@@ -13734,7 +13734,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
       Call CoupSupZ(i2, i3, gSU2, sinW2, Rsu, coupC )
       cpl_SuSuZ( (i1-1)*2+i2, (i1-1)*2+i3 ) = coupC
      End Do
-    End Do
+    End Do    
    End Do
 
   End If
@@ -13745,7 +13745,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine Coup_Chip_Chim_P0_NMSSM(i, j, k, U, V, RP0, g, h0, coupL, coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between charginos and pseudoscalar bosons
+ ! calculates the coupling between charginos and pseudoscalar bosons 
  ! valid for the NMSSM
  !  i,j ........ index of chargino
  !  k .......... index of the pseudo scalar
@@ -13783,16 +13783,16 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Write(ErrCan,*) 'index k out of range:',k
    Call TerminateProgram
   End If
-
+ 
   coupL = ( g * ( RP0(k,1) * Conjg( V(i,1) * U(j,2) )             &
         &       + RP0(k,2) * Conjg( V(i,2) * U(j,1) ) )           &
         & - h0 * RP0(k,3) * Conjg( V(i,2) * U(j,2) )    ) * oosqrt2
   coupR = ( g * ( RP0(k,1) * V(j,1) * U(i,2)             &
         &       + RP0(k,2) * V(j,2) * U(i,1) )           &
         & - conjg(h0) * RP0(k,3) * V(j,2) * U(i,2)   )  * oosqrt2
-
+ 
   coupL = coupL * (0._dp,1._dp)
-  coupR = coupR * (0._dp,-1._dp)
+  coupR = coupR * (0._dp,-1._dp) 
 
   Iname = Iname - 1
 
@@ -13800,7 +13800,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
  Subroutine Coup_Chip_Chim_S0_NMSSM(i, j, k, U, V, RS0, g, h0, coupL, coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between charginos and scalar bosons
+ ! calculates the coupling between charginos and scalar bosons 
  ! valid for the MSSM
  !  i,j ........ index of chargino
  !  k .......... index of the pseudo scalar
@@ -13839,16 +13839,16 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Write(ErrCan,*) 'index k out of range:',k
    Call TerminateProgram
   End If
-
+ 
   coupL = ( g * ( RS0(k,1) * Conjg( V(i,1) * U(j,2) )             &
         &       + RS0(k,2) * Conjg( V(i,2) * U(j,1) ) )           &
         & - h0 * RS0(k,3) * Conjg( V(i,2) * U(j,2) )    ) * oosqrt2
   coupR = ( g * ( RS0(k,1) * V(j,1) * U(i,2)             &
         &       + RS0(k,2) * V(j,2) * U(i,1) )           &
         & - Conjg(h0) * RS0(k,3) *  V(j,2) * U(i,2)    ) * oosqrt2
-
+ 
   coupL = - coupL
-  coupR = - coupR
+  coupR = - coupR 
 
   Iname = Iname - 1
 
@@ -13858,7 +13858,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
                                   &, gp, g, h0, coupL, coupR)
  !-----------------------------------------------------------------------
  ! calculates the coupling between charginos, neutralinos, and
- ! charged scalar bosons
+ ! charged scalar bosons 
  ! valid for the NMSSM
  !  i .......... index of chargino
  !  j .......... index of the neutralino
@@ -13912,14 +13912,14 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
         & - h0 * RSpm(k,1) * Conjg( V(i,2) * N(j,5) )
   coupR = RSpm(k,1) * (- g * U(i,1) * N(j,3) + U(i,2) * sumI )     &
       & - Conjg(h0) * RSpm(k,2) * U(i,2) * N(j,5)
-
+ 
   Iname = Iname - 1
 
  End Subroutine Coup_Chip_Chi0_Sm_NMSSM
 
  Subroutine Coup_Chi0_Chi0_P0_NMSSM(i, j, k, N, RP0, gp, g, h0, lam, coupL,coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between Neutralinos and Scalar bosons
+ ! calculates the coupling between Neutralinos and Scalar bosons 
  ! valid for the NMSSM
  ! input
  !  i,j ........ index of Neutralino
@@ -13969,7 +13969,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Write(ErrCan,*) 'index k out of range:',k
    Call TerminateProgram
   End If
-
+ 
   sumI = 0.5_dp * ( gp * N(i,1) - g * N(i,2) )
   sumI_i = Conjg( sumI )
   sumI = 0.5_dp * ( gp * N(j,1) - g * N(j,2) )
@@ -14002,8 +14002,8 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
  Subroutine Coup_Chi0_Chi0_S0_NMSSM(i, j, k, N, RS0, gp, g, h0, lam &
                & , coupL, coupR)
  !-----------------------------------------------------------------------
- ! calculates the coupling between Neutralinos and Scalar bosons
- ! valid for the MSSM, 1-generation epsilon model, and
+ ! calculates the coupling between Neutralinos and Scalar bosons 
+ ! valid for the MSSM, 1-generation epsilon model, and 
  ! 3-generation epsilon model
  ! input
  !  i,j ........ index of Neutralino
@@ -14053,7 +14053,7 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
    Write(ErrCan,*) 'index k out of range:',k
    Call TerminateProgram
   End If
-
+ 
   sumI = 0.5_dp * ( gp * N(i,1) - g * N(i,2) )
   sumI_i = Conjg( sumI )
   sumI = 0.5_dp * ( gp * N(j,1) - g * N(j,2) )
@@ -14254,3 +14254,4 @@ Subroutine CoupNeutralinoScalar(i,j,k,N,RS0,gp,g,coupL,coupR)
 
 
 End Module Couplings
+

@@ -22,4 +22,4 @@ Block SPhenoInput       # SPheno specific input
  2   1                  # if =1, then SPA conventions are used
 11   1                  # calculate branching ratios
 12   0.0001              # BRmin
-21   0                  # calculate cross section
+21   0                  # calculate cross section 

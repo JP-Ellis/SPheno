@@ -31,7 +31,7 @@ Contains
  Real(dp) Function Ftilde(muChi, muPhi, muSq)
  implicit none
   Real(dp), Intent(in) :: muChi, muPhi, muSq
-
+  
   Real(dp) :: parts(2), rp, rm
 
   parts(1) = 1._dp + muPhi - MuSq
@@ -49,10 +49,10 @@ Contains
     f = Log(muChi - 1._dp + x) * Log((1._dp - muChi)/(muSq-muChi))  &
       & + Li2((muChi-muSq)/(muchi - 1._dp + x) )                    &
       & - Li2((muChi-1._dp)/(muchi - 1._dp + x) )
-  end function
+  end function 
  End Function Ftilde
 
-
+ 
  Real(dp) Function Sq2toSq1Chi1(muChi, muSq)
  Implicit None
   Real(dp), Intent(in) :: muChi(2), muSq
@@ -265,7 +265,7 @@ Contains
   Sq2ToSq1PhiChi = muSq - 1._dp + muSq * Log(muSq) / muChi  &
         & + (muSQ-muchi)*(muChi-1._dp)/muChi                &
         &    *  Log( (muChi-1._dp) / (muChi-muSq) )         &
-        & + muPhi * Ftilde(muChi, muPhi, muSq)
+        & + muPhi * Ftilde(muChi, muPhi, muSq) 
 
  End Function Sq2ToSq1PhiChi
 
@@ -278,7 +278,7 @@ Contains
   if (muPhi(1).eq.muPhi(2)) then
    lam1 = -1._dp + 2._dp * (muPhi(1) + muSq) - (muSq - muPhi(1))**2
    sq_lam1 = Sqrt(abs(lam1))
-   Sq2ToSq1PhiPhi = 2._dp * (muSq - 1._dp)                                 &
+   Sq2ToSq1PhiPhi = 2._dp * (muSq - 1._dp)                                 & 
                 & + 0.5_dp * (1._dp + muSq - Sum(muPhi)) * Log(muSq)       &
                 & - ( muPhi(1) * (1._dp+muSq-muPhi(1)) + lam1)             &
                 &   * ATan( (1-muSq) * sq_lam1                             &
@@ -298,7 +298,7 @@ Contains
                 &   * ATan( (1-muSq) * sq_lam2                             &
                 &         / (muPhi(2)*(1._dp - muPhi(2) + muSq) - lam2) )  &
                 &   ) / (muPhi(2) - muPhi(1))
-
+   
   end if
 
  end Function Sq2ToSq1PhiPhi
@@ -327,7 +327,7 @@ Contains
         &             - 6._dp * muSq) * Log(muSq)                             &
         & + 0.5_dp * sqlam * (1._dp + muSq - 2._dp + muChi - muV)             &
         &     * Atan( (1._dp - muSq) * sqlam / (lam + muV*(muV-1._dp-muSq)) ) &
-        & + muV * Ftilde(muChi, muV, muSq)
+        & + muV * Ftilde(muChi, muV, muSq) 
 
  End Function Sq2ToSq1VChi
 
@@ -429,7 +429,7 @@ Contains
  !--------------------------------------------------
    stbWchi = stbWchi - ( cb(j,1) + cb(j,2)*s + cb(j,3)*s2) * intI(j,1)   &
            &         - ( cb(j,4) + cb(j,5)*s + cb(j,6)*s2) * intI(j,2)   &
-           &         - ( cb(j,7) + cb(j,8)*s) * intI(j,3)
+           &         - ( cb(j,7) + cb(j,8)*s) * intI(j,3) 
   End Do
  !-------------------
  ! chargino_j sbottom_k interference term
@@ -482,7 +482,7 @@ Contains
  !-------
   fakt = kappa(s,mst2,mW2)**2 / mW2
 
-  Do k=1,2
+  Do k=1,2 
    If (gammsb(k).Eq.0.0_dp) Then
     intI(k,1) = fakt * (ce(k,1) + ce(k,2)*s) / (s-msbot2(k))**2
    Else
@@ -614,7 +614,7 @@ Contains
    Do i1=1,3 ! lepton generation
     mSl2 = mSneut2(i1)
     !-----------------------------------------
-    ! checking kinematics
+    ! checking kinematics 
     !-----------------------------------------
     If (mStop(5).Lt.(Sqrt(mSl2)+mf_d(3)+mf_l(i1))) Cycle
 
@@ -627,7 +627,7 @@ Contains
           &            + Abs(c_CLSn_R(i2,i1,i1))**2 * Abs(c_CDSu_L(i2,3,5))**2)
      kll2 = 2._dp * Real( Conjg(c_CDSu_L(i2,3,5)) * c_CDSu_R(i2,3,5),dp )   &
         & * ( Abs(c_CLSn_L(i2,i1,i1))**2 + Abs(c_CLSn_R(i2,i1,i1))**2 )
-     ktl2 = 2._dp * Real(Conjg(c_CLSn_L(i2,i1,i1)) * c_CLSn_R(i2,i1,i1)) &
+     ktl2 = 2._dp * Real(Conjg(c_CLSn_L(i2,i1,i1)) * c_CLSn_R(i2,i1,i1)) & 
         &   * (Abs(c_CDSu_L(i2,3,5))**2 + Abs(c_CDSu_R(i2,3,5))**2)
 
      mbmcha = mf_d(3) * mC(i2)
@@ -636,7 +636,7 @@ Contains
      CoeffSl(i2,1) = - kll2 * mbmcha - kl2lt2 * mC2(i2) - ktl2 * mtaumc     &
         &  + kl2kt2 * (mstop2(5) + mSneut2(i1) - mf_d2(3)-mf_l2(i1))        &
         &  - 4._dp * Real( Conjg(c_CDSu_L(i2,3,5) * c_CLSn_R(i2,i1,i1))     &
-        &                * c_CDSu_R(i2,3,5) * c_CLSn_L(i2,i1,i1),dp ) * mbmtau
+        &                * c_CDSu_R(i2,3,5) * c_CLSn_L(i2,i1,i1),dp ) * mbmtau 
 
      CoeffSl(i2,2) = kl2lt2 * mC2(i2) * (mf_d2(3)-mstop2(5))  &
         &                  * (mSneut2(i1)-mf_l2(i1))
@@ -697,7 +697,7 @@ Contains
     calc = .True.
     If (Check_Real_States) Then
      If (mStop(5).Gt.(mC(2)+mf_d(3))) Then  ! all intermediate states are real
-      calc = .False.
+      calc = .False.           
      Else If (mStop(5).Gt.(mC(1)+mf_d(3))) Then ! only chi^+_2 contributes
       CoeffSl(1,:) = 0._dp
       CoeffSl(3,:) = 0._dp
@@ -708,10 +708,10 @@ Contains
       Sup(5)%gi3(i_c) = f_stop * Dgauss(stoslep,smin,smax,prec)
       Sup(5)%id3(i_c,1) = Sneut(i1)%id
       Sup(5)%id3(i_c,2) = id_l(i1) + 1
-      Sup(5)%id3(i_c,3) = id_d(3)
+      Sup(5)%id3(i_c,3) = id_d(3) 
       i_c = i_c +1
     End If
-
+    
    End Do
   End If
 
@@ -735,7 +735,7 @@ Contains
     Do i2=1,2 ! number of sleptons
      mSl2 = mSlept2(2*(i1-1)+i2)
      !-----------------------------------------
-     ! checking kinematics
+     ! checking kinematics 
      !-----------------------------------------
      If (mStop(5).Lt.(Sqrt(mSl2)+mf_d(3))) Cycle
      mSl4 = mSl2**2
@@ -751,7 +751,7 @@ Contains
       AbslL11Sq = Abs(c_CNuSl_R(i3,i1,2*(i1-1)+i2))**2
 
       CoeffSl(i3,1) = 0.5_dp * Abslt11Sq * mC2(i3)                  &
-                  &          * (mst2 + 2._dp * mSl2 - mb2)          &
+                  &          * (mst2 + 2._dp * mSl2 - mb2)          & 
                   & + Abskt11Sq*mSl2*(mb2 - mst2 - 0.5_dp * mSl2)   &
                   & + 4._dp*Real(kt11C*lt11,dp)*mbmcha1*mSl2
 
@@ -808,7 +808,7 @@ Contains
      calc = .True.
      If (Check_Real_States) Then
       If (mStop(5).Gt.(mC(2)+mf_d(3))) Then  ! all intermediate states are real
-       calc = .False.
+       calc = .False.           
       Else If (mStop(5).Gt.(mC(1)+mf_d(3))) Then ! only chi^+_2 contributes
        CoeffSl(1,:) = 0._dp
        CoeffSl(3,:) = 0._dp
@@ -819,7 +819,7 @@ Contains
       Sup(5)%gi3(i_c) = f_stop * Dgauss(stoslep,smin,smax,prec)
       Sup(5)%id3(i_c,1) = Slept(2*(i1-1)+i2)%id + 1
       Sup(5)%id3(i_c,2) = id_nu(i1)
-      Sup(5)%id3(i_c,3) = id_d(3)
+      Sup(5)%id3(i_c,3) = id_d(3) 
       i_c = i_c +1
      End If
     End Do
@@ -834,7 +834,7 @@ Contains
    j = 1 ! lightest neutralino
    amN2 = mN2(j)
 
-   If (mStop(5).Gt.(mW + mf_d(3) + Abs(mN(j)) ) ) Then ! kinematics
+   If (mStop(5).Gt.(mW + mf_d(3) + Abs(mN(j)) ) ) Then ! kinematics 
     !--------------------------------------------------
     ! sums that are needed for chargino-exchange terms
     !--------------------------------------------------
@@ -889,7 +889,7 @@ Contains
 
       mbchp1 = mf_d(3) * mC(i)
       mchp1chi = mC(i) * mN(j)
-
+ 
       ca(i,1) = ( 6._dp*qlqr* k2l2 * mchp1chi * (2._dp * mb2 + mchi2 + mW2) &
             &   + 12._dp * kt1l1CQliCQri * mbchi * (mb2+mchi2+mst2+mW2)     &
             &   + 12._dp * kt1Cl1QliCQri * mbchi * mC2(i)                   &
@@ -908,8 +908,8 @@ Contains
             & + lqlkqr * (6._dp * mb2 + 2._dp * mchi2 + 2._dp * mst2 + mW2  &
             &            + (3._dp * mb4 + mb2chi2 + 4.*mb2st2               &
             &            + 2._dp * mchi2st2 + mst4)*oomw )                  &
-            & + kqllqr * mC2(i) * (2._dp + mb2 * oomw)
-
+            & + kqllqr * mC2(i) * (2._dp + mb2 * oomw)    
+                
       ca(i,3) = - 2._dp * kl * ql2qr2 * mbchp1 * oomw         &
             & - lqlkqr * (2._dp + (mchi2+3._dp*mb2+2._dp*mst2) * oomw)
 
@@ -1005,7 +1005,7 @@ Contains
 
      ca(3,8) = - l1l2Ql1Ql2 * (2._dp+mbomw)                    &
            & - ( k1l2Ql1Ql2 * mbchp1 + k2l1Ql1Ql2 * mbchp2     &
-           &   + k1k2Ql1Ql2 * mchp1chp2 ) * oomw
+           &   + k1k2Ql1Ql2 * mchp1chp2 ) * oomw 
 
      ca(3,9) = l1l2Ql1Ql2 * oomw
 
@@ -1026,8 +1026,8 @@ Contains
 
       mbchp1 = mf_d(3) * mC(i)
       mchp1chi = mC(i) * mN(j)
-      mchp1t = mC(i) * mf_u(3)
-
+      mchp1t = mC(i) * mf_u(3) 
+ 
       cb(i,1) = fltQl1 * ( 2._dp * (mchi2-mst2) * (mW2+mchi2+mb2)         &
             &            - mb2 * mst2 * (1._dp+(mchi2-mb2-mst2)*oomw) )   &
             & + 3._dp * fktQl1 * mbchp1 * (mchi2-mst2)                    &
@@ -1039,7 +1039,7 @@ Contains
             & - hltQr1 * mchp1t                                           &
             &    * (mchi2+mst2*(1._dp+mbomw)+mb2*(2._dp+mbomw))           &
             & - hktQr1 * mbt                                              &
-            &    * (2._dp*mchi2 + (mb2+mst2)*(3._dp+(mb2+mst2)*oomw))
+            &    * (2._dp*mchi2 + (mb2+mst2)*(3._dp+(mb2+mst2)*oomw))  
 
       cb(i,2) = fltQl1 * (mst2-mchi2)*(2._dp-mbomw)               &
              & - 3._dp* hltQl1 * mchit                            &
@@ -1047,7 +1047,7 @@ Contains
              & + hltQr1 * mchp1t * (2._dp+mbomw)                  &
              & + hktQr1 * mbt * (3._dp+2._dp*(mb2+mst2)*oomw)
 
-      cb(i,3) = - hktQr1 * mbt * oomw
+      cb(i,3) = - hktQr1 * mbt * oomw 
 
       cb(i,4) = fltQl1 * (4.*mb2+2._dp*mW2+mchi2*mst2*oomw       &
             &              +mst2*(2._dp-mbomw) )                 &
@@ -1103,7 +1103,7 @@ Contains
               & - fbltQl1 * (mchi2*(1._dp+2._dp*mstomw)+mst2*mstomw          &
               &             +mW2+mb2*(3._dp+mbomw+3._dp*mstomw) )            &
               & - hbktQl1 * mchp1chi * (mbomw-1._dp)                         &
-              & - fbktQl1 * mbchp1 * (1._dp+mbomw+2._dp*mstomw)
+              & - fbktQl1 * mbchp1 * (1._dp+mbomw+2._dp*mstomw) 
 
        cc(k,i,3) = hbltQl1 * mbchiomw + fbktQl1 * mbchp1omw  &
               & + fbltQl1 * (2._dp+2._dp*mbomw+mchiomw+2._dp*mstomw)
@@ -1209,7 +1209,7 @@ Contains
            & - 4._dp * ( c_DNSd_R(3,j,5) * Conjg( c_DNSd_L(3,j,6) )    &
            &           + c_DNSd_L(3,j,5) * Conjg( c_DNSd_R(3,j,6) ) )  &
            &         * c_SdSuW(5,5) * Conjg( c_SdSuW(6,5) ) * mbchi
-
+ 
      smin = (mf_d(3) + mN(j))**2
      smax = (mstop(5) - mW)**2
 
@@ -1218,8 +1218,8 @@ Contains
       mSb = Sqrt(MSbot2)
 
       If (mStop(5).Gt.Max(mC(2)+mf_d(3),mf_u(3)+mN(j),mW+mSb(2))) Then
-       calc = .False.   ! all intermediate states are real
-      Else ! check now for intermediate real states
+       calc = .False.   ! all intermediate states are real 
+      Else ! check now for intermediate real states          
        If (mStop(5).Gt.(mC(2)+mf_d(3))) Then ! no chargino contribution
         ca = 0._dp
         cb = 0._dp
@@ -1240,7 +1240,7 @@ Contains
         cc = 0._dp
         cd(2:3,:) = 0._dp
         ce = 0._dp
-
+        
        Else If (mStop(5).Gt.(mSb(1)+mW)) Then ! only sbottom_2 contributes
         cc(:,1,:) = 0._dp
         cd(2,:) = 0._dp
@@ -1255,7 +1255,7 @@ Contains
       Sup(5)%gi3(i_c) = f_stop * dgauss(stbWchi, smin, smax, prec)
       Sup(5)%id3(i_c,1) = Chi0(1)%id
       Sup(5)%id3(i_c,2) = id_W(1)
-      Sup(5)%id3(i_c,3) = id_d(3)
+      Sup(5)%id3(i_c,3) = id_d(3) 
       i_c = i_c +1
     End If
    End If ! kinematic check
@@ -1279,7 +1279,7 @@ Contains
  !----------------------------------------------------------------------
  Implicit None
   Real(dp), Intent(in) :: s
-
+  
   Integer :: i
   Real(dp) :: wsr, s2
   Complex(dp) :: inte(3)
@@ -1354,3 +1354,4 @@ Contains
  End Function  stoslep
 
 End Module Stop3BodyDecays
+

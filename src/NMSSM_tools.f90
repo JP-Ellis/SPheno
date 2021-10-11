@@ -4,7 +4,7 @@ Module NMSSM_tools
 ! loading necessary modules
 !---------------------------------
 Use Control
-Use LoopFunctions
+Use LoopFunctions 
 Use RGEs
 Use StandardModel
 Use LoopCouplings
@@ -48,7 +48,7 @@ Contains
          & , hb, htau, Scale_Q, tz, dt, g8(8), g9(9), g6(6)
   Real(dp) :: delta = 1.e-5_dp, logQ, alphas_DR
   Complex(dp) :: mu_in
-  Integer :: i1
+  Integer :: i1 
   Real(dp), Parameter :: &
     & as2loop = 1._dp / 24._dp + 2011._dp * oo32Pi2 / 12._dp          &
     &         + Log2 / 12._dp - oo8Pi2 * Zeta3                        &
@@ -71,24 +71,24 @@ Contains
   Integer, Dimension(3) :: id_nu, id_l, id_d, id_u
 
 
-  Iname = Iname + 1
+  Iname = Iname + 1 
   NameOfUnit(Iname) = "Model_NMSSM"
 
   Call Initialize_NMSSM(GenerationMixing, id_gl, id_ph, id_Z, id_W &
                & , id_nu, id_l, id_d, id_u, id_grav)
   kont = 0
 
-  sinW2 = 1._dp - mW2/mZ2
-
+  sinW2 = 1._dp - mW2/mZ2 
+  
   alpha_mZ = Alpha_MSbar(mZ, mW)
   gauge_mZ(1) = Sqrt(4._dp * pi * alpha_mZ/(1._dp - sinW2))
-  gauge_mZ(2) = Sqrt(4._dp * pi * alpha_mZ/sinW2)
+  gauge_mZ(2) = Sqrt(4._dp * pi * alpha_mZ/sinW2) 
   alphas_DR =  AlphaS_mZ / (1._dp - oo4pi *AlphaS_mZ )
   gauge_mZ(3) = Sqrt(4._dp * pi * alphas_DR)
 
   tanb_mZ = tanb
 
-  vev = Sqrt(mZ2 * (1._dp - sinW2) *sinW2 / (pi * alpha_mZ))
+  vev = Sqrt(mZ2 * (1._dp - sinW2) *sinW2 / (pi * alpha_mZ)) 
   vevSM(1) = vev / Sqrt(1._dp + tanb**2)
   vevSM(2) = tanb * vevSM(1)
 ! wird in InputOutput definiert zu vP = sqrt2 * mu_eff/lambda
@@ -97,8 +97,8 @@ Contains
   Y_d = 0._dp
   Y_u = 0._dp
   A_l = 0._dp
-  A_d = 0._dp
-  A_u = 0._dp
+  A_d = 0._dp 
+  A_u = 0._dp 
 
   Scale_Q = Sqrt(GetRenormalizationScale())
 
@@ -123,7 +123,7 @@ Contains
    dt = tz / 50._dp
    Call odeint(g6, 6, 0._dp, tz, 0.1_dp*delta, dt, 0._dp, rge6, kont)
    !-----------------------------------------------------------------------
-   ! adding NMSSM couplings, run down to m_Z to get the NMSSM couplings at
+   ! adding NMSSM couplings, run down to m_Z to get the NMSSM couplings at 
    ! m_Z, repeating this a second time including tan(beta)
    !-----------------------------------------------------------------------
    g8(1:6) = g6
@@ -133,7 +133,7 @@ Contains
    Call odeint(g8, 8, tz, 0._dp, 0.1_dp*delta, - dt, 0._dp, rge8_NMSSM, kont)
 
    g8(1:3) = gauge_mZ
-   g8(1) = Sqrt(5._dp/3._dp) * g8(1)
+   g8(1) = Sqrt(5._dp/3._dp) * g8(1) 
    g8(4) = htau
    g8(5) = hb
    g8(6) = ht
@@ -149,7 +149,7 @@ Contains
    g9(4) = htau
    g9(5) = hb
    g9(6) = ht
-   g9(7:8) = g8(7:8)
+   g9(7:8) = g8(7:8) 
    g9(9) = Log(tanb)
    Call odeint(g9, 9, 0._dp, tz, 0.1_dp*delta, dt, 0._dp, rge9_NMSSM, kont)
 
@@ -160,7 +160,7 @@ Contains
    Y_l(3,3) = g9(4)
    Y_d(3,3) = g9(5)
    Y_u(3,3) = g9(6)
-
+ 
    A_u(3,3) = Y_u(3,3) * AoY_u(3,3)
    A_d(3,3) = Y_d(3,3) * AoY_d(3,3)
    A_l(3,3) = Y_l(3,3) * AoY_l(3,3)
@@ -169,21 +169,21 @@ Contains
 
    vevSM(1) = vev / Sqrt(1._dp + tanb_Q**2)
    vevSM(2) = tanb_Q * vevSM(1)
-
+ 
    mu_in = 0._dp
 
    If (GenerationMixing) Then
     i1 = GetYukawaScheme()
     If (i1.Eq.1) Then
-     Y_u = Matmul(Transpose(CKM),Y_u)
+     Y_u = Matmul(Transpose(CKM),Y_u) 
     Else
-     Y_d = Matmul(Conjg(CKM),Y_d)
+     Y_d = Matmul(Conjg(CKM),Y_d) 
     End If
    End If
 
  ! calculates all SusyMasses in the NMSSM at tree level except for
  ! neutral Higgs bosons where the 1-loop effective potential is used
- ! false = Higgs bosons treelevel
+ ! false = Higgs bosons treelevel 
  ! true = Higgs bosons 1loop effective potential
 
  If (.Not.External_Spectrum) &
@@ -198,7 +198,7 @@ Contains
 
   If (kont.Ne.0) Then
    Iname = Iname - 1
-   Return
+   Return 
   End If
 
     If (GenerationMixing) Then
@@ -218,12 +218,12 @@ Contains
    ! reorder state identification if necessary
    !----------------------------------------------
    If (.Not.GenerationMixing) Then
-    Call Swap_Order_Sf(RSlepton(1,1), Slepton(1)%id, Slepton(2)%id, id_p, c_name)
-    Call Swap_Order_Sf(RSlepton(3,3), Slepton(3)%id, Slepton(4)%id, id_p, c_name)
-    Call Swap_Order_Sf(RSdown(1,1), Sdown(1)%id, Sdown(2)%id, id_p, c_name)
-    Call Swap_Order_Sf(RSdown(3,3), Sdown(3)%id, Sdown(4)%id, id_p, c_name)
-    Call Swap_Order_Sf(RSup(1,1), Sup(1)%id, Sup(2)%id, id_p, c_name)
-    Call Swap_Order_Sf(RSup(3,3), Sup(3)%id, Sup(4)%id, id_p, c_name)
+    Call Swap_Order_Sf(RSlepton(1,1), Slepton(1)%id, Slepton(2)%id, id_p, c_name)    
+    Call Swap_Order_Sf(RSlepton(3,3), Slepton(3)%id, Slepton(4)%id, id_p, c_name)    
+    Call Swap_Order_Sf(RSdown(1,1), Sdown(1)%id, Sdown(2)%id, id_p, c_name)    
+    Call Swap_Order_Sf(RSdown(3,3), Sdown(3)%id, Sdown(4)%id, id_p, c_name)    
+    Call Swap_Order_Sf(RSup(1,1), Sup(1)%id, Sup(2)%id, id_p, c_name)    
+    Call Swap_Order_Sf(RSup(3,3), Sup(3)%id, Sup(4)%id, id_p, c_name)    
    End If
   !----------------------------------------
   ! decays of SUSY and Higgs particles
@@ -247,7 +247,7 @@ Contains
 
   !-------------------------------------------------------------
   ! cross section for e+ e- annihilation
-  ! The following input quantities can be specified either in the file
+  ! The following input quantities can be specified either in the file 
   ! CrossSections.in or in the file LesHouches.in:
   !                    Ecms .... c.m.s enerergy in GeV
   !                   Pm ...... degree of longitudinal polarization of incoming
@@ -276,7 +276,7 @@ Contains
    End If
 
   Iname = Iname - 1
-
+ 
 
  Contains
 

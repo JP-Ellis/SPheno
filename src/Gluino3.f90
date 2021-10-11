@@ -3,7 +3,8 @@ Module Gluino3Decays
 ! load modules
 Use Control
 Use DecayFunctions, Only : FermionToFermionScalar
-Use StandardModel, Only: mW, mW2, mf_d , mf_d2, mf_u, mf_u2, mZ2, CKM
+Use StandardModel, Only: mW, mW2, mf_d , mf_d2, mf_u, mf_u2, mZ2, CKM &
+                       & , m_pi0, m_pip
 Use ThreeBodyPhaseSpace
 Use ThreeBodyPhaseSpaceS
 Use LoopFunctions, Only: Igamma, I2gamma, Jgamma, Kgamma &
@@ -12,7 +13,7 @@ Use LoopFunctions, Only: Igamma, I2gamma, Jgamma, Kgamma &
 
 ! private variables
  ! for check, if there is a numerical problem in the 3-body decays
- Real(dp), Private :: p_test
+ Real(dp), Private :: p_test 
 
 Contains
 
@@ -30,7 +31,7 @@ Contains
  !
  ! output:
  ! written by Werner Porod, 16.05.2001
- !  - taking the code from the Routine NeutralinoDecays.f as basis
+ !  - taking the code from the Routine NeutralinoDecays.f as basis 
  ! 15.07.02: adding gluino -> W Stop_i B
  !           the method used in case of generation mixing is only valid
  !           if the third generation does not mix to strongly with other
@@ -39,6 +40,9 @@ Contains
  !           - adding possiblity to calculate 3-body states only via
  !             virtual states -> new logical variable Check_Real_States
  ! 18.09.2010: adapting to new variable type for particles
+ ! 06.08.2019: require that at least a pion can be produced in the decays
+ !             e.g., do not consider 2 m_u or 2 m_d but m_pi in the
+ !             kinematics
  !------------------------------------------------------------------
  Implicit None
 
@@ -67,12 +71,12 @@ Contains
   Real(dp), Allocatable :: IntegralsSf4(:,:)
   Complex(dp), Allocatable :: IntegralsCSf4(:,:), IntegralsSf8(:,:)
   logical :: check
-
+ 
   Iname = Iname + 1
   NameOfUnit(Iname) = 'GluinoThreeBodyDecays'
 
   !--------------------
-  ! checking for model
+  ! checking for model 
   !--------------------
    Allocate( IntegralsSf4(2500,10) )
    Allocate( IntegralsCSf4(2500,12) )
@@ -114,11 +118,11 @@ Contains
    !--------------------------------------
    i_c = 1
    Do i1 = 1, n_n
-    If (Abs(mGlu).Gt.Abs(mN(i1))) Then
+    If (Abs(mGlu).Gt.Abs(mN(i1))+m_pi0) Then
       Call GluToChi0qq(mGlu, i1,' u u ', mN, mf_u, mUSquark, g_Su             &
          & , cpl_UGSu_L, cpl_UGSu_R, cpl_UNSu_L, cpl_UNSu_R                   &
          & , IntegralsSf4, n_Sf4, IntegralsCSf4, n_CSf4, IntegralsSf8, n_Sf8  &
-         & , deltaM, epsI, GenerationMixing, check, factor(1), gNff)
+         & , deltaM, epsI, GenerationMixing, check, factor(1), gNff) 
       Do i2=1,n_u
        Do i3=i2,n_u
         If (i2.eq.i3) then
@@ -175,7 +179,7 @@ Contains
    ! decay into charginos + 2 quarks
    !--------------------------------------
    Do i1=1,n_c
-    If (Abs(mGlu).Gt.Abs(mC(i1))) Then
+    If (Abs(mGlu).Gt.Abs(mC(i1))+m_pip) Then
      Call GluToChimqqp(mGlu, i1, mC, mf_d, mf_u, mDSquark, g_Sd            &
           & , cpl_DGSd_L, cpl_DGSd_R, cpl_CUSd_L, cpl_CUSd_R, mUSquark      &
           & , g_Su, cpl_UGSu_L, cpl_UGSu_R, cpl_CDSu_L, cpl_CDSu_R          &
@@ -198,11 +202,11 @@ Contains
    End Do
    !-------------------------------
    ! decay into neutralino + gluon
-   !-------------------------------
+   !-------------------------------  
    factor(1) = - gSU3 * oo16pi2
-   factor(2) = 0.125_dp / ( Pi * Abs(mGlu)**3 )
+   factor(2) = 0.125_dp / ( Pi * Abs(mGlu)**3 ) 
    Do i1=1,n_n
-    If (Abs(mGlu).Gt.Abs(mN(i1)) ) Then
+    If (Abs(mGlu).Gt.Abs(mN(i1))+m_pi0 ) Then
      Call GluToChi0Gluon(mGlu, i1, mN, mf_u, mUsquark2, cpl_UNSu_L           &
         & , cpl_UNSu_R, cpl_UGSu_L, cpl_UGSu_R, mf_d, mDsquark2, cpl_DNSd_L  &
         & , cpl_DNSd_R, cpl_DGSd_L, cpl_DGSd_R, factor, gG)
@@ -240,7 +244,7 @@ Contains
  !           states will not be calculated
  !--------------------------------------------------------------------------
  Implicit None
-  Character(len=5), Intent(in) :: state
+  Character(len=5), Intent(in) :: state 
   Integer, Intent(in) :: i_out
   Logical, Intent(in) :: check
   Integer, Intent(inout) :: n_Sf4, n_CSf4, n_Sf8
@@ -294,7 +298,7 @@ Contains
       coup1(4) = Conjg(cpl_FNSf_L(i3,i_out,i2))
       mass(2) = mf(i1)
       mass(3) = - mf(i3)
-      mass(4) = mN(i_out)
+      mass(4) = mN(i_out)        
       Call IntegrateScalarSS(Boson2, mass, coup1, deltaM, epsI &
                            &, IntegralsSf4, n_Sf4, resR, check)
       !------------------------
@@ -305,7 +309,7 @@ Contains
       coup1(3) = cpl_FNSf_L(i1,i_out,i2)
       coup1(4) = cpl_FNSf_R(i1,i_out,i2)
       mass(2) = mf(i3)
-      mass(3) = - mN(i_out)
+      mass(3) = - mN(i_out)        
       mass(4) = mf(i1)
       Call IntegrateScalarSS(Boson2, mass, coup1, deltaM, epsI &
                             &, IntegralsSf4, n_Sf4, resRa, check)
@@ -330,7 +334,7 @@ Contains
      coup1(4) = Conjg(cpl_FNSf_L(i1,i_out,i2))
      mass(2) = mf(i1)
      mass(3) = - mf(i1)
-     mass(4) = mN(i_out)
+     mass(4) = mN(i_out) 
      !------------------------
      ! t-channel
      !------------------------
@@ -340,7 +344,7 @@ Contains
      coup1(4) = Conjg(cpl_FNSf_L(i1,i_out,i2))
      mass(2) = mf(i1)
      mass(3) = - mf(i1)
-     mass(4) = mN(i_out)
+     mass(4) = mN(i_out) 
      Call IntegrateScalarSS(Boson2, mass, coup1, deltaM, epsI &
                           &, IntegralsSf4, n_Sf4, resR, check)
      !------------------------
@@ -351,7 +355,7 @@ Contains
      coup1(3) = cpl_FNSf_L(i1,i_out,i2)
      coup1(4) = cpl_FNSf_R(i1,i_out,i2)
      mass(2) = mf(i1)
-     mass(3) = - mN(i_out)
+     mass(3) = - mN(i_out)        
      mass(4) = mf(i1)
      Call IntegrateScalarSS(Boson2, mass, coup1, deltaM, epsI &
                            &, IntegralsSf4, n_Sf4, resRa, check)
@@ -633,7 +637,7 @@ Contains
  Implicit None
   Integer, Intent(in) :: i_out
   Logical, Intent(in) :: check
-  Integer, Intent(inout) :: n_Sf4, n_SfC4, n_Sf8
+  Integer, Intent(inout) :: n_Sf4, n_SfC4, n_Sf8  
   Real(dp), Intent(in) :: mGlu, mC(:), mf(:), mfp(:), mSf(:), gSf(:), mSfp(:) &
       & , gSfp(:), deltaM, epsI, fac
   Real(dp), Intent(inout) :: IntegralsSf4(:,:)
@@ -667,7 +671,7 @@ Contains
 
   !-------------------
   ! Sfp Sfp, diagonal
-  !-------------------
+  !-------------------  
   If (GenerationMixing) Then
    Do i2=1,6
     Isum = Isum + 1
@@ -797,7 +801,7 @@ Contains
     End Do
    End Do
 
-  Else
+  Else 
    Do i1=1,5,2
     i2 = i1+1
     Isum = Isum + 1
@@ -863,7 +867,7 @@ Contains
     End Do
    End Do
 
-  Else
+  Else 
    Do i1= 1,6
     Boson4(1) = mSfp(i1)
     Boson4(2) = gSfp(i1)
@@ -1093,7 +1097,7 @@ Contains
     kont = 0
    end if
    If ((kont.Ne.0).And.(ErrorLevel.Ge.0)) Then
-!   Call AddNOW()
+!   Call AddNOW() 
     Write(ErrCan,*) "Warning, in subroutine "//NameOfUnit(Iname)
     Write(ErrCan,*) "Diagonalization of mat3 has failed",kont
     If (ErrorLevel.Eq.2) Call TerminateProgram
@@ -1131,7 +1135,7 @@ Contains
 
   mj2 = mGlu**2
 !  factor(1) = - gSU3 * oo16pi2
-!  factor(2) = 0.5_dp / ( Pi * Abs(mGlu)**3 )
+!  factor(2) = 0.5_dp / ( Pi * Abs(mGlu)**3 ) 
 
   mi2 = mN(i_out)**2
   Gcoup = ZeroC
@@ -1150,11 +1154,11 @@ Contains
      coup1 = cpl_UGSu_R(i2,i3) * Conjg( cpl_UNSu_R(i2,i_out,i3) )  &
           & - Conjg( cpl_UGSu_L(i2,i3) ) * cpl_UNSu_L(i2,i_out,i3)
      coup2 = cpl_UGSu_L(i2,i3) * Conjg( cpl_UNSu_R(i2,i_out,i3) )  &
-          & - Conjg( cpl_UGSu_R(i2,i3) ) * cpl_UNSu_L(i2,i_out,i3)
+          & - Conjg( cpl_UGSu_R(i2,i3) ) * cpl_UNSu_L(i2,i_out,i3) 
      Gcoup = Gcoup + coup1 * mGlu * (I2inte - Kinte)     &
          &         - Conjg(coup1) * mN(i_out) * Kinte    &
-         &         + coup2 * mf_u(i2) * Iinte
-    End Do
+         &         + coup2 * mf_u(i2) * Iinte 
+    End Do    
 
    Else
     i_gen = 2*i2-1
@@ -1167,13 +1171,13 @@ Contains
      coup1 = cpl_UGSu_R(i2,i3) * Conjg( cpl_UNSu_R(i2,i_out,i3) )  &
           & - Conjg( cpl_UGSu_L(i2,i3) ) * cpl_UNSu_L(i2,i_out,i3)
      coup2 = cpl_UGSu_L(i2,i3) * Conjg( cpl_UNSu_R(i2,i_out,i3) )  &
-         & - Conjg( cpl_UGSu_R(i2,i3) ) * cpl_UNSu_L(i2,i_out,i3)
+         & - Conjg( cpl_UGSu_R(i2,i3) ) * cpl_UNSu_L(i2,i_out,i3) 
      Gcoup = Gcoup + coup1 * mGlu * (I2inte - Kinte)     &
          &         - Conjg(coup1) * mN(i_out) * Kinte    &
          &         + coup2 * mf_u(i2) * Iinte
-    End Do
+    End Do    
    End If
-  End Do
+  End Do    
   !------------------------
   ! down-squark down-quark
   !------------------------
@@ -1189,11 +1193,11 @@ Contains
      coup1 = cpl_DGSd_R(i2,i3) * Conjg( cpl_DNSd_R(i2,i_out,i3) )   &
          & - Conjg( cpl_DGSd_L(i2,i3) ) * cpl_DNSd_L(i2,i_out,i3)
      coup2 = cpl_DGSd_L(i2,i3) * Conjg( cpl_DNSd_R(i2,i_out,i3) )   &
-         & - Conjg( cpl_DGSd_R(i2,i3) ) * cpl_DNSd_L(i2,i_out,i3)
+         & - Conjg( cpl_DGSd_R(i2,i3) ) * cpl_DNSd_L(i2,i_out,i3) 
      Gcoup = Gcoup + coup1 * mGlu * (I2inte - Kinte)     &
          &         - Conjg(coup1) * mN(i_out) * Kinte    &
          &         + coup2 * mf_d(i2) * Iinte
-    End Do
+    End Do    
 
    Else
     i_gen = 2*i2-1
@@ -1206,17 +1210,18 @@ Contains
      coup1 = cpl_DGSd_R(i2,i3) * Conjg( cpl_DNSd_R(i2,i_out,i3) )   &
          & - Conjg( cpl_DGSd_L(i2,i3) ) * cpl_DNSd_L(i2,i_out,i3)
      coup2 = cpl_DGSd_L(i2,i3) * Conjg( cpl_DNSd_R(i2,i_out,i3) )   &
-         & - Conjg( cpl_DGSd_R(i2,i3) ) * cpl_DNSd_L(i2,i_out,i3)
+         & - Conjg( cpl_DGSd_R(i2,i3) ) * cpl_DNSd_L(i2,i_out,i3) 
      Gcoup = Gcoup + coup1 * mGlu * (I2inte - Kinte)     &
          &         - Conjg(coup1) * mN(i_out) * Kinte    &
          &         + coup2 * mf_d(i2) * Iinte
-    End Do
+    End Do    
    End If
-  End Do
+  End Do    
 
-  gGluon = factor(2) * (mj2 - mi2)**3 * Abs(factor(1)*Gcoup)**2
+  gGluon = factor(2) * (mj2 - mi2)**3 * Abs(factor(1)*Gcoup)**2   
 
  End Subroutine GluToChi0Gluon
 
 
 End Module Gluino3Decays
+

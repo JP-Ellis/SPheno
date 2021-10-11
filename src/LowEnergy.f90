@@ -26,7 +26,7 @@ End Interface
 Interface LtoLpGamma
  Module Procedure  LtoLpGammaMSSM, LtoLpGammaEPS3, LtoLpGammaRPcons
 End Interface
-! interfaces
+! interfaces 
 
 Real(dp) :: L_edm_contri(5,2)
 ! private variables
@@ -48,11 +48,18 @@ Real(dp), Parameter, Private :: e_u = 2._dp/3._dp, e_d=-1._dp/3._dp
    & , WC_4d_SLL2(n_i,3,3) = ZeroC, WC_4d_SRR2(n_i,3,3) = ZeroC      &
    & , WC_2d2l_CS(n_i,3,3,3) = ZeroC, WC_2d2l_CSp(n_i,3,3,3) = ZeroC &
    & , WC_2d2l_CP(n_i,3,3,3) = ZeroC, WC_2d2l_CPp(n_i,3,3,3) = ZeroC
+! Variables for comparison with Flavor Kit & wcxf interface
+ Complex(dp), Private, Save :: WC_Q1R(n_i,3,3) = ZeroC               &
+   & ,  WC_Q2R(n_i,3,3) = ZeroC, WC_EVLL(n_i,3,3,3) = ZeroC  & 
+   & ,  WC_EVLR(n_i,3,3,3) = ZeroC, WC_EVRL(n_i,3,3,3) = ZeroC  & 
+   & ,  WC_EVRR(n_i,3,3,3) = ZeroC, WC_FVLL(n_i,3,3,3) = ZeroC  & 
+   & ,  WC_FVRL(n_i,3,3,3) = ZeroC , WC_ESLR(n_i,3,3,3) = ZeroC  & 
+   & , WC_ESRR(n_i,3,3,3) = ZeroC   
  Logical, Private, Save :: l_wc(n_i) = .False.
 ! for internal use
  Logical, Private, Save :: WriteDetails = .False.
 
-Contains
+Contains 
 
 
  Subroutine BR_lj_to_3li(j, i, gp, g, Y_l, uL_L, uL_R, mSlep2, RSl, mN, N &
@@ -74,7 +81,7 @@ Contains
   Real(dp), Intent(in) :: mSlep2(6)         ! slepton masses squared
   Complex(dp), Intent(in) :: RSl(6,6)       ! slepton mixing matrix
   Real(dp), Intent(in) :: mN(4)             ! neutralino masses
-  Complex(dp), Intent(in) :: N(4,4)         ! neutralino mixing matrix
+  Complex(dp), Intent(in) :: N(4,4)         ! neutralino mixing matrix 
   Real(dp), Intent(in) :: mSnu2(3)          ! sneutrino masses squared
   Complex(dp), Intent(in) :: RSn(3,3)       ! sneutrino mixing matrix
   Real(dp), Intent(in) :: mC(2)             ! chargino masses
@@ -87,7 +94,7 @@ Contains
   Complex(dp), Intent(in) :: mu             ! mu parameter of the superpotential
   Real(dp), Intent(in) ::  vevSM(2)         ! Higgs vevs (v_d, v_u)
   Real(dp), Intent(out) :: BR
-
+  
   Integer :: i1, i2, i3, i4
   Real(dp) :: mN2(4), mC2(2), fun1, fun2, X_ax, cosW, cosW2, sinW2 &
       & , c_Zee_L, c_Zee_R, fun3, fun4
@@ -237,7 +244,7 @@ Contains
   Do i1=1,6
    Do i2=1,4
     X_ax = mN2(i2)/mSlep2(i1)
-    fun1 = ( 2._dp - 9._dp*X_ax + 18._dp*X_ax**2 - 11._dp*X_ax**3 &
+    fun1 = ( 2._dp - 9._dp*X_ax + 18._dp*X_ax**2 - 11._dp*X_ax**3 & 
         & + 6._dp*X_ax**3 * Log(X_ax) ) /  (1._dp-X_ax)**4
     A1L = A1L &
       & + c_LNSl_R(i,i2,i1) * Conjg(c_LNSl_R(j,i2,i1)) * fun1 / mSlep2(i1)
@@ -246,12 +253,12 @@ Contains
 
     fun1 = 2._dp * F2(X_ax)
     fun2 = 2._dp * F4(X_ax)
-    A2L = A2L + ( ( c_LNSl_L(i,i2,i1) * Conjg(c_LNSl_L(j,i2,i1))      &
+    A2L = A2L + ( ( c_LNSl_L(i,i2,i1) * Conjg(c_LNSl_L(j,i2,i1))      & 
         &         + c_LNSl_R(i,i2,i1) * Conjg(c_LNSl_R(j,i2,i1))      &
         &           *mf_l(i)/mf_l(j) ) * fun1                         &
         &       + c_LNSl_L(i,i2,i1) * Conjg(c_LNSl_R(j,i2,i1))        &
         &         * mN(i2)/mf_l(j)*fun2 ) / mSlep2(i1)
-    A2R = A2R + ( ( c_LNSl_R(i,i2,i1) * Conjg(c_LNSl_R(j,i2,i1))      &
+    A2R = A2R + ( ( c_LNSl_R(i,i2,i1) * Conjg(c_LNSl_R(j,i2,i1))      & 
         &         + c_LNSl_L(i,i2,i1) * Conjg(c_LNSl_L(j,i2,i1))      &
         &           *mf_l(i)/mf_l(j) ) * fun1                         &
         &       + c_LNSl_R(i,i2,i1) * Conjg(c_LNSl_L(j,i2,i1))        &
@@ -272,12 +279,12 @@ Contains
     A1R = A1R - c_CLSn_L(i2,i,i1) * Conjg(c_CLSn_L(i2,j,i1)) * fun1 / mSnu2(i1)
     fun1 = 2._dp * F1(X_ax)
     fun2 = 2._dp * F3(X_ax)
-    A2L = A2L - ( ( c_CLSn_L(i2,i,i1)*Conjg(c_CLSn_L(i2,j,i1))                 &
+    A2L = A2L - ( ( c_CLSn_L(i2,i,i1)*Conjg(c_CLSn_L(i2,j,i1))                 & 
         &         + c_CLSn_R(i2,i,i1)*Conjg(c_CLSn_R(i2,j,i1))     &
         &           *mf_l(i)/mf_l(j) ) *fun1                       &
         &       + c_CLSn_L(i2,i,i1) * Conjg(c_CLSn_R(i2,j,i1))     &
         &          * mC(i2) / mf_l(j) * fun2 ) / mSnu2(i1)
-    A2R = A2R - ( ( c_CLSn_R(i2,i,i1)*Conjg(c_CLSn_R(i2,j,i1))                 &
+    A2R = A2R - ( ( c_CLSn_R(i2,i,i1)*Conjg(c_CLSn_R(i2,j,i1))                 & 
         &         + c_CLSn_L(i2,i,i1)*Conjg(c_CLSn_L(i2,j,i1))     &
         &           *mf_l(i)/mf_l(j) ) *fun1                       &
         &       + c_CLSn_R(i2,i,i1) * Conjg(c_CLSn_L(i2,j,i1))     &
@@ -285,10 +292,10 @@ Contains
    End Do
   End Do
 
-  A1L = oo576Pi2 * A1L
-  A1R = oo576Pi2 * A1R
-  A2L = oo32Pi2 * A2L
-  A2R = oo32Pi2 * A2R
+  A1L = oo576Pi2 * A1L 
+  A1R = oo576Pi2 * A1R 
+  A2L = oo32Pi2 * A2L 
+  A2R = oo32Pi2 * A2R 
 
   !-----------
   ! Z-penguin
@@ -301,9 +308,9 @@ Contains
     Do i3=1,4
      fun1 = 0.5_dp * vertexC0tilde(mSlep2(i1),mN2(i2),mN2(i3))
      fun2 = mN(i2) * mN(i3) * C0_3m(mSlep2(i1),mN2(i2),mN2(i3))
-     FL = FL - c_LNSl_R(i,i3,i1)*Conjg(c_LNSl_R(j,i2,i1))             &
+     FL = FL - c_LNSl_R(i,i3,i1)*Conjg(c_LNSl_R(j,i2,i1))             & 
       &   * ( ERn(i3,i2) * fun1 - ELn(i3,i2) * fun2 )
-     FR = FR - c_LNSl_L(i,i3,i1)*Conjg(c_LNSl_L(j,i2,i1))             &
+     FR = FR - c_LNSl_L(i,i3,i1)*Conjg(c_LNSl_L(j,i2,i1))             & 
       &   * ( ELn(i3,i2) * fun1 - ERn(i3,i2) * fun2 )
     End Do
    End Do
@@ -313,7 +320,7 @@ Contains
     Do i2=1,6
      Do i3=1,6
       fun1 = 0.5_dp * Qslepton(i2,i3)  &
-           &        * vertexC0tilde(mN2(i1),mSlep2(i2),mSlep2(i3))
+           &        * vertexC0tilde(mN2(i1),mSlep2(i2),mSlep2(i3)) 
       FL = FL - c_LNSl_R(i,i1,i2) * Conjg(c_LNSl_R(j,i1,i3)) * fun1
       FR = FR - c_LNSl_L(i,i1,i2) * Conjg(c_LNSl_L(j,i1,i3)) * fun1
      End Do
@@ -333,9 +340,9 @@ Contains
      Do i3=1,2
       fun1 = 0.5_dp * vertexC0tilde(mSnu2(i1), mC2(i2), mC2(i3) )
       fun2 = C0_3m(mSnu2(i1), mC2(i2), mC2(i3) )
-      FL = FL - c_CLSn_R(i3,i,i1)*Conjg(c_CLSn_R(i2,j,i1) )             &
+      FL = FL - c_CLSn_R(i3,i,i1)*Conjg(c_CLSn_R(i2,j,i1) )             & 
          &  * ( ERc(i3,i2) * fun1 - ELc(i3,i2) * mC(i2) * mC(i3) * fun2 )
-      FR = FR - c_CLSn_L(i3,i,i1)*Conjg(c_CLSn_L(i2,j,i1) )             &
+      FR = FR - c_CLSn_L(i3,i,i1)*Conjg(c_CLSn_L(i2,j,i1) )             & 
          &  * ( ELc(i3,i2) * fun1 - ERc(i3,i2) * mC(i2) * mC(i3) * fun2 )
      End Do
     End Do
@@ -365,9 +372,9 @@ Contains
   FR = oo16pi2 * FR
 
   fun1 = 1._dp / (g**2 * sinW2 * mZ2)
-  FLL = - fun1 * c_Zee_L * FL
-  FLR = - fun1 * c_Zee_R * FL
-  FRL = - fun1 * c_Zee_L * FR
+  FLL = - fun1 * c_Zee_L * FL 
+  FLR = - fun1 * c_Zee_R * FL 
+  FRL = - fun1 * c_Zee_L * FR 
   FRR = - fun1 * c_Zee_R * FR
 
   !-------------------
@@ -392,12 +399,12 @@ Contains
          &   * D0_Bagger(mN2(i3), mN2(i4), mSlep2(i1), mSlep2(i2) )
 
       B1L = B1L + 2._dp * fun1 * c_LNSl_R(i,i3,i2) * Conjg(c_LNSl_R(j,i3,i1)) &
-          &                    * c_LNSl_R(i,i4,i1) * Conjg(c_LNSl_R(i,i4,i2)) &
+          &                    * c_LNSl_R(i,i4,i1) * Conjg(c_LNSl_R(i,i4,i2)) & 
           &      + fun2 * c_LNSl_R(i,i4,i2) * c_LNSl_R(i,i4,i1)               &
           &             * Conjg(c_LNSl_R(j,i3,i1)) * Conjg(c_LNSl_R(i,i3,i2))
 
       B1R = B1R + 2._dp * fun1 * c_LNSl_L(i,i3,i2) * Conjg(c_LNSl_L(j,i3,i1)) &
-          &                    * c_LNSl_L(i,i4,i1) * Conjg(c_LNSl_L(i,i4,i2)) &
+          &                    * c_LNSl_L(i,i4,i1) * Conjg(c_LNSl_L(i,i4,i2)) & 
           &      + fun2 * c_LNSl_L(i,i4,i2) * c_LNSl_L(i,i4,i1)               &
           &             * Conjg(c_LNSl_L(j,i3,i1)) * Conjg(c_LNSl_L(i,i3,i2))
 
@@ -451,7 +458,7 @@ Contains
           &                    * c_CLSn_R(i4,i,i1) * Conjg(c_CLSn_R(i4,i,i2))
 
       B2L = B2L + fun1 * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i1))          &
-          &            * c_CLSn_L(i4,i,i1) * Conjg(c_CLSn_L(i4,i,i2))          &
+          &            * c_CLSn_L(i4,i,i1) * Conjg(c_CLSn_L(i4,i,i2))          & 
           &     - 0.5_dp * fun2 * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i1)) &
           &                     * c_CLSn_R(i4,i,i1) * Conjg(c_CLSn_L(i4,i,i2))
 
@@ -462,7 +469,7 @@ Contains
           &                    * c_CLSn_L(i4,i,i1) * Conjg(c_CLSn_L(i4,i,i2))
 
       B2R = B2R + fun1 * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i1))          &
-          &            * c_CLSn_R(i4,i,i1) * Conjg(c_CLSn_R(i4,i,i2))          &
+          &            * c_CLSn_R(i4,i,i1) * Conjg(c_CLSn_R(i4,i,i2))          & 
           &     - 0.5_dp * fun2 * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i1)) &
           &                     * c_CLSn_L(i4,i,i1) * Conjg(c_CLSn_R(i4,i,i2))
 
@@ -571,14 +578,14 @@ Contains
          & + (-mf_l2(i) * fun1                                         &
          &              * c_LNSl_L(i,i3,i2) * Conjg(c_LNSl_L(j,i3,i2)) &
          &   + mf_l(i) * mN(i3) * fun2                                 &
-         &             * c_LNSl_R(i,i3,i2) * Conjg(c_LNSl_L(j,i3,i2))  &
+         &             * c_LNSl_R(i,i3,i2) * Conjg(c_LNSl_L(j,i3,i2))  & 
          &   - mf_l(i) * mf_l(j) * fun1                                &
-         &             *c_LNSl_R(i,i3,i2) * Conjg(c_LNSl_R(j,i3,i2))   &
+         &             *c_LNSl_R(i,i3,i2) * Conjg(c_LNSl_R(j,i3,i2))   & 
          &   + mf_l(j) * mN(i3) * fun2                                 &
          &             *c_LNSl_L(i,i3,i2)*Conjg(c_LNSl_R(j,i3,i2))     &
          &   ) * c_HLL_L(i1,j) / (mf_l2(i) - mf_l2(j) )                &
          & + (-mf_l2(j) * fun1                                         &
-         &              * c_LNSl_R(i,i3,i2) * Conjg(c_LNSl_R(j,i3,i2)) &
+         &              * c_LNSl_R(i,i3,i2) * Conjg(c_LNSl_R(j,i3,i2)) & 
          &   + mf_l(j) * mN(i3) * fun2                                 &
          &             * c_LNSl_R(i,i3,i2) * Conjg(c_LNSl_L(j,i3,i2))  &
          &   - mf_l(i) * mf_l(j) * fun1                                &
@@ -590,14 +597,14 @@ Contains
          & + (-mf_l2(i) * fun1                                         &
          &              * c_LNSl_R(i,i3,i2) * Conjg(c_LNSl_R(j,i3,i2)) &
          &   + mf_l(i) * mN(i3) * fun2                                 &
-         &             * c_LNSl_L(i,i3,i2) * Conjg(c_LNSl_R(j,i3,i2))  &
+         &             * c_LNSl_L(i,i3,i2) * Conjg(c_LNSl_R(j,i3,i2))  & 
          &   - mf_l(i) * mf_l(j) * fun1                                &
-         &             *c_LNSl_L(i,i3,i2) * Conjg(c_LNSl_L(j,i3,i2))   &
+         &             *c_LNSl_L(i,i3,i2) * Conjg(c_LNSl_L(j,i3,i2))   & 
          &   + mf_l(j) * mN(i3) * fun2                                 &
          &             *c_LNSl_R(i,i3,i2)*Conjg(c_LNSl_L(j,i3,i2))     &
          &   ) * c_HLL_R(i1,j) / (mf_l2(i) - mf_l2(j) )                &
          & + (-mf_l2(j) * fun1                                         &
-         &              * c_LNSl_L(i,i3,i2) * Conjg(c_LNSl_L(j,i3,i2)) &
+         &              * c_LNSl_L(i,i3,i2) * Conjg(c_LNSl_L(j,i3,i2)) & 
          &   + mf_l(j) * mN(i3) * fun2                                 &
          &             * c_LNSl_L(i,i3,i2) * Conjg(c_LNSl_R(j,i3,i2))  &
          &   - mf_l(i) * mf_l(j) * fun1                                &
@@ -663,20 +670,20 @@ Contains
 
        wertL = wertL                                                        &
         & - ( mf_l(i) * (fun1 -fun2)                                        &
-        &             * c_CLSn_R(i4,i,i2) *Conjg(c_CLSn_R(i4,j,i3))         &
-        &   + mf_l(j) * fun2 * c_CLSn_L(i4,i,i2) * Conjg(c_CLSn_L(i4,j,i3)) &
+        &             * c_CLSn_R(i4,i,i2) *Conjg(c_CLSn_R(i4,j,i3))         & 
+        &   + mf_l(j) * fun2 * c_CLSn_L(i4,i,i2) * Conjg(c_CLSn_L(i4,j,i3)) & 
         &   - mC(i4) * fun3 * c_CLSn_L(i4,i,i2) * Conjg(c_CLSn_R(i4,j,i3))  &
         &   ) * GSnu(i1,i2,i3)
 
        wertR = wertR                                                        &
         & - ( mf_l(i) * (fun1 -fun2)                                        &
-        &             * c_CLSn_L(i4,i,i2) *Conjg(c_CLSn_L(i4,j,i3))         &
-        &   + mf_l(j) * fun2 * c_CLSn_R(i4,i,i2) * Conjg(c_CLSn_R(i4,j,i3)) &
+        &             * c_CLSn_L(i4,i,i2) *Conjg(c_CLSn_L(i4,j,i3))         & 
+        &   + mf_l(j) * fun2 * c_CLSn_R(i4,i,i2) * Conjg(c_CLSn_R(i4,j,i3)) & 
         &   - mC(i4) * fun3 * c_CLSn_R(i4,i,i2) * Conjg(c_CLSn_L(i4,j,i3))  &
         &   ) * GSnu(i1,i2,i3)
       End Do
      End Do
-    End Do
+    End Do 
    End If
 
    Do i2=1,3
@@ -686,42 +693,42 @@ Contains
 
      wertL = wertL                                                   &
      & + ( - mf_l2(i) * fun1                                         &
-     &       * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i2))          &
+     &       * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i2))          & 
      &   + mf_l(i) * mC(i3) * fun2                                   &
-     &             * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i2))    &
+     &             * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i2))    & 
      &   - mf_l(i) * mf_l(j) * fun1                                  &
-     &             * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i2))    &
+     &             * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i2))    & 
      &   + mf_l(j) * mC(i3) * fun2                                   &
-     &             * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i2))    &
+     &             * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i2))    & 
      &   )*c_HLL_L(i1,j) / (mf_l2(i)-mf_l2(j))                       &
      & + ( - mf_l2(j) * fun1                                         &
-     &                * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i2)) &
-     &   + mf_l(j) * mC(i3) * fun2                                   &
-     &             * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i2))    &
-     &   - mf_l(i) * mf_l(j) * fun1                                  &
-     &             * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i2))    &
+     &                * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i2)) & 
+     &   + mf_l(j) * mC(i3) * fun2                                   & 
+     &             * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i2))    & 
+     &   - mf_l(i) * mf_l(j) * fun1                                  & 
+     &             * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i2))    & 
      &   + mf_l(i) * mC(i3) * fun2                                   &
-     &             * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i2))    &
+     &             * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i2))    & 
      &   ) * c_HLL_L(i1,i) / (mf_l2(j)-mf_l2(i))
 
      wertR = wertR                                                   &
      & + ( - mf_l2(i) * fun1                                         &
-     &       * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i2))          &
+     &       * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i2))          & 
      &   + mf_l(i) * mC(i3) * fun2                                   &
-     &             * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i2))    &
+     &             * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i2))    & 
      &   - mf_l(i) * mf_l(j) * fun1                                  &
-     &             * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i2))    &
+     &             * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i2))    & 
      &   + mf_l(j) * mC(i3) * fun2                                   &
-     &             * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i2))    &
+     &             * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i2))    & 
      &   )*c_HLL_R(i1,j) / (mf_l2(i)-mf_l2(j))                       &
      & + ( - mf_l2(j) * fun1                                         &
-     &                * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i2)) &
-     &   + mf_l(j) * mC(i3) * fun2                                   &
-     &             * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i2))    &
-     &   - mf_l(i) * mf_l(j) * fun1                                  &
-     &             * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i2))    &
+     &                * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i2)) & 
+     &   + mf_l(j) * mC(i3) * fun2                                   & 
+     &             * c_CLSn_L(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i2))    & 
+     &   - mf_l(i) * mf_l(j) * fun1                                  & 
+     &             * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_R(i3,j,i2))    & 
      &   + mf_l(i) * mC(i3) * fun2                                   &
-     &             * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i2))    &
+     &             * c_CLSn_R(i3,i,i2) * Conjg(c_CLSn_L(i3,j,i2))    & 
      &   ) * c_HLL_R(i1,i) / (mf_l2(j)-mf_l2(i))
     End Do
    End Do
@@ -733,10 +740,10 @@ Contains
     fun1c = c_HLL_R(i1,i) / mP02(2)
     fun2c = c_HLL_L(i1,i) / mP02(2)
    End If
-   H2L = H2L + 0.5_dp * fun1c * wertL
-   H2R = H2R + 0.5_dp * fun2c * wertR
-   H3L = H3L - fun2c * wertL
-   H3R = H3R - fun1c * wertR
+   H2L = H2L + 0.5_dp * fun1c * wertL 
+   H2R = H2R + 0.5_dp * fun2c * wertR 
+   H3L = H3L - fun2c * wertL 
+   H3R = H3R - fun1c * wertR 
   End Do
   !------------------------------------------
   ! adding Bbox and Higgs contributions
@@ -794,7 +801,7 @@ Contains
  Real(dp) Function Bm_to_l_nu(i, j, mH2, tanb, RSpm, Yd, RuL, RdR, Yl, vevSM, ratio)
  !-------------------------------------------------------------------
  ! calculates the branching ratio of the rare decay B- -> tau nu
- ! based on the formula by W.Hou, PRD48 (1993) 2342
+ ! based on the formula by W.Hou, PRD48 (1993) 2342 
  !-------------------------------------------------------------------
  Implicit None
   Integer, Intent(in) :: i           ! index of the lepton generation
@@ -817,7 +824,7 @@ Contains
    Call CoupChargedScalarFermion3(2, 3, j, RSpm, Yd, id3C, RdR, Zero3 &
                                     &, RuL, id3C, cL, cR)
    r_fac = 0.25_dp * Abs(cL * Yl(i,i) / (CKM(j,3) * RSpm(2,1)))**2 &
-         &          * vevSM(1)**4 / (mf_l2(i) * mf_d_mZ(3)**2 )
+         &          * vevSM(1)**4 / (mf_l2(i) * mf_d_mZ(3)**2 ) 
   Else
    r_fac = 1
   End If
@@ -847,35 +854,35 @@ Contains
  ! gives 10^4 Br(b->s gamma)
  ! input:
  !  I_f .................. if I_f==1 -> Q=d, I_f==1 -> Q=s
- !  CKM(j,j) ............. CKM mixing matrix
+ !  CKM(j,j) ............. CKM mixing matrix 
  !  Wilson coefficients at m_W (including the various contributions)
  !                              all are optional
  !  c7(i) ................ C_7: 1 ... total
- !                              2 ... SM contribution
- !                              3 ... H+ contribution
- !                              4 ... chargino contribution
- !                              5 ... gluino contribution
- !                              6 ... neutralino contribution
- !                              7 ... neutral Higgs contribution
+ !                              2 ... SM contribution  
+ !                              3 ... H+ contribution  
+ !                              4 ... chargino contribution  
+ !                              5 ... gluino contribution  
+ !                              6 ... neutralino contribution  
+ !                              7 ... neutral Higgs contribution  
  !  c7p(i) ............... C'_7: 1 ... total
- !                               2 ... H+ contribution
- !                               3 ... chargino contribution
- !                               4 ... gluino contribution
- !                               5 ... neutralino contribution
- !                               6 ... neutral Higgs contribution
+ !                               2 ... H+ contribution  
+ !                               3 ... chargino contribution  
+ !                               4 ... gluino contribution  
+ !                               5 ... neutralino contribution  
+ !                               6 ... neutral Higgs contribution  
  !  c8(i) ................ C_8: 1 ... total
- !                              2 ... SM contribution
- !                              3 ... H+ contribution
- !                              4 ... chargino contribution
- !                              5 ... gluino contribution
- !                              6 ... neutralino contribution
- !                              7 ... neutral Higgs contribution
+ !                              2 ... SM contribution  
+ !                              3 ... H+ contribution  
+ !                              4 ... chargino contribution  
+ !                              5 ... gluino contribution  
+ !                              6 ... neutralino contribution  
+ !                              7 ... neutral Higgs contribution  
  !  c8p(i) ............... C'_8: 1 ... total
- !                               2 ... H+ contribution
- !                               3 ... chargino contribution
- !                               4 ... gluino contribution
- !                               5 ... neutralino contribution
- !                               6 ... neutral Higgs contribution
+ !                               2 ... H+ contribution  
+ !                               3 ... chargino contribution  
+ !                               4 ... gluino contribution  
+ !                               5 ... neutralino contribution  
+ !                               6 ... neutral Higgs contribution  
  !  i_scheme (optional) ..  1 ... E_0=1.6 GeV, m_c/m_b=0.23 NLO
  !                          2 ... E_0=1.6 GeV, m_c/m_b=0.29 NLO
  !                          3 ... E_0=m_b/20 GeV, m_c/m_b=0.23 NLO
@@ -893,7 +900,7 @@ Contains
  !           -adding gluino and neutralino contributions
  !           -creating interface for neutral Higgs boson, are set to 0 for
  !            the moment being
- ! 02.10.03: changing numbers in front of R_7,8 as given in coll. with
+ ! 02.10.03: changing numbers in front of R_7,8 as given in coll. with 
  !           Enrico and Tobias, adding i_scheme for the various possiblities
  !           of the a^x_y - arrays, default = 3
  !           i_scheme=i_t:  1 ... E_0=1.6 GeV, m_c/m_b=0.23 NLO
@@ -971,7 +978,7 @@ Contains
        & + ar_87(i_t) * Real(r8*Conjg(r7)+r8p*Conjg(r7p),dp)                   &
        & + ai_87(i_t) * Aimag(r8*Conjg(r7)+r8p*Conjg(r7p))                     &
        & + ar_7eps(i_t) * Real(r7*epsqC,dp) + ar_8eps(i_t) * Real(r8*epsqC,dp) &
-       & + ai_7eps(i_t) * Aimag(r7*epsqC) + ai_8eps(i_t) * Aimag(r8*epsqC)
+       & + ai_7eps(i_t) * Aimag(r7*epsqC) + ai_8eps(i_t) * Aimag(r8*epsqC) 
 
   !-----------------------
   ! is 10^4 BR
@@ -995,7 +1002,7 @@ Contains
         &       + (-2.225_dp,-0.557_dp) * delta_C8_0                         &
         &       + (2.454_dp,-0.884_dp) * ( delta_C7_0 * Conjg(delta_C8_0)    &
         &                                +delta_C7p_0 * Conjg(delta_C8p_0) ) &
-        &       , dp)
+        &       , dp)  
   End If
 
   If (Present(A_CP)) Then
@@ -1020,7 +1027,7 @@ Contains
  ! input: all running quantities are given at Q=160._dp
  !  Wilson coefficnets c7, c7p, c8, c8p, c9, c9p, c10, c10p
  ! output:
- !  BtoSEE ............... BR(b -> s e+ e-)
+ !  BtoSEE ............... BR(b -> s e+ e-) 
  !  BtoSMuMu ............. BR(b -> s mu+ mu-)
  ! written by Werner Porod, 07.12.05
  ! 15.03.2014: taking now Wilson coefficients as input
@@ -1099,12 +1106,12 @@ Contains
  !-----------------------------------------------------
  ! gives BR(b->s nu nu) using formulas 5.10 of
  ! Bobeth et al., NPB630 (2002) 87
- ! input:
+ ! input: 
  !  CKM ............. CKM Matrix
  !  C11 ............. Wilson coefficients C_11
  !  C11p ............ Wilson coefficients C_11'
  ! output:
- !  BtoSNuNu ............. BR(b -> s nu nu)
+ !  BtoSNuNu ............. BR(b -> s nu nu) 
  ! written by Werner Porod, 10.10.07
  ! 16.03.2014: taking now Wilson coefficients as input
  !-----------------------------------------------------
@@ -1113,7 +1120,7 @@ Contains
   Real(dp), Intent(out) :: BToSNuNu
 
   Integer :: i1
-
+ 
   Iname = Iname + 1
   NameOfUnit(Iname) = "B_To_SNuNu"
 
@@ -1140,7 +1147,7 @@ Contains
  !------------------------------------------------
  ! calculates all Wilson coefficients if required
  ! the default is to use Q=m_Z, which however can be changed using the optional
- ! arguments Qin which gives the scale and i_in which defines the set to which
+ ! arguments Qin which gives the scale and i_in which defines the set to which 
  ! coefficients are saved
  ! input:
  !  - mf_d, mf_u, mW, mSpm2, mC, mSup2      &
@@ -1149,12 +1156,12 @@ Contains
  !       , c_CDSu_R, c_DGSd_L, c_DGSd_R, c_DNSd_L, c_DNSd_R         &
  !       , c_DDS0_L, c_DDS0_R, c_DDP0_L, c_DDP0_R
  ! output:
- !  - C7(3,2), C7(3,1), C7'(3,2), C7'(3,1)
- !  - C8(3,2), C8(3,1), C8'(3,2), C8'(3,1)
+ !  - C7(3,2), C7(3,1), C7'(3,2), C7'(3,1) 
+ !  - C8(3,2), C8(3,1), C8'(3,2), C8'(3,1) 
  ! written by Werner Porod, 06.03.2014
  !------------------------------------------------
  Implicit None
-
+  
   Real(dp), Intent(in) :: mf_d(3), mf_u(3), mf_l(3), mW, mSpm2(:), mC(:), mSup2(6)   &
                & , mSdown2(6), mglu, mN(:), mS02(:), mP02(:), mSneut2(:)    &
                & , mSlepton2(:), gauge(3), vevSM(2)
@@ -1185,7 +1192,7 @@ Contains
 
   If (Present(i_in)) Then
    is = i_in
-  Else
+  Else 
    is = 1
   End If
 
@@ -1201,7 +1208,7 @@ Contains
   WC_c11(is,:,:,:,:) = 0._dp
   WC_c11p(is,:,:,:,:) = 0._dp
   !---------------------------------------
-  ! coefficients for b -> s gamma
+  ! coefficients for b -> s gamma  
   !---------------------------------------
 
   Do i1=1,2
@@ -1229,6 +1236,10 @@ Contains
    WC_c8(is,3,i1,:) = c8(1:2) / norm
    WC_c8p(is,3,i1,1) = c8p(1) / norm
    WC_c8p(is,3,i1,2) = 0._dp
+   WC_Q1R(is,i1,3) =  c7(1)
+   WC_Q1R(is,3,i1) =  c7p(1)
+   WC_Q2R(is,i1,3) =  c8(1)
+   WC_Q2R(is,3,i1) =  c8p(1)
   End Do
 
   mC2 = mC**2
@@ -1267,6 +1278,12 @@ Contains
     WC_C10(is,3,i2,i1,2) = c10_c(i1,2)
     WC_C10p(is,3,i2,i1,1) = c10p(i1)
     WC_C10p(is,3,i2,i1,2) = c10p_c(i1,2)
+
+    WC_EVLL(is,3,i2,i1) = 0.5_dp * ( c9(i1) - c10(i1)) / kappa_q
+    WC_EVLR(is,3,i2,i1) = 0.5_dp * ( c9(i1) + c10(i1)) / kappa_q
+    WC_EVRL(is,3,i2,i1) = 0.5_dp * ( c9p(i1) - c10p(i1)) / kappa_q
+    WC_EVRR(is,3,i2,i1) = 0.5_dp * ( c9p(i1) + c10p(i1)) / kappa_q
+
    End Do
   End Do
 
@@ -1285,9 +1302,13 @@ Contains
     WC_C11(is,i2,i2-1,i1,2) = c11_c(i1,2)
     WC_C11p(is,i2,i2-1,i1,1) = c11p(i1)
     WC_C11p(is,i2,i2-1,i1,2) = c11p_c(i1,2)
+
+    WC_FVLL(is,i2,i2-1,i1) = c11(i1) / kappa_q
+    WC_FVRL(is,i2,i2-1,i1) = c11p(i1) / kappa_q
+
    End Do
   End Do
-
+ 
   !-------------------------------------------------------------
   ! penguin for 2d2l operator
   !-------------------------------------------------------------
@@ -1309,6 +1330,10 @@ Contains
      WC_2d2l_CPp(is,3,i1,i2) = WC_2d2l_CPp(is,3,i1,i2) &
       & + fac * c_DDP0_1L_R(3,i1,i3) * c_LLP0_R(i2,i2,i3) / (mP02(i3)*mf_d(i1))
     End Do
+
+    WC_ESRR(is,3,i2,i1) =  WC_2d2l_CS(is,3,i1,i2) / fac
+    WC_ESLR(is,3,i2,i1) =  WC_2d2l_CS(is,3,i1,i2) / fac
+
    End Do
   End Do
   !--------------------------------------------------------------------
@@ -1337,16 +1362,16 @@ Contains
     Do i3=1,Size(mS02)
      coupLC = c_DDS0_1L_L(i1,i2,i3)
      coupRC = c_DDS0_1L_R(i1,i2,i3)
-     B_LR2 = B_LR2 + 16._dp * Pi2 * coupLC * coupRC / mS02(i3)
-     B_SLL1 = B_SLL1 + 8._dp * Pi2 * coupLC**2 / mS02(i3)
+     B_LR2 = B_LR2 + 16._dp * Pi2 * coupLC * coupRC / mS02(i3) 
+     B_SLL1 = B_SLL1 + 8._dp * Pi2 * coupLC**2 / mS02(i3) 
      B_SRR1 = B_SRR1 + 8._dp * Pi2 * coupRC**2 / mS02(i3)
     End Do
 
     Do i3=2,Size(mP02)
      coupLC = c_DDP0_1L_L(i1,i2,i3)
      coupRC = c_DDP0_1L_R(i1,i2,i3)
-     B_LR2 = B_LR2 + 16._dp * Pi2  * coupLC * coupRC / mP02(i3)
-     B_SLL1 = B_SLL1 + 8._dp * Pi2 * coupLC**2 / mP02(i3)
+     B_LR2 = B_LR2 + 16._dp * Pi2  * coupLC * coupRC / mP02(i3) 
+     B_SLL1 = B_SLL1 + 8._dp * Pi2 * coupLC**2 / mP02(i3) 
      B_SRR1 = B_SRR1 + 8._dp * Pi2 * coupRC**2 / mP02(i3)
     End Do
     WC_4d_VLL(is,i1,i2) = B_VLL
@@ -1374,7 +1399,7 @@ Contains
  ! a,b, are SU(3) indices
  ! written by Werner Porod, 11.11.02
  !-------------------------------------------------------------------------
-
+ 
  Implicit None
   Integer, Intent(in) :: i, j
   Real(dp), Intent(in) :: mW, mf_u(3), mSpm2(:), mC(:), mSup2(:), mf_d(3)  &
@@ -1387,7 +1412,7 @@ Contains
   Complex(dp), Intent(out) :: res(7)
   Integer :: i1, i2, n_i
   Real(dp) :: xt
-
+  
   Iname = Iname + 1
   NameOfUnit(Iname) = "C_7"
 
@@ -1416,7 +1441,7 @@ Contains
       &     * mf_u(i2) * (e_u * F3(xt)  + F4(xt) ) / mf_d(i) )   / mSpm2(i1)
    End Do
   End Do
-  res(3) = 0.25_dp * res(3)
+  res(3) = 0.25_dp * res(3) 
   !----------
   ! chargino
   !----------
@@ -1431,7 +1456,7 @@ Contains
       &      * mC(i1) * (e_u * F4(xt)  + F3(xt) ) / mf_d(i)  )  / mSup2(i2)
    End Do
   End Do
-  res(4) = 0.25_dp * res(4)
+  res(4) = 0.25_dp * res(4) 
 
   If (GenerationMixing) Then
    !----------
@@ -1457,7 +1482,7 @@ Contains
       &         * mN(i1) * F4(xt) / mf_d(i) )   / mSdown2(i2)
     End Do
    End Do
-   res(6) = 0.25_dp * e_d * res(6)
+   res(6) = 0.25_dp * e_d * res(6) 
    !----------
    ! Higgs
    !----------
@@ -1478,11 +1503,11 @@ Contains
        &      * mf_d(i1) *  F4(xt) / mf_d(i)  )  / mP02(i2)
     End Do
    End Do
-   res(7) = 0.25_dp * e_d * res(7)
+   res(7) = 0.25_dp * e_d * res(7) 
   End If
 
   res(1) = Sum( res(2:7) )
-
+  
   Iname = Iname - 1
 
  End Subroutine C_7
@@ -1497,7 +1522,7 @@ Contains
  ! a,b, are SU(3) indices
  ! written by Werner Porod, 11.11.02
  !-------------------------------------------------------------------------
-
+ 
  Implicit None
   Integer, Intent(in) :: i, j
   Real(dp), Intent(in) :: mf_u(3), mSpm2(:), mC(:), mSup2(:), mf_d(3)  &
@@ -1577,7 +1602,7 @@ Contains
       &         * mN(i1) * F4(xt) / mf_d(i)  )     / mSdown2(i2)
     End Do
    End Do
-   res(5) = 0.25_dp * e_d * res(5)
+   res(5) = 0.25_dp * e_d * res(5) 
    !----------
    ! Higgs
    !----------
@@ -1598,11 +1623,11 @@ Contains
        &      * mf_d(i1) *  F4(xt) / mf_d(i)  )  / mP02(i2)
     End Do
    End Do
-   res(6) = 0.25_dp * e_d * res(6)
+   res(6) = 0.25_dp * e_d * res(6) 
   End If
 
   res(1) = Sum( res(2:6) )
-
+  
   Iname = Iname - 1
 
  End Subroutine C_7p
@@ -1618,7 +1643,7 @@ Contains
  ! a,b, are SU(3) indices
  ! written by Werner Porod, 11.11.02
  !-------------------------------------------------------------------------
-
+ 
  Implicit None
   Integer, Intent(in) :: i, j
   Real(dp), Intent(in) :: mW, mf_u(3), mSpm2(:), mC(:), mSup2(:), mf_d(3)  &
@@ -1632,7 +1657,7 @@ Contains
 
   Integer :: i1, i2, n_i
   Real(dp) :: xt
-
+  
   Iname = Iname + 1
   NameOfUnit(Iname) = "C_8"
 
@@ -1741,7 +1766,7 @@ Contains
  ! a,b, are SU(3) indices
  ! written by Werner Porod, 11.11.02
  !-------------------------------------------------------------------------
-
+ 
  Implicit None
   Integer, Intent(in) :: i, j
   Real(dp), Intent(in) :: mf_u(3), mSpm2(:), mC(:), mSup2(:), mf_d(3)  &
@@ -1844,7 +1869,7 @@ Contains
   End If
 
   res(1) = Sum( res(2:6) )
-
+  
   Iname = Iname - 1
 
  End Subroutine C_8p
@@ -1967,12 +1992,12 @@ Contains
   ! SM contribution
   !-------------------------------------------
   If (l_QCD) Then
-   C_L(1) = 0.25_dp * (f_1_0(x) + a_sp * (f_1_1(x)+ 8._dp* x * Df_1_0(x) * Lt))
+   C_L(1) = 0.25_dp * (f_1_0(x) + a_sp * (f_1_1(x)+ 8._dp* x * Df_1_0(x) * Lt)) 
    B_L(1) = 0.25_dp * (f_2_0(x) + a_sp * (f_10_1(x) + 8._dp* x *Df_2_0(x) * Lt))
   Else
    C_L(1) = 0.25_dp * f_1_0(x)
    B_L(1) = 0.25_dp * f_2_0(x)
-  End If
+  End If 
   D_L(1) = h_0_1(x)
 
   !------------------------------------------
@@ -1982,7 +2007,7 @@ Contains
    fact = f_2_0(y) * (1._dp + 8._dp * a_sp * Lt) &
       & + a_sp * (f_2_1(y) + 8._dp * y * Df_2_0(y) * Lt)
   Else
-   fact = f_2_0(y)
+   fact = f_2_0(y) 
   End If
 
   C_L(2) = - 0.125_dp * x * fact / tanb**2 ! m^2_H/m^2_W * y = x
@@ -2059,7 +2084,7 @@ Contains
            & + a_sp * (F_5_1(y_ai(i2,i1),y_ai(i3,i1))                         &
            &          + 4._dp * (y_ai(i2,i1)*DxF_4_0(y_ai(i2,i1),y_ai(i3,i1)) &
            &                    +y_ai(i3,i1)*DyF_4_0(y_ai(i2,i1),y_ai(i3,i1)) &
-           &                    ) *Lua(i2) )
+           &                    ) *Lua(i2) ) 
      Else
       fac(1) = F_4_0( y_ai(i2,i1), y_ai(i3,i1))
      End If
@@ -2105,7 +2130,7 @@ Contains
      C_L(4) = C_L(4) - (fac(1) * ZNN(i1,i2) + fac(2) * ZNN(i2,i1) )&
          &            * c_DNSd_R(j,i1,i3) * Conjg(c_DNSd_R(i,i2,i3))
      C_R(4) = C_R(4) - (fac(1) * ZNN(i1,i2) + fac(2) * ZNN(i2,i1) )&
-         &            * c_DNSd_L(j,i1,i3) * Conjg(c_DNSd_L(i,i2,i3))
+         &            * c_DNSd_L(j,i1,i3) * Conjg(c_DNSd_L(i,i2,i3)) 
 
      Do i4=1,6
       If (l_QCD) Then
@@ -2146,7 +2171,7 @@ Contains
            & + a_sp * (F_5_1(s_ai(i2,i1),s_ai(i3,i1))                         &
            &          + 4._dp * (s_ai(i2,i1)*DxF_4_0(s_ai(i2,i1),s_ai(i3,i1)) &
            &                    +s_ai(i3,i1)*DyF_4_0(s_ai(i2,i1),s_ai(i3,i1)) &
-           &                    ) *Lua(i2) )
+           &                    ) *Lua(i2) ) 
      Else
       fac(1) = F_4_0( s_ai(i2,i1), s_ai(i3,i1))
      End If
@@ -2156,7 +2181,7 @@ Contains
          &                    * c_DNSd_L(j,i1,i3) * Conjg(c_DNSd_L(i,i1,i2))
     End Do
    End Do
-
+    
   End Do
   B_L(4) = B_L(4) * Kappa_Q * sW2
   B_R(4) = B_R(4) * Kappa_Q * sW2
@@ -2340,7 +2365,7 @@ Contains
    C_L(1) = - 0.25_dp * f_1_0(x)
    B_L(1) = 0.25_dp * f_2_0(x)
   End If
-
+                         
   !------------------------------------------
   ! H+ contribution
   !------------------------------------------
@@ -2348,7 +2373,7 @@ Contains
    fact = f_2_0(y) * (1._dp + 8._dp * a_sp * Lt) &
       & + a_sp * (f_2_1(y) + 8._dp * y * Df_2_0(y) * Lt)
   Else
-   fact = f_2_0(y)
+   fact = f_2_0(y) 
   End If
 
   C_L(2) = 0.125_dp * x * fact / tanb**2 ! m^2_H/m^2_W * y = x
@@ -2417,7 +2442,7 @@ Contains
            & + a_sp * (F_5_1(y_ai(i2,i1),y_ai(i3,i1))                         &
            &          + 4._dp * (y_ai(i2,i1)*DxF_4_0(y_ai(i2,i1),y_ai(i3,i1)) &
            &                    +y_ai(i3,i1)*DyF_4_0(y_ai(i2,i1),y_ai(i3,i1)) &
-           &                    ) *Lua(i2) )
+           &                    ) *Lua(i2) ) 
      Else
       fac(1) = F_4_0( y_ai(i2,i1), y_ai(i3,i1))
      End If
@@ -2427,7 +2452,7 @@ Contains
          &               * c_CDSu_L(i1,j,i3) * Conjg(c_CDSu_L(i1,i,i2))
     End Do
    End Do
-
+    
   End Do
   B_L(3) = kappa_Q *sW2 * B_L(3)
   B_R(3) = kappa_Q *sW2 * B_R(3)
@@ -2459,7 +2484,7 @@ Contains
      End If
      fac(1) = fac(1) * ZNN(i1,i2) + fac(2) * ZNN(i2,i1)
      C_L(4) = C_L(4) + fac(1) * c_DNSd_R(j,i1,i3) * Conjg(c_DNSd_R(i,i2,i3))
-     C_R(4) = C_R(4) + fac(1) * c_DNSd_L(j,i1,i3) * Conjg(c_DNSd_L(i,i2,i3))
+     C_R(4) = C_R(4) + fac(1) * c_DNSd_L(j,i1,i3) * Conjg(c_DNSd_L(i,i2,i3)) 
      Do i4=1,6
       If (l_QCD) Then
        fac(1) = f_5_0(n_ij(i1,i2), s_ai(i3,i2), n_bi(i4,i2) )
@@ -2495,7 +2520,7 @@ Contains
            & + a_sp * (F_5_1(s_ai(i2,i1),s_ai(i3,i1))                         &
            &          + 4._dp * (s_ai(i2,i1)*DxF_4_0(s_ai(i2,i1),s_ai(i3,i1)) &
            &                    +s_ai(i3,i1)*DyF_4_0(s_ai(i2,i1),s_ai(i3,i1)) &
-           &                    ) *Lua(i2) )
+           &                    ) *Lua(i2) ) 
      Else
       fac(1) = F_4_0( s_ai(i2,i1), s_ai(i3,i1))
      End If
@@ -2505,7 +2530,7 @@ Contains
          &                    * c_DNSd_L(j,i1,i3) * Conjg(c_DNSd_L(i,i1,i2))
     End Do
    End Do
-
+    
   End Do
 
   B_L(4) = kappa_Q *sW2 * B_L(4)
@@ -2567,7 +2592,7 @@ Contains
  !             Sqrt(2) 2 Pi s^2_W
  !
  ! for the transitions b -> q nu nu with q=s,d and s -> d nu nu are
- ! calculated.
+ ! calculated. 
  ! The formulas include QCD corrections and are based on
  ! C.Bobeth, A.J.Buras, F.Krueger, J.Urban, NPB 630, (2002) 87
  ! written by Werner Porod, 10.11.2004
@@ -2673,7 +2698,7 @@ Contains
    fact = f_2_0(y) * (1._dp + 8._dp * a_sp * Lt) &
       & + a_sp * (f_2_1(y) + 8._dp * y * Df_2_0(y) * Lt)
   Else
-   fact = f_2_0(y)
+   fact = f_2_0(y) 
   End If
 
   C_L(2) = - 0.125_dp * x * fact / tanb**2 ! m^2_H/m^2_W * y = x
@@ -2738,7 +2763,7 @@ Contains
            & + a_sp * (F_5_1(y_ai(i2,i1),y_ai(i3,i1))                         &
            &          + 4._dp * (y_ai(i2,i1)*DxF_4_0(y_ai(i2,i1),y_ai(i3,i1)) &
            &                    +y_ai(i3,i1)*DyF_4_0(y_ai(i2,i1),y_ai(i3,i1)) &
-           &                    ) *Lua(i2) )
+           &                    ) *Lua(i2) ) 
      Else
       fac(1) = F_4_0( y_ai(i2,i1), y_ai(i3,i1))
      End If
@@ -2748,7 +2773,7 @@ Contains
          &                    * c_CDSu_L(i1,j,i3) * Conjg(c_CDSu_L(i1,i,i2))
     End Do
    End Do
-
+       
   End Do
 
   B_L(3) = 0.5_dp * kappa_Q * sW2 * B_L(3)
@@ -2811,7 +2836,7 @@ Contains
            & + a_sp * (F_5_1(s_ai(i2,i1),s_ai(i3,i1))                         &
            &          + 4._dp * (s_ai(i2,i1)*DxF_4_0(s_ai(i2,i1),s_ai(i3,i1)) &
            &                    +s_ai(i3,i1)*DyF_4_0(s_ai(i2,i1),s_ai(i3,i1)) &
-           &                    ) *Lua(i2) )
+           &                    ) *Lua(i2) ) 
      Else
       fac(1) = F_4_0( s_ai(i2,i1), s_ai(i3,i1))
      End If
@@ -2821,7 +2846,7 @@ Contains
          &                    * c_DNSd_L(j,i1,i3) * Conjg(c_DNSd_L(i,i1,i2))
     End Do
    End Do
-
+       
   End Do
 
   B_L(4) = kappa_Q *sW2 * B_L(4)
@@ -2879,9 +2904,9 @@ Contains
  !     B_LR1  -> bar(q)_Li \gamma_mu q_Lj  * \bar(q)_Ri \gamma^mu q_Rj
  !     B_LR2  -> bar(q)_Ri q_Lj  * \bar(q)_Li q_Rj
  !     B_SLL1 -> bar(q)_Ri q_Lj  * \bar(q)_Ri q_Lj
- !     B_SLL2 -> bar(q)_Ri \sigma^\mu\nu q_Lj  * \bar(q)_Ri \sigma_\mu\nu q_Lj
+ !     B_SLL2 -> bar(q)_Ri \sigma^\mu\nu q_Lj  * \bar(q)_Ri \sigma_\mu\nu q_Lj 
  !     B_SRR1 -> bar(q)_Li q_Rj  * \bar(q)_Li q_Rj
- !     B_SRR2 -> bar(q)_Li \sigma^\mu\nu q_Rj  * \bar(q)_Li \sigma_\mu\nu q_Rj
+ !     B_SRR2 -> bar(q)_Li \sigma^\mu\nu q_Rj  * \bar(q)_Li \sigma_\mu\nu q_Rj 
  ! using formulas of Buras et al., NPB659 (2003) 3, for charged Higgs and
  ! charginos, Appendix A4
  ! for neutralinos/gluinos the formulas of S.Baek et al. are used,
@@ -2890,10 +2915,10 @@ Contains
  !        T3 ...... isospin of the outside left quarks
  !         mC, mN, mGlu, mSpm, mS0, mP0, RS0, RP0, mSup2, mSdown2
  !         U, V, N, phi_g, RSpm, RSup, RSdown
- !
+ !        
  ! Output: G^2_F m^2_W * (V^tb* V^tq)**2 *
  !               (C_VLL, C_VRR, C_SLL1, C_SLL2, C_SRR1, C_SRR2, C_LR1, C_LR2)
- !
+ !         
  ! written by Werner Porod, 08 Jul 2003
  !   08.07.03: charged Higgs, for down-quarks
  !---------------------------------------------------------------------------
@@ -2937,9 +2962,9 @@ Contains
    mSf2 = mSup2
    c_Hqqp_L = c_Hqqp_Lin
    c_Hqqp_R = c_Hqqp_Rin
-  End If
+  End If 
   !-------------------------------------------------
-  ! I defined left/right in view of SUSY fermion
+  ! I defined left/right in view of SUSY fermion 
   !-------------------------------------------------
   c_CQSq_L = Conjg(c_CQSq_Rin)
   c_CQSq_R = Conjg(c_CQSq_Lin)
@@ -2966,11 +2991,11 @@ Contains
             &           * Conjg(c_Hqqp_L(2,i,i2)) * c_Hqqp_L(2,j,i1) * D0m2  &
 !            &        + 0.25_dp *  Conjg(c_Hqqp_L(1,i,i1)) * c_Hqqp_L(1,j,i2) &
             &        - 0.25_dp *  Conjg(c_Hqqp_L(1,i,i1)) * c_Hqqp_L(1,j,i2) &
-            &           * Conjg(c_Hqqp_L(2,i,i2)) * c_Hqqp_L(2,j,i1) * D2m2
+            &           * Conjg(c_Hqqp_L(2,i,i2)) * c_Hqqp_L(2,j,i1) * D2m2  
       Else If ((i3.Eq.2).And.(i4.Eq.2)) Then
 !       B_VLL = B_VLL + 0.125_dp * Conjg(c_Hqqp_L(2,i,i1)) * c_Hqqp_L(2,j,i2) &
        B_VLL = B_VLL - 0.125_dp * Conjg(c_Hqqp_L(2,i,i1)) * c_Hqqp_L(2,j,i2) &
-            &           * Conjg(c_Hqqp_L(2,i,i2)) * c_Hqqp_L(2,j,i1) * D2m2
+            &           * Conjg(c_Hqqp_L(2,i,i2)) * c_Hqqp_L(2,j,i1) * D2m2  
        End If
 !      B_VRR = B_VRR + 0.125_dp * Conjg(c_Hqqp_R(i4,i,i1)) * c_Hqqp_R(i4,j,i2) &
       B_VRR = B_VRR - 0.125_dp * Conjg(c_Hqqp_R(i4,i,i1)) * c_Hqqp_R(i4,j,i2) &
@@ -3054,7 +3079,7 @@ Contains
           &                    * c_QGSq_L(j,i2)*c_QGSq_R(j,i1)         &
           &                 +  Conjg(c_QGSq_L(i,i1)*c_QGSq_R(i,i2))    &
           &                    *  (-30._dp * D2m2                      &
-          &                            *c_QGSq_L(j,i2)*c_QGSq_R(j,i1)  &
+          &                            *c_QGSq_L(j,i2)*c_QGSq_R(j,i1)  & 
           &                       + D0m2                               &
           &                           *c_QGSq_L(j,i1)*c_QGSq_R(j,i2) ) &
           &                  ) / 9._dp
@@ -3063,16 +3088,16 @@ Contains
           &              * c_QGSq_L(j,i2)*c_QGSq_R(j,i1)           &
           &         + 4._dp * Conjg(c_QGSq_L(i,i1)*c_QGSq_R(i,i2)) &
           &              * (22._dp * D2m2                          &
-          &                        * c_QGSq_L(j,i2)*c_QGSq_R(j,i1) &
+          &                        * c_QGSq_L(j,i2)*c_QGSq_R(j,i1) & 
           &                -21._dp * D0m2                          &
           &                        * c_QGSq_L(j,i1)*c_QGSq_R(j,i2) &
           &                 ) ) / 9._dp
-   End Do
+   End Do 
   End Do
 ! if (l_mbq(12))  return
 
   !-------------------------------------------------------------------
-  ! gluino/neutralino contributions, the sign in front B27_Bagger is
+  ! gluino/neutralino contributions, the sign in front B27_Bagger is 
   ! the relativ sign to S.Baek et al.
   !-------------------------------------------------------------------
   n_n = Size(mN)
@@ -3082,7 +3107,7 @@ Contains
      D0m2 = mN(i3) * mGlu * D0_Bagger(mN2(i3), mg2, mSf2(i1), mSf2(i2) )
      D2m2 = D27_Bagger(mN2(i3), mg2, mSf2(i1), mSf2(i2) )
      B_VLL = B_VLL - ( D0m2 * Conjg(c_QNSq_R(i,i3,i1)*c_QNSq_R(i,i3,i2)) &
-           &                * c_QGSq_R(j,i1)*c_QGSq_R(j,i2)              &
+           &                * c_QGSq_R(j,i1)*c_QGSq_R(j,i2)              & 
            &         + (4._dp * D2m2 * c_QGSq_R(j,i1)                    &
            &                  * Conjg(c_QGSq_R(i,i2)*c_QNSq_R(i,i3,i1))  &
            &           + D0m2 * c_QNSq_R(j,i3,i1)                        &
@@ -3090,7 +3115,7 @@ Contains
            &           ) * c_QNSq_R(j,i3,i2)                             &
            &         ) / 3._dp
      B_VRR = B_VRR - ( D0m2 * Conjg(c_QNSq_L(i,i3,i1)*c_QNSq_L(i,i3,i2)) &
-           &                * c_QGSq_L(j,i1)*c_QGSq_L(j,i2)              &
+           &                * c_QGSq_L(j,i1)*c_QGSq_L(j,i2)              & 
            &         + (4._dp * D2m2 * c_QGSq_L(j,i1)                    &
            &                  * Conjg(c_QGSq_L(i,i2)*c_QNSq_L(i,i3,i1))  &
            &           + D0m2 * c_QNSq_L(j,i3,i1)                        &
@@ -3108,7 +3133,7 @@ Contains
      B_SRR2 = B_SRR2 + D0m2 * ( Conjg(c_QNSq_R(i,i3,i1)*c_QNSq_R(i,i3,i2))  &
            &                    * c_QGSq_L(j,i1)*c_QGSq_L(j,i2)             &
            &                  + ( Conjg(c_QGSq_R(i,i2)*c_QNSq_R(i,i3,i1))   &
-           &                     * c_QGSq_L(j,i1)                           &
+           &                     * c_QGSq_L(j,i1)                           & 
            &                    + Conjg(c_QGSq_R(i,i1)*c_QGSq_R(i,i2))      &
            &                      *c_QNSq_L(j,i3,i1) ) * c_QNSq_L(j,i3,i2)  &
             &                 ) / 12._dp
@@ -3123,7 +3148,7 @@ Contains
      B_SLL2 = B_SLL2 + D0m2 * ( Conjg(c_QNSq_L(i,i3,i1)*c_QNSq_L(i,i3,i2))  &
            &                    * c_QGSq_R(j,i1)*c_QGSq_R(j,i2)             &
            &                  + ( Conjg(c_QGSq_L(i,i2)*c_QNSq_L(i,i3,i1))   &
-           &                     * c_QGSq_R(j,i1)                           &
+           &                     * c_QGSq_R(j,i1)                           & 
            &                    + Conjg(c_QGSq_L(i,i1)*c_QGSq_L(i,i2))      &
            &                      *c_QNSq_R(j,i3,i1) ) * c_QNSq_R(j,i3,i2)  &
             &                 ) / 12._dp
@@ -3143,7 +3168,7 @@ Contains
            &                        + Conjg(c_QGSq_L(i,i1)*c_QGSq_R(i,i2))     &
            &                             *c_QNSq_L(j,i3,i1)*c_QNSq_R(j,i3,i2) )&
            &                        / 3._dp )                                   &
-           &                      )
+           &                      ) 
      B_LR2 = B_LR2 - 4._dp * ( D0m2                                            &
            &                   * ( Conjg(c_QGSq_L(i,i2)*c_QNSq_R(i,i3,i1))     &
            &                       * c_QGSq_R(j,i1)*c_QNSq_L(j,i3,i2)          &
@@ -3161,13 +3186,13 @@ Contains
            &                     + Conjg(c_QGSq_L(i,i1)*c_QGSq_R(i,i2))        &
            &                        *c_QNSq_L(j,i3,i1)* c_QNSq_R(j,i3,i2)      &
            &                       )  )
-
-    End Do
-   End Do
+       
+    End Do 
+   End Do 
   End Do
 
   !-------------------------------------------------------------------
-  ! neutralino contributions, the sign in front B27_Bagger is
+  ! neutralino contributions, the sign in front B27_Bagger is 
   ! the relativ sign to S.Baek et al.
   !-------------------------------------------------------------------
   Do i1=1,6
@@ -3177,42 +3202,42 @@ Contains
       D0m2 = mN(i3) * mN(i4) * D0_Bagger(mN2(i3), mN2(i4), mSf2(i1), mSf2(i2) )
       D2m2 = D27_Bagger(mN2(i3), mN2(i4), mSf2(i1), mSf2(i2) )
       B_VLL = B_VLL - Conjg(c_QNSq_R(i,i3,i2))*c_QNSq_R(j,i4,i2)              &
-            &    * ( 2._dp * D2m2 *Conjg(c_QNSq_R(i,i4,i1))*c_QNSq_R(j,i3,i1) &
+            &    * ( 2._dp * D2m2 *Conjg(c_QNSq_R(i,i4,i1))*c_QNSq_R(j,i3,i1) & 
             &      + D0m2*Conjg(c_QNSq_R(i,i3,i1))*c_QNSq_R(j,i4,i1) ) / 4._dp
       B_VRR = B_VRR - Conjg(c_QNSq_L(i,i3,i2))*c_QNSq_L(j,i4,i2)              &
-            &    * ( 2._dp * D2m2 *Conjg(c_QNSq_L(i,i4,i1))*c_QNSq_L(j,i3,i1) &
+            &    * ( 2._dp * D2m2 *Conjg(c_QNSq_L(i,i4,i1))*c_QNSq_L(j,i3,i1) & 
             &      + D0m2*Conjg(c_QNSq_L(i,i3,i1))*c_QNSq_L(j,i4,i1) ) / 4._dp
       B_SLL1 = B_SLL1 + 0.25_dp * D0m2 * c_QNSq_R(j,i4,i2)                     &
              &           * (2._dp *Conjg(c_QNSq_L(i,i3,i1)*c_QNSq_L(i,i3,i2))  &
-             &                    *c_QNSq_R(j,i4,i1)                           &
+             &                    *c_QNSq_R(j,i4,i1)                           & 
              &             - Conjg(c_QNSq_L(i,i3,i2))                          &
-             &                * ( Conjg(c_QNSq_L(i,i3,i1))*c_QNSq_R(j,i4,i1)   &
-             &                  - Conjg(c_QNSq_L(i,i4,i1))*c_QNSq_R(j,i3,i1) ) )
+             &                * ( Conjg(c_QNSq_L(i,i3,i1))*c_QNSq_R(j,i4,i1)   & 
+             &                  - Conjg(c_QNSq_L(i,i4,i1))*c_QNSq_R(j,i3,i1) ) ) 
 !      B_SLL2 = B_SLL2 - D0m2 * Conjg(c_QNSq_L(i,i3,i2))*c_QNSq_R(j,i4,i2)    &
       B_SLL2 = B_SLL2 + D0m2 * Conjg(c_QNSq_L(i,i3,i2))*c_QNSq_R(j,i4,i2)    &
-             &            * ( Conjg(c_QNSq_L(i,i3,i1))*c_QNSq_R(j,i4,i1)     &
+             &            * ( Conjg(c_QNSq_L(i,i3,i1))*c_QNSq_R(j,i4,i1)     & 
              &              - Conjg(c_QNSq_L(i,i4,i1))*c_QNSq_R(j,i3,i1) )   &
              &            / 16._dp
       B_SRR1 = B_SRR1 + 0.25_dp * D0m2 * c_QNSq_L(j,i4,i2)                     &
              &           * (2._dp *Conjg(c_QNSq_R(i,i3,i1)*c_QNSq_R(i,i3,i2))  &
-             &                    *c_QNSq_L(j,i4,i1)                           &
+             &                    *c_QNSq_L(j,i4,i1)                           & 
              &             - Conjg(c_QNSq_R(i,i3,i2))                          &
-             &                * ( Conjg(c_QNSq_R(i,i3,i1))*c_QNSq_L(j,i4,i1)   &
-             &                  - Conjg(c_QNSq_R(i,i4,i1))*c_QNSq_L(j,i3,i1) ) )
+             &                * ( Conjg(c_QNSq_R(i,i3,i1))*c_QNSq_L(j,i4,i1)   & 
+             &                  - Conjg(c_QNSq_R(i,i4,i1))*c_QNSq_L(j,i3,i1) ) ) 
 !      B_SRR2 = B_SRR2 - D0m2 * Conjg(c_QNSq_R(i,i3,i2))*c_QNSq_L(j,i4,i2)    &
       B_SRR2 = B_SRR2 + D0m2 * Conjg(c_QNSq_R(i,i3,i2))*c_QNSq_L(j,i4,i2)    &
-             &            * ( Conjg(c_QNSq_R(i,i3,i1))*c_QNSq_L(j,i4,i1)     &
+             &            * ( Conjg(c_QNSq_R(i,i3,i1))*c_QNSq_L(j,i4,i1)     & 
              &              - Conjg(c_QNSq_R(i,i4,i1))*c_QNSq_L(j,i3,i1) )   &
              &            / 16._dp
       B_LR1 = B_LR1 + 0.5_dp * Conjg(c_QNSq_R(i,i3,i2))*c_QNSq_R(j,i4,i2)     &
-            &    * ( 2._dp * D2m2*Conjg(c_QNSq_L(i,i3,i1))*c_QNSq_L(j,i4,i1) &
+            &    * ( 2._dp * D2m2*Conjg(c_QNSq_L(i,i3,i1))*c_QNSq_L(j,i4,i1) & 
             &      + D0m2 * Conjg(c_QNSq_L(i,i4,i1)) * c_QNSq_L(j,i3,i1) )
       B_LR2 = B_LR2 + 2._dp*D2m2*Conjg(c_QNSq_L(i,i3,i2))*c_QNSq_R(j,i4,i2)  &
             &           * ( Conjg(c_QNSq_R(i,i3,i1))*c_QNSq_L(j,i4,i1)       &
-            &             + Conjg(c_QNSq_R(i,i4,i1))*c_QNSq_L(j,i3,i1) )
-     End Do
-    End Do
-   End Do
+            &             + Conjg(c_QNSq_R(i,i4,i1))*c_QNSq_L(j,i3,i1) ) 
+     End Do 
+    End Do 
+   End Do 
   End Do
 
  End Subroutine Delta_F2_Boxes
@@ -3222,22 +3247,22 @@ Contains
  !---------------------------------------------------------------------------
  ! Input: mf_u, mC, mN, mGlu, mS0, mP0, mSpm
  !        U, V, N, C
- !
- ! Output:
+ !        
+ ! Output: 
  !         res
- !
+ !         
  ! written by Werner Porod, 01 Jul 2003
  !---------------------------------------------------------------------------
  Implicit None
   Real(dp), Intent(in) :: m_t, mW2
   Complex(dp), Intent(in) :: CKM(3,3), B_VLL, B_VRR, B_LR1, B_LR2, B_SLL1 &
-     & , B_SLL2, B_SRR1, B_SRR2
+     & , B_SLL2, B_SRR1, B_SRR2 
   Integer, Intent(in) :: i
 
   real(dp) :: xt
   Complex(dp), Intent(out) :: res
   Real(dp), Parameter :: oo4r = 0.25_dp / 0.985_dp, P1_LR = -0.71_dp   &
-    & , P2_LR = 0.9_dp, P1_SLL = -0.37_dp, P2_SLL = -0.72_dp
+    & , P2_LR = 0.9_dp, P1_SLL = -0.37_dp, P2_SLL = -0.72_dp 
 
   xt = m_t**2 / mW2
 
@@ -3255,7 +3280,7 @@ Contains
  !---------------------------------------------------------------------------
  ! calculates the rho-parameter taking into account the complete SM + SUSY
  ! contributions at 1-loop, 2-loop QCD corrections due to t-quark
- ! using tree-level Higgs masses because otherwise there is a problem
+ ! using tree-level Higgs masses because otherwise there is a problem 
  ! with gauge invariance.
  !---------------------------------------------------------------------------
  Implicit None
@@ -3273,7 +3298,7 @@ Contains
 
   gSU2 = Sqrt(4._dp * Sqrt2 * G_F * mW2)
 
-  sinW2 = 1._dp - mW2/mZ2
+  sinW2 = 1._dp - mW2/mZ2 
 
   vev2 = 2._dp * Sqrt(mW2)/gSU2
   v2(1) = -vev2 * rp0(1,1)
@@ -3331,12 +3356,12 @@ Contains
  !---------------------------------------------------------------------------
  ! Input: mf_u, mC, mN, mGlu, mS0, mP0, mSpm
  !        U, V, N, C
- !
- ! Output:
+ !        
+ ! Output: 
  !         res
- !
+ !         
  ! written by Werner Porod, 07 Aug. 2010
- ! for QCD corrections, see Buras,
+ ! for QCD corrections, see Buras, 
  !---------------------------------------------------------------------------
  Implicit None
   Real(dp), Intent(in) :: mf_u(3), m_s, m_d
@@ -3347,14 +3372,15 @@ Contains
 
   Real(dp) :: xt, xc, r_m
 
-  Real(dp), Parameter :: BK = 0.725_dp !  +- 0.008 +- 0.028
+  Real(dp), Parameter :: BK = 0.725_dp !  +- 0.008 +- 0.028 
   Real(dp), Parameter :: DMK_b_VLL = 0.61_dp, DMK_b_SLL1 = 0.76_dp  &
     & , DMK_b_SLL2 = 0.51_dp, DMK_b_LR1 = 0.96_dp, DMK_b_LR2 = 1.3_dp
   !--------------------------------------------------------
   ! by S.Herrlich, U.Nierste, NPB476 (1996) 27
+  ! update from J.Brod, M.Gorbahn hep-ph/1108.2036
   !--------------------------------------------------------
-  Real(dp), Parameter :: DMK_eta_tt = 0.57_dp, DMK_eta_ct = 0.47_dp &
-    & , DMK_eta_cc = 1.44_dp
+  Real(dp), Parameter :: DMK_eta_tt = 0.577_dp, DMK_eta_ct = 0.496_dp &
+    & , DMK_eta_cc = 1.86_dp
   Complex(dp) :: KK_mat
 
   xt = mf_u(3)**2 / mW**2
@@ -3385,7 +3411,7 @@ Contains
 
   res = - Aimag(KK_mat) / (sqrt2*DeltaMK)
   If (Present(Delta_MK)) Delta_MK(2) = 2._dp * Real(KK_mat,dp)
-
+  
  End Subroutine epsilon_K
 
 
@@ -3406,7 +3432,7 @@ Contains
 
   Iname = Iname + 1
   NameOfUnit(Iname) = 'Gminus2a'
-
+       
   n_C = 2
   n_N = 4
 
@@ -3420,7 +3446,7 @@ Contains
    ratio = mSn2 / mC(i1)**2
    a_mu = a_mu                                                        &
      &  - Real( coupL * Conjg(coupR),dp ) * F3gamma(ratio) / mC(i1)      &
-     &  + 2._dp * mf * (Abs(coupL)**2 + Abs(coupR)**2) * F2(ratio) / mC(i1)**2
+     &  + 2._dp * mf * (Abs(coupL)**2 + Abs(coupR)**2) * F2(ratio) / mC(i1)**2 
   End Do
   !-------------------------
   ! neutralino contribution
@@ -3475,7 +3501,7 @@ Contains
 
   Iname = Iname + 1
   NameOfUnit(Iname) = 'Gminus2b'
-
+       
   n_C = Size(mC)
   n_N = Size(mN)
 
@@ -3493,7 +3519,7 @@ Contains
      ratio = mSn2(i2) / mC2
      a_mu = a_mu                                                        &
        &  - Real( coupL * Conjg(coupR),dp ) * F3gamma(ratio) / mC(i1)      &
-       &  + 2._dp * mf * (Abs(coupL)**2 + Abs(coupR)**2) * F2(ratio) / mC2
+       &  + 2._dp * mf * (Abs(coupL)**2 + Abs(coupR)**2) * F2(ratio) / mC2 
     End Do
    Else
     coupL = cpl_CLSn_L(i1,i_in,i_in)
@@ -3501,7 +3527,7 @@ Contains
     ratio = mSn2(i_in) / mC2
     a_mu = a_mu                                                        &
       &  - Real( coupL * Conjg(coupR),dp ) * F3gamma(ratio) / mC(i1)      &
-      &  + 2._dp * mf * (Abs(coupL)**2 + Abs(coupR)**2) * F2(ratio) / mC2
+      &  + 2._dp * mf * (Abs(coupL)**2 + Abs(coupR)**2) * F2(ratio) / mC2 
    End If
   End Do
   !-------------------------
@@ -3566,12 +3592,12 @@ Contains
    mF2 = mN(i1)**2
    Do i2=1,2
     i_sl = 2*(i_in-1)+i2
-    r = mF2 / mSl2(i_sl)
+    r = mF2 / mSl2(i_sl)  
     EDM(1) = EDM(1)                                                   &
    &     - Aimag(cpl_LNSl_L(i_in,i1,i_sl) * Conjg( cpl_LNSl_R(i_in,i1,i_sl)) )&
-   &     * FeynFunctionB(r) * mN(i1) / mSl2(i_sl)
+   &     * FeynFunctionB(r) * mN(i1) / mSl2(i_sl)  
     L_edm_contri(i1,i2) =   - Aimag(cpl_LNSl_L(i_in,i1,i_sl) * Conjg( cpl_LNSl_R(i_in,i1,i_sl)) )&
-   &     * FeynFunctionB(r) * mN(i1) / mSl2(i_sl)
+   &     * FeynFunctionB(r) * mN(i1) / mSl2(i_sl)  
    Enddo
   Enddo
 
@@ -3580,7 +3606,7 @@ Contains
   !------------------------------------
   Do i1=1,2
    mF2 = mC(i1)**2
-   r = mF2 / mSnu2(i_in)
+   r = mF2 / mSnu2(i_in) 
    EDM(2) = EDM(2)                  &
    &     + Aimag(cpl_CLSn_R(i1,i_in,i_in) * Conjg( cpl_CLSn_L(i1,i_in,i_in)) )&
    &     * FeynFunctionA(r) * mC(i1) / mSnu2(i_in)
@@ -3589,8 +3615,8 @@ Contains
   Enddo
 
   EDM(3) = EDM(1) + EDM(2)
-  EDM = oo16pi2 * ecmfactor * EDM
-  l_edm_contri =  oo16pi2 * ecmfactor *l_edm_contri
+  EDM = oo16pi2 * ecmfactor * EDM 
+  l_edm_contri =  oo16pi2 * ecmfactor *l_edm_contri 
 
  End Subroutine Lepton_EDM
 
@@ -3622,10 +3648,10 @@ Contains
   Do i1=1,4
    mF2 = mN(i1)**2
    Do i2=1,6
-    r = mF2 / mSl2(i2)
+    r = mF2 / mSl2(i2)  
     EDM(1) = EDM(1)                                                   &
    &     - Aimag(cpl_LNSl_L(i_in,i1,i2) * Conjg( cpl_LNSl_R(i_in,i1,i2)) )&
-   &     * FeynFunctionB(r) * mN(i1) / mSl2(i2)
+   &     * FeynFunctionB(r) * mN(i1) / mSl2(i2)  
    Enddo
   Enddo
 
@@ -3635,7 +3661,7 @@ Contains
   Do i1=1,2
    mF2 = mC(i1)**2
    Do i2=1,3
-    r = mF2 / mSnu2(i2)
+    r = mF2 / mSnu2(i2) 
     EDM(2) = EDM(2)                  &
     &     + Aimag(cpl_CLSn_R(i1,i_in,i2) * Conjg( cpl_CLSn_L(i1,i_in,i2)) )&
     &     * FeynFunctionA(r) * mC(i1) / mSnu2(i2)
@@ -3643,7 +3669,7 @@ Contains
   Enddo
 
   EDM(3) = EDM(1) + EDM(2)
-  EDM = oo16pi2 * ecmfactor * EDM
+  EDM = oo16pi2 * ecmfactor * EDM 
 
  End Subroutine Lepton_EDM3
 
@@ -3718,7 +3744,7 @@ Contains
      d_u_n = d_u_n - Aimag(c_UNSu_L(1,i1,i2) * Conjg(c_UNSu_R(1,i1,i2)) ) * B_r
     Enddo
    Enddo
-
+ 
   Else ! .not.GenerationMixing
    Do i1=1,4
     mF2 = mN(i1)**2
@@ -3774,7 +3800,7 @@ Contains
          & + g_s * Aimag(c_CUSd_L(i1,1,i2) * Conjg(c_CUSd_R(i1,1,i2)) ) * B_r
     Enddo
    Enddo
-
+ 
   Else ! .not.GenerationMixing
    Do i1=1,2
     mF2 = mC(i1)**2
@@ -3830,7 +3856,7 @@ Contains
       dh_u_g = dh_u_g - Aimag(c_GUSu_L(1,i2) * Conjg(c_GUSu_R(1,i2)) ) * A_r
      end if
     Enddo
-
+ 
   Else ! .not.GenerationMixing
     Do i2=1,2
      r = mF2 / mSdown2(i2)
@@ -3869,7 +3895,7 @@ Contains
          &                   - d_u_n - d_u_c -d_u_g) / 3._dp     &
          & + CqcdCorrection * Sqrt(Alpha_mZ * oo4pi)             &
          &              * ( 4._dp * (dh_d_n + dh_d_c + dh_d_g)   &
-         &                - dh_u_n - dh_u_c -dh_u_g) / 3._dp
+         &                - dh_u_n - dh_u_c -dh_u_g) / 3._dp 
 if (present(edm_parts2)) then
    edm_parts2(1,1) = d_d_n
    edm_parts2(1,2) = dh_d_n
@@ -3911,7 +3937,7 @@ end if
    EDMs_parts(1,3) = qcdCorrection * ( 4._dp * d_d_g  - d_u_g ) / 3._dp     &
                  & + CqcdCorrection * Sqrt(Alpha_mZ * oo4pi)                &
          &              * ( 4._dp * dh_d_g - dh_u_g ) / 3._dp
-
+ 
    ! relativistic quark-parton model
    EDMs_parts(2,1) = qcdCorrection * ( DeltaDown * d_d_n + DeltaUp * d_u_n  &
                    &                 + DeltaStrange * d_s_n  )
@@ -3919,7 +3945,7 @@ end if
                    &                 + DeltaStrange * d_s_c  )
    EDMs_parts(2,3) = qcdCorrection * ( DeltaDown * d_d_g + DeltaUp * d_u_g  &
                    &                 + DeltaStrange * d_s_g  )
-
+   
    EDMs_parts = oo16pi2 * ecmfactor * EDMs_parts
   end if
 
@@ -3999,7 +4025,7 @@ end if
     & , cpl_UUS0_L(3,3,2), cpl_UUS0_R(3,3,2), cpl_UUP0_L(3,3,2)                &
     & , cpl_UUP0_R(3,3,2), cpl_CsP0W(2,2), cpl_CsS0W(2,2), cpl_CsCsS0(2,2,2)   &
     & , cpl_CUSd_L(2,3,6), cpl_CUSd_R(2,3,6), cpl_GUSu_L(3,6), cpl_GUSu_R(3,6) &
-    & , cpl_UNSu_L(3,4,6), cpl_UNSU_R(3,4,6) !&
+    & , cpl_UNSu_L(3,4,6), cpl_UNSU_R(3,4,6) !& 
   Real(dp) :: cpl_S0WW(2)
 
   Real(dp), Parameter :: T3_d=-0.5_dp, T3_u=0.5_dp
@@ -4068,12 +4094,12 @@ end if
   !-----------------------------------------------
   ! run to Q=160 GeV if necessary
   !-----------------------------------------------
-  Y_l_160 = Transpose(Y_l)
-  Y_d_160 = Transpose(Y_d)
-  Y_u_160 = Transpose(Y_u)
-  T_l_160 = Transpose(T_l)
-  T_d_160 = Transpose(T_d)
-  T_u_160 = Transpose(T_u)
+  Y_l_160 = Transpose(Y_l) 
+  Y_d_160 = Transpose(Y_d) 
+  Y_u_160 = Transpose(Y_u) 
+  T_l_160 = Transpose(T_l) 
+  T_d_160 = Transpose(T_d) 
+  T_u_160 = Transpose(T_u) 
   M2_E_160 = M2_E
   M2_L_160 = M2_L
   M2_D_160 = M2_D
@@ -4088,7 +4114,7 @@ end if
   !------------------------------------------------------------
   ! add flavour mixing if necessary
   ! using partially in this first stage variable names for 160 GeV
-  ! all of them are reset below
+  ! all of them are reset below 
   ! in this first version only epsilon_D_FC is considered and the
   ! remaining 1-loop corrections to the CKM are neglected;
   ! will be improved later
@@ -4100,14 +4126,14 @@ end if
    vevSM(2) = tanb_Q * vevSM(1)
 
    Call  CouplingsToG(gi, y_l_160, y_d_160, y_u_160, g1)
-
+ 
    tz = Log(Qin/mZ)
    dt = - tz / 50._dp
 
    g1(1) = Sqrt(5._dp/3._dp) * g1(1)
    Call odeint(g1, 57, tz, 0._dp, delta_mass, dt, 0._dp, rge57, kont)
    g1(1) = Sqrt(3._dp/5._dp) * g1(1)
-
+ 
    Call  GToCouplings(g1, gi_mZ, y_l_mZ, y_d_mZ, y_u_mZ)
    y_u_160 = Matmul(y_u_mZ, CKM)  ! I am reusing the Yukawas at m_Z below
 
@@ -4121,9 +4147,9 @@ end if
    g1(1) = Sqrt(3._dp/5._dp) * g1(1)
 
    Call GToCouplings(g1, gi_160, y_l_160, y_d_160, y_u_160)
-   Y_l_160 = Transpose(Y_l_160)
-   Y_d_160 = Transpose(Y_d_160)
-   Y_u_160 = Transpose(Y_u_160)
+   Y_l_160 = Transpose(Y_l_160) 
+   Y_d_160 = Transpose(Y_d_160) 
+   Y_u_160 = Transpose(Y_u_160) 
 
    Call QuarkMasses_and_PhaseShifts(Y_d_160, Y_u_160, vevSM, mf_d_in, uD_L &
                                 & , uD_R, mf_u_in, uU_L, uU_R, CKM_160)
@@ -4134,7 +4160,7 @@ end if
    !-------------------------------------------------
    ! recalculate Yukawa, taking epsD_FC into account
    !-------------------------------------------------
-   Y_u_mZ = Matmul(Y_u_mZ, CKM)
+   Y_u_mZ = Matmul(Y_u_mZ, CKM)  
    Y_u_mZ(1:2,3) = Y_u_mZ(1:2,3) / (1._dp-epsD_FC)
    Y_u_mZ(3,1:2) = Y_u_mZ(3,1:2) / (1._dp-Conjg(epsD_FC))
    Call  CouplingsToG(gi_mZ, Y_l_mZ, Y_d_mZ, y_u_mZ, g1)
@@ -4148,14 +4174,14 @@ end if
 
    Call GToCouplings(g1, gi_160, y_l_160, y_d_160, y_u_160)
 
-   Y_d_160 = Transpose(Y_d_160)
-   Y_u_160 = Transpose(Y_u_160)
+   Y_d_160 = Transpose(Y_d_160) 
+   Y_u_160 = Transpose(Y_u_160) 
    Call QuarkMasses_and_PhaseShifts(Y_d_160, Y_u_160, vevSM, mf_d_in, uD_L &
                                 & , uD_R, mf_u_in, uU_L, uU_R, CKM_160)
 
-   Y_d_160 = Transpose(Y_d_160)
-   Y_u_160 = Transpose(Y_u_160)
-
+   Y_d_160 = Transpose(Y_d_160) 
+   Y_u_160 = Transpose(Y_u_160) 
+   
    T_u_160 = Matmul(Transpose(uU_R),Matmul(T_u_160,uU_L))
    T_d_160 = Matmul(Transpose(uD_R),Matmul(T_d_160,uD_L))
    M2_Q_160 = Matmul(Conjg(Transpose(uD_L)),Matmul(M2_Q_160,uD_L))
@@ -4202,19 +4228,19 @@ end if
                   & , T_d_mZ, T_u_mZ, M2_E_mZ, M2_L_mZ, M2_D_mZ, M2_Q_mZ     &
                   & , M2_U_mZ, M2_H_mZ, mu_mZ, B_mZ)
 
-   Y_l_160 = Transpose(Y_l_160)
-   Y_d_160 = Transpose(Y_d_160)
-   Y_u_160 = Transpose(Y_u_160)
-   T_l_160 = Transpose(T_l_160)
-   T_d_160 = Transpose(T_d_160)
-   T_u_160 = Transpose(T_u_160)
+   Y_l_160 = Transpose(Y_l_160) 
+   Y_d_160 = Transpose(Y_d_160) 
+   Y_u_160 = Transpose(Y_u_160) 
+   T_l_160 = Transpose(T_l_160) 
+   T_d_160 = Transpose(T_d_160) 
+   T_u_160 = Transpose(T_u_160) 
 
-   Y_l_mZ = Transpose(Y_l_mZ)
-   Y_d_mZ = Transpose(Y_d_mZ)
-   Y_u_mZ = Transpose(Y_u_mZ)
-   T_l_mZ = Transpose(T_l_mZ)
-   T_d_mZ = Transpose(T_d_mZ)
-   T_u_mZ = Transpose(T_u_mZ)
+   Y_l_mZ = Transpose(Y_l_mZ) 
+   Y_d_mZ = Transpose(Y_d_mZ) 
+   Y_u_mZ = Transpose(Y_u_mZ) 
+   T_l_mZ = Transpose(T_l_mZ) 
+   T_d_mZ = Transpose(T_d_mZ) 
+   T_u_mZ = Transpose(T_u_mZ) 
 
   !-------------------------------------
   ! calculate running masses at 160 GeV
@@ -4242,7 +4268,7 @@ end if
    kont = -700
 !   Call AddError(700)
    Return
-
+   
   Else
    mu_160 = phase_mu * Sqrt(abs_mu2)
   end if
@@ -4264,11 +4290,11 @@ end if
    kont = -700
 !   Call AddError(700)
    Return
-  End If
+  End If 
 
   CKM_160 =  Matmul(uU_L, Transpose(Conjg(uD_L)) )
 
-  If (Aimag(CKM(1,3)).Eq.0._dp) Then ! real CKM, need to
+  If (Aimag(CKM(1,3)).Eq.0._dp) Then ! real CKM, need to 
     s12 = lam_wolf                   ! recalculate with phase
     s23 = s12**2 * A_wolf
     s13 = s23 * lam_wolf * Sqrt(eta_wolf**2+rho_wolf**2)
@@ -4320,7 +4346,7 @@ end if
   End If
 
   !----------------------------
-  ! couplings
+  ! couplings 
   !----------------------------
 
   cpl_uWd = g * oosqrt2 * CKM_160
@@ -4348,7 +4374,7 @@ end if
 
   Do i1=1,2
    Do i2=1,3
-    Do i3=1,3
+    Do i3=1,3     
      Call CoupCharginoSfermion(i1, i2, i3, g, -0.5_dp, RSneut_T               &
              & , Y_l_160, Zero33C, uL_L, uL_R, U_T, V_T, cpl_CLSn_L(i1,i2,i3) &
              & , cpl_CLSn_R(i1,i2,i3) )
@@ -4366,13 +4392,13 @@ end if
 
   Do i1=1,3
    Do i2=1,4
-    Do i3=1,6
+    Do i3=1,6  
      Call CoupNeutralinoSlepton(i1, i2, i3, gp, g, RSlept_T &
       & , uL_L, uL_R, Y_l_160, N_T, cpl_LNSl_L(i1,i2,i3), cpl_LNSl_R(i1,i2,i3) )
      Call CoupNeutralinoSdown(i1, i2, i3, gp, g, RSdown_T &
       & , uD_L, uD_R, Y_d_160, N_T, cpl_DNSd_L(i1,i2,i3), cpl_DNSd_R(i1,i2,i3) )
     End Do
-    Do i3=1,3
+    Do i3=1,3  
      Call CoupNeutralinoSneutrino(i1, i2, i3, gp, g, N_T &
            & , RSneut_T, id3C, cpl_NuNSn_R(i1,i2,i3) )
     End Do
@@ -4380,12 +4406,12 @@ end if
   End Do
 
   Do i1=1,3
-   Do i3=1,6
+   Do i3=1,6  
     Call CoupGluinoSquark3(gs, phase_Glu_T, i1, i3, RSdown_T, uD_L, uD_R &
            & , cpl_DGSd_L(i1,i3), cpl_DGSd_R(i1,i3) )
    End Do
   End Do
-
+  
   !--------------------------------------------------------
   ! Z-neutralino-neutralino couplings without gauge factor
   !--------------------------------------------------------
@@ -4393,7 +4419,7 @@ end if
    ZNN(i1,i1) = Abs(N_T(i1,4))**2 - Abs(N_T(i1,3))**2
    Do i2=i1+1,4
     ZNN(i1,i2) = N_T(i1,4) * Conjg( N_T(i2,4) ) - N_T(i1,3) * Conjg( N_T(i2,3) )
-    ZNN(i2,i1) = Conjg( ZNN(i1,i2) )
+    ZNN(i2,i1) = Conjg( ZNN(i1,i2) ) 
    End Do
   End Do
   !-------------------------------------------------------
@@ -4405,9 +4431,9 @@ end if
    ZVV(i1,i1) = Abs(V_T(i1,1))**2
    Do i2=i1+1,2
     ZUU(i1,i2) = U_T(i1,1) * Conjg( U_T(i2,1) )
-    ZUU(i2,i1) = Conjg( ZUU(i1,i2) )
+    ZUU(i2,i1) = Conjg( ZUU(i1,i2) ) 
     ZVV(i1,i2) = V_T(i1,1) * Conjg( V_T(i2,1) )
-    ZVV(i2,i1) = Conjg( ZVV(i1,i2) )
+    ZVV(i2,i1) = Conjg( ZVV(i1,i2) ) 
    End Do
   End Do
 
@@ -4441,10 +4467,10 @@ end if
     ZSdSdR(i1,i2) = RSdown_T(i1,4) * Conjg( RSdown_T(i2,4) ) &
                 & + RSdown_T(i1,5) * Conjg( RSdown_T(i2,5) ) &
                 & + RSdown_T(i1,6) * Conjg( RSdown_T(i2,6) )
-    ZSuSuL(i2,i1) = Conjg( ZSuSuL(i1,i2) )
-    ZSuSuR(i2,i1) = Conjg( ZSuSuR(i1,i2) )
-    ZSdSdL(i2,i1) = Conjg( ZSdSdL(i1,i2) )
-    ZSdSdR(i2,i1) = Conjg( ZSdSdR(i1,i2) )
+    ZSuSuL(i2,i1) = Conjg( ZSuSuL(i1,i2) ) 
+    ZSuSuR(i2,i1) = Conjg( ZSuSuR(i1,i2) ) 
+    ZSdSdL(i2,i1) = Conjg( ZSdSdL(i1,i2) ) 
+    ZSdSdR(i2,i1) = Conjg( ZSdSdR(i1,i2) ) 
    End Do
   End Do
 
@@ -4472,7 +4498,7 @@ end if
   End Do
 
   !-------------------------------------
-  ! scalar - sfermion - sfermion
+  ! scalar - sfermion - sfermion 
   !-------------------------------------
   Do i1=1,2
    Do i2=1,6
@@ -4487,7 +4513,7 @@ end if
 
 
   !-------------------------------------
-  ! Pseudoscalar - sfermion - sfermion
+  ! Pseudoscalar - sfermion - sfermion 
   !-------------------------------------
   bi(1) = mu_160
 
@@ -4627,7 +4653,7 @@ end if
   !---------------------------------
   Call B_To_SNuNu(CKM, WC_c11(2,3,2,:,1), WC_c11p(2,3,2,:,1), BtoSNuNu)
 
-  Do i1=1,3
+  Do i1=1,3 
    !-------------------------
    ! B_d -> l+ l-
    !-------------------------
@@ -4683,7 +4709,7 @@ end if
    Call K_To_PiNuNu(CKM, WC_c11(2,2,1,:,1), WC_c11p(2,2,1,:,1) &
     & , K0toPi0NuNu, KptoPipNuNu)
   !------------------------
-  ! epsilon_K
+  ! epsilon_K 
   !------------------------
    Call epsilon_K(mf_d(1), mf_d(2), mf_u, CKM, WC_4d_VLL(2,2,1)   &
       & , WC_4d_VRR(2,2,1), WC_4d_LR1(2,2,1), WC_4d_LR2(2,2,1)    &
@@ -4721,12 +4747,12 @@ end if
      & , mP0_T, mP02_T, RP0_T, mS0_T, mS02_T, RS0_T, mSpm_T, mSpm2_T, RSpm_T &
      & , mZ2_run, mW2_run, .True., kont, .False., .False., mf_u_Q)
 
-  If (kont.Ne.0) Then
+  If (kont.Ne.0) Then 
    Iname = Iname - 1
    kont = -701
    Call AddError(701)
    Return
-  End If
+  End If 
 
   !-------------------------------
   ! setting renormalisation scale
@@ -4762,7 +4788,7 @@ end if
 
   Do i1=1,2
    Do i2=1,3
-    Do i3=1,3
+    Do i3=1,3     
      Call CoupCharginoSfermion(i1, i2, i3, g, -0.5_dp, RSneut_T  &
              & , Y_l_mZ, Zero33C, uL_L, uL_R, U_T, V_T, cpl_CLSn_L(i1,i2,i3) &
              & , cpl_CLSn_R(i1,i2,i3) )
@@ -4780,7 +4806,7 @@ end if
 
   Do i1=1,3
    Do i2=1,4
-    Do i3=1,6
+    Do i3=1,6  
      Call CoupNeutralinoSlepton(i1, i2, i3, gp, g, RSlept_T &
          & , uL_L, uL_R, Y_l_mZ, N_T, cpl_LNSl_L(i1,i2,i3), cpl_LNSl_R(i1,i2,i3) )
      Call CoupNeutralinoSdown(i1, i2, i3, gp, g, RSdown_T &
@@ -4792,7 +4818,7 @@ end if
   End Do
 
   Do i1=1,3
-   Do i3=1,6
+   Do i3=1,6  
     Call CoupGluinoSquark3(gs, phase_Glu_T, i1, i3, RSdown_T, uD_L, uD_R &
            & , cpl_DGSd_L(i1,i3), cpl_DGSd_R(i1,i3) )
     Call CoupGluinoSquark3(gs, phase_Glu_T, i1, i3, RSup_T, uU_L, uU_R &
@@ -4843,7 +4869,7 @@ end if
                  &, cpl_LNSl_L, cpl_LNSl_R, GTautoMuGamma, BrTautoMuGamma)
   End If
   !------------------------------------------------------------------
-  ! rare decays of leptons: l -> 3 l'
+  ! rare decays of leptons: l -> 3 l' 
   !------------------------------------------------------------------
   BrMu3E = 0._dp
   BrTau3E = 0._dp
@@ -4945,7 +4971,7 @@ end if
  !  cpl_CLSn_L(i,j,k) ... left chargino - lepton -sneutrino coupling
  !  cpl_CLSn_R(i,j,k) ... right chargino - lepton -sneutrino coupling
  !  mSl2(i) ............. slepton masses squared
- !  mN(i) ............... neutralino masses
+ !  mN(i) ............... neutralino masses 
  !  cpl_LNSl_L(i,j,k) ... left lepton - neutralino - slepton coupling
  !  cpl_LNSl_R(i,j,k) ... right lepton - neutralino - slepton coupling
  ! output:
@@ -4968,7 +4994,7 @@ end if
 
   Iname = Iname + 1
   NameOfUnit(Iname) = 'LtoLpGammaMSSM'
-
+       
   n_C = Size(mC)
   n_N = Size(mN)
 
@@ -4987,7 +5013,7 @@ end if
         &                       + Conjg( cpl_LNSl_R(i,i1,i2) ) * part(2) )
     AR = AR + cpl_LNSl_R(j,i1,i2) * ( Conjg( cpl_LNSl_R(i,i1,i2) ) * part(1) &
         &                       + Conjg( cpl_LNSl_L(i,i1,i2) ) * part(2) )
-
+    
    End Do
   End Do
   amp(1,1) = AL
@@ -5048,7 +5074,7 @@ end if
  !  mS02(i) ............. scalar masses squared
  !  cpl_CCS0_L(i,j,k) ... left chargino - chargino - scalar coupling
  !  cpl_CCS0_R(i,j,k) ... right chargino - chargino - scalar coupling
- !  mN(i) ............... neutralino masses
+ !  mN(i) ............... neutralino masses 
  !  mSpm2(i) ............. charged scalar masses squared
  !  cpl_SpmCN_L(i,j,k) .. left charged scalar - chargino - neutralino  coupling
  ! cpl_SpmCN_R(i,j,k) .. right charged scalar - chargino - neutralino  coupling
@@ -5083,7 +5109,7 @@ end if
 
   Iname = Iname + 1
   NameOfUnit(Iname) = 'LtoLpGammaEps3'
-
+       
   n_C = Size(mC)
   n_N = Size(mN)
   n_P0 = Size(mP02)
@@ -5217,8 +5243,8 @@ end if
     End Do
    End Do
   End If
-  amp(4,1) = AL
-  amp(4,2) = AR
+  amp(4,1) = AL 
+  amp(4,2) = AR 
 
   AL = oo32pi2 * Sum(amp(:,1))
   AR = oo32pi2 * Sum(amp(:,2))
@@ -5233,7 +5259,7 @@ end if
   If (Present(Amplitude))  Amplitude = oo32pi2 * amp
 
   Iname = Iname - 1
-
+ 
  End Subroutine LtoLpGammaEps3
 
 ! Interface LtoLpGamma
@@ -5261,13 +5287,13 @@ end if
  ! output:
  !  width ............... decay width in GeV
  !  Br .................. branching ratio, optional
- !  Amplitude ........... neutralino, chargino and neutrino contribtions to the
+ !  Amplitude ........... neutralino, chargino and neutrino contribtions to the 
  !                        amplitude, optional
  ! written by Werner Porod, 09.05.2001
  ! 21.09.2011: extending LtoLpGammaMSSM by the W-nu loops, using formulas of
  !             Illakova, Pilaftis, NPB 437 (1995) 491
  ! 22.09.2011: implementing mixing part using formulas by L.Lavoura
- !             hep-ph/0302221
+ !             hep-ph/0302221 
  !-----------------------------------------------------------------------------
  Implicit None
   Integer, Intent(in) :: i, j
@@ -5285,7 +5311,7 @@ end if
 
   Iname = Iname + 1
   NameOfUnit(Iname) = 'LtoLpGammaRPcons'
-
+       
   n_C = Size(mC)
   n_N = Size(mN)
   n_Nu = Size(mNu)
@@ -5309,7 +5335,7 @@ end if
         &                       + Conjg( cpl_LNSl_R(i,i1,i2) ) * part(2) )
     AR = AR + cpl_LNSl_R(j,i1,i2) * ( Conjg( cpl_LNSl_R(i,i1,i2) ) * part(1) &
         &                       + Conjg( cpl_LNSl_L(i,i1,i2) ) * part(2) )
-
+    
    End Do
   End Do
   amp(1,1) = AL
@@ -5341,7 +5367,7 @@ end if
   Do i1 = 1, n_Nu
    mNu2 = mNu(i1)**2
    Do i2 = 1, n_W
-    ratio = mNu2 / mW2(i2)
+    ratio = mNu2 / mW2(i2) 
     part(1) = 3._dp * mf_l(i) * ratio * F2(ratio) / mW2(i2)
     part(2) = 3._dp * mNu(i1) * F4(ratio) / mW2(i2)
     AL = AL + cpl_LNuW_L(j,i1,i2) * ( Conjg( cpl_LNuW_L(i,i1,i2) ) * part(1) &
@@ -5373,7 +5399,7 @@ end if
  Subroutine ZtoLiLj(i, j, UseSavedLoopFunctions, cpl_LLZ_L, cpl_LLZ_R  &
        & , mC, mC2, cpl_CLSn_L, cpl_CLSn_R, mSnu2, cpl_SnSnZ           &
        & , mN, mN2, cpl_LNSl_L, cpl_LNSl_R, mSle2, cpl_SlSlZ           &
-       & , cpl_CCZ_L, cpl_CCZ_R, cpl_NNZ_L, cpl_NNZ_R, BR)
+       & , cpl_CCZ_L, cpl_CCZ_R, cpl_NNZ_L, cpl_NNZ_R, BR) 
  !-------------------------------------------------------------------------
  ! in this subroutine the decay branching ratio for the decay
  ! Z -> l_i  l_j is calculated.
@@ -5381,7 +5407,7 @@ end if
  ! Input: i,j ....................... indices of the leptons
  !         UseSavedLoopFunctions .... the Loopfunctions calculated in a
  !                                    previous run are used if set .true.
- ! written by Werner Porod, 17.10.01
+ ! written by Werner Porod, 17.10.01 
  !-------------------------------------------------------------------------
  Implicit None
   Integer, Intent(in) :: i, j
@@ -5445,7 +5471,7 @@ end if
           & Cget("C2  ", 0._dp, mZ2, 0._dp, mSnu2(i2), mC2(i1), mC2(i1) )
      C00_Snu_i_C_jk(i2,i1,i1)  = &
           & Cget("C00 ", 0._dp, mZ2, 0._dp, mSnu2(i2), mC2(i1), mC2(i1) )
-     If (i1.Eq.1) Then
+     If (i1.Eq.1) Then 
       C0_Snu_i_C_jk(i2,i1,i1+1)  = &
             & C0( 0._dp, mZ2, 0._dp, mSnu2(i2), mC2(i1), mC2(i1+1) )
       C0_Snu_i_C_jk(i2,i1+1,i1) = C0_Snu_i_C_jk(i2,i1,i1+1)
@@ -5545,13 +5571,13 @@ end if
       &  - cpl_CLSn_R(i1, i, i2) * Conjg( cpl_CLSn_R(i3, j, i2) )            &
       &    * ( cpl_CCZ_R(i1,i3) * ( mSnu2(i2) * C0_Snu_i_C_jk(i2,i1,i3)      &
       &                           + B0_Z_CC(i1,i3)                           &
-      &                           - 2._dp * C00_Snu_i_C_jk(i2,i1,i3) )       &
+      &                           - 2._dp * C00_Snu_i_C_jk(i2,i1,i3) )       & 
       &      - mC(i1) *mC(i3) *cpl_CCZ_L(i1,i3) * C0_Snu_i_C_jk(i2,i1,i3) )
      Ai(2) = Ai(2)                                                           &
       &  - cpl_CLSn_L(i1, i, i2) * Conjg( cpl_CLSn_L(i3, j, i2) )            &
       &    * ( cpl_CCZ_L(i1,i3) * ( mSnu2(i2) * C0_Snu_i_C_jk(i2,i1,i3)      &
       &                           + B0_Z_CC(i1,i3)                           &
-      &                           -  2._dp * C00_Snu_i_C_jk(i2,i1,i3) )      &
+      &                           -  2._dp * C00_Snu_i_C_jk(i2,i1,i3) )      & 
       &      - mC(i1) *mC(i3) *cpl_CCZ_R(i1,i3) * C0_Snu_i_C_jk(i2,i1,i3) )
      Ai(3) = Ai(3)                                                           &
       &  + cpl_CLSn_R(i1, i, i2) * Conjg( cpl_CLSn_L(i3, j, i2) )            &
@@ -5617,13 +5643,13 @@ end if
       &  - 0.5_dp * cpl_LNSl_R(i, i1, i2) * Conjg( cpl_LNSl_R(j, i3, i2) )   &
       &    * ( cpl_NNZ_R(i1,i3) * ( mSle2(i2) * C0_Sle_i_N_jk(i2,i1,i3)      &
       &                           + B0_Z_NN(i1,i3)                           &
-      &                           -  2._dp * C00_Sle_i_N_jk(i2,i1,i3) )      &
+      &                           -  2._dp * C00_Sle_i_N_jk(i2,i1,i3) )      & 
       &      - mN(i1) *mN(i3) *cpl_NNZ_L(i1,i3) * C0_Sle_i_N_jk(i2,i1,i3) )
      Ai(2) = Ai(2)                                                           &
       &  - 0.5_dp * cpl_LNSl_L(i, i1, i2) * Conjg( cpl_LNSl_L(j, i3, i2) )   &
       &    * ( cpl_NNZ_L(i1,i3) * ( mSle2(i2) * C0_Sle_i_N_jk(i2,i1,i3)      &
       &                           + B0_Z_NN(i1,i3)                           &
-      &                           -  2._dp * C00_Sle_i_N_jk(i2,i1,i3) )      &
+      &                           -  2._dp * C00_Sle_i_N_jk(i2,i1,i3) )      & 
       &      - mN(i1) *mN(i3) *cpl_NNZ_R(i1,i3) * C0_Sle_i_N_jk(i2,i1,i3) )
      Ai(3) = Ai(3)                                                           &
       &  + cpl_LNSl_R(i, i1, i2) * Conjg( cpl_LNSl_L(j, i3, i2) )            &
@@ -5656,11 +5682,11 @@ end if
 
   Ai = oo16pi2 * Ai
   gam = oo48Pi * ( 2._dp * (Abs(Ai(1))**2 + Abs(Ai(2))**2 ) * mZ         &
-     &          + 0.25_dp * (Abs(Ai(3))**2 + Abs(Ai(4))**2 ) * mZ * mZ2 )
+     &          + 0.25_dp * (Abs(Ai(3))**2 + Abs(Ai(4))**2 ) * mZ * mZ2 ) 
   BR = gam / (gam+gamZ)
 
   Iname = Iname - 1
-
+ 
  End Subroutine ZtoLiLj
 
   Subroutine Bq_to_ll(i, l, mf_d, mf_l, CKM, c10, c10p, cs, csp, cp, cpp, res )
@@ -5674,9 +5700,9 @@ end if
  !        c10, c10p . C_10, C_10'
  !        cs, csp ... C_S,C_S'
  !        cp, cpp ... C_P,C_P'
- !
+ !        
  ! Output: res, branching ratio
- !
+ !         
  ! written by Werner Porod, 01 April 2014
  ! the eqn numbers ref. to Bobeth et al., NPB640, 87 (2002)
  !---------------------------------------------------------------------------
@@ -5706,7 +5732,7 @@ end if
   F_P = 0.5_dp * MassBq(i)**2 * ( cp - cpP*mhat) /(1._dp + mhat)
   !-------------------------------------------------------------
   ! the formulas of NPB 630 are for \bar{B}_q whereas the ones of
-  ! NPB 659 are for B_q
+  ! NPB 659 are for B_q 
   !-------------------------------------------------------------
   F_A = Conjg(F_A)
   !---------------------------------------------
@@ -5730,10 +5756,10 @@ end if
  !  C11 ............. Wilson coefficients C_11
  !  C11p ............ Wilson coefficients C_11'
  ! output:
- !  BrK0toPi0NuNu ..................... BR(K^0 -> pi^0 nu nu)
- !  BrKptoPipNuNuBtoSNuNu ............. BR(K^+ -> pi^+ nu nu)
+ !  BrK0toPi0NuNu ..................... BR(K^0 -> pi^0 nu nu) 
+ !  BrKptoPipNuNuBtoSNuNu ............. BR(K^+ -> pi^+ nu nu) 
  ! written by Werner Porod, 03.02.2014
- ! 16.03.2014: take now Wilson coefficients as input
+ ! 16.03.2014: take now Wilson coefficients as input 
  !-------------------------------------------
  Implicit None
   Complex(dp), Intent(in) :: CKM(3,3), c11(3), c11p(3)
@@ -5742,7 +5768,7 @@ end if
 
   Integer :: i1
   Real(dp) :: Re_Xi(3), Im_Xi(3), lam_wolf, p_c
-
+ 
   Iname = Iname + 1
   NameOfUnit(Iname) = "K_To_PiNuNu"
 
@@ -5772,6 +5798,108 @@ end if
 
  End Subroutine K_To_PiNuNu
 
+
+ Subroutine Write_wcxf(n, l_head, i, kont)
+ !---------------------------------------------------
+ ! write the Wilson coefficients at the energy Q(i)
+ ! to the channel n
+ !---------------------------------------------------
+ Implicit None
+
+  Integer, Intent(in) :: n, i
+  Integer, Intent(inout) :: kont
+  Logical, Intent(in) :: l_head
+
+  Integer :: i1, i2, i3
+  Character(len=12) :: name
+
+  Iname = Iname + 1
+  NameOfUnit(Iname) = "Write_wcxf"
+  !------------------------------------------------
+  ! test, if set of coefficients exists
+  !------------------------------------------------
+  If ((i.Lt.1).Or.(i.Gt.n_i)) Then
+   Write(ErrCan,*) "Error in routine Write_wcxf"
+   Write(ErrCan,*) "set with index",i,"does not exist"
+   kont = -1000
+   Iname = Iname - 1
+   Return
+  End If
+
+  If (l_head) then
+   Write(n,100) "eft: WET"
+   Write(n,100) "basis: FlavorKit"
+   Write(n,100) "metadata:"
+   Write(n,100) "  generator: SPheno "//version
+  End If
+
+  Write(n,101) "scale: ",Q_out(i)
+  Write(n,100) "values:"
+
+!  DVLL_2323:
+!   Re: 1.3e-5
+!   Im: 1.234e-7
+!  DVLR_2323:
+!   Re: 1.3e-5
+!   Im: 1.234e-7
+
+  ! write only in case that at least one coefficient is non-zero
+  If (l_wc(i)) Then
+   Call WriteLineC(n, "Q1R_23",WC_Q1R(i,2,3) )
+   Call WriteLineC(n, "Q1R_32",WC_Q1R(i,3,2) )
+   Call WriteLineC(n, "Q2R_23",WC_Q2R(i,2,3) )
+   Call WriteLineC(n, "Q2R_32",WC_Q2R(i,3,2) )
+
+   ! d -> d' l l
+   Do i1=1,2
+    Do i2=1,3
+     name = "EVLL_3"//Bu(i1)//Bu(i2)//Bu(i2)
+     Call WriteLineC(n, Trim(name),WC_EVLL(i,3,i1,i2) )
+     name = "EVLR_3"//Bu(i1)//Bu(i2)//Bu(i2)
+     Call WriteLineC(n, Trim(name),WC_EVLR(i,3,i1,i2) )
+     name = "EVRL_3"//Bu(i1)//Bu(i2)//Bu(i2)
+     Call WriteLineC(n, Trim(name),WC_EVRL(i,3,i1,i2) )
+     name = "EVRR_3"//Bu(i1)//Bu(i2)//Bu(i2)
+     Call WriteLineC(n, Trim(name),WC_EVRR(i,3,i1,i2) )
+    End Do
+   End Do
+
+   ! d -> d' nu nu
+   Do i1=2,3
+    Do i2=1,3
+     name = "FVLL_"//Bu(i1)//Bu(i1-1)//Bu(i2)//Bu(i2)
+     Call WriteLineC(n, Trim(name),WC_FVLL(i,i1,i1-1,i2) )
+     name = "FVRL_"//Bu(i1)//Bu(i1-1)//Bu(i2)//Bu(i2)
+     Call WriteLineC(n, Trim(name),WC_FVRL(i,i1,i1-1,i2) )
+    End Do
+   End Do
+
+
+  End If
+
+  Iname = Iname - 1
+
+  100 Format(a)
+  101 Format(a,1P,e14.7)
+
+ Contains 
+
+  Subroutine WriteLineC(n, var, val)
+   Implicit None
+   Integer, Intent(in) :: n
+   Character(len=*), Intent(in) :: var
+   Complex(dp), Intent(in) :: val
+
+   Write(n,100) Trim(var)//":"
+   Write(n,101) "Re:",Real(val,dp)
+   Write(n,101) "Im:",aimag(val)
+
+   100 Format(1x,a)
+   101 Format(2x,a3,1x,1P,e14.7)
+
+  End Subroutine WriteLineC
+
+ End Subroutine Write_wcxf
 
  Subroutine Write_Wilson_Coeff(n, i, kont)
  !---------------------------------------------------
@@ -5920,7 +6048,7 @@ end if
   100 Format(a)
   106 Format(a,1P,e16.8,2x,a)
 
- Contains
+ Contains 
 
   Logical Function WriteLineR(n, id, id2, ord, i_in,val, com, l_im)
    Implicit None

@@ -19,4 +19,5 @@ Block SPhenoInput       # SPheno specific input
  2   1                  # SPA conventions
 11   1                  # calculate branching ratios
 12   1.00000000E-04     # write only branching ratios larger than this value
-21   0                  # calculate cross section
+21   0                  # calculate cross section 
+

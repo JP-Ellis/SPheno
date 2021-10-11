@@ -8,7 +8,7 @@ Use Mathematics
 
 ! global variables
  ! Z-boson
- Real(dp), Save :: mZ,mZ2,gamZ,gamZ2,gmZ,gmZ2,BrZqq(5),BrZll(3),BrZinv
+ Real(dp), Save :: mZ,mZ2,gamZ,gamZ2,gmZ,gmZ2,BrZqq(5),BrZll(3),BrZinv 
  ! W-boson
  Real(dp), Save :: mW,mW2,gamW,gamW2,gmW,gmW2,BrWqq(2),BrWln(3)
  ! fermion masses
@@ -20,7 +20,7 @@ Use Mathematics
  ! fermion decay widths
  Real(dp), Save :: g_T = 2.0_dp
  ! meson masses
- Real(dp), Parameter :: m_pi0=0.135_dp, m_pip=0.140_dp
+ Real(dp), Parameter :: m_pi0=0.135_dp, m_pip=0.140_dp 
  Real(dp), Parameter :: m_pi02=m_pi0**2, m_pip2=m_pip**2
  ! decay constants
  Real(dp), Parameter :: f_pi=0.092_dp
@@ -33,7 +33,7 @@ Use Mathematics
  ! partial widht of mu and tau
  Real(dp), Save :: GammaMu, GammaTau
 
- Real(dp), Save :: KFactorLee  ! for ISR corrections in e+ e-
+ Real(dp), Save :: KFactorLee  ! for ISR corrections in e+ e- 
 
  Complex(dp), Save :: CKM(3,3)
 ! update to PDG 2013
@@ -60,8 +60,8 @@ Use Mathematics
 ! constants for K-physics, can be changed using the FLHA
 ! experimental data from PDG 2013
 !-----------------------------------------------------------
-  Real(dp) :: MassK0 = 0.497616_dp
-  Real(dp) :: DeltaMK = 3.483e-15_dp
+  Real(dp) :: MassK0 = 0.497616_dp 
+  Real(dp) :: DeltaMK = 3.483e-15_dp 
   Real(dp) :: FK = 0.1558_dp
 !-----------------------------------------------------------
 ! constants for edms
@@ -106,12 +106,12 @@ Contains
   Real(dp) :: g9(9), g10(10), as_nf, as_nf_minus_1, as_nf_d_pi, aem , tz, dt
   Real(dp), Parameter :: zeta3 = 1.202056903159594285399738161511449990765_dp &
      & , c_as(2) = (/ 11._dp / 72._dp                                         &
-     &             , 58067._dp / 13824._dp - 82043._dp * zeta3 / 27648._dp /)
-
+     &             , 58067._dp / 13824._dp - 82043._dp * zeta3 / 27648._dp /) 
+     
   Iname = Iname + 1
   NameOfUnit(Iname) = "CalculateRunningMasses"
 
-  kont = 0
+  kont = 0 
 
   !-------------------------------------------------------------------------
   ! calculate first coupling at low scales, putting abritary fermion masses
@@ -136,21 +136,21 @@ Contains
   as_nf_minus_1 = as_nf *(1._dp+ as_nf_d_pi**2 *(c_as(1) +c_as(2)*as_nf_d_pi))
   g9(1) = Sqrt(4._dp * Pi * as_nf_minus_1)
   g9(2:9) = g10(2:9)
-  tz = Log(2._dp/4.8_dp)
+  tz = Log(2._dp/4.8_dp) 
   dt = tz / 50._dp
   Call odeint(g9, 9, 0._dp, tz, 1.e-7_dp, dt, 0._dp, RGE10_SMa, kont)
-
+  
   !--------------------------------------------------
   ! lepton masses at Qlow, note that aem is alpha/pi
   ! shift to on-shell masses
   !--------------------------------------------------
   aem = g9(2)**2 / (4._dp * Pi**2)
   mf_l_out = g9(3:5) / (1._dp - aem)
-
+  
   !-----------
   ! m_u, m_c, m_t
   !-----------
-  mf_u_out(1:2) = g9(6:7)
+  mf_u_out(1:2) = g9(6:7) 
   mf_u_out(3) = mf_u_in(3) ! top quark mass did not run
   !----------------
   ! m_d, m_s, m_b
@@ -174,7 +174,7 @@ Contains
  !  mf_d_in ......... d-quark masses, it is assumed the d and s are given
  !                    at the scale Qlow and that mb(mb)
  !  mf_u_in ......... u-quark masses, it is assumed the u and c are given
- !                    at the scale Qlow
+ !                    at the scale Qlow 
  !  Qlow ............ low energy scale, must be smaller or equal mb(mb)
  !  Qhigh ........... high energy scale, must be larger than Qlow and mb(mb)
  !  alpha ........... alpha_magnetic at Qhigh
@@ -201,11 +201,11 @@ Contains
      & , c_m(2) = (/ 89._dp / 432._dp                                         &
      &            , 713._dp/486._dp - B4 / 36._dp - 221._dp * zeta3 / 288._dp &
      &          + 1.25_dp * zeta4  /)
-
+     
   Iname = Iname + 1
   NameOfUnit(Iname) = "CalculateRunningMasses"
 
-  kont = 0
+  kont = 0 
   !-------------------------------------------------------
   ! check if conditions on Qlow and Qhigh are fullfilled
   !-------------------------------------------------------
@@ -244,7 +244,7 @@ Contains
    as_nf_d_pi = as_nf / Pi
    as_nf_minus_1 = as_nf *(1._dp+ as_nf_d_pi**2 *(c_as(1) +c_as(2)*as_nf_d_pi))
    g9(1) = Sqrt(4._dp * Pi * as_nf_minus_1)
-   tz = Log(Qlow/mf_d_in(3))
+   tz = Log(Qlow/mf_d_in(3)) 
    dt = tz / 50._dp
    Call odeint(g9, 9, 0._dp, tz, 1.e-7_dp, dt, 0._dp, RGE10_SMa, kont)
   End If
@@ -274,7 +274,7 @@ Contains
    !-------------
    AlphaS_mB = as_nf
    g9(1) = Sqrt(4._dp * Pi * as_nf)
-   g9(6:9) = g9(6:9) / (1._dp + as_nf_d_Pi**2 * (c_m(1) + c_m(2)*as_nf_d_Pi))
+   g9(6:9) = g9(6:9) / (1._dp + as_nf_d_Pi**2 * (c_m(1) + c_m(2)*as_nf_d_Pi))  
   End If
   g10(1:9) = g9
   g10(10) = mf_d_in(3)
@@ -343,7 +343,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   mat32 = Matmul( mat3, Transpose( Conjg( mat3 ) ) )
   If ( Maxval( Abs( Aimag(mat32) ) ).Eq.0._dp) Then ! reel matrix
    Call EigenSystem(Real(mat32,dp), mC2, u1, ierr, test)
@@ -360,7 +360,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   mat32 = Matmul( Matmul( Conjg(u3), mat3), Transpose( Conjg(v3) ) )
   Do i1=1,3
    If ( Abs( mat32(i1,i1) ).Ne.0._dp) Then
@@ -397,7 +397,7 @@ Contains
           &  mc2(i1) = 0._dp
   End Do
 
-  mF = Sqrt(MC2)
+  mF = Sqrt(MC2) 
   U_L = u3
   U_R = v3
 
@@ -411,7 +411,7 @@ Contains
  ! takes the Yukawa couplings, calculates the quark masses and the CKM
  ! from given Yukawa couplings. In this process also phase shifts are
  ! preformed such that the CKM is in the standard form
- ! written by Werner Porod, 27.02.2014
+ ! written by Werner Porod, 27.02.2014  
  !-----------------------------------------------------------------------------
  Implicit None
   Complex(dp), Intent(in) :: Yu(3,3), Yd(3,3)
@@ -435,7 +435,7 @@ Contains
         &   uU_L(2,:) = uU_L(2,:) / CKM_Q(2,3) * Abs(CKM_Q(2,3))
   if (Abs(CKM_Q(3,3)).ne.0._dp) &
         &   uU_L(3,:) = uU_L(3,:) / CKM_Q(3,3) * Abs(CKM_Q(3,3))
-
+  
   if (Abs(CKM_Q(1,1)).ne.0._dp) &
         &   uD_R(1,:) = uD_R(1,:) / CKM_Q(1,1) * Abs(CKM_Q(1,1))
   if (Abs(CKM_Q(1,2)).ne.0._dp) &
@@ -479,7 +479,7 @@ Contains
 
   Integer          :: i1, kont
   Real(dp) :: oo_alpha, s12, s23, s13, phase, c13, c23, c12 &
-                &, TimeMu, TimeTau, g10(10), tz, dt
+                &, TimeMu, TimeTau, g10(10), tz, dt 
 
   Iname = Iname + 1
   NameOfUnit(Iname) = "InitializeStandardModel"
@@ -496,11 +496,11 @@ Contains
   Open(99,file='StandardModel.in',status='old',err=200)
 
  !---------
- ! Z-boson
+ ! Z-boson  
  !---------
   Read (99,800) mZ      ! mass
   Read (99,800) gamZ    ! width
-  Read (99,*) BrZqq     ! branching ratios in q \bar{q}
+  Read (99,*) BrZqq     ! branching ratios in q \bar{q} 
   Read (99,*) BrZll     ! branching ratios in leptons
   Read (99,800) BrZinv  ! invisible branching ratio
 
@@ -595,7 +595,7 @@ Contains
   !-----------------------------
   Read (99,800) TimeMu
   Read (99,800) TimeTau
-
+  
   GammaMu = G_F**2 * mf_l(2)**5 * (1._dp-8._dp * mf_l(1)**2 / mf_l(2)**2 ) &
         & * (1._dp + 0.5_dp * Alpha * (6.25-Pi2)/Pi) / (192._dp*pi*pi2)
   GammaTau = hbar / TimeTau
@@ -648,7 +648,7 @@ Contains
 !  Write(ErrCan,*) "File StandardModel.in does not exist, using default values."
 
  !---------
- ! Z-boson
+ ! Z-boson  
  !---------
 200  mZ = 91.1876_dp            ! mass
   gamZ = 2.4952_dp           ! width
@@ -692,7 +692,7 @@ Contains
  !--------------------------
  ! up-quark masses: u, c, t
  !--------------------------
-  mf_u(1) = 0.0025_dp
+  mf_u(1) = 0.0025_dp 
   mf_u(2) = 1.27_dp
   mf_u(3) = 173.1_dp
 
@@ -728,7 +728,7 @@ Contains
  !------------
    s12 = lam_wolf
    s23 = s12**2 * A_wolf
-   s13 = s23 * lam_wolf * Sqrt(eta_wolf**2+rho_wolf**2)
+   s13 = s23 * lam_wolf * Sqrt(eta_wolf**2+rho_wolf**2) 
    phase = Atan(eta_wolf/rho_wolf)
 
   c12 = Sqrt(1._dp-s12*s12)
@@ -750,7 +750,7 @@ Contains
   !-----------------------------
   TimeMu = 2.1969811e-6_dp
   TimeTau = 2.9e-13_dp
-
+  
   GammaMu = hbar / TimeMu
   GammaTau = hbar / TimeTau
 
@@ -806,7 +806,7 @@ Contains
  ! calculates neutrino masses + mixing matrix N from the dim 5 operator
  ! input:
  !  MnuL5 .......... dim 5 operator
- ! output
+ ! output 
  !  mN(i) .......... neutrino mass_i
  !  N(i,j) ......... neutrino mixing matrix
  ! written by Werner Porod, 09.01.2006
@@ -878,7 +878,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   If (ierr.Ne.0) Then
    Write (Errcan,*) 'Warning in subroutine NeutrinoMasses, ierr =',ierr
    Write (Errcan,*) 'MnuL5:',Cmplx(MnuL5(1,:))
@@ -930,8 +930,8 @@ Contains
   Integer :: i1
   Real(dp) :: g32, g34, g36, g38, e2, e4, g32e2, q
   Real(dp), Parameter :: b_e1(2) = (/ 76._dp / 9._dp , 80._dp / 9._dp /)    &
-       & , b_e2(2) = (/ 460._dp / 27._dp , 464._dp / 27._dp /)              &
-       & , b_e3(2) = (/ 160._dp / 9._dp , 176._dp / 9._dp  /)               &
+       & , b_e2(2) = (/ 460._dp / 27._dp , 464._dp / 27._dp /)              & 
+       & , b_e3(2) = (/ 160._dp / 9._dp , 176._dp / 9._dp  /)               & 
        & , b_g1(2) = (/ -25._dp / 3._dp, -23._dp/3._dp /)                   &
        & , b_g2(2) = (/ -154._dp / 3._dp, -116._dp/3._dp /)                 &
        & , b_g3(2) = (/ 20._dp / 3._dp, 22._dp/3._dp /)                     &
@@ -939,13 +939,13 @@ Contains
        & , b_g5(2) = (/ -4918247._dp/1458._dp-414140._dp*zeta3/81._dp       &
        &             , 598391._dp/1458._dp - 352864._dp*zeta3/81._dp /)     &
        & , g_el1(2) = (/ -6._dp, -6._dp /)                                  &
-       & , g_el2(2) = (/ 353._dp / 9._dp,  373._dp / 9._dp /)               &
+       & , g_el2(2) = (/ 353._dp / 9._dp,  373._dp / 9._dp /)               & 
        & , g_eu1(2) = (/ -8._dp/3._dp, -8._dp/3._dp /)                      &
-       & , g_eu2(2) = (/ 1472._dp / 81._dp, 1552._dp / 81._dp/)             &
-       & , g_eu3(2) = (/ -32._dp / 9._dp,  -32._dp / 9._dp/)                &
+       & , g_eu2(2) = (/ 1472._dp / 81._dp, 1552._dp / 81._dp/)             & 
+       & , g_eu3(2) = (/ -32._dp / 9._dp,  -32._dp / 9._dp/)                & 
        & , g_ed1(2) = (/ -2._dp/3._dp, -2._dp/3._dp /)                      &
-       & , g_ed2(2) = (/ 377._dp / 81._dp,  397._dp / 81._dp /)             &
-       & , g_ed3(2) = (/ -8._dp / 9._dp,  -8._dp / 9._dp /)                 &
+       & , g_ed2(2) = (/ 377._dp / 81._dp,  397._dp / 81._dp /)             & 
+       & , g_ed3(2) = (/ -8._dp / 9._dp,  -8._dp / 9._dp /)                 & 
        & , g_q1(2) = (/ - 8._dp , -8._dp /)                                 &
        & , g_q2(2) = (/ -1052._dp / 9._dp ,  -1012._dp / 9._dp /)           &
        & , g_q3(2) = (/ -144674._dp/81._dp + 1280._dp * zeta3 / 3._dp       &
@@ -955,7 +955,7 @@ Contains
        &             , -1911065._dp/81._dp + 618400._dp* zeta3/27._dp       &
        &                - 18400._dp*zeta4 / 3._dp - 25600._dp* zeta5 /9._dp  /)
 
-
+       
   Iname = Iname + 1
   NameOfUnit(Iname) = 'RGE10_SMa'
 
@@ -977,7 +977,7 @@ Contains
   g38 = gy(1)**8
   e2 = gy(2)**2
   e4 = gy(2)**4
-  g32e2 = g32 * e2
+  g32e2 = g32 * e2 
  !--------
  ! g_3
  !--------

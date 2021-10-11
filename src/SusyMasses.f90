@@ -40,7 +40,7 @@ Use StandardModel, Only: mW, mW2, mZ, mZ2, mf_l, mf_l2, mf_u, mf_u2, mf_d &
 
  Interface SfermionMass
   Module Procedure SfermionMass1mssm, SfermionMass1eps1, SfermionMass1eps3, &
-                 & SfermionMass3MSSM
+                 & SfermionMass3MSSM 
  End Interface
 
  Interface TreeMasses
@@ -63,7 +63,7 @@ Contains
  !                 i=2 epsilon_1
  !                 i=3 epsilon_2
  !                 i=4 epsilon_3
- !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension
+ !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension 
  !                 mass squared  i=1 ... B_0
  !                               i=2 ... B_1
  !                               i=3 ... B_2
@@ -106,7 +106,7 @@ Contains
       &   + Real( Conjg(bi(1)) * bi(2) * vevL,dp) ) / vevSM(1)
   MH2sq = - Dot_product( Conjg(bi), bi) + DTerm  &
       & + ( Real( B(1),dp ) * vevSM(1) - Real( B(2),dp ) * vevL ) / vevSM(2)
-
+   
 
   sumC = - vevSM(2) * B(2) + vevSM(1) * Conjg(bi(1)) * bi(2)  &
        & - Conjg( bi(2) ) * bi(2) * vevL
@@ -205,7 +205,7 @@ Contains
   mat4(3,4) = ( - bi(1) * vevSM(2) * yukA + Conjg(A) * vevSM(1) ) * oosqrt2
 
   DTerm = 0.25_dp * gp**2 * (v22 - v12 - v32)
-  mat4(4,4) = mR2 + 0.5_dp * (v12 + v32) * yuk2p + Dterm
+  mat4(4,4) = mR2 + 0.5_dp * (v12 + v32) * yuk2p + Dterm 
 
   Do i1=2,4
    Do i2 = 1,i1-1
@@ -221,7 +221,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   If (ierr.Ne.0) Then
    Write(ErrCan,*) 'In subroutine ',NameOfUnit(Iname)
    Write(ErrCan,*) 'subroutine Eigensystem gives ierr = ',ierr
@@ -249,7 +249,7 @@ Contains
     Else
      If (ErrorLevel.Ge.0) Then
       Write(ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
-      Write(ErrCan,*) 'a mass squared is negative :',i1,mSpm2(i1)
+      Write(ErrCan,*) 'a mass squared is negative :',i1,mSpm2(i1) 
       Write(ErrCan,*) 'MH1sq ',MH1sq
       Write(ErrCan,*) 'MH2sq ',MH2sq
       Write(ErrCan,*) 'bi ',bi
@@ -282,7 +282,7 @@ Contains
     Else
      If (ErrorLevel.Ge.0) Then
       Write(ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
-      Write(ErrCan,*) 'a mass squared is negative :',i1,mSpm2(i1)
+      Write(ErrCan,*) 'a mass squared is negative :',i1,mSpm2(i1) 
       Write(ErrCan,*) 'MH1sq ',MH1sq
       Write(ErrCan,*) 'MH2sq ',MH2sq
       Write(ErrCan,*) 'bi ',bi
@@ -318,7 +318,7 @@ Contains
  !                 i=2 epsilon_1
  !                 i=3 epsilon_2
  !                 i=4 epsilon_3
- !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension
+ !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension 
  !                 mass squared  i=1 ... B_0
  !                               i=2 ... B_1
  !                               i=3 ... B_2
@@ -357,7 +357,7 @@ Contains
   NameOfUnit(Iname) = 'ChargedScalarMassEps3'
 
   DTerm = 0.125_dp * (g**2+gp**2)  &
-      & * ( vevSM(1)**2 - vevSM(2)**2 + Dot_product(vevL,vevL))
+      & * ( vevSM(1)**2 - vevSM(2)**2 + Dot_product(vevL,vevL)) 
 
   MH1sq = - Abs( bi(1) )**2 - DTerm  &
       & + ( Real( B(1),dp ) * vevSM(2)  &
@@ -365,7 +365,7 @@ Contains
   MH2sq = - Dot_product( Conjg(bi), bi) + DTerm  &
       & + ( Real( B(1),dp ) * vevSM(1)              &
       &   - Dot_product( Real(B(2:4),dp) , vevL) ) / vevSM(2)
-
+   
   ML2a = ML2
   Do i1=1,3
    sumC = - vevSM(2) * B(i1+1) + vevSM(1) * Conjg(bi(1)) * bi(i1+1)
@@ -373,7 +373,7 @@ Contains
     sumC = sumC - Conjg( bi(i1+1) ) * bi(i2+1) * vevL(i2)
     If (i1.Ne.i2) sumC = sumC - vevL(i2) * ML2a(i2,i1)
    End Do
-   ML2a(i1,i1) = - DTerm + Real( sumC,dp ) / vevL(i1) !- tad_i(i1+2)
+   ML2a(i1,i1) = - DTerm + Real( sumC,dp ) / vevL(i1) !- tad_i(i1+2) 
   End Do
 
 !  Mh1sq = mh1sq + tad_i(1)
@@ -512,7 +512,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   If (ierr.Ne.0) Then
    Write (ErrCan,*) 'In subroutine ',NameOfUnit(Iname)
    Write (ErrCan,*) 'subroutine EigenSystem gives ierr = ',ierr
@@ -546,7 +546,7 @@ Contains
     Else
      If (ErrorLevel.Ge.0) Then
       Write (ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
-      Write (ErrCan,*) 'a mass squared is negative :',i1,mSpm2(i1)
+      Write (ErrCan,*) 'a mass squared is negative :',i1,mSpm2(i1) 
       Write (ErrCan,*) 'MH1sq ',MH1sq
       Write (ErrCan,*) 'MH2sq ',MH2sq
       Write (ErrCan,*) 'bi ',bi
@@ -586,7 +586,7 @@ Contains
     Else
      If (ErrorLevel.Ge.0) Then
       Write (ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
-      Write (ErrCan,*) 'a mass squared is negative :',i1,mSpm2(i1)
+      Write (ErrCan,*) 'a mass squared is negative :',i1,mSpm2(i1) 
 !       Write (ErrCan,*) 'MH1sq ',MH1sq
 !       Write (ErrCan,*) 'MH2sq ',MH2sq
 !       Write (ErrCan,*) 'bi ',bi
@@ -612,7 +612,7 @@ Contains
        Do i2=1,8
         Write(ErrCan,876) mat8(i2,:)
        End Do
-     End If
+     End If 
 
 876 Format(1p,8e12.3)
       Write (ErrCan,*) '  '
@@ -640,7 +640,7 @@ Contains
  !                 i=2 epsilon_1
  !                 i=3 epsilon_2
  !                 i=4 epsilon_3
- !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension
+ !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension 
  !                 mass squared  i=1 ... B_0
  !                               i=2 ... B_1
  !                               i=3 ... B_2
@@ -679,7 +679,7 @@ Contains
   NameOfUnit(Iname) = 'ChargedScalarMassLam3'
 
   DTerm = 0.125_dp * (g**2+gp**2)  &
-      & * ( vevSM(1)**2 - vevSM(2)**2 + Dot_product(vevL,vevL))
+      & * ( vevSM(1)**2 - vevSM(2)**2 + Dot_product(vevL,vevL)) 
 
   MH1sq = - Abs( bi(1) )**2 - DTerm  &
       & + ( Real( B(1),dp ) * vevSM(2)  &
@@ -687,7 +687,7 @@ Contains
   MH2sq = - Dot_product( Conjg(bi), bi) + DTerm  &
       & + ( Real( B(1),dp ) * vevSM(1)              &
       &   - Dot_product( Real(B(2:4),dp) , vevL) ) / vevSM(2)
-
+   
   ML2a = ML2
   Do i1=1,3
    sumC = - vevSM(2) * B(i1+1) + vevSM(1) * Conjg(bi(1)) * bi(i1+1)
@@ -695,7 +695,7 @@ Contains
     sumC = sumC - Conjg( bi(i1+1) ) * bi(i2+1) * vevL(i2)
     If (i1.Ne.i2) sumC = sumC - vevL(i2) * ML2a(i2,i1)
    End Do
-   ML2a(i1,i1) = - DTerm + Real( sumC,dp ) / vevL(i1)
+   ML2a(i1,i1) = - DTerm + Real( sumC,dp ) / vevL(i1) 
   End Do
 
   Call ChargedScalarMassLam3nt(MH1sq, MH2sq, bi, B,vevSM, vevL, mL2a, mE2,A &
@@ -896,7 +896,7 @@ Contains
     Else
      If (ErrorLevel.Ge.0) Then
       Write(ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
-      Write(ErrCan,*) 'a mass squared is negative :',i1,mSpm2(i1)
+      Write(ErrCan,*) 'a mass squared is negative :',i1,mSpm2(i1) 
       Write(ErrCan,*) 'MH1sq ',MH1sq
       Write(ErrCan,*) 'MH2sq ',MH2sq
       Write(ErrCan,*) 'bi ',bi
@@ -935,7 +935,7 @@ Contains
     Else
      If (ErrorLevel.Ge.0) Then
       Write(ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
-      Write(ErrCan,*) 'a mass squared is negative :',i1,mSpm2(i1)
+      Write(ErrCan,*) 'a mass squared is negative :',i1,mSpm2(i1) 
       Write(ErrCan,*) 'MH1sq ',MH1sq
       Write(ErrCan,*) 'MH2sq ',MH2sq
       Write(ErrCan,*) 'bi ',bi
@@ -1017,7 +1017,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   mat22 = Matmul( mat2, Transpose( Conjg( mat2 ) ) )
   If ( Maxval( Abs( Aimag(mat22) ) ).Eq.0._dp) Then ! reel matrix
    Call EigenSystem(Real(mat22,dp), mC2, u1, ierr, test)
@@ -1034,7 +1034,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   mat22 = Matmul( Matmul( Conjg(u2), mat2), Transpose( Conjg(v2) ) )
   Do i1=1,2
    phaseM =   mat22(i1,i1)   / Abs( mat22(i1,i1) )
@@ -1101,7 +1101,7 @@ Contains
   Integer, Intent(inout) :: kont
 
   Real(Dp) vL1
-
+  
   vL1 = vevL(1)
   Call CharginoMass3(M2,bi,vevSM,vL1,g,mTau,mC,U,V,htau,kont)
 
@@ -1160,13 +1160,13 @@ Contains
      &     + 4._dp * g2 * vU * ( v3a * ReM2eps - vD * ReM2mu )                &
      &     + 2._dp * g2 * ( vD2 * eps2 + v32 *  mu2 + 2 * v3a * vD * ReCepsmu)&
      &     + 4._dp * M22 * ( eps2 + mu2 ) )
-
+                      
   nen1 = (v32 + vD2)                                                         &
      & * ( 2._dp * mT2 * (2*mT2 - g2 * (v32 + vU2 + vD2) - 2*M22 )            &
      &   + g4 * vU2 * (v32 + vD2 )                                           &
      &   + 4._dp * g2 * vU * ( v3a * ReM2eps - vD * ReM2mu ) )                &
-     &   - 4._dp*(mT2 - M22) * (v32* eps2 + vD2* mu2 - 2._dp* v3a*vD*ReCepsmu)
-
+     &   - 4._dp*(mT2 - M22) * (v32* eps2 + vD2* mu2 - 2._dp* v3a*vD*ReCepsmu) 
+      
   ht2 = 2._dp * zaehl1 / nen1
   If (ht2.Gt.0._dp) Then
    htau = Sqrt( ht2 )
@@ -1210,7 +1210,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   mat32 = Matmul( mat3, Transpose( Conjg( mat3 ) ) )
   If ( Maxval( Abs( Aimag(mat32) ) ).Eq.0._dp) Then ! reel matrix
    Call EigenSystem(Real(mat32,dp), mC2, u1, ierr, test)
@@ -1227,7 +1227,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   mat32 = Matmul( Matmul( Conjg(u3), mat3), Transpose( Conjg(v3) ) )
   Do i1=1,3
    phaseM =   mat32(i1,i1)   / Abs( mat32(i1,i1) )
@@ -1256,7 +1256,7 @@ Contains
 
  Subroutine CharginoMass5(M2,bi,vevSM,vevL,g,mL,mC,U,V,yuk_L,kont)
  !-----------------------------------------------------------------
- ! calculates chargino masses + mixing matrices U,V in the  3-generation
+ ! calculates chargino masses + mixing matrices U,V in the  3-generation 
  ! epsilon model. In addition the lepton yukawas are calculated.
  ! input:
  !  M2 ........ SU(2) gaugino mass
@@ -1312,20 +1312,20 @@ Contains
    eps2 = Abs( bi(i1+1) )**2
    ReM2eps = Real( M2*bi(i1+1),dp )
    ReCepsmu = Real( Conjg(bi(i1+1)) * bi(1),dp )
-
+      
    zaehl1 = mT2 * ( 4._dp * mT2* (mT2 - eps2 - mu2 - M22 )                    &
      &     - 2._dp * g2 * mT2 * ( v32 + vU2 + vD2 )                           &
      &     + g4 * vU2 * (v32 + vD2 )                                          &
      &     + 4._dp * g2 * vU * ( v3 * ReM2eps - vD * ReM2mu )                 &
      &     + 2._dp * g2 * ( vD2 * eps2 + v32 *  mu2 + 2 * v3 * vD * ReCepsmu) &
      &     + 4._dp * M22 * ( eps2 + mu2 ) )
-
+                      
    nen1 = (v32 + vD2)                                                        &
      & * ( 2._dp * mT2 * (2*mT2 - g2 * (v32 + vU2 + vD2) - 2*M22 )           &
      &   + g4 * vU2 * (v32 + vD2 )                                           &
      &   + 4._dp * g2 * vU * ( v3 * ReM2eps - vD * ReM2mu ) )                 &
-     &   - 4._dp*(mT2 - M22) * (v32* eps2 + vD2* mu2 - 2._dp* v3* vD*ReCepsmu)
-
+     &   - 4._dp*(mT2 - M22) * (v32* eps2 + vD2* mu2 - 2._dp* v3* vD*ReCepsmu) 
+      
    ht2 = 2._dp * zaehl1 / nen1
    If (ht2.Gt.0._dp) Then
     yuk_L(i1) = Sqrt( ht2 )
@@ -1386,7 +1386,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   mat52 = Matmul( mat5, Transpose( Conjg( mat5 ) ) )
   If ( Maxval( Abs( Aimag(mat52) ) ).Eq.0._dp) Then ! reel matrix
    Call EigenSystem(Real(mat52,dp), mC2, u1, ierr, test)
@@ -1403,7 +1403,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   mat52 = Matmul( Matmul( Conjg(u5), mat5), Transpose( Conjg(v5) ) )
   Do i1=1,5
    phaseM =   mat52(i1,i1)   / Abs( mat52(i1,i1) )
@@ -1433,7 +1433,7 @@ Contains
 
  Subroutine CharginoMass5Lam(M2,bi,vevSM,vevL,g,yuk_L,lam,mL,mC,U,V,kont)
  !-----------------------------------------------------------------
- ! calculates chargino masses + mixing matrices U,V in the  3-generation
+ ! calculates chargino masses + mixing matrices U,V in the  3-generation 
  ! epsilon model.
  ! input:
  !  M2 ........ SU(2) gaugino mass
@@ -1475,7 +1475,7 @@ Contains
   V = 0
 
   i_count = 1
-  Do
+  Do 
    mat5(1,1) = M2
    mat5(1,2) = g * vevSM(2) * oosqrt2
    mat5(1,3) = 0._dp
@@ -1511,7 +1511,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
    mat52 = Matmul( mat5, Transpose( Conjg( mat5 ) ) )
    If ( Maxval( Abs( Aimag(mat52) ) ).Eq.0._dp) Then ! reel matrix
     Call EigenSystem(Real(mat52,dp), mC2, u1, ierr, test)
@@ -1528,7 +1528,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
    mat52 = Matmul( Matmul( Conjg(u5), mat5), Transpose( Conjg(v5) ) )
    Do i1=1,5
     phaseM =   mat52(i1,i1)   / Abs( mat52(i1,i1) )
@@ -1576,7 +1576,7 @@ Contains
 
  Subroutine NeutralinoMass4(M1,M2,mu,vevs,gp,g,mN,N,kont)
  !-----------------------------------------------------------------
- ! calculates neutralino masses + mixing matrix N in the MSSM.
+ ! calculates neutralino masses + mixing matrix N in the MSSM. 
  ! input:
  !  M1 .......... U(1) gaugino mass
  !  M2 .......... SU(2) gaugino mass
@@ -1603,8 +1603,8 @@ Contains
   Iname = Iname + 1
   NameOfUnit(Iname) = 'NeutralinoMass4'
 
-  g1 = 0.5_dp * g
-  gp1 = 0.5_dp * gp
+  g1 = 0.5_dp * g 
+  gp1 = 0.5_dp * gp 
 
   mN = 0._dp
   N = (0._dp,0._dp)
@@ -1672,7 +1672,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   If (ierr.Ne.0) Then
    Write (Errcan,*) 'Warning in subroutine NeutralinoMass4, ierr =',ierr
    Write (Errcan,*) 'M1,M2 ',M1,M2
@@ -1699,7 +1699,7 @@ Contains
   Complex(Dp), Intent(inout) :: N(5,5)
 
   Real(Dp) vL1
-
+ 
   vL1 = vevL(1)
   Call NeutralinoMass5(M1,M2,bi,vevSM,vL1,g,gp,mN,N,kont)
 
@@ -1811,7 +1811,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   If (ierr.Ne.0) Then
    Write (ErrCan,*) 'Warning in subroutine NeutralinoMass5, ierr =',ierr
    Write (ErrCan,*) 'M1,M2 ',M1,M2
@@ -1838,14 +1838,14 @@ Contains
  !  gp .......... U(1) gauge coupling
  !  g ........... SU(2) gauge coupling
  !  h0 .......... trilinear H_d H_u phi coupling
- !  lam ......... trilinear self interaction of phi
+ !  lam ......... trilinear self interaction of phi 
  !  vevSM(i) .... i=1 v_d
  !                i=2 v_u
- !  vevN ........ v_phi
+ !  vevN ........ v_phi 
  ! output:
  !  mN(i) ....... vector with neutralino masses m_i<m_j for i<j, all positive
  !  N(i,j) ...... mixing matrix
- !  kont ........ is 0 if everything is fine, otherwise there has been a
+ !  kont ........ is 0 if everything is fine, otherwise there has been a 
  !                numerical problem
  ! written by Werner Porod, 14.02.05
  !----------------------------------------------------------------------
@@ -2074,7 +2074,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   If (ierr.Ne.0) Then
    Write (ErrCan,*) 'Warning in subroutine NeutralinoMass7, ierr =',ierr
    Write (ErrCan,*) 'M1,M2 ',M1,M2
@@ -2106,11 +2106,11 @@ Contains
   Real(dp), Intent(in) :: gU1, gSU2, mSup2(6), mSdown2(6), vevSM(2), vevL(3)
   Real(dp), Intent(out) :: tadpoles(5)
 
-  Integer :: i1, i2, i3
+  Integer :: i1, i2, i3 
   Real(dp) :: e_d, e_u, id5r(5,5), A0m
   Complex(dp) :: sumI(5), coupC, coupRC, Rsf(2,2)
   !----------------------
-  ! Inititalization
+  ! Inititalization 
   !----------------------
   tadpoles = 0._dp
   sumI = 0._dp
@@ -2119,7 +2119,7 @@ Contains
   id5R = 0._dp
   Do i1=1,5
    id5R(i1,i1) = 1._dp
-  End Do
+  End Do 
   !----------------------
   ! quark contribution
   !-----------------------
@@ -2184,7 +2184,7 @@ Contains
  ! Input:
  !  bi(i) ........ i=1 the mu parameter
  !                 i=2 epsilon_3
- !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension
+ !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension 
  !                 mass squared  i=1 ... B_0
  !                               i=2 ... B_3
  !  vevSM(i) ..... i=1 v_D
@@ -2211,14 +2211,14 @@ Contains
   Iname = Iname + 1
   NameOfUnit(Iname) = 'PseudoScalarMassEps1'
 
-  DTerm = 0.125_dp * (g**2+gp**2) * ( vevSM(1)**2 - vevSM(2)**2 + vevL**2)
+  DTerm = 0.125_dp * (g**2+gp**2) * ( vevSM(1)**2 - vevSM(2)**2 + vevL**2) 
 
   MH1sq = - Abs( bi(1) )**2 - DTerm  &
       & + ( Real( B(1),dp ) * vevSM(2)  &
       &   + Real( Conjg(bi(1)) * bi(2),dp) * vevL ) / vevSM(1)
   MH2sq = - Dot_product( Conjg(bi), bi) + DTerm  &
       & + ( Real( B(1),dp ) * vevSM(1) + Real(B(2),dp) * vevL) / vevSM(2)
-
+   
   sumC = - vevSM(2) * B(2) + vevSM(1) * Conjg(bi(1)) * bi(2)
   ML2a = - DTerm  - Abs( bi(2) )**2 + Real( sumC,dp ) / vevL
 
@@ -2240,7 +2240,7 @@ Contains
  !  ML2 .......... M_L33 squared
  !  bi(i) ........ i=1 the mu parameter
  !                 i=2 epsilon_3
- !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension
+ !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension 
  !                 mass squared  i=1 ... B_0
  !                               i=2 ... B_3
  !  vevSM(i) ..... i=1 v_D
@@ -2270,7 +2270,7 @@ Contains
   Iname = Iname + 1
   NameOfUnit(Iname) = 'PseudoScalarMassEps1nT'
 
-  DTerm = 0.125_dp * (g**2+gp**2) * ( vevSM(1)**2 - vevSM(2)**2 + vevL**2 )
+  DTerm = 0.125_dp * (g**2+gp**2) * ( vevSM(1)**2 - vevSM(2)**2 + vevL**2 ) 
 
   mat3(1,1) = MH1sq + DTerm + Abs(bi(1))**2
   mat3(1,2) = Real( B(1),dp )
@@ -2291,15 +2291,15 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   If ((ierr.Ne.0).And.(ErrorLevel.Ge.-1)) Then
    Write(ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
    Write(ErrCan,*) 'Diagonalization failed, ierr :',ierr
-   Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq
+   Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq 
    Write(ErrCan,*) 'vevSM ',vevSM
    Write(ErrCan,*) 'vevL ',vevL
    Write(ErrCan,*) 'gp, g', g, gp
-   Write(ErrCan,*) 'bi ',bi
+   Write(ErrCan,*) 'bi ',bi 
    Write(ErrCan,*) 'B ',B
    Write(ErrCan,*) 'ML2 ',ML2
    kont = ierr
@@ -2314,9 +2314,9 @@ Contains
     Else
      If (ErrorLevel.Ge.0) Then
       Write(ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
-      Write(ErrCan,*) 'a mass squared is negative :',i1,mP02(i1)
+      Write(ErrCan,*) 'a mass squared is negative :',i1,mP02(i1) 
       Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq
-      Write(ErrCan,*) 'ML2 ',ML2
+      Write(ErrCan,*) 'ML2 ',ML2 
       Write(ErrCan,*) 'vevSM ',vevSM
       Write(ErrCan,*) 'vevL ',vevL
       Write(ErrCan,*) 'gp, g', g, gp
@@ -2342,12 +2342,12 @@ Contains
     Else
      If (ErrorLevel.Ge.0) Then
       Write(ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
-      Write(ErrCan,*) 'a mass squared is negative :',i1,mP02(i1)
-      Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq
+      Write(ErrCan,*) 'a mass squared is negative :',i1,mP02(i1) 
+      Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq 
       Write(ErrCan,*) 'vevSM ',vevSM
       Write(ErrCan,*) 'vevL ',vevL
       Write(ErrCan,*) 'gp, g', g, gp
-      Write(ErrCan,*) 'bi ',bi
+      Write(ErrCan,*) 'bi ',bi 
       Write(ErrCan,*) 'B ',B
       Write(ErrCan,*) 'ML2 ',ML2
      End If
@@ -2372,7 +2372,7 @@ Contains
  !                 i=2 epsilon_1
  !                 i=3 epsilon_2
  !                 i=4 epsilon_3
- !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension
+ !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension 
  !                 mass squared  i=1 ... B_0
  !                               i=2 ... B_1
  !                               i=3 ... B_2
@@ -2405,7 +2405,7 @@ Contains
   NameOfUnit(Iname) = 'PseudoScalarMassEps3'
 
   DTerm = 0.125_dp * (g**2+gp**2)  &
-      & * ( vevSM(1)**2 - vevSM(2)**2 + Dot_product(vevL,vevL))
+      & * ( vevSM(1)**2 - vevSM(2)**2 + Dot_product(vevL,vevL)) 
 
   MH1sq = - Abs( bi(1) )**2 - DTerm  &
       & + ( Real( B(1),dp ) * vevSM(2)  &
@@ -2413,7 +2413,7 @@ Contains
   MH2sq = - Dot_product( Conjg(bi), bi) + DTerm  &
       & + ( Real( B(1),dp ) * vevSM(1)              &
       &   - Dot_product( Real(B(2:4),dp) , vevL) ) / vevSM(2)
-
+   
   ML2a = ML2
   Do i1=1,3
    sumC = - vevSM(2) * B(i1+1) + vevSM(1) * Conjg(bi(1)) * bi(i1+1)
@@ -2421,7 +2421,7 @@ Contains
     sumC = sumC - Conjg( bi(i1+1) ) * bi(i2+1) * vevL(i2)
     If (i1.Ne.i2) sumC = sumC - vevL(i2) * ML2a(i2,i1)
    End Do
-   ML2a(i1,i1) = - DTerm + Real( sumC,dp ) / vevL(i1)
+   ML2a(i1,i1) = - DTerm + Real( sumC,dp ) / vevL(i1) 
   End Do
 
   Call PseudoScalarMassEps3nT(MH1sq,MH2sq,ML2a,bi,B,vevSM,vevL,gp,g, &
@@ -2444,7 +2444,7 @@ Contains
  !                 i=2 epsilon_1
  !                 i=3 epsilon_2
  !                 i=4 epsilon_3
- !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension
+ !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension 
  !                 mass squared  i=1 ... B_0
  !                               i=2 ... B_1
  !                               i=3 ... B_2
@@ -2479,7 +2479,7 @@ Contains
   NameOfUnit(Iname) = 'PseudoScalarMassEps3nT'
 
   DTerm = 0.125_dp * (g**2+gp**2)  &
-      & * ( vevSM(1)**2 - vevSM(2)**2 + Dot_product(vevL,vevL))
+      & * ( vevSM(1)**2 - vevSM(2)**2 + Dot_product(vevL,vevL)) 
 
   mat5(1,1) = MH1sq + DTerm + Abs(bi(1))**2
   mat5(1,2) = Real( B(1),dp )
@@ -2507,15 +2507,15 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   If ((ierr.Ne.0).And.(ErrorLevel.Ge.-1)) Then
    Write(ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
    Write(ErrCan,*) 'Diagonalization failed, ierr :',ierr
-   Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq
+   Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq 
    Write(ErrCan,*) 'vevSM ',vevSM
    Write(ErrCan,*) 'vevL ',vevL
    Write(ErrCan,*) 'gp, g', g, gp
-   Write(ErrCan,*) 'bi ',bi
+   Write(ErrCan,*) 'bi ',bi 
    Write(ErrCan,*) 'B ',B
    Write(ErrCan,*) 'ML2 ',ML2
    kont = ierr
@@ -2530,9 +2530,9 @@ Contains
     Else
      If (ErrorLevel.Ge.0) Then
       Write(ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
-      Write(ErrCan,*) 'a mass squared is negative :',i1,mP02(i1)
+      Write(ErrCan,*) 'a mass squared is negative :',i1,mP02(i1) 
       Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq
-      Write(ErrCan,*) 'ML2 ',ML2
+      Write(ErrCan,*) 'ML2 ',ML2 
       Write(ErrCan,*) 'vevSM ',vevSM
       Write(ErrCan,*) 'vevL ',vevL
       Write(ErrCan,*) 'gp, g', g, gp
@@ -2558,12 +2558,12 @@ Contains
     Else
      If (ErrorLevel.Ge.0) Then
       Write(ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
-      Write(ErrCan,*) 'a mass squared is negative :',i1,mP02(i1)
-      Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq
+      Write(ErrCan,*) 'a mass squared is negative :',i1,mP02(i1) 
+      Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq 
       Write(ErrCan,*) 'vevSM ',vevSM
       Write(ErrCan,*) 'vevL ',vevL
       Write(ErrCan,*) 'gp, g', g, gp
-      Write(ErrCan,*) 'bi ',bi
+      Write(ErrCan,*) 'bi ',bi 
       Write(ErrCan,*) 'B ',B
       Write(ErrCan,*) 'ML2 ',ML2
      End If
@@ -2585,7 +2585,7 @@ Contains
  ! calculates the pseudoscalar masses in the MSSM
  ! Input:
  !  mu ........... i=1 the mu parameter
- !  B ............ bilinear soft SUSY breaking Parameter with dimension
+ !  B ............ bilinear soft SUSY breaking Parameter with dimension 
  !                 mass squared
  !  vevSM(i) ..... i=1 v_D
  !                 i=2 v_U
@@ -2609,11 +2609,11 @@ Contains
   Iname = Iname + 1
   NameOfUnit(Iname) = 'PseudoScalarMassMSSM'
 
-  DTerm = 0.125_dp * (g**2+gp**2) * ( vevSM(1)**2 - vevSM(2)**2)
+  DTerm = 0.125_dp * (g**2+gp**2) * ( vevSM(1)**2 - vevSM(2)**2) 
 
   MH1sq = - Abs( mu )**2 - DTerm + Real( B,dp ) * vevSM(2) / vevSM(1)
   MH2sq = - Abs( mu )**2 + DTerm + Real( B,dp ) * vevSM(1) / vevSM(2)
-
+   
   Call PseudoScalarMassMSSMnT(MH1sq,MH2sq,mu,B,vevSM,gp,g,mP0,mP02,RP0,kont)
 
   Iname = Iname - 1
@@ -2629,7 +2629,7 @@ Contains
  !  MH1sq ........ M_H_1 squared
  !  MH2sq ........ M_H_2 squared
  !  mu ........... the mu parameter
- !  B ............ bilinear soft SUSY breaking Parameter with dimension
+ !  B ............ bilinear soft SUSY breaking Parameter with dimension 
  !                 mass squared
  !  vevSM(i) ..... i=1 v_D
  !                 i=2 v_U
@@ -2647,7 +2647,7 @@ Contains
  Implicit None
   Real(Dp), Intent(in) :: MH1sq, MH2sq, vevSM(2), g, gp
   Real(Dp), Intent(out) :: mP0(2), mP02(2), RP0(2,2)
-  Complex(Dp), Intent(in) ::  Mu, B
+  Complex(Dp), Intent(in) ::  Mu, B 
   Integer, Intent(inout) :: kont
   Integer, Optional, Intent(in) :: NoSymmetryBreaking
 
@@ -2673,11 +2673,11 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   If ((ierr.Ne.0).And.(ErrorLevel.Ge.-1)) Then
    Write(ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
    Write(ErrCan,*) 'Diagonalization failed, ierr :',ierr
-   Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq
+   Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq 
    Write(ErrCan,*) 'vevSM ',vevSM
    Write(ErrCan,*) 'gp, g', g, gp
    Write(ErrCan,*) 'mu ',mu
@@ -2694,8 +2694,8 @@ Contains
     Else
      If (ErrorLevel.Ge.0) Then
       Write(ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
-      Write(ErrCan,*) 'a mass squared is negative :',i1,mP02(i1)
-      Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq
+      Write(ErrCan,*) 'a mass squared is negative :',i1,mP02(i1) 
+      Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq 
       Write(ErrCan,*) 'vevSM ',vevSM
       Write(ErrCan,*) 'gp, g', g, gp
       Write(ErrCan,*) 'mu ',mu
@@ -2719,8 +2719,8 @@ Contains
    Else
     If (ErrorLevel.Ge.0) Then
      Write(ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
-     Write(ErrCan,*) 'a mass squared is negative :',2,mP02(2)
-     Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq
+     Write(ErrCan,*) 'a mass squared is negative :',2,mP02(2) 
+     Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq 
      Write(ErrCan,*) 'vevSM ',vevSM
      Write(ErrCan,*) 'gp, g', g, gp
      Write(ErrCan,*) 'mu ',mu
@@ -2743,7 +2743,7 @@ Contains
  ! calculates the scalar masses in the 1-generation epsilon model
  ! Input:
  !                 i=2 epsilon_3
- !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension
+ !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension 
  !                 mass squared  i=1 ... B_0
  !                               i=2 ... B_3
  !  vevSM(i) ..... i=1 v_D
@@ -2777,7 +2777,7 @@ Contains
       &   + Real( Conjg(bi(1)) * bi(2),dp) * vevL ) / vevSM(1)
   MH2sq = - Dot_product( Conjg(bi), bi) + DTerm  &
       & + ( Real( B(1),dp ) * vevSM(1) + Real(B(2),dp) * vevL) / vevSM(2)
-
+   
   sumC = - vevSM(2) * B(2) + vevSM(1) * Conjg(bi(1)) * bi(2)
   ML2a = - DTerm  - Abs( bi(2) )**2 + Real( sumC,dp ) / vevL
 
@@ -2799,7 +2799,7 @@ Contains
  !  ML2 .......... M_L33 squared
  !  bi(i) ........ i=1 the mu parameter
  !                 i=2 epsilon_3
- !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension
+ !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension 
  !                 mass squared  i=1 ... B_0
  !                               i=2 ... B_3
  !  vevSM(i) ..... i=1 v_D
@@ -2828,7 +2828,7 @@ Contains
   NameOfUnit(Iname) = 'ScalarMassEps1nT'
 
   g2 = 0.25 * (g**2+gp**2)
-  DTerm = 0.5_dp * g2 * ( vevSM(1)**2 - vevSM(2)**2 + vevL**2 )
+  DTerm = 0.5_dp * g2 * ( vevSM(1)**2 - vevSM(2)**2 + vevL**2 ) 
 
   mat3(1,1) = MH1sq + DTerm + Abs(bi(1))**2 + g2 * vevSM(1)**2
   mat3(1,2) = - Real( B(1),dp ) - g2 * vevSM(1) * vevSM(2)
@@ -2853,15 +2853,15 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   If ((ierr.Ne.0).And.(ErrorLevel.Ge.-1)) Then
    Write (ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
    Write (ErrCan,*) 'Diagonalization failed, ierr :',ierr
-   Write (ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq
+   Write (ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq 
    Write (ErrCan,*) 'vevSM ',vevSM
    Write (ErrCan,*) 'vevL ',vevL
    Write (ErrCan,*) 'gp, g', g, gp
-   Write (ErrCan,*) 'bi ',bi
+   Write (ErrCan,*) 'bi ',bi 
    Write (ErrCan,*) 'B ',B
    Write (ErrCan,*) 'ML2 ',ML2
    kont = ierr
@@ -2875,9 +2875,9 @@ Contains
    Else
     If (ErrorLevel.Ge.0) Then
      Write (ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
-     Write (ErrCan,*) 'a mass squared is negative :',i1,mS02(i1)
+     Write (ErrCan,*) 'a mass squared is negative :',i1,mS02(i1) 
      Write (ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq
-     Write (ErrCan,*) 'ML2 ',ML2
+     Write (ErrCan,*) 'ML2 ',ML2 
      Write (ErrCan,*) 'vevSM ',vevSM
      Write (ErrCan,*) 'vevL ',vevL
      Write (ErrCan,*) 'gp, g', g, gp
@@ -2906,7 +2906,7 @@ Contains
  !                 i=2 epsilon_1
  !                 i=3 epsilon_2
  !                 i=4 epsilon_3
- !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension
+ !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension 
  !                 mass squared  i=1 ... B_0
  !                               i=2 ... B_1
  !                               i=3 ... B_2
@@ -2939,7 +2939,7 @@ Contains
   NameOfUnit(Iname) = 'ScalarMassEps3'
 
   DTerm = 0.125_dp * (g**2+gp**2)  &
-      & * ( vevSM(1)**2 - vevSM(2)**2 + Dot_product(vevL,vevL))
+      & * ( vevSM(1)**2 - vevSM(2)**2 + Dot_product(vevL,vevL)) 
 
   MH1sq = - Abs( bi(1) )**2 - DTerm  &
       & + ( Real( B(1),dp ) * vevSM(2)  &
@@ -2947,7 +2947,7 @@ Contains
   MH2sq = - Dot_product( Conjg(bi), bi) + DTerm  &
       & + ( Real( B(1),dp ) * vevSM(1)              &
       &   - Dot_product( Real(B(2:4),dp) , vevL) ) / vevSM(2)
-
+   
   ML2a = ML2
   Do i1=1,3
    sumC = - vevSM(2) * B(i1+1) + vevSM(1) * Conjg(bi(1)) * bi(i1+1)
@@ -2955,7 +2955,7 @@ Contains
     sumC = sumC - Conjg( bi(i1+1) ) * bi(i2+1) * vevL(i2)
     If (i1.Ne.i2) sumC = sumC - vevL(i2) * ML2a(i2,i1)
    End Do
-   ML2a(i1,i1) = - DTerm + Real( sumC,dp ) / vevL(i1)
+   ML2a(i1,i1) = - DTerm + Real( sumC,dp ) / vevL(i1) 
   End Do
 
   Call ScalarMassEps3nT(MH1sq,MH2sq,ML2a,bi,B,vevSM,vevL,gp,g, &
@@ -2978,7 +2978,7 @@ Contains
  !                 i=2 epsilon_1
  !                 i=3 epsilon_2
  !                 i=4 epsilon_3
- !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension
+ !  B(i) ......... bilinear soft SUSY breaking Parameter with dimension 
  !                 mass squared  i=1 ... B_0
  !                               i=2 ... B_1
  !                               i=3 ... B_2
@@ -3011,7 +3011,7 @@ Contains
   NameOfUnit(Iname) = 'ScalarMassEps3nT'
 
   g2 = 0.25 * (g**2+gp**2)
-  DTerm = 0.5_dp * g2 * ( vevSM(1)**2 - vevSM(2)**2 + Dot_product(vevL,vevL))
+  DTerm = 0.5_dp * g2 * ( vevSM(1)**2 - vevSM(2)**2 + Dot_product(vevL,vevL)) 
 
   mat5(1,1) = MH1sq + DTerm + Abs(bi(1))**2 + g2 * vevSM(1)**2
   mat5(1,2) = - Real( B(1),dp ) - g2 * vevSM(1) * vevSM(2)
@@ -3029,7 +3029,7 @@ Contains
      &     / (vevSM(1)**2 + vevSM(2)**2 + vevL(1)**2 + vevL(2)**2 +vevL(3)**2)
   mat5(2,2) = mat5(2,2) + 3._dp * mTop2**2 *Log(mStop2(1)*mStop2(2)/mTop2**2) &
             &             / (4._dp * Pi2 * vevSM(2)**2 * c2)
-
+ 
   Do i1=2,5
    Do i2=1,i1-1
     mat5(i1,i2)=mat5(i2,i1)
@@ -3045,15 +3045,15 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   If ((ierr.Ne.0).And.(ErrorLevel.Ge.-1)) Then
    Write(ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
    Write(ErrCan,*) 'Diagonalization failed, ierr :',ierr
-   Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq
+   Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq 
    Write(ErrCan,*) 'vevSM ',vevSM
    Write(ErrCan,*) 'vevL ',vevL
    Write(ErrCan,*) 'gp, g', g, gp
-   Write(ErrCan,*) 'bi ',bi
+   Write(ErrCan,*) 'bi ',bi 
    Write(ErrCan,*) 'B ',B
    Write(ErrCan,*) 'ML2 ',ML2
    kont = ierr
@@ -3067,9 +3067,9 @@ Contains
    Else
     If (ErrorLevel.Ge.0) Then
      Write(ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
-     Write(ErrCan,*) 'a mass squared is negative :',i1,mS02(i1)
+     Write(ErrCan,*) 'a mass squared is negative :',i1,mS02(i1) 
      Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq
-     Write(ErrCan,*) 'ML2 ',ML2
+     Write(ErrCan,*) 'ML2 ',ML2 
      Write(ErrCan,*) 'vevSM ',vevSM
      Write(ErrCan,*) 'vevL ',vevL
      Write(ErrCan,*) 'gp, g', g, gp
@@ -3096,7 +3096,7 @@ Contains
  ! Ellis, Ridolfi, Zwirner, Phys. Lett. B262 (1991) 477
  ! Input:
  !  mu ........... i=1 the mu parameter
- !  B ............ bilinear soft SUSY breaking Parameter with dimension
+ !  B ............ bilinear soft SUSY breaking Parameter with dimension 
  !                 mass squared
  !  vevSM(i) ..... i=1 v_D
  !                 i=2 v_U
@@ -3106,7 +3106,7 @@ Contains
  !  mS0(i) ....... the masses
  !  mS02(i) ...... the masses squared
  !  RS0(i,J) ..... mixing matrix
- !   note that the dimension is not fixed, so that I can latter on
+ !   note that the dimension is not fixed, so that I can latter on 
  !   include CP violation
  !  kont ......... control parameter, =0 if everything is o.k.
  ! written by Werner Porod: 16.11.2000
@@ -3188,7 +3188,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   If ((ierr.Eq.0).And.(E2(1).Ge.0._dp)) Then
    mS02 = E2
    mS0 = Sqrt(E2)
@@ -3205,7 +3205,7 @@ Contains
    mS02 = E2
    mS0 = Sqrt(Abs(E2))
    RS0 = S2
-  Else
+  Else 
    kont = ierr
    If (ErrorLevel.Ge.0) Then
     Write(ErrCan,*) 'Warning from ',NameOfUnit(Iname)
@@ -3241,7 +3241,7 @@ Contains
  ! calculates the scalar masses in the MSSM
  ! Input:
  !  mu ........... i=1 the mu parameter
- !  B ............ bilinear soft SUSY breaking Parameter with dimension
+ !  B ............ bilinear soft SUSY breaking Parameter with dimension 
  !                 mass squared
  !  vevSM(i) ..... i=1 v_D
  !                 i=2 v_U
@@ -3265,11 +3265,11 @@ Contains
   Iname = Iname + 1
   NameOfUnit(Iname) = 'ScalarMassMSSM'
 
-  DTerm = 0.125_dp * (g**2+gp**2) * ( vevSM(1)**2 - vevSM(2)**2)
+  DTerm = 0.125_dp * (g**2+gp**2) * ( vevSM(1)**2 - vevSM(2)**2) 
 
   MH1sq = - Abs( mu )**2 - DTerm + Real( B,dp ) * vevSM(2) / vevSM(1)
   MH2sq = - Abs( mu )**2 + DTerm + Real( B,dp ) * vevSM(1) / vevSM(2)
-
+   
   Call ScalarMassMSSMnT(MH1sq,MH2sq,mu,B,vevSM,gp,g,mS0,mS02,RS0,kont)
 
   Iname = Iname - 1
@@ -3278,14 +3278,14 @@ Contains
 
  Subroutine ScalarMassMSSMnT(MH1sq,MH2sq,mu,B,vevSM,gp,g,mS0,mS02,RS0,kont)
  !-----------------------------------------------------------------------
- ! calculates the scalar masses in the MSSM
+ ! calculates the scalar masses in the MSSM 
  ! without referring to the tad-pole equations.
  ! Input:
  !  MH1sq ........ M_H_1 squared
  !  MH2sq ........ M_H_2 squared
  !  mu ........... the mu parameter
- !  B ............ bilinear soft SUSY breaking Parameter with dimension
- !                 mass squared
+ !  B ............ bilinear soft SUSY breaking Parameter with dimension 
+ !                 mass squared 
  !  vevSM(i) ..... i=1 v_D
  !                 i=2 v_U
  !  gp ........... U(1)_Y gauge coupling g'
@@ -3310,7 +3310,7 @@ Contains
   NameOfUnit(Iname) = 'ScalarMassMSSMnT'
 
   g2 = 0.25 * (g**2+gp**2)
-  DTerm = 0.5_dp * g2 * ( vevSM(1)**2 - vevSM(2)**2 )
+  DTerm = 0.5_dp * g2 * ( vevSM(1)**2 - vevSM(2)**2 ) 
 
   mat2(1,1) = MH1sq + DTerm + Abs(mu)**2 + g2 * vevSM(1)**2
   mat2(1,2) = - Real( B,dp ) - g2 * vevSM(1) * vevSM(2)
@@ -3326,11 +3326,11 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   If ((ierr.Ne.0).And.(ErrorLevel.Ge.-1)) Then
    Write(ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
    Write(ErrCan,*) 'Diagonalization failed, ierr :',ierr
-   Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq
+   Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq 
    Write(ErrCan,*) 'vevSM ',vevSM
    Write(ErrCan,*) 'gp, g', g, gp
    Write(ErrCan,*) 'mu ',mu
@@ -3346,7 +3346,7 @@ Contains
    Else
     If (ErrorLevel.Ge.0) Then
      Write(ErrCan,*) 'Warning from Subroutine '//NameOfUnit(Iname)
-     Write(ErrCan,*) 'a mass squared is negative :',i1,mS02(i1)
+     Write(ErrCan,*) 'a mass squared is negative :',i1,mS02(i1) 
      Write(ErrCan,*) 'MH1sq, MH2sq ', MH1sq, MH2sq
      Write(ErrCan,*) 'vevSM ',vevSM
      Write(ErrCan,*) 'gp, g', g, gp
@@ -3384,35 +3384,35 @@ Contains
  !	PAR(8) = MU3           Right-handed Stops
  !	PAR(9) = MD3           Right-handed Sbottoms
  !	PAR(12) = A_TOP
- !	PAR(13) = A_BOT
+ !	PAR(13) = A_BOT         
  !	PAR(20) = M1
- !	PAR(21) = M2
+ !	PAR(21) = M2  
  !
- !	On output:
+ !	On output: 
  !
  !	mS0(1-3): CP-even masses (ordered)
  !
  !	RS0(1-3,1-3): Mixing angles: if HB(I) are the bare states,
- !    HB(I) = Re(H1), Re(H2), Re(S), and HM(I) are the mass eigenstates,
- !    the convention is HB(I) = SUM_(J=1,3) RS0(J,I)*HM(J)
- !    which is equivalent to HM(I) = SUM_(J=1,3) RS0(I,J)*HB(J)
+ !	  HB(I) = Re(H1), Re(H2), Re(S), and HM(I) are the mass eigenstates, 
+ !	  the convention is HB(I) = SUM_(J=1,3) RS0(J,I)*HM(J)
+ !	  which is equivalent to HM(I) = SUM_(J=1,3) RS0(I,J)*HB(J)
  !
  !	mP0(1-2): CP-odd masses (ordered)
  !
  !	RP0(1-2,1-2): Mixing angles: if AB(I) are the bare states,
- !    AB(I) = Im(H1), Im(H2), Im(S), and AM(I) are the mass eigenstates,
- !    the convention is
- !    AM(I) = RP0(I,1)*(COSBETA*AB(1)+SINBETA*AB(2))
+ !	  AB(I) = Im(H1), Im(H2), Im(S), and AM(I) are the mass eigenstates, 
+ !	  the convention is 
+ !	  AM(I) = RP0(I,1)*(COSBETA*AB(1)+SINBETA*AB(2))
  !			+ RP0(I,2)*AB(3)
  !
  !	mSpm: Charged Higgs mass
  !
- !	kont:  =   0          OK
+ !	kont:  =   0	        OK
  !		=   1,3,5,7	mS0(1)**2 < 0
  !		=   2,3,6,7	mP0(1)**2 < 0
  !		=   4,5,6,7	mSpm**2 < 0
  !		=   8		MST1 or MSB1 <0
- !		=   10    Singular parameters (l, k, mu or tanb = 0)
+ !		=   10   	Singular parameters (l, k, mu or tanb = 0)
  !
  !	The precision in the computation of the lightest Higgs mass is:
  !
@@ -3426,7 +3426,7 @@ Contains
  !
  !	Leading logs ~ (g, l, k)^4 are added explicitely.
  !
- !	Leading double logs from two loops ~ ht/hb^6 and ht/hb^4*alpha_s
+ !	Leading double logs from two loops ~ ht/hb^6 and ht/hb^4*alpha_s 
  !	are taken into account.
  !
  !	For heavy higgses (with masses mhh > mtop) the leading log
@@ -3449,13 +3449,13 @@ Contains
   Real(dp), Intent(in) :: M2_Q1, M2_U1, M2_D1, M2_E1, M2_L1, M2_E, M2_L
   Complex(dp), Intent(in) :: Rsbot(2,2), RStop(2,2)
   Real(dp), intent(in) :: mu_in, vevSM(2), vP
-  Real(dp), Intent(in) :: Ak, Al_in, M2, At, Ab
+  Real(dp), Intent(in) :: Ak, Al_in, M2, At, Ab 
 
   Real(dp), Intent(out) :: mS0(3), mS02(3), RS0(3,3), mP0(3), mP02(3), RP0(3,3) &
      & , mSpm(2), mSpm2(2)
   Complex(dp), Intent(out) :: RSpm(2,2)
 
-
+  
   Integer :: I
   Real(dp) :: k, mT2, L, tanb, tanbq, Zht, Zhb, QSTSB, cb, sb, s2, t, g
   Real(dp) :: nu, B, c2tw, s2tw, h1q, h2q, htq, hbq, Al, h1, h2
@@ -3521,7 +3521,7 @@ Contains
   g2 = 4._dp * SQRT2 * G_F * MW2
   g = 2._dp * sqrt2 * G_F * mZ2
   C2TW = mW2 / mZ2
-  s2tw = 1._dp - C2TW
+  s2tw = 1._dp - C2TW 
   !----------------------------------------
   ! calculate mu(QSTSB)
   !----------------------------------------
@@ -3586,8 +3586,8 @@ Contains
     gmb = 0._dp
     emb = 0._dp
   End If
-
- !  The subsequent shifts simplify the expressions for the
+  
+ !  The subsequent shifts simplify the expressions for the 
  !  one loop rad.corrs. below.
  !  The parameter Al is defined at the scale QSTSB
   If (mStop2(1) /= mStop2(2)) Then
@@ -3618,7 +3618,7 @@ Contains
  !   1-loop radiative corrections
   rdia(1) = - At**2*gmt + 4._dp*At*emt &
         &  + 4._dp*mtopq**2*Log(mStop2(1)*mStop2(2)/mtopq**4)
-  rdia(2) = - mu**2*gmt
+  rdia(2) = - mu**2*gmt 
   rdia(3) = -l**2*h2q**2*gmt
   roff(1) = mu*(At*gmt - 2._dp*emt)
   roff(2) = l*h2q*(At*gmt - 2._dp*emt)
@@ -3634,7 +3634,7 @@ Contains
   roff(1) = mu*(Ab*gmb - 2._dp*emb)
   roff(2) = - l*h1q*mu*gmb + 4._dp*l*h1q*mu*fmb
   roff(3) = l*h1q*(Ab*gmb - 2._dp*emb)
-
+  
   mdia = mdia + rt * rdia
   moff = moff + rt * roff
 
@@ -3677,7 +3677,7 @@ Contains
   moff(3) = moff(3)/Sqrt(Zhb)
 
  !   Leading-log electroweak contributions (1 loop):
-
+  
  !   a) Sfermion contributions
   sferm = g * mZ2 /(12._dp *pi2) &
     & * ( (S2TW**2/6._dp+C2TW**2*1.5_dp)*(Log(M2_Q/mZ2)+2._dp *Log(M2_Q1/mZ2)) &
@@ -3800,7 +3800,7 @@ Contains
   mp(1) = mu*B*(h1q/(Zhb*h2q)+h2q/(Zht*h1q))
   mp(2) = L**2*h1q*h2q/mu*(3._dp*nu+B)-3._dp*Ak*nu
   mp(3) = L*(Alshift-2._dp*nu)*Sqrt(h1q**2/Zhb+h2q**2/Zht)
-
+  
  !   Dominant chargino/neutralino contribution ~<S>**2
   mp(1) = mp(1)+ g*mu*nu*(3._dp-2._dp*S2TW)*LM2mu*(tanbq+1/tanbq) * oo16pi2
 
@@ -3866,8 +3866,8 @@ Contains
   ! rotate RP0 to electroweak basis including Goldstone bosons
   !------------------------------------------------------------
    RSpm(1,1) = - cb
-   RSpm(1,2) = sb
-   RSpm(2,1) = sb
+   RSpm(1,2) = sb 
+   RSpm(2,1) = sb 
    RSpm(2,2) = cb
 
  !   Charged Higgs mass including 1-loop radiative corrections
@@ -3876,7 +3876,7 @@ Contains
     +oo16pi2*3._dp*htq**2*hbq**2/(Sqrt2*G_F)*t&
     &+oo16pi2*g2*MW**2/3._dp*(12._dp*t+3._dp*(5*S2TW/C2TW-1._dp)*LM2mu &
     &                         -4._dp*LM2-2._dp*Lmu)
-
+  
  !   Dominant chargino/neutralino contribution ~<S>**2
   mSpm2(2) = mSpm2(2)+ oo16pi2*g*mu*nu*(3._dp-2._dp*S2TW)*LM2mu*(tanbq+1/tanbq)
  !   Charged Higgs pole mass (in the LLA only)
@@ -3894,7 +3894,7 @@ Contains
   mSpm2(1) = mW2
 
  End Subroutine ScalarMassNMSSMeff
-
+  
 
  Subroutine SdownMass3Lam(M_L2, M_R2, Af, bi, vevSM, vevL, Yuk, lamp, &
    &  Alam, g, gp, kont, msf, msf2, Rsf)
@@ -3904,7 +3904,7 @@ Contains
  ! input:
  !  M_L2(i,j) . left sfermion squared mass matrix
  !  M_R2(i,j) . right sfermion squared mass matrix
- !  Af(i,j) ... trilinear A-parameter
+ !  Af(i,j) ... trilinear A-parameter 
  !  mu ........ mu-parameter
  !  vevSM(i) ... i=1 v_d
  !              i=2 v_u
@@ -3927,7 +3927,7 @@ Contains
                               & , bi(4), lamp(3,3,3), Alam(3,3,3)
   Complex(Dp), Intent(out) :: Rsf(6, 6)
   Integer, Intent(inout) :: kont
-
+ 
   Integer :: i1, i2, i3, ierr
   Real(Dp) :: T3, Yl, Yr, vev2, test(2)
   Complex(Dp) :: mat6(6,6),YukA(3,3),AfA(3,3),off(3,3), yukp(3,3)
@@ -3942,7 +3942,7 @@ Contains
        &           + vevL(1)**2 + vevL(2)**2 + vevL(3)**2 )
   AfA = Af
   Call Adjungate(AfA)
-  yukp = vevSM(1) * yuk
+  yukp = vevSM(1) * yuk 
   Do i1=1,3
    Do i2=1,3
     Do i3=1,3
@@ -3986,7 +3986,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
  If ((ierr.Ne.0).And.(ErrorLevel.Ge.0)) Then
    Write(ErrCan,*) 'Diagonalization did not work in routine SdownMass3Lam!'
     Write(ErrCan, * ) 'msf2 ', msf2
@@ -4275,7 +4275,7 @@ Contains
   End If
 
   Rsf(1, 1) = cost * phase
-  Rsf(1, 2) = sint
+  Rsf(1, 2) = sint 
   Rsf(2, 1) = - sint
   Rsf(2, 2) = cost / phase
 
@@ -4314,7 +4314,7 @@ Contains
   Complex(Dp), Intent(out) :: Rsf(2, 2)
   Integer, Intent(inout) :: kont
 
-  integer :: i1
+  integer :: i1 
   Real(Dp) :: vev2, diag(2), abs_offdiag, trace, det2, det,     &
     &  nen2, nen, cost, sint
   Complex(Dp) :: offdiag, phase
@@ -4401,7 +4401,7 @@ Contains
   End If
 
   Rsf(1, 1) = cost * phase
-  Rsf(1, 2) = sint
+  Rsf(1, 2) = sint 
   Rsf(2, 1) = - sint
   Rsf(2, 2) = cost / phase
 
@@ -4417,7 +4417,7 @@ Contains
  ! input:
  !  M_L2(i,j) . left sfermion squared mass matrix
  !  M_R2(i,j) . right sfermion squared mass matrix
- !  Af(i,j) ... trilinear A-parameter
+ !  Af(i,j) ... trilinear A-parameter 
  !  mu ........ mu-parameter
  !  vevs(i) ... i=1 v_d
  !              i=2 v_u
@@ -4440,7 +4440,7 @@ Contains
   Complex(Dp), Intent(in) :: M_L2(3,3), M_R2(3,3), Af(3,3), Yuk(3,3), mu
   Complex(Dp), Intent(out) :: Rsf(6, 6)
   Integer, Intent(inout) :: kont
-
+ 
   Integer :: i1, i2, ierr
   Real(Dp) :: vev2, test(2), Rsfa(6,6), m2(2), m22(2), Ml, Mr
   Complex(Dp) :: mat6(6,6), off(3,3), Rsf2(2,2), A, Y &
@@ -4538,7 +4538,7 @@ Contains
    off = Conjg(off)
    mat6(1:3,4:6) = off
    Call Adjungate(off)
-   mat6(4:6,1:3) = off
+   mat6(4:6,1:3) = off      
 
    If (Maxval(Abs(Aimag(mat6))).Eq.0._dp) Then
     Call EigenSystem(Real(mat6,dp),msf2,Rsfa,ierr, test)
@@ -4546,16 +4546,16 @@ Contains
    Else
     Call EigenSystem(mat6,msf2,Rsf,ierr, test)
    End If
-
+ 
    If ((ierr.Eq.-14).Or.(ierr.Eq.-16)) Then
      Write(ErrCan,*) "Possible numerical problem in "//NameOfUnit(Iname)
      Write(ErrCan,*) "test =",test
      Write(ErrCan,*) "T_3, Y_l",T3,yl
      Write(ErrCan,*) "M_L2",M_L2(1,:)
-     Write(errcan,*) "    ",M_L2(2,:)
-     Write(errcan,*) "    ",M_L2(3,:)
+     Write(errcan,*) "    ",M_L2(2,:) 
+     Write(errcan,*) "    ",M_L2(3,:) 
      Write(ErrCan,*) "M_R2",M_R2(1,:)
-     Write(errcan,*) "    ",M_r2(2,:)
+     Write(errcan,*) "    ",M_r2(2,:) 
      Write(errcan,*) "    ",M_r2(3,:)
      off =  Matmul(YukC,YukT)
      Write(Errcan,*) "Y^* Y^T",off(1,:)
@@ -4583,7 +4583,7 @@ Contains
      If (ErrorLevel.Eq.2) Call TerminateProgram
      ierr = 0
    End If
-
+  
 
    If ((ierr.Ne.0).And.(ErrorLevel.Ge.0)) Then
      Write(ErrCan,*) 'Diagonalization did not work in routine SfermionMass3mssm!'
@@ -4638,7 +4638,7 @@ Contains
  ! input:
  !  M_L2(i,j) . left sfermion squared mass matrix
  !  M_R2(i,j) . right sfermion squared mass matrix
- !  Af(i,j) ... trilinear A-parameter
+ !  Af(i,j) ... trilinear A-parameter 
  !  mu ........ mu-parameter
  !  vevSM(i) ... i=1 v_d
  !              i=2 v_u
@@ -4661,7 +4661,7 @@ Contains
                               & , bi(4)
   Complex(Dp), Intent(out) :: Rsf(6, 6)
   Integer, Intent(inout) :: kont
-
+ 
   Integer :: i1, ierr
   Real(Dp) :: Yl, Yr, vev2, test(2)
   Complex(Dp) :: mat6(6,6),YukA(3,3),AfA(3,3),off(3,3)
@@ -4714,7 +4714,7 @@ Contains
     If (ErrorLevel.Eq.2) Call TerminateProgram
     ierr = 0
   End If
-
+  
   If ((ierr.Ne.0).And.(ErrorLevel.Ge.0)) Then
    Write(ErrCan,*) 'Diagonalization did not work in routine SquarkMass3Eps!'
     Write(ErrCan, * ) 'msf2 ', msf2
@@ -4771,7 +4771,7 @@ Contains
   Complex(dp), Intent(in) :: M1, M2, M3, mu(2), B(2)
   Complex(dp), Intent(in) :: A_l(3,3), A_d(3,3), A_u(3,3)
   Complex(dp), Intent(in) :: Y_l(3,3), Y_d(3,3), Y_u(3,3)
-  Complex(dp), Intent(in) :: M2_E(3,3), M2_L(3,3), M2_D(3,3), M2_U(3,3)&
+  Complex(dp), Intent(in) :: M2_E(3,3), M2_L(3,3), M2_D(3,3), M2_U(3,3)& 
                         &  , M2_Q(3,3)
 !  real(dp), intent(in) :: M2_H(2)
   Real(dp), Intent(in) :: g, gp, vevSM(2), vevL
@@ -4852,7 +4852,7 @@ Contains
    mSlepton = 0
    mSlepton2 = 0
    T3 = -0.5_dp
-   Yl = -1._dp
+   Yl = -1._dp 
    Yr = 2._dp
    Do i1 = 1,2
     Ml = M2_L(i1,i1)
@@ -4934,7 +4934,7 @@ Contains
                      &, msf, msf2, Rsf)
    mStop2 = msf2
   Else
-   mStop2 = mSup2(5:6)
+   mStop2 = mSup2(5:6) 
   End If
   mT = Abs(Y_u(3,3)) * vevSM(2) * oosqrt2
   A = A_u(3,3)
@@ -4960,7 +4960,7 @@ Contains
   Complex(dp), Intent(in) :: M1, M2, M3, mu(4), B(4)
   Complex(dp), Intent(in) :: A_l(3,3), A_d(3,3), A_u(3,3)
   Complex(dp), Intent(in) :: Y_l(3,3), Y_d(3,3), Y_u(3,3)
-  Complex(dp), Intent(in) :: M2_E(3,3), M2_L(3,3), M2_D(3,3), M2_U(3,3)&
+  Complex(dp), Intent(in) :: M2_E(3,3), M2_L(3,3), M2_D(3,3), M2_U(3,3)& 
                         &  , M2_Q(3,3)
 !  real(dp), intent(in) :: M2_H(2)
   Real(dp), Intent(in) :: g, gp, vevSM(2), vevL(3)
@@ -5080,7 +5080,7 @@ Contains
                      &, msf, msf2, Rsf)
    mStop2 = msf2
   Else
-   mStop2 = mSup2(5:6)
+   mStop2 = mSup2(5:6) 
   End If
   mT = Abs(Y_u(3,3)) * vevSM(2) * oosqrt2
   A = A_u(3,3)
@@ -5109,7 +5109,7 @@ Contains
                          & , A_lamp(3,3,3)
   Complex(dp), Intent(inout) :: Y_l(3,3), Y_d(3,3), Y_u(3,3), lam(3,3,3)    &
                          & , lamp(3,3,3)
-  Complex(dp), Intent(in) :: M2_E(3,3), M2_L(3,3), M2_D(3,3), M2_U(3,3)  &
+  Complex(dp), Intent(in) :: M2_E(3,3), M2_L(3,3), M2_D(3,3), M2_U(3,3)  & 
                         &  , M2_Q(3,3)
 !  real(dp), intent(in) :: M2_H(2)
   Real(dp), Intent(in) :: g, gp, vevSM(2), vevL(3)
@@ -5228,7 +5228,7 @@ Contains
                      &, msf, msf2, Rsf)
    mStop2 = msf2
   Else
-   mStop2 = mSup2(5:6)
+   mStop2 = mSup2(5:6) 
   End If
   mT = Abs(Y_u(3,3)) * vevSM(2) * oosqrt2
   A = A_u(3,3)
@@ -5250,7 +5250,7 @@ Contains
                          &, GenerationMixing, kont, Slopy)
  !-----------------------------------------------------------------
  ! calculates all SusyMasses in the MSSM
- ! written by Werner Porod, 24.03.2001
+ ! written by Werner Porod, 24.03.2001 
  ! 27.03.02: adding the logical variable slopy, which is useful in the
  !           context of Sugra models, because there the tree-level
  !           results for scalar particles can lead to to tachonic
@@ -5262,7 +5262,7 @@ Contains
   Complex(dp), Intent(in) :: M1, M2, M3, mu, B
   Complex(dp), Intent(in) :: A_l(3,3), A_d(3,3), A_u(3,3)
   Complex(dp), Intent(in) :: Y_l(3,3), Y_d(3,3), Y_u(3,3)
-  Complex(dp), Intent(in) :: M2_E(3,3), M2_L(3,3), M2_D(3,3), M2_U(3,3)&
+  Complex(dp), Intent(in) :: M2_E(3,3), M2_L(3,3), M2_D(3,3), M2_U(3,3)& 
                         &  , M2_Q(3,3)
 !  real(dp), intent(in) :: M2_H(2)
   Real(dp), Intent(in) :: g, gp, vevSM(2), tanb
@@ -5328,7 +5328,7 @@ Contains
      If (ErrorLevel.Eq.2) Call TerminateProgram
      ierr = 0
     End If
-
+  
     If (ierr.Ne.0) Then
      Write(ErrCan,*) 'Problems with the diagonalization of sneutrinos'
      Write(ErrCan,*) 'in routine ',NameOfUnit(Iname),'. ierr = ',ierr
@@ -5360,10 +5360,10 @@ Contains
    ! Sleptons
    !--------------
     T3 = -0.5_dp
-    Yl = -1._dp
+    Yl = -1._dp 
     Yr = 2._dp
     Call SfermionMass(M2_L, M2_E, A_l, mu, vevSM, Y_l, T3, Yl, Yr, g,gp, kont &
-                    &, mSlepton, mSlepton2, Rslepton)
+                    &, mSlepton, mSlepton2, Rslepton) 
     If ((kont.Ne.0).And.(Slopy)) Then
      mSlepton2 = Abs(mSlepton2) + 1._dp
      mSlepton = Sqrt( mSlepton2 )
@@ -5378,7 +5378,7 @@ Contains
     Yl = 1._dp / 3._dp
     Yr = 2._dp / 3._dp
     Call SfermionMass(M2_Q, M2_D, A_d, mu, vevSM, Y_d, T3, Yl, Yr, g,gp, kont &
-                    &, mSdown, mSdown2, Rsdown)
+                    &, mSdown, mSdown2, Rsdown) 
    If ((kont.Ne.0).And.(Slopy)) Then
     mSdown2 = Abs(mSdown2) + 1._dp
     mSdown = Sqrt( mSdown2 )
@@ -5393,7 +5393,7 @@ Contains
     Yl = 1._dp / 3._dp
     Yr = -4._dp / 3._dp
     Call SfermionMass(M2_Q, M2_U, A_u, mu, vevSM, Y_u, T3, Yl, Yr, g,gp, kont &
-                    &, mSup, mSup2, Rsup)
+                    &, mSup, mSup2, Rsup) 
    If ((kont.Ne.0).And.(Slopy)) Then
     mSup2 = Abs(mSup2) + 1._dp
     mSup = Sqrt( mSup2 )
@@ -5431,7 +5431,7 @@ Contains
    !---------------
    RSlepton = 0
    T3 = -0.5_dp
-   Yl = -1._dp
+   Yl = -1._dp 
    Yr = 2._dp
    Do i1 = 1,3
     Ml = M2_L(i1,i1)
@@ -5509,7 +5509,7 @@ Contains
   !---------------
    cosb = 1._dp / Sqrt(1._dp + tanb**2)
    sinb = cosb * tanb
-   mP0(1) = mZ
+   mP0(1) = mZ 
    mP02(1) = mZ**2
    mP02(2) = Real(B,dp) / (sinb * cosb)
    If (mP02(2).Gt.0._dp) Then
@@ -5522,10 +5522,10 @@ Contains
      Return
     End If
     mP0(2) = Sqrt(Abs(mP02(2)) )
-   End If
+   End If    
    RP0(1,1) = - cosb
-   RP0(1,2) = sinb
-   RP0(2,1) = sinb
+   RP0(1,2) = sinb 
+   RP0(2,1) = sinb 
    RP0(2,2) = cosb
   !---------------
   ! charged
@@ -5543,7 +5543,7 @@ Contains
      Return
     End If
     mSpm(2) = Sqrt(Abs(mSpm2(2)) )
-   End If
+   End If    
    RSpm = RP0
   !---------------
   ! scalar
@@ -5588,8 +5588,8 @@ Contains
    End If
    mSbottom2 = msf2
   Else
-   mStop2 = mSup2(5:6)
-   mSbottom2 = mSdown2(5:6)
+   mStop2 = mSup2(5:6) 
+   mSbottom2 = mSdown2(5:6) 
   End If
   mB = Abs(Y_d(3,3)) * vevSM(1) * oosqrt2
   mT = Abs(Y_u(3,3)) * vevSM(2) * oosqrt2
@@ -5614,7 +5614,7 @@ Contains
                          &, GenerationMixing, kont, Slopy, loophiggs, mf_u_Q)
  !-----------------------------------------------------------------
  ! calculates all SusyMasses in the MSSM
- ! written by Werner Porod, 24.03.2001
+ ! written by Werner Porod, 24.03.2001 
  ! 10.10.01: including diagonalization of SM fermions
  ! 27.03.02: adding the logical variable slopy, which is useful in the
  !           context of Sugra models, because there the tree-level
@@ -5627,7 +5627,7 @@ Contains
   Complex(dp), Intent(in) :: M1, M2, M3, mu, B
   Complex(dp), Intent(in) :: A_l(3,3), A_d(3,3), A_u(3,3)
   Complex(dp), Intent(in) :: Y_l(3,3), Y_d(3,3), Y_u(3,3)
-  Complex(dp), Intent(in) :: M2_E(3,3), M2_L(3,3), M2_D(3,3), M2_U(3,3)&
+  Complex(dp), Intent(in) :: M2_E(3,3), M2_L(3,3), M2_D(3,3), M2_U(3,3)& 
                         &  , M2_Q(3,3)
 !  real(dp), intent(in) :: M2_H(2)
   Real(dp), Intent(in) :: g, gp, vevSM(2), tanb, mZ2, mW2
@@ -5712,7 +5712,7 @@ Contains
       If (ErrorLevel.Eq.2) Call TerminateProgram
       ierr = 0
     End If
-
+  
     If (ierr.Ne.0) Then
      Write(ErrCan,*) 'Problems with the diagonalization of sneutrinos'
      Write(ErrCan,*) 'in routine ',NameOfUnit(Iname),'. ierr = ',ierr
@@ -5744,10 +5744,10 @@ Contains
    ! Sleptons
    !--------------
     T3 = -0.5_dp
-    Yl = -1._dp
+    Yl = -1._dp 
     Yr = 2._dp
     Call SfermionMass(M2_L, M2_E, A_l, mu, vevSM, Y_l, T3, Yl, Yr, g,gp, kont &
-                    &, mSlepton, mSlepton2, Rslepton)
+                    &, mSlepton, mSlepton2, Rslepton) 
    If ((kont.Ne.0).And.(Slopy)) Then
     mSlepton2 = Abs(mSlepton2) + 1._dp
     mSlepton = Sqrt( mSlepton2 )
@@ -5762,7 +5762,7 @@ Contains
     Yl = 1._dp / 3._dp
     Yr = 2._dp / 3._dp
     Call SfermionMass(M2_Q, M2_D, A_d, mu, vevSM, Y_d, T3, Yl, Yr, g,gp, kont &
-                    &, mSdown, mSdown2, Rsdown)
+                    &, mSdown, mSdown2, Rsdown) 
    If ((kont.Ne.0).And.(Slopy)) Then
     mSdown2 = Abs(mSdown2) + 1._dp
     mSdown = Sqrt( mSdown2 )
@@ -5777,7 +5777,7 @@ Contains
     Yl = 1._dp / 3._dp
     Yr = -4._dp / 3._dp
     Call SfermionMass(M2_Q, M2_U, A_u, mu, vevSM, Y_u, T3, Yl, Yr, g,gp, kont &
-                    &, mSup, mSup2, Rsup)
+                    &, mSup, mSup2, Rsup) 
    If ((kont.Ne.0).And.(Slopy)) Then
     mSup2 = Abs(mSup2) + 1._dp
     mSup = Sqrt( mSup2 )
@@ -5815,7 +5815,7 @@ Contains
    !---------------
    RSlepton = 0
    T3 = -0.5_dp
-   Yl = -1._dp
+   Yl = -1._dp 
    Yr = 2._dp
    Do i1 = 1,3
     Ml = M2_L(i1,i1)
@@ -5906,11 +5906,11 @@ Contains
      Return
     End If
     mP0(2) = Sqrt(Abs(mP02(2)) )
-   End If
+   End If    
    mP0(2) = Sqrt( Abs(mP02(2)) )
    RP0(1,1) = - cosb
-   RP0(1,2) = sinb
-   RP0(2,1) = sinb
+   RP0(1,2) = sinb 
+   RP0(2,1) = sinb 
    RP0(2,2) = cosb
   !---------------
   ! charged
@@ -5928,7 +5928,7 @@ Contains
      Return
     End If
     mSpm(2) = Sqrt(Abs(mSpm2(2)) )
-   End If
+   End If    
    mSpm(2) = Sqrt(Abs(mSpm2(2)))
    RSpm = RP0
   !---------------
@@ -5974,8 +5974,8 @@ Contains
    End If
    mSbottom2 = msf2
   Else
-   mStop2 = mSup2(5:6)
-   mSbottom2 = mSdown2(5:6)
+   mStop2 = mSup2(5:6) 
+   mSbottom2 = mSdown2(5:6) 
   End If
   mB = Abs(Y_d(3,3)) * vevSM(1) * oosqrt2
   mT = Abs(Y_u(3,3)) * vevSM(2) * oosqrt2
@@ -6004,14 +6004,14 @@ Contains
  !-----------------------------------------------------------------
  ! calculates all SusyMasses in the NMSSM at tree level except for
  ! neutral Higgs bosons where the 1-loop effective potential is used
- ! written by Werner Porod, 04.03.05
+ ! written by Werner Porod, 04.03.05 
  !-----------------------------------------------------------------
  Implicit None
   Complex(dp), Intent(in) :: M1, M2, M3, mu_in
   Complex(dp), Intent(in) :: h0, lam, Ah0, Alam
   Complex(dp), Intent(in) :: A_l(3,3), A_d(3,3), A_u(3,3)
   Complex(dp), Intent(in) :: Y_l(3,3), Y_d(3,3), Y_u(3,3)
-  Complex(dp), Intent(in) :: M2_E(3,3), M2_L(3,3), M2_D(3,3), M2_U(3,3)&
+  Complex(dp), Intent(in) :: M2_E(3,3), M2_L(3,3), M2_D(3,3), M2_U(3,3)& 
                         &  , M2_Q(3,3)
 !  real(dp), intent(in) :: M2_H(2)
   Real(dp), Intent(in) :: g, gp, vevSM(2), vP
@@ -6069,7 +6069,7 @@ Contains
      If (ErrorLevel.Eq.2) Call TerminateProgram
      ierr = 0
     End If
-
+  
     If (ierr.Ne.0) Then
      Write (ErrCan,*) 'Problems with the diagonalization of sneutrinos'
      Write (ErrCan,*) 'in routine ',NameOfUnit(Iname),'. ierr = ',ierr
@@ -6095,10 +6095,10 @@ Contains
    ! Sleptons
    !--------------
     T3 = -0.5_dp
-    Yl = -1._dp
+    Yl = -1._dp 
     Yr = 2._dp
     Call SfermionMass(M2_L, M2_E, A_l, mu, vevSM, Y_l, T3, Yl, Yr, g,gp, kont &
-                    &, mSlepton, mSlepton2, Rslepton)
+                    &, mSlepton, mSlepton2, Rslepton) 
    !--------------
    ! D-squarks
    !--------------
@@ -6106,7 +6106,7 @@ Contains
     Yl = 1._dp / 3._dp
     Yr = 2._dp / 3._dp
     Call SfermionMass(M2_Q, M2_D, A_d, mu, vevSM, Y_d, T3, Yl, Yr, g,gp, kont &
-                    &, mSdown, mSdown2, Rsdown)
+                    &, mSdown, mSdown2, Rsdown) 
    !--------------
    ! U-squarks
    !--------------
@@ -6114,7 +6114,7 @@ Contains
     Yl = 1._dp / 3._dp
     Yr = -4._dp / 3._dp
     Call SfermionMass(M2_Q, M2_U, A_u, mu, vevSM, Y_u, T3, Yl, Yr, g,gp, kont &
-                    &, mSup, mSup2, Rsup)
+                    &, mSup, mSup2, Rsup) 
   Else
    !-----------
    ! Sneutrino
@@ -6141,7 +6141,7 @@ Contains
    !---------------
    RSlepton = 0
    T3 = -0.5_dp
-   Yl = -1._dp
+   Yl = -1._dp 
    Yr = 2._dp
    Do i1 = 1,3
     Ml = M2_L(i1,i1)
@@ -6224,9 +6224,9 @@ Contains
    If (kont.Ne.0) msf2 = Abs(msf2) + 1._dp
    mSbottom2 = msf2
   Else
-   mStop2 = mSup2(5:6)
+   mStop2 = mSup2(5:6) 
    RStop = RSup(5:6,5:6)
-   mSbottom2 = mSdown2(5:6)
+   mSbottom2 = mSdown2(5:6) 
    RSbot = RSdown(5:6,5:6)
   End If
   mB = Abs(Y_d(3,3)) * vevSM(1) * oosqrt2
@@ -6248,3 +6248,4 @@ Contains
  End Subroutine TreeMassesNMSSM
 
 End Module SusyMasses
+
