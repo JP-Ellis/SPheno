@@ -27,14 +27,14 @@ Contains
  ! M^2_fi = - Tr[\[Gamma]_\[Mu].(C[1] Pl + C[2] Pr).(P1+mf[1]).
  !           (C[3] Pl + C[4] Pr).(P2+mf[2])]
  !      * Tr[\[Gamma]^\[Mu].(C[5] Pl + C[6] Pr).(P3+mf[3]).
- !           (C[7] Pl + C[8] Pr).(P4+mf[4])]
+ !           (C[7] Pl + C[8] Pr).(P4+mf[4])] 
  !      / ( (p1-p2)^2 - m^2_G  + I m^2_G \[CapitalGamma]_G )
  !         * (p1-p2)^2 - m^2_S  - I m^2_S \[CapitalGamma]_S ) )
  ! in terms of the Mandelstam variables {s,t,u}, which are given by
  ! s=(p1-p2)^2, t=(p1-p3)^2, and u=(p1-p4)^2.
- ! Here {C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8]}
+ ! Here {C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8]} 
  ! are the couplings, {mf[1],mf[2],mf[3],mf[4]} are the fermion masses,
- ! gauge = {m_G ,\[CapitalGamma]_G, m_S,\[CapitalGamma]_S}
+ ! gauge = {m_G ,\[CapitalGamma]_G, m_S,\[CapitalGamma]_S} 
  ! are the masses and the total decay widths of the gauge boson and the scalar
  ! boson, respectively.
  ! written by Werner Porod, 9.1.2000
@@ -113,7 +113,7 @@ Contains
     If (smin.Lt.sG(len1-i1)) Imin = len1 - i1
     If (smax.Gt.sG(i1)) Imax = i1
    Enddo
-
+  
    If ((mf(2).Eq.0._dp).And.(mf(3).Eq.0._dp)) Then
     If ((Imin.Eq.len1).Or.(Imax.Eq.0).Or.((Imin-1).Eq.Imax)) Then
      Call DgaussInt(F3BDgaugeSscalarSkernel6,2,smin,smax,int1c,eps)
@@ -561,14 +561,14 @@ Contains
  ! M^2_fi = - Tr[\[Gamma]_\[Mu].(C[1] Pl + C[2] Pr).(P1+mf[1]).
  !           (C[3] Pl + C[4] Pr).(P2+mf[2]).\[Gamma]^\[Mu].
  !           (C[5] Pl + C[6] Pr).(P3+mf[3]).
- !           (C[7] Pl + C[8] Pr).(P4+mf[4])]
+ !           (C[7] Pl + C[8] Pr).(P4+mf[4])] 
  !           ( (p1-p4)^2 - m^2_G  + I m^2_G \[CapitalGamma]_G )
  !            * (p1-p2)^2 - m^2_S  - I m^2_S \[CapitalGamma]_S ) )
  ! in terms of the Mandelstam variables {s,t,u}, which are given by
  ! s=(p1-p4)^2, t=(p1-p2)^2, and u=(p1-p3)^2.
- ! Here {C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8]}
+ ! Here {C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8]} 
  ! are the couplings, {mf[1],mf[2],mf[3],mf[4]} are the fermion masses,
- ! gauge = {m_G^2 , m_G \[CapitalGamma]_G, m_S^2, m_S \[CapitalGamma]_S}
+ ! gauge = {m_G^2 , m_G \[CapitalGamma]_G, m_S^2, m_S \[CapitalGamma]_S} 
  ! are the masses and the total decay widths of the gauge boson and the scalar
  ! boson, respectively.
  ! written by Werner Porod, 10.1.2000
@@ -593,7 +593,7 @@ Contains
    Return
   Endif
 
-  mf2 = mf**2
+  mf2 = mf**2  
 
   sumI(8) = -8._dp * ( coup(2) * coup(4) * coup(5) * coup(7)  &
           &         + coup(1) * coup(3) * coup(6) * coup(8)) &
@@ -612,7 +612,7 @@ Contains
           &        + coup(1) * coup(4) * coup(5) * coup(8)) * mf(2) * mf(4)
   sumI(1) = 2._dp * ( coup(1) * coup(3) * coup(5) * coup(7)    &
                   + coup(2) * coup(4) * coup(6) * coup(8)) * mf(1) * mf(3)
-
+  
   erg = Sum( Abs(sumI) )
   If (erg.Eq.ZeroC) Then
    If (Integrate) Integrate = .False.
@@ -878,7 +878,7 @@ Contains
   Endif
 
   erg = Sum(sumI * int1)
-
+  
  End Subroutine F3BDgaugeSscalarTint
 
 
@@ -1416,7 +1416,7 @@ Contains
    tmax = sumI
 
    if (mTgT.gt.0._dp) then
-    DiffTan = Atan( (tmax-mT2) / mTgT ) - wert1
+    DiffTan = Atan( (tmax-mT2) / mTgT ) - wert1 
    else
     DiffTan = 0._dp
    end if
@@ -1489,7 +1489,7 @@ Contains
   Endif
 
 
-  If (Integrate) Then
+  If (Integrate) Then 
    mG2 = gauge(1)**2
    mGgG2 = mG2 * gauge(2)**2
    smax = (Abs(mf(1)) - Abs(mf(2)))**2
@@ -1511,13 +1511,13 @@ Contains
     Elseif (Imin.Eq.Imax) Then
      Call DgaussInt(F3BDgaugeSSkernel1,4,smin,sG(Imin),int1,eps)
      Call DgaussInt(F3BDgaugeSSkernel1,4,sG(Imin),smax,int1a,eps)
-     int1 = int1 + int1a
+     int1 = int1 + int1a 
     Else
      Call DgaussInt(F3BDgaugeSSkernel1,4,smin,sG(1),int1,eps)
      Call DgaussInt(F3BDgaugeSSkernel1,4,sG(1),sG(2),int1a,eps)
-     int1 = int1 + int1a
+     int1 = int1 + int1a 
      Call DgaussInt(F3BDgaugeSSkernel1,4,sG(2),smax,int1a,eps)
-     int1 = int1 + int1a
+     int1 = int1 + int1a 
     Endif
 
    Elseif ((mf(2).Eq.0._dp).And.(mf(3).Eq.0._dp).And.(mf(4).Eq.0._dp)) Then
@@ -1531,14 +1531,14 @@ Contains
     Elseif (Imin.Eq.Imax) Then
      sminG = sG(Imin)
      int1(1) = dgauss(F3BDgaugeSSkernel2,smin,sminG,eps) &
-           & + dgauss(F3BDgaugeSSkernel2,sminG,smax,eps)
+           & + dgauss(F3BDgaugeSSkernel2,sminG,smax,eps)  
     Else
      sminG = sG(1)
      sminG = sG(1)
      smaxG = sG(2)
      int1(1) = dgauss(F3BDgaugeSSkernel2,smin,sminG,eps)  &
            & + dgauss(F3BDgaugeSSkernel2,sminG,smaxG,eps) &
-           & + dgauss(F3BDgaugeSSkernel2,smaxG,smax,eps)
+           & + dgauss(F3BDgaugeSSkernel2,smaxG,smax,eps) 
     Endif
 
    Elseif ((mf(2).Eq.0._dp).And.(mf(4).Eq.0._dp)) Then
@@ -1547,14 +1547,14 @@ Contains
     Elseif (Imin.Eq.Imax) Then
      sminG = sG(Imin)
      int1(1) = dgauss(F3BDgaugeSSkernel3,smin,sminG,eps) &
-           & + dgauss(F3BDgaugeSSkernel3,sminG,smax,eps)
+           & + dgauss(F3BDgaugeSSkernel3,sminG,smax,eps) 
     Else
      sminG = sG(1)
      sminG = sG(1)
      smaxG = sG(2)
      int1(1) = dgauss(F3BDgaugeSSkernel3,smin,sminG,eps)  &
            & + dgauss(F3BDgaugeSSkernel3,sminG,smaxG,eps) &
-           & + dgauss(F3BDgaugeSSkernel3,smaxG,smax,eps)
+           & + dgauss(F3BDgaugeSSkernel3,smaxG,smax,eps) 
     Endif
 
    Elseif ((mf(3).Eq.0._dp).And.(mf(4).Eq.0._dp)) Then
@@ -1567,18 +1567,18 @@ Contains
      int1(1) = int1b(1)
      int1(2) = int1b(2)
      Call DgaussInt(F3BDgaugeSSkernel4,2,sG(Imin),smax,int1b,eps)
-     int1(1) = int1(1) + int1b(1)
-     int1(2) = int1(2) + int1b(2)
+     int1(1) = int1(1) + int1b(1) 
+     int1(2) = int1(2) + int1b(2) 
     Else
      Call DgaussInt(F3BDgaugeSSkernel4,2,smin,sG(1),int1b,eps)
      int1(1) = int1b(1)
      int1(2) = int1b(2)
      Call DgaussInt(F3BDgaugeSSkernel4,2,sG(1),sG(2),int1b,eps)
-     int1(1) = int1(1) + int1b(1)
-     int1(2) = int1(2) + int1b(2)
+     int1(1) = int1(1) + int1b(1) 
+     int1(2) = int1(2) + int1b(2) 
      Call DgaussInt(F3BDgaugeSSkernel4,2,sG(2),smax,int1b,eps)
-     int1(1) = int1(1) + int1b(1)
-     int1(2) = int1(2) + int1b(2)
+     int1(1) = int1(1) + int1b(1) 
+     int1(2) = int1(2) + int1b(2) 
     Endif
 
    Elseif (mf(4).Eq.0._dp) Then
@@ -1591,18 +1591,18 @@ Contains
      int1(1) = int1b(1)
      int1(2) = int1b(2)
      Call DgaussInt(F3BDgaugeSSkernel5,2,sG(Imin),smax,int1b,eps)
-     int1(1) = int1(1) + int1b(1)
-     int1(2) = int1(2) + int1b(2)
+     int1(1) = int1(1) + int1b(1) 
+     int1(2) = int1(2) + int1b(2) 
     Else
      Call DgaussInt(F3BDgaugeSSkernel5,2,smin,sG(1),int1b,eps)
-     int1(1) = int1b(1)
-     int1(2) = int1b(2)
+     int1(1) = int1b(1) 
+     int1(2) = int1b(2) 
      Call DgaussInt(F3BDgaugeSSkernel5,2,sG(1),sG(2),int1b,eps)
-     int1(1) = int1(1) + int1b(1)
-     int1(2) = int1(2) + int1b(2)
+     int1(1) = int1(1) + int1b(1) 
+     int1(2) = int1(2) + int1b(2) 
      Call DgaussInt(F3BDgaugeSSkernel5,2,sG(2),smax,int1b,eps)
-     int1(1) = int1(1) + int1b(1)
-     int1(2) = int1(2) + int1b(2)
+     int1(1) = int1(1) + int1b(1) 
+     int1(2) = int1(2) + int1b(2) 
     Endif
 
    Elseif (mf(3).Eq.0._dp) Then
@@ -1615,18 +1615,18 @@ Contains
      int1(1) = int1b(1)
      int1(2) = int1b(2)
      Call DgaussInt(F3BDgaugeSSkernel6,2,sG(Imin),smax,int1b,eps)
-     int1(1) = int1(1) + int1b(1)
-     int1(2) = int1(2) + int1b(2)
+     int1(1) = int1(1) + int1b(1) 
+     int1(2) = int1(2) + int1b(2) 
     Else
      Call DgaussInt(F3BDgaugeSSkernel6,2,smin,sG(1),int1b,eps)
      int1(1) = int1b(1)
      int1(2) = int1b(2)
      Call DgaussInt(F3BDgaugeSSkernel6,2,sG(1),sG(2),int1b,eps)
-     int1(1) = int1(1) + int1b(1)
-     int1(2) = int1(2) + int1b(2)
+     int1(1) = int1(1) + int1b(1) 
+     int1(2) = int1(2) + int1b(2) 
      Call DgaussInt(F3BDgaugeSSkernel6,2,sG(2),smax,int1b,eps)
-     int1(1) = int1(1) + int1b(1)
-     int1(2) = int1(2) + int1b(2)
+     int1(1) = int1(1) + int1b(1) 
+     int1(2) = int1(2) + int1b(2) 
     Endif
 
    Elseif (mf(2).Eq.0._dp) Then
@@ -1639,21 +1639,21 @@ Contains
      int1(1) = int1b(1)
      int1(3) = int1b(2)
      Call DgaussInt(F3BDgaugeSSkernel7,2,sG(Imin),smax,int1b,eps)
-     int1(1) = int1(1) + int1b(1)
-     int1(3) = int1(3) + int1b(2)
+     int1(1) = int1(1) + int1b(1) 
+     int1(3) = int1(3) + int1b(2) 
     Else
      Call DgaussInt(F3BDgaugeSSkernel7,2,smin,sG(1),int1b,eps)
      int1(1) = int1b(1)
      int1(3) = int1b(2)
      Call DgaussInt(F3BDgaugeSSkernel7,2,sG(1),sG(2),int1b,eps)
-     int1(1) = int1(1) + int1b(1)
-     int1(3) = int1(3) + int1b(2)
+     int1(1) = int1(1) + int1b(1) 
+     int1(3) = int1(3) + int1b(2) 
      Call DgaussInt(F3BDgaugeSSkernel7,2,sG(2),smax,int1b,eps)
-     int1(1) = int1(1) + int1b(1)
-     int1(3) = int1(3) + int1b(2)
+     int1(1) = int1(1) + int1b(1) 
+     int1(3) = int1(3) + int1b(2) 
     Endif
    Endif
-
+ 
   Endif
 
 
@@ -1670,7 +1670,7 @@ Contains
      &        * ( coup2(3) + coup2(4) ) * mf(1) * mf(2) * int1(2)
 
   Elseif ((mf(2).Eq.0._dp).And.(mf(3).Ne.0._dp).And.(mf(4).Ne.0._dp)) Then
-
+  
    erg = 2._dp * ( coup2(1) + coup2(2) ) * ( coup2(3) + coup2(4) ) * int1(1) &
      & - 8._dp * ( coup2(1) + coup2(2) )                                     &
      &        * Real( coup(3) * coupC(4),dp ) * mf(3) * mf(4) * int1(3)
@@ -1704,7 +1704,7 @@ Contains
   Real(dp) :: m12,m22,sum1,sum2,ooProp,sbar
 
   erg = 0._dp
-
+ 
   Do i1=1,2
    sbar = s(i1)
    m12 = mf2(1)
@@ -1799,7 +1799,7 @@ Contains
   Real(dp) :: m12,m22,sum1,sum2,ooProp,sbar
 
   erg = 0._dp
-
+ 
   Do i1=1,2
    sbar = s(i1)
    m12 = mf2(1)
@@ -1807,7 +1807,7 @@ Contains
    sum1 = kappa(sbar,m12,m22)
 
    sum2 = sum1 * ( -2._dp * sbar**2 + (mf2(1)+mf2(2)) * sbar &
-        &        +  (mf2(1)-mf2(2))**2 ) / 3._dp
+        &        +  (mf2(1)-mf2(2))**2 ) / 3._dp 
 
    ooProp = 1._dp / ( (sbar-mG2)**2 + mGgG2 )
    erg(1) = erg(1) + sum2 * ooProp
@@ -1831,7 +1831,7 @@ Contains
   Real(dp) :: m12,m22,sum1,sum2,ooProp,sbar
 
   erg = 0._dp
-
+ 
   Do i1=1,2
    sbar = s(i1)
    m12 = mf2(1)
@@ -1871,7 +1871,7 @@ Contains
   Real(dp) :: m12,m22,sum1,sum2,ooProp,sbar
 
   erg = 0._dp
-
+ 
   Do i1=1,2
    sbar = s(i1)
    m12 = mf2(1)
@@ -1945,14 +1945,14 @@ Contains
  ! M^2_fi = Tr[\[Gamma]_\[Mu].(C[1] Pl + C[2] Pr).(P1+mf[1]).\[Gamma]_\[Sigma].
  !         (C[3] Pl + C[4] Pr).(P2+mf[2]).\[Gamma]^\[Mu].
  !         (C[5] Pl + C[6] Pr).(P3+mf[3]).
- !         \[Gamma]^\[Sigma].(C[7] Pl + C[8] Pr).(P4+mf[4])]
+ !         \[Gamma]^\[Sigma].(C[7] Pl + C[8] Pr).(P4+mf[4])] 
  !    / ( (p1-p4)^2 - m^2_S  + I m^2_S \[CapitalGamma]_S )
  !      (p1-p3)^2 - m^2_T  - I m^2_T \[CapitalGamma]_T ) )
  ! in terms of the Mandelstam variables {s,t,u}, which are given by
  ! s=(p1-p4)^2, t=(p1-p2)^2, and u=(p1-p3)^2.
- ! Here {C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8]}
+ ! Here {C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8]} 
  ! are the couplings, {mf[1],mf[2],mf[3],mf[4]} are the fermion masses,
- ! gauge = {m_S^2, m_S \[CapitalGamma]_S, m_T^2, m_T \[CapitalGamma]_T}
+ ! gauge = {m_S^2, m_S \[CapitalGamma]_S, m_T^2, m_T \[CapitalGamma]_T} 
  ! are the masses squared and the mass times the total decay widths of the
  ! gauge boson in the s- and t-channel, respectively.
  ! written by Werner Porod, 4.1.2000
@@ -2254,7 +2254,7 @@ Contains
     Endif
 
    Endif
-
+ 
   Endif
 
   erg = Sum(sumI * int1)
@@ -2320,44 +2320,44 @@ Contains
       & - ( 2._dp * mT2 + 2._dp * sbar -  mf2(1) - mf2(3)             &
       &   - mf2(2) - mf2(4) ) * mTgT * DiffLog
 
-   erg(1) = erg(1) + ReProp * sum1 + ImProp * sum2
-   erg(2) = erg(2) + ReProp * sum2 - ImProp * sum1
+   erg(1) = erg(1) + ReProp * sum1 + ImProp * sum2 
+   erg(2) = erg(2) + ReProp * sum2 - ImProp * sum1 
 
    sum1 = - diff + mTgT * DiffTan - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffLog
-   sum2 = - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffTan - mTgT * DiffLog
+   sum2 = - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffTan - mTgT * DiffLog 
 
-   erg(3) = erg(3) + ReProp * sum1 + ImProp * sum2
-   erg(4) = erg(4) + ReProp * sum2 - ImProp * sum1
+   erg(3) = erg(3) + ReProp * sum1 + ImProp * sum2 
+   erg(4) = erg(4) + ReProp * sum2 - ImProp * sum1 
 
    sum1 = diff - mTgT * DiffTan + ( mT2 + sbar - mf2(2) - mf2(4) ) * DiffLog
    sum2 = ( mT2 + sbar - mf2(2) - mf2(4) ) * DiffTan + mTgT * DiffLog
 
-   erg(5) = erg(5) + ReProp * sum1 + ImProp * sum2
-   erg(6) = erg(6) + ReProp * sum2 - ImProp * sum1
+   erg(5) = erg(5) + ReProp * sum1 + ImProp * sum2 
+   erg(6) = erg(6) + ReProp * sum2 - ImProp * sum1 
 
    sum1 = diff - mTgT * DiffTan + ( mT2 - mf2(3) - mf2(4) ) * DiffLog
    sum2 = ( mT2 - mf2(3) - mf2(4) ) * DiffTan + mTgT * DiffLog
 
-   erg(7) = erg(7) + ReProp * sum1 + ImProp * sum2
-   erg(8) = erg(8) + ReProp * sum2 - ImProp * sum1
+   erg(7) = erg(7) + ReProp * sum1 + ImProp * sum2 
+   erg(8) = erg(8) + ReProp * sum2 - ImProp * sum1 
 
    sum1 = - diff + mTgT * DiffTan - ( mT2 - mf2(1) - mf2(2) ) * DiffLog
    sum2 = - ( mT2 - mf2(1) - mf2(2) ) * DiffTan - mTgT  * DiffLog
 
-   erg(9) = erg(9) + ReProp * sum1 + ImProp * sum2
-   erg(10) = erg(10) + ReProp * sum2 - ImProp * sum1
-
+   erg(9) = erg(9) + ReProp * sum1 + ImProp * sum2 
+   erg(10) = erg(10) + ReProp * sum2 - ImProp * sum1 
+ 
    sum1 = DiffLog * (sbar - mf2(2) - mf2(3))
    sum2 = DiffTan * (sbar - mf2(2) - mf2(3))
 
-   erg(11) = erg(11) + ReProp * sum1 + ImProp * sum2
-   erg(12) = erg(12) + ReProp * sum2 - ImProp * sum1
+   erg(11) = erg(11) + ReProp * sum1 + ImProp * sum2 
+   erg(12) = erg(12) + ReProp * sum2 - ImProp * sum1 
 
    sum1 = DiffLog * (-sbar + mf2(1) + mf2(4))
    sum2 = DiffTan * (-sbar + mf2(1) + mf2(4))
 
-   erg(13) = erg(13) + ReProp * sum1 + ImProp * sum2
-   erg(14) = erg(14) + ReProp * sum2 - ImProp * sum1
+   erg(13) = erg(13) + ReProp * sum1 + ImProp * sum2 
+   erg(14) = erg(14) + ReProp * sum2 - ImProp * sum1 
 
    erg(15) = erg(15) + ReProp * DiffLog + ImProp * DiffTan
    erg(16) = erg(16) + ReProp * DiffTan - ImProp * DiffLog
@@ -2425,26 +2425,26 @@ Contains
       & - ( 2._dp * mT2 + 2._dp * sbar -  mf2(1) - mf2(3) - mf2(4) )   &
       &   * mTgT * DiffLog
 
-   erg(1) = erg(1) + ReProp * sum1 + ImProp * sum2
-   erg(2) = erg(2) + ReProp * sum2 - ImProp * sum1
+   erg(1) = erg(1) + ReProp * sum1 + ImProp * sum2 
+   erg(2) = erg(2) + ReProp * sum2 - ImProp * sum1 
 
    sum1 = - diff + mTgT * DiffTan - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffLog
-   sum2 = - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffTan - mTgT * DiffLog
+   sum2 = - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffTan - mTgT * DiffLog 
 
-   erg(3) = erg(3) + ReProp * sum1 + ImProp * sum2
-   erg(4) = erg(4) + ReProp * sum2 - ImProp * sum1
+   erg(3) = erg(3) + ReProp * sum1 + ImProp * sum2 
+   erg(4) = erg(4) + ReProp * sum2 - ImProp * sum1 
 
    sum1 = - diff + mTgT * DiffTan - ( mT2 - mf2(1) ) * DiffLog
    sum2 = - ( mT2 - mf2(1) ) * DiffTan -  mTgT  * DiffLog
 
-   erg(5) = erg(5) + ReProp * sum1 + ImProp * sum2
-   erg(6) = erg(6) + ReProp * sum2 - ImProp * sum1
-
+   erg(5) = erg(5) + ReProp * sum1 + ImProp * sum2 
+   erg(6) = erg(6) + ReProp * sum2 - ImProp * sum1 
+ 
    sum1 = DiffLog * (sbar - mf2(3))
    sum2 = DiffTan * (sbar - mf2(3))
 
-   erg(7) = erg(7) + ReProp * sum1 + ImProp * sum2
-   erg(8) = erg(8) + ReProp * sum2 - ImProp * sum1
+   erg(7) = erg(7) + ReProp * sum1 + ImProp * sum2 
+   erg(8) = erg(8) + ReProp * sum2 - ImProp * sum1 
 
   Enddo
 
@@ -2509,26 +2509,26 @@ Contains
       & - ( 2._dp * mT2 + 2._dp * sbar -  mf2(1)             &
       &   - mf2(2) - mf2(4) ) * mTgT * DiffLog
 
-   erg(1) = erg(1) + ReProp * sum1 + ImProp * sum2
-   erg(2) = erg(2) + ReProp * sum2 - ImProp * sum1
+   erg(1) = erg(1) + ReProp * sum1 + ImProp * sum2 
+   erg(2) = erg(2) + ReProp * sum2 - ImProp * sum1 
 
    sum1 = diff - mTgT * DiffTan + ( mT2 + sbar - mf2(2) - mf2(4) ) * DiffLog
    sum2 = ( mT2 + sbar - mf2(2) - mf2(4) ) * DiffTan + mTgT * DiffLog
 
-   erg(3) = erg(3) + ReProp * sum1 + ImProp * sum2
-   erg(4) = erg(4) + ReProp * sum2 - ImProp * sum1
+   erg(3) = erg(3) + ReProp * sum1 + ImProp * sum2 
+   erg(4) = erg(4) + ReProp * sum2 - ImProp * sum1 
 
    sum1 = diff - mTgT * DiffTan + ( mT2 - mf2(4) ) * DiffLog
    sum2 = ( mT2 - mf2(4) ) * DiffTan + mTgT * DiffLog
 
-   erg(5) = erg(5) + ReProp * sum1 + ImProp * sum2
-   erg(6) = erg(6) + ReProp * sum2 - ImProp * sum1
+   erg(5) = erg(5) + ReProp * sum1 + ImProp * sum2 
+   erg(6) = erg(6) + ReProp * sum2 - ImProp * sum1 
 
    sum1 = DiffLog * (sbar - mf2(2))
    sum2 = DiffTan * (sbar - mf2(2))
 
-   erg(7) = erg(7) + ReProp * sum1 + ImProp * sum2
-   erg(8) = erg(8) + ReProp * sum2 - ImProp * sum1
+   erg(7) = erg(7) + ReProp * sum1 + ImProp * sum2 
+   erg(8) = erg(8) + ReProp * sum2 - ImProp * sum1 
 
   Enddo
 
@@ -2593,26 +2593,26 @@ Contains
       & - ( 2._dp * mT2 + 2._dp * sbar -  mf2(1) - mf2(3) - mf2(2) )   &
       &   * mTgT * DiffLog
 
-   erg(1) = erg(1) + ReProp * sum1 + ImProp * sum2
-   erg(2) = erg(2) + ReProp * sum2 - ImProp * sum1
+   erg(1) = erg(1) + ReProp * sum1 + ImProp * sum2 
+   erg(2) = erg(2) + ReProp * sum2 - ImProp * sum1 
 
    sum1 = - diff + mTgT * DiffTan - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffLog
-   sum2 = - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffTan - mTgT * DiffLog
+   sum2 = - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffTan - mTgT * DiffLog 
 
-   erg(3) = erg(3) + ReProp * sum1 + ImProp * sum2
-   erg(4) = erg(4) + ReProp * sum2 - ImProp * sum1
+   erg(3) = erg(3) + ReProp * sum1 + ImProp * sum2 
+   erg(4) = erg(4) + ReProp * sum2 - ImProp * sum1 
 
    sum1 = diff - mTgT * DiffTan + ( mT2 - mf2(3)) * DiffLog
    sum2 = ( mT2 - mf2(3) - mf2(4) ) * DiffTan + mTgT * DiffLog
 
-   erg(5) = erg(5) + ReProp * sum1 + ImProp * sum2
-   erg(6) = erg(6) + ReProp * sum2 - ImProp * sum1
+   erg(5) = erg(5) + ReProp * sum1 + ImProp * sum2 
+   erg(6) = erg(6) + ReProp * sum2 - ImProp * sum1 
 
    sum1 = DiffLog * (-sbar + mf2(1))
    sum2 = DiffTan * (-sbar + mf2(1))
 
-   erg(7) = erg(7) + ReProp * sum1 + ImProp * sum2
-   erg(8) = erg(8) + ReProp * sum2 - ImProp * sum1
+   erg(7) = erg(7) + ReProp * sum1 + ImProp * sum2 
+   erg(8) = erg(8) + ReProp * sum2 - ImProp * sum1 
 
   Enddo
 
@@ -2660,7 +2660,7 @@ Contains
 
    sum1 = ( mf2(1) + mf2(4) - 2._dp * sbar                                 &
       &   - 1.5_dp * mT2 - 0.5_dp * tmax) * (tmax - mT2)                    &
-      & - ( mf2(1) + mf2(4) - 2._dp * sbar                                 &
+      & - ( mf2(1) + mf2(4) - 2._dp * sbar                                 & 
       &   - 1.5_dp * mT2 - 0.5_dp * tmin) * (tmin - mT2)                    &
       & + mTgT * ( 2._dp * (mT2 + sbar) -  mf2(1) - mf2(4) ) * DiffTan     &
       & + (mTgT2 - ( mT2 + sbar - mf2(4)) * (mT2 + sbar - mf2(1)) ) * DiffLog
@@ -2670,14 +2670,14 @@ Contains
       &             * ( mT2 + sbar - mf2(1) ) ) * DiffTan     &
       & - ( 2._dp * mT2 + 2._dp * sbar -  mf2(1) - mf2(4) ) * mTgT * DiffLog
 
-   erg(1) = erg(1) + ReProp * sum1 + ImProp * sum2
-   erg(2) = erg(2) + ReProp * sum2 - ImProp * sum1
+   erg(1) = erg(1) + ReProp * sum1 + ImProp * sum2 
+   erg(2) = erg(2) + ReProp * sum2 - ImProp * sum1 
 
    sum1 = DiffLog * sbar
    sum2 = DiffTan * sbar
 
-   erg(3) = erg(3) + ReProp * sum1 + ImProp * sum2
-   erg(4) = erg(4) + ReProp * sum2 - ImProp * sum1
+   erg(3) = erg(3) + ReProp * sum1 + ImProp * sum2 
+   erg(4) = erg(4) + ReProp * sum2 - ImProp * sum1 
 
   Enddo
 
@@ -2737,14 +2737,14 @@ Contains
       & + (mTgT2 - (mT2 + sbar) * (mT2 + sbar - mf2(1) - mf2(3)) ) * DiffTan &
       & - ( 2._dp * mT2 + 2._dp * sbar -  mf2(1) - mf2(3) ) * mTgT * DiffLog
 
-   erg(1) = erg(1) + ReProp * sum1 + ImProp * sum2
-   erg(2) = erg(2) + ReProp * sum2 - ImProp * sum1
+   erg(1) = erg(1) + ReProp * sum1 + ImProp * sum2 
+   erg(2) = erg(2) + ReProp * sum2 - ImProp * sum1 
 
    sum1 = - diff + mTgT * DiffTan - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffLog
-   sum2 = - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffTan - mTgT * DiffLog
+   sum2 = - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffTan - mTgT * DiffLog 
 
-   erg(3) = erg(3) + ReProp * sum1 + ImProp * sum2
-   erg(4) = erg(4) + ReProp * sum2 - ImProp * sum1
+   erg(3) = erg(3) + ReProp * sum1 + ImProp * sum2 
+   erg(4) = erg(4) + ReProp * sum2 - ImProp * sum1 
 
   Enddo
 
@@ -2804,14 +2804,14 @@ Contains
       & + (mTgT2 - (mT2 + sbar - mf2(2)) * (mT2 + sbar - mf2(1)) ) * DiffTan &
       & - (2._dp * mT2 + 2._dp * sbar -  mf2(1) - mf2(2) ) * mTgT * DiffLog
 
-   erg(1) = erg(1) + ReProp * sum1 + ImProp * sum2
-   erg(2) = erg(2) + ReProp * sum2 - ImProp * sum1
+   erg(1) = erg(1) + ReProp * sum1 + ImProp * sum2 
+   erg(2) = erg(2) + ReProp * sum2 - ImProp * sum1 
 
    sum1 = diff - mTgT * DiffTan + mT2 * DiffLog
    sum2 = mT2 * DiffTan + mTgT * DiffLog
 
-   erg(3) = erg(3) + ReProp * sum1 + ImProp * sum2
-   erg(4) = erg(4) + ReProp * sum2 - ImProp * sum1
+   erg(3) = erg(3) + ReProp * sum1 + ImProp * sum2 
+   erg(4) = erg(4) + ReProp * sum2 - ImProp * sum1 
 
   Enddo
 
@@ -2862,8 +2862,8 @@ Contains
       & + ( mTgT2 - (mT2 + sbar) * (mT2 + sbar - mf2(1)) ) * DiffTan         &
       & - ( 2._dp * mT2 + 2._dp * sbar -  mf2(1)) * mTgT * DiffLog
 
-   erg(1) = erg(1) + ReProp * sum1 + ImProp * sum2
-   erg(2) = erg(2) + ReProp * sum2 - ImProp * sum1
+   erg(1) = erg(1) + ReProp * sum1 + ImProp * sum2 
+   erg(2) = erg(2) + ReProp * sum2 - ImProp * sum1 
 
   Enddo
 
@@ -2882,7 +2882,7 @@ Contains
  ! s=(p1-p2)^2, t=(p1-p3)^2, and u=(p1-p4)^2.
  ! Here {C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8]} are the couplings,
  ! {mf[1],mf[2],mf[3],mf[4]} are the fermion masses, and
- ! {m_S1,\[CapitalGamma]_S1,mS2,\[CapitalGamma]_S2} are the mass and the total
+ ! {m_S1,\[CapitalGamma]_S1,mS2,\[CapitalGamma]_S2} are the mass and the total 
  ! decay widths of the scalar bosons.
  ! written by Werner Porod, 16.2.2000
  ! 27.10.2000: porting to f90
@@ -2903,7 +2903,7 @@ Contains
    erg = ZeroC
    Return
   Endif
-
+  
   mf2 = mf**2
 
   erg = ZeroC
@@ -2930,7 +2930,7 @@ Contains
    Imin = len1
    Imax = 0
   Endif
-
+  
   If ( (mf(2).Eq.0._dp).And.((mf(3).Eq.0._dp).Or.(mf(4).Eq.0._dp))) Then
    coupC(1) = coup(1) * coup(4) + coup(2) * coup(3)
    coupC(3) = coup(5) * coup(8) + coup(6) * coup(7)
@@ -2980,7 +2980,7 @@ Contains
 
   Elseif ( (mf(3).Eq.0._dp).Or.(mf(4).Eq.0._dp)) Then
    coupC(1) = coup(1) * coup(4) + coup(2) * coup(3)
-   coupC(2) = coup(2) * coup(4) + coup(1) * coup(3)
+   coupC(2) = coup(2) * coup(4) + coup(1) * coup(3) 
    coupC(3) = coup(5) * coup(8) + coup(6) * coup(7)
    If ( (coupC(3).Eq.ZeroC).Or.                         &
     &   ((coupC(1).Eq.ZeroC).And.(coupC(2).Eq.ZeroC)) ) Then
@@ -3033,7 +3033,7 @@ Contains
   Elseif (mf(2).Eq.0._dp) Then
    coupC(1) = coup(1) * coup(4) + coup(2) * coup(3)
    coupC(3) = coup(5) * coup(8) + coup(6) * coup(7)
-   coupC(4) = coup(6) * coup(8) + coup(5) * coup(7)
+   coupC(4) = coup(6) * coup(8) + coup(5) * coup(7) 
    If ( (coupC(1).Eq.ZeroC).Or.                       &
       & ((coupC(3).Eq.ZeroC).And.(coupC(4).Eq.ZeroC)) ) Then
     Integrate = .False.
@@ -3084,9 +3084,9 @@ Contains
 
   Else
    coupC(1) = coup(1) * coup(4) + coup(2) * coup(3)
-   coupC(2) = coup(2) * coup(4) + coup(1) * coup(3)
+   coupC(2) = coup(2) * coup(4) + coup(1) * coup(3) 
    coupC(3) = coup(5) * coup(8) + coup(6) * coup(7)
-   coupC(4) = coup(6) * coup(8) + coup(5) * coup(7)
+   coupC(4) = coup(6) * coup(8) + coup(5) * coup(7) 
    If ( ((coupC(1).Eq.ZeroC).And.(coupC(2).Eq.ZeroC)) .Or. &
       & ((coupC(3).Eq.ZeroC).And.(coupC(4).Eq.ZeroC))     ) Then
     Integrate = .False.
@@ -3103,7 +3103,7 @@ Contains
      If (smin.Lt.sG(len1-i1)) Imin = len1 - i1
      If (smax.Gt.sG(i1)) Imax = i1
     Enddo
-
+   
     If ((Imin.Eq.len1).Or.(Imax.Eq.0).Or.((Imin-1).Eq.Imax)) Then
      Call DgaussInt(F3BDscalarS1S2kernel1,8,smin,smax,int1a,eps)
      int1 = int1a(1:7:2) + Ic * int1a(2:8:2)
@@ -3307,7 +3307,7 @@ Contains
    ratio = mS12 / mS22
    If (Abs(ratio-1._dp).Lt.1.e-6_dp) Then
     eps = mS22 - mS12
-    Log1 = Log(1._dp - mi2/mS12)
+    Log1 = Log(1._dp - mi2/mS12) 
     F3BDscalarS1S2kernel5 = mi2 * (3._dp * mS12 - 2.5_dp * mi2)     &
       & + (3._dp * mS12**2 - 4._dp * mS12 * mi2 + mi2**2) * Log1    &
       & + ( mi2 * (6._dp * mS12 - mi2)                              &
@@ -3318,14 +3318,14 @@ Contains
       &   ) * eps**2 / (6._dp * mS12**2 * (mi2-mS12) )              &
       & - mi2**4 * eps**3 / (12._dp ** mS12**3 * (mi2-mS12)**2 )    &
       & + mi2**4 * (3._dp * mi2 - 5._dp * mS12) * eps**4            &
-      &    / (60._dp * mS12**4 * (mi2-mS12)**3 )
+      &    / (60._dp * mS12**4 * (mi2-mS12)**3 ) 
    Else
     F3BDscalarS1S2kernel5 = mi2 * (mS12 + mS22 - 1.5_dp * mi2)     &
          &  + ( mS12 * (mi2 - mS12)**2 * Log( 1._dp - mi2 / mS12)  &
          &    - mS22 * (mi2 - mS22)**2 * Log( 1._dp - mi2 / mS22)  &
          &    ) / (mS12-mS22)
    End If
-
+ 
   Else ! including decay widths
     mGS1 = mgS(1) * mgS(2)
     mGS2 = mgS(3) * mgS(4)
@@ -3371,7 +3371,7 @@ Contains
   Real(dp), Intent(in) :: mi2, mgS(4)
 
   Real(dp) :: ratio, mS12, mS22, eps, Log1, mGS1, mGS2, Atan1, Atan2, Log2
-  Real(dp) :: re, im, nenR, nenI, sum1R, sum1I, sum2R, sum2I
+  Real(dp) :: re, im, nenR, nenI, sum1R, sum1I, sum2R, sum2I 
 
   F3BDscalarS1S2kernel6 = 0._dp
 
@@ -3381,7 +3381,7 @@ Contains
    ratio = mS12 / mS22
    If (Abs(ratio-1._dp).Lt.1.e-6_dp) Then
     eps = mS22 - mS12
-    Log1 = Log(1._dp - mi2/mS12)
+    Log1 = Log(1._dp - mi2/mS12) 
     F3BDscalarS1S2kernel6 = mi2 * (3._dp * mS12 - 2.5_dp * mi2)     &
       & + (3._dp * mS12**2 - 4._dp * mS12 * mi2 + mi2**2) * Log1    &
       & + ( mi2 * (6._dp * mS12 - mi2)                              &
@@ -3392,14 +3392,14 @@ Contains
       &   ) * eps**2 / (6._dp * mS12**2 * (mi2-mS12) )              &
       & - mi2**4 * eps**3 / (12._dp ** mS12**3 * (mi2-mS12)**2 )    &
       & + mi2**4 * (3._dp * mi2 - 5._dp * mS12) * eps**4            &
-      &    / (60._dp * mS12**4 * (mi2-mS12)**3 )
+      &    / (60._dp * mS12**4 * (mi2-mS12)**3 ) 
    Else
     F3BDscalarS1S2kernel6 = mi2 * (mS12 + mS22 - 1.5_dp * mi2)     &
          &  + ( mS12 * (mi2 - mS12)**2 * Log( 1._dp - mi2 / mS12)  &
          &    - mS22 * (mi2 - mS22)**2 * Log( 1._dp - mi2 / mS22)  &
          &    ) / (mS12-mS22)
    End If
-
+ 
   Else ! including decay widths
     mGS1 = mgS(1) * mgS(2)
     mGS2 = mgS(3) * mgS(4)
@@ -3571,7 +3571,7 @@ Contains
      Call DgaussInt(F3BDscalarSSkernel3,2,smin,smax,int2a,eps)
      int1(2) = int2a(1)
      int1(4) = int2a(2)
-    Endif
+    Endif 
 
    Endif
    erg = coupC(1) * coupC(3) * int1(4)  &
@@ -3589,7 +3589,7 @@ Contains
     smaxG = (scalar(1)+5._dp*scalar(2))**2
     int1(1) = 0._dp
     int1(2) = 0._dp
-
+    
     If ((smin.Gt.mS2).Or.(smax.Lt.mS2)) Then
      Call DgaussInt(F3BDscalarSSkernel2,2,smin,smax,int2a,eps)
      int1(3) = int2a(1)
@@ -3614,7 +3614,7 @@ Contains
      Call DgaussInt(F3BDscalarSSkernel2,2,smin,smax,int2a,eps)
      int1(3) = int2a(1)
      int1(4) = int2a(2)
-    Endif
+    Endif 
    Endif
    erg = coupC(1) * coupC(3) * int1(4)    &
      & + 4._dp * coupC(1) * coupC(4) * mf(3) * mf(4) * int1(3)
@@ -3630,33 +3630,33 @@ Contains
     smin = (Abs(mf(3)) + Abs(mf(4)))**2
     sminG = (scalar(1)-5._dp*scalar(2))**2
     smaxG = (scalar(1)+5._dp*scalar(2))**2
-
+    
     If ((smin.Gt.mS2).Or.(smax.Lt.mS2)) Then
-     Do int_v=1,4
+     Do int_v=1,4     
       int1(int_v) = Dgauss(F3BDscalarSSkernel1a,smin,smax,eps)
      End Do
     Elseif ((smin.Lt.sminG).And.(smax.Gt.smaxG)) Then
-     Do int_v=1,4
+     Do int_v=1,4     
       int1(int_v) = Dgauss(F3BDscalarSSkernel1a,smin,sminG,eps)  &
                 & + Dgauss(F3BDscalarSSkernel1a,sminG,smaxG,eps)  &
                 & + Dgauss(F3BDscalarSSkernel1a,smaxG,smax,eps)
      End Do
     Elseif (smin.Lt.sminG) Then
-     Do int_v=1,4
+     Do int_v=1,4     
       int1(int_v) = Dgauss(F3BDscalarSSkernel1a,smin,sminG,eps)  &
                 & + Dgauss(F3BDscalarSSkernel1a,sminG,smax,eps)
      End Do
     Elseif (smaxG.Lt.smax) Then
-     Do int_v=1,4
+     Do int_v=1,4     
       int1(int_v) = Dgauss(F3BDscalarSSkernel1a,smin,smaxG,eps)  &
                 & + Dgauss(F3BDscalarSSkernel1a,smaxG,smax,eps)
      End Do
     Else
-     Do int_v=1,4
+     Do int_v=1,4     
       int1(int_v) = Dgauss(F3BDscalarSSkernel1a,smin,smax,eps)
      End Do
     Endif
-
+ 
    Endif
    erg = coupC(1) * coupC(3) * int1(4)                               &
      & + 4._dp * ( coupC(1) * coupC(4) * mf(3) * mf(4) * int1(3)      &
@@ -3711,7 +3711,7 @@ Contains
 
   erg = 0._dp
 
-  Do i1=1,2
+  Do i1=1,2     
    m12 = mf2(1)
    m22 = mf2(2)
    sbar = s(i1)
@@ -3722,7 +3722,7 @@ Contains
    sumI = sumI * kappa(sbar,m12,m22) / sbar
 
    sumI = sumI / ( (sbar-mS2)**2 + mSG2 )
-   erg(1) = erg(1) + sumI
+   erg(1) = erg(1) + sumI 
    erg(2) = erg(2) + sumI * (sbar - mf2(3) - mf2(4))
    erg(3) = erg(3) + sumI * (mf2(1) + mf2(2) - sbar)
    erg(4) = erg(4) + sumI * (mf2(1) + mf2(2) -sbar)  * (sbar - mf2(3) - mf2(4))
@@ -3743,10 +3743,10 @@ Contains
 
   Integer :: i1
   Real(dp) :: m12,m22,sumI,sbar
-
+ 
   erg = 0._dp
 
-  Do i1=1,2
+  Do i1=1,2     
    m12 = mf2(1)
    sbar = s(i1)
    sumI = Abs(sbar-m12)
@@ -3756,8 +3756,8 @@ Contains
    sumI = sumI * kappa(sbar,m12,m22) / sbar
 
    sumI = sumI* (mf2(1) - sbar) / ( (sbar-mS2)**2 + mSG2 )
-   erg(1) = erg(1) + sumI
-   erg(2) = erg(2) + sumI * (sbar - mf2(3) - mf2(4))
+   erg(1) = erg(1) + sumI 
+   erg(2) = erg(2) + sumI * (sbar - mf2(3) - mf2(4)) 
   Enddo
 
  End Subroutine  F3BDscalarSSkernel2
@@ -3778,7 +3778,7 @@ Contains
 
   erg = 0._dp
 
-  Do i1=1,2
+  Do i1=1,2     
    m12 = mf2(1)
    m22 = mf2(2)
    sbar = s(i1)
@@ -3789,7 +3789,7 @@ Contains
    sumI = sumI * kappa(sbar,m12,m22) / sbar
 
    sumI = sumI * (sbar - mf2(3) - mf2(4)) / ( (sbar-mS2)**2 + mSG2 )
-   erg(1) = erg(1) + sumI
+   erg(1) = erg(1) + sumI 
    erg(2) = erg(2) + sumI * (mf2(1) + mf2(2) -sbar)
   Enddo
 
@@ -3805,9 +3805,9 @@ Contains
  !            * (p1-p2)^2 - m^2_S  - I m^2_S \[CapitalGamma]_S ) )
  ! in terms of the Mandelstam variables {s,t,u}, which are given by
  ! s=(p1-p4)^2, t=(p1-p2)^2, and u=(p1-p3)^2.
- ! Here {C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8]}
+ ! Here {C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8]} 
  ! are the couplings, {mf[1],mf[2],mf[3],mf[4]} are the fermion masses,
- ! scalar = {m_S^2, m_S \[CapitalGamma]_S, m_T^2, m_T \[CapitalGamma]_T}
+ ! scalar = {m_S^2, m_S \[CapitalGamma]_S, m_T^2, m_T \[CapitalGamma]_T} 
  ! are the masses squared and the mass times the total decay widths of the
  ! scalar boson in the s- and t-channel, respectively.
  ! written by Werner Porod, 7.2.2000
@@ -4163,8 +4163,8 @@ Contains
    sum1 = DiffLog
    sum2 = DiffTan
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(16) = erg(16) + factI
    erg(15) = erg(15) + factR
@@ -4172,14 +4172,14 @@ Contains
    erg(14) = erg(14) + factI * (-sbar + mf2(1) + mf2(4))
    erg(13) = erg(13) + factR * (-sbar + mf2(1) + mf2(4))
 
-   erg(12) = erg(12) + factI * (sbar - mf2(2) - mf2(3))
-   erg(11) = erg(11) + factR * (sbar - mf2(2) - mf2(3))
+   erg(12) = erg(12) + factI * (sbar - mf2(2) - mf2(3)) 
+   erg(11) = erg(11) + factR * (sbar - mf2(2) - mf2(3)) 
 
    sum1 = - diff + mTgT * DiffTan - ( mT2 - mf2(1) - mf2(2) ) * DiffLog
    sum2 = - ( mT2 - mf2(1) - mf2(2) ) * DiffTan - mTgT * DiffLog
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(10) = erg(10) + factI
    erg(9) = erg(9) + factR
@@ -4197,8 +4197,8 @@ Contains
    sum1 = diff - mTgT * DiffTan + ( mT2 + sbar - mf2(2) - mf2(4) ) * DiffLog
    sum2 = ( mT2 + sbar - mf2(2) - mf2(4) ) * DiffTan  + mTgT * DiffLog
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(6) = erg(6) + factI
    erg(5) = erg(5) + factR
@@ -4207,8 +4207,8 @@ Contains
         & - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffLog
    sum2 = - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffTan - mTgT * DiffLog
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(4) = erg(4) + factI
    erg(3) = erg(3) + factR
@@ -4219,8 +4219,8 @@ Contains
    sum2 = 2._dp * (( mT2 * sbar - mf2(1) * mf2(3) - mf2(2) * mf2(4) ) *DiffTan &
         &        + mTgT * sbar * DiffLog )
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(2) = erg(2) + factI
    erg(1) = erg(1) + factR
@@ -4275,8 +4275,8 @@ Contains
    sum1 = DiffLog
    sum2 = DiffTan
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(8) = erg(8) + factI * (-sbar + mf2(1) )
    erg(7) = erg(7) + factR * (-sbar + mf2(1) )
@@ -4295,8 +4295,8 @@ Contains
 
    sum2 = - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffTan - mTgT * DiffLog
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(4) = erg(4) + factI
    erg(3) = erg(3) + factR
@@ -4307,8 +4307,8 @@ Contains
    sum2 = 2._dp * ( ( mT2 * sbar - mf2(1) * mf2(3) ) * DiffTan &
         &        + mTgT * sbar * DiffLog )
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(2) = erg(2) + factI
    erg(1) = erg(1) + factR
@@ -4363,11 +4363,11 @@ Contains
    sum1 = DiffLog
    sum2 = DiffTan
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
-   erg(8) = erg(8) + factI * (sbar - mf2(2) )
-   erg(7) = erg(7) + factR * (sbar - mf2(2) )
+   erg(8) = erg(8) + factI * (sbar - mf2(2) ) 
+   erg(7) = erg(7) + factR * (sbar - mf2(2) ) 
 
    sum1 = diff - mTgT * DiffTan + ( mT2 - mf2(4) ) * DiffLog
 
@@ -4382,8 +4382,8 @@ Contains
    sum1 = diff - mTgT * DiffTan + ( mT2 + sbar - mf2(2) - mf2(4) ) * DiffLog
    sum2 = ( mT2 + sbar - mf2(2) - mf2(4) ) * DiffTan + mTgT * DiffLog
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(4) = erg(4) + factI
    erg(3) = erg(3) + factR
@@ -4394,8 +4394,8 @@ Contains
    sum2 = 2._dp * ( ( mT2 * sbar - mf2(2) * mf2(4) ) * DiffTan &
         &        + mTgT * sbar * DiffLog )
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(2) = erg(2) + factI
    erg(1) = erg(1) + factR
@@ -4450,18 +4450,18 @@ Contains
    sum1 = DiffLog
    sum2 = DiffTan
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
-   erg(8) = erg(8) + factI * (sbar - mf2(3))
-   erg(7) = erg(7) + factR * (sbar - mf2(3))
+   erg(8) = erg(8) + factI * (sbar - mf2(3)) 
+   erg(7) = erg(7) + factR * (sbar - mf2(3)) 
 
    sum1 = - diff + mTgT * DiffTan - ( mT2 - mf2(1) ) * DiffLog
 
    sum2 = - ( mT2 - mf2(1) ) * DiffTan - mTgT * DiffLog
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(6) = erg(6) + factI
    erg(5) = erg(5) + factR
@@ -4469,8 +4469,8 @@ Contains
    sum1 = - diff + mTgT * DiffTan - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffLog
    sum2 = - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffTan - mTgT * DiffLog
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(4) = erg(4) + factI
    erg(3) = erg(3) + factR
@@ -4481,8 +4481,8 @@ Contains
    sum2 = 2._dp * (( mT2 * sbar - mf2(1) * mf2(3) ) * DiffTan &
         &        + mTgT * sbar * DiffLog )
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(2) = erg(2) + factI
    erg(1) = erg(1) + factR
@@ -4595,8 +4595,8 @@ Contains
    sum1 = - diff + mTgT * DiffTan - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffLog
    sum2 = - ( mT2 + sbar - mf2(1) - mf2(3) ) * DiffTan - mTgT * DiffLog
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(4) = erg(4) + factI
    erg(3) = erg(3) + factR
@@ -4607,8 +4607,8 @@ Contains
    sum2 = 2._dp * (( mT2 * sbar - mf2(1) * mf2(3) ) * DiffTan &
         &        + mTgT * sbar * DiffLog )
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(2) = erg(2) + factI
    erg(1) = erg(1) + factR
@@ -4659,8 +4659,8 @@ Contains
    sum1 = DiffLog
    sum2 = DiffTan
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(4) = erg(4) + factI * sbar
    erg(3) = erg(3) + factR * sbar
@@ -4669,8 +4669,8 @@ Contains
 
    sum2 = 2._dp * sbar * ( mT2 * DiffTan + mTgT * DiffLog )
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(2) = erg(2) + factI
    erg(1) = erg(1) + factR
@@ -4718,8 +4718,8 @@ Contains
    sum1 = 2._dp * sbar * ( diff - mTgT * DiffTan  + mT2 * DiffLog )
    sum2 = 2._dp * sbar * ( mT2 * DiffTan + mTgT * DiffLog )
 
-   factR = ReProp * sum1 + ImProp * sum2
-   factI = ReProp * sum2 - ImProp * sum1
+   factR = ReProp * sum1 + ImProp * sum2 
+   factI = ReProp * sum2 - ImProp * sum1 
 
    erg(2) = erg(2) + factI
    erg(1) = erg(1) + factR
@@ -4738,7 +4738,7 @@ Contains
  !             be 12 in the calling program
  ! 12.09.03: new optional variable check, if .TRUE. then a check will be
  !           done if the intermediate state is real or virtual. In the
- !           former case resR is set to 0
+ !           former case resR is set to 0 
  !-----------------------------------------------------------------------
  Implicit None
   Integer, Intent(inout) :: n_C
@@ -4774,7 +4774,7 @@ Contains
     If (Scalar(3).eq.0._dp) then
      Iname = Iname - 1
      Return
-    End If
+    End If    
     If ( (Abs(mass(1)).Gt.(Abs(mass(2))+Scalar(1))) .And. &
        & (Scalar(1).Gt.(Abs(mass(3))+Abs(mass(4)))) ) Then
      Iname = Iname - 1
@@ -4828,7 +4828,7 @@ Contains
  !             be 16 in the calling program
  ! 12.09.03: new optional variable check, if .TRUE. then a check will be
  !           done if the intermediate state is real or virtual. In the
- !           former case resR is set to 0
+ !           former case resR is set to 0 
  !-----------------------------------------------------------------------
  Implicit None
   Integer, Intent(inout) :: n_C
@@ -4864,7 +4864,7 @@ Contains
     If (Gauge(3).eq.0._dp) then
      Iname = Iname - 1
      Return
-    End If
+    End If    
     If ( (Abs(mass(1)).Gt.(Abs(mass(4))+Gauge(1))) .And. &
        & (Gauge(1).Gt.(Abs(mass(3))+Abs(mass(2)))) ) Then
      Iname = Iname - 1
@@ -4918,7 +4918,7 @@ Contains
  !             8 in the calling subroutine
  ! 12.09.03: new optional variable check, if .TRUE. then a check will be
  !           done if the intermediate state is real or virtual. In the
- !           former case resR is set to 0
+ !           former case resR is set to 0 
  !-----------------------------------------------------------------------
  Implicit None
   Integer, Intent(inout) :: n_IR4
@@ -4991,11 +4991,11 @@ Contains
  ! input:  Scalar(1) ... mass of Scalar boson
  ! output:
  ! written by Werner Porod, 10.6.2000
- ! 29.10.2000: porting to f90, the second dimension of IntegralsC8 has to
+ ! 29.10.2000: porting to f90, the second dimension of IntegralsC8 has to 
  !             be 12
  ! 12.09.03: new optional variable check, if .TRUE. then a check will be
  !           done if the intermediate state is real or virtual. In the
- !           former case resR is set to 0
+ !           former case resR is set to 0 
  !-----------------------------------------------------------------------
  Implicit None
   Integer, Intent(inout) :: n_C
@@ -5075,7 +5075,7 @@ Contains
  ! 27.10.2000: porting to f90, second dimension of IntegralsC4 has to be 12
  ! 12.09.03: new optional variable check, if .TRUE. then a check will be
  !           done if the intermediate state is real or virtual. In the
- !           former case resR is set to 0
+ !           former case resR is set to 0 
  !-----------------------------------------------------------------------
  Implicit None
 
@@ -5112,7 +5112,7 @@ Contains
     If ((Scalar(1).Eq.0._dp).Or.(Scalar(3).Eq.0._dp)) Then
      Iname = Iname - 1
      Return
-    End If
+    End If    
     If ( (Abs(mass(1)).Ge.(Abs(mass(2))+Scalar(1))) .And. &
        & (Scalar(1).Ge.(Abs(mass(3))+Abs(mass(4)))) ) Then
      Iname = Iname - 1
@@ -5164,10 +5164,10 @@ Contains
  ! output:
  ! written by Werner Porod, 10.6.2000
  ! 27.10.2000: portation to f90, second dimension of  IntegralsR4 has
- !             to be 10
+ !             to be 10 
  ! 12.09.03: new optional variable check, if .TRUE. then a check will be
  !           done if the intermediate state is real or virtual. In the
- !           former case resR is set to 0
+ !           former case resR is set to 0 
  !-----------------------------------------------------------------------
  Implicit None
   Integer, Intent(inout) :: n_IR4
@@ -5248,7 +5248,7 @@ Contains
  !             be 16 in the calling program
  ! 12.09.03: new optional variable check, if .TRUE. then a check will be
  !           done if the intermediate state is real or virtual. In the
- !           former case resR is set to 0
+ !           former case resR is set to 0 
  !-----------------------------------------------------------------------
   Implicit None
 
@@ -5285,7 +5285,7 @@ Contains
     If ((Scalar(1).Eq.0._dp).Or.(Scalar(3).Eq.0._dp)) Then
      Iname = Iname - 1
      Return
-    End If
+    End If    
     If ( (Abs(mass(1)).Ge.(Abs(mass(4))+Scalar(1))) .And. &
        & (Scalar(1).Ge.(Abs(mass(3))+Abs(mass(2)))) ) Then
      Iname = Iname - 1
@@ -5354,7 +5354,7 @@ Contains
     erg = ratio * ( mS2 * ( 2._dp * mS2 - mf2a) - mf4 / 3._dp) &
       & + 2._dp * mS2 * (mS2-mf2a) * Log(1._dp - ratio)
    Else
-    ratio = 1._dp / mS2**2
+    ratio = 1._dp / mS2**2 
     erg = mf2a**4 * ratio *(1._dp/ 6._dp + 0.1_dp*mf2a*mS2*ratio    &
         &                 + mf2a**2 * ratio / 15._dp             &
         &                 + mf2a**3 * ratio**2 * mS2 / 21._dp )
@@ -5381,7 +5381,7 @@ Contains
         &       + mf2a**3 * ratio**2 * mS2 * (1._dp-2._dp*ratio*mgS2) / 21._dp)
    Endif
   Endif
-
+  
  End Subroutine IntGaugeSS1
 
 
@@ -5434,7 +5434,7 @@ Contains
    Endif
 
   Endif
-
+  
  End Subroutine IntScalarSS1
 
 End Module ThreeBodyPhaseSpace

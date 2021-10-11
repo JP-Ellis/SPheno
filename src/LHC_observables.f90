@@ -26,7 +26,7 @@ Contains
   Logical, Intent(in) :: GenerationMixing
   Real(dp), Intent(out) :: observ(:)
 
-  Real(dp) :: mSq_av_2, lq_low, lq_near, lq_far
+  Real(dp) :: mSq_av_2, lq_low, lq_near, lq_far 
   Integer :: i1, i2, i_n, i_count
 
   i_n = Size(mN)
@@ -109,7 +109,7 @@ Contains
   !------------------------------
   ! l q high edge
   !------------------------------
-  observ(i_count) = Max(lq_near,lq_far)
+  observ(i_count) = Max(lq_near,lq_far) 
   i_count = i_count + 1
 
   !-------------------------------------------------
@@ -142,7 +142,7 @@ Contains
 
    If ((mchi2.Le.msl).Or.(msl.Le.mchi1)) Then
     Mll_max = -1._dp
-
+    
    Else
     mchi22 = mchi2**2
     mchi12 = mchi1**2
@@ -163,7 +163,7 @@ Contains
 
    If ((msq.Le.mchi2).Or.(mchi2.Le.msl).Or.(msl.Le.mchi1)) Then
     Mllq_max = -1._dp
-
+    
    Else
     mchi22 = mchi2**2
     mchi12 = mchi1**2
@@ -191,7 +191,7 @@ Contains
 
   Real(dp) Function Mllq_min(msq, msl, mchi2, mchi1)
   !-------------------------------------------------------------
-  ! calculates the llq threshold
+  ! calculates the llq threshold 
   ! written by Werner Porod, 5.4.2008
   !-------------------------------------------------------------
   Implicit None
@@ -200,7 +200,7 @@ Contains
 
    If ((msq.Le.mchi2).Or.(mchi2.Le.msl).Or.(msl.Le.mchi1)) Then
     Mllq_min = -1._dp
-
+    
    Else
     mchi22 = mchi2**2
     mchi12 = mchi1**2
@@ -208,7 +208,7 @@ Contains
     msq2 = msq**2
 
     wert = ((mchi22+msl2)*(msl2+mchi12))**2 - 16._dp*mchi22*msl2**2*mchi12
-
+    
     Mllq_min = ( 2._dp*msl2*(msq2-mchi22)*(mchi22-mchi12)     &
              & + (msq2+mchi22)*(mchi22-msl2)*(msl2-mchi12)    &
              & - (msq2-mchi22)*Sqrt(wert)                      &
@@ -235,7 +235,7 @@ Contains
    If ((mq.Lt.Abs(mchi2)).Or.(Abs(mchi2).Lt.(mh+abs(mchi1)))) then
     MmaxHQ = -1._dp
     Return
-   End If
+   End If    
 
    mh2 = mh**2
    mq2 = mq**2
@@ -327,7 +327,7 @@ Contains
   Real(dp), Intent(in) :: mGlu, msup(6), msdown(6), g(3), mN(4), mC(2)  &
      & , mS0(2), mP0(2), mSpm(2), RS0(2,2), RP0(2,2), vevSM(2)
   Complex(dp), Intent(in) :: RSup(6,6), RSdown(6,6), Y_u(3,3), Y_d(3,3)  &
-     & , A_u(3,3), A_d(3,3), mu, U(2,2), V(2,2), N(4,4), RSpm(2,2), PhaseGlu
+     & , A_u(3,3), A_d(3,3), mu, U(2,2), V(2,2), N(4,4), RSpm(2,2), PhaseGlu 
 
   Complex(dp) :: coupC, coupLC, coupRC, cpl_SmpSdSu(2,6,6), RSd(2,2)         &
     & , Rsu(2,2), cpl_CUSd_L(2,3,6), cpl_CUSd_R(2,3,6), cpl_CDSu_L(2,3,6)    &
@@ -417,7 +417,7 @@ Contains
    Call CoupGluinoSquark(g(3), phaseglu, i1, Rsu, coupLC, coupRC)
    cpl_GUSu_L(3, 4 + i1) = coupLC
    cpl_GUSu_R(3, 4 + i1) = coupRC
-  End Do
+  End Do  
   !------------------------------
   ! sfermion - sfermion - W
   !------------------------------
@@ -429,7 +429,7 @@ Contains
   End Do
   Call Adjungate(cpl_SdSuW, cpl_SuSdW)
   !-------------------------------------
-  ! Pseudoscalar - sfermion - sfermion
+  ! Pseudoscalar - sfermion - sfermion 
   !-------------------------------------
   cpl_P0SdSd = 0._dp
   cpl_P0SuSu = 0._dp
@@ -445,7 +445,7 @@ Contains
    End Do
   End Do
   !-------------------------------------
-  ! scalar - sfermion - sfermion
+  ! scalar - sfermion - sfermion 
   !-------------------------------------
   cpl_S0SdSd = 0._dp
   cpl_S0SuSu = 0._dp
@@ -490,8 +490,8 @@ Contains
   gP_G2 = 0._dp
   gT_G = 0._dp
   BR_G2 = 0._dp
-  Call GluinoTwoBodyDecays_old(mGlu, mSdown, cpl_GDSd_L        &
-          &, cpl_GDSd_R, mf_d, mSup, cpl_GUSu_L, cpl_GUSu_R, mf_u         &
+  Call GluinoTwoBodyDecays_old(mGlu, mSdown, cpl_GDSd_L        &  
+          &, cpl_GDSd_R, mf_d, mSup, cpl_GUSu_L, cpl_GUSu_R, mf_u         &  
           &, 0, GenerationMixing, gP_G2, gT_G, BR_G2 )
   !-----------------------------
   ! only 3-body decays
@@ -537,7 +537,7 @@ Contains
      & + BR_G2(11) * BR_Sd(5,8) * BR_Su(5,5) &
      & + BR_G2(12) * BR_Sd(6,8) * BR_Su(5,5)
   BR_11 = BR_G2(11) * BR_Sd(5,5)
-
+  
   M_w_tb = 0._dp
   if ((BR_1 + BR_11).gt.0._dp) &
        & M_w_tb = ( BR_1 * M_tb_1 + BR_11 * M_tb_11) / (BR_1 + BR_11)

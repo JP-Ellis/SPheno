@@ -7,7 +7,7 @@ Block MnuRNuRIN        # masses of right handed neutrinos
  1 1  0.100000E+11      # m_nu_R1
  2 2  0.100000E+11      # m_nu_R2
  3 3  0.100000E+11      # m_nu_R3
-Block YNURLHUIN           # neutrino Yukawas at m_GUT OR m(SS)
+Block YNURLHUIN           # neutrino Yukawas at m_GUT OR m(SS) 
  1   1   1  0.00000000E+00   # Y_nu_11
  2   1   1  0.00000000E+00   # Y_nu_12
  3   1   1  0.00000000E+00   # Y_nu_13

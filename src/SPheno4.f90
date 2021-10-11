@@ -1,15 +1,15 @@
 !------------------------------------------------------------------------
 ! This is the main program for the package SPheno, version 3.0beta
-! SPheno stands for S(upersymmetric) Pheno(menology)
+! SPheno stands for S(upersymmetric) Pheno(menology) 
 ! A documentation is provided in the file Spheno.ps
 ! Please send any comments and/or bugs to porod@physik.uni-wuerzburg.de
 ! In case of a bug:
 !   - please check that the integer in the first line of Control.in
 !     is 0 or larger. If it is negative, please set it to 0. This
-!     enables the writing of several warnings. Afterwards rerun the
+!     enables the writing of several warnings. Afterwards rerun the 
 !     program.
 !   - please send the file Messages.out  and all input files (*.in) to
-!     the email above, if possible with a copy of the screen output
+!     the email above, if possible with a copy of the screen output 
 ! written by Werner Porod
 !-----------------------------------------------------------------
 Program SPheno
@@ -30,7 +30,7 @@ Use BranchingRatios
 Use LoopMasses
 Use LowEnergy
 Use SugraRuns
-Use NMSSM_tools
+Use NMSSM_tools 
 Use RPtools
 Use InputOutput
 
@@ -75,7 +75,7 @@ Implicit None
   Character(len=120) :: inputFileName, outputFileName
 
  Iname = 1
- NameOfUnit(1) = "SPheno3"
+ NameOfUnit(1) = "SPheno4"
  !--------------------------------------------------------------------------
  ! set all parameters and low energy observables to zero
  !--------------------------------------------------------------------------
@@ -116,7 +116,7 @@ Implicit None
  !--------------------------------------------------------------------------
  ! This routine call routines to
  !   - initializ the error system
- !   - to calculate the constants which are required for the
+ !   - to calculate the constants which are required for the 
  !     calculation of the loop functions
  !   - to get the standard model parameters
  !   - to get SUSY parameters
@@ -127,11 +127,12 @@ Implicit None
  !        to check if widths and cross sections shall be calculated
  !   (iii) Check if StandardModel.in exists to change the default SM values
  !   (iv) Read the information concerning the SUSY model from the file
- !        HighScale.in
+ !        HighScale.inSPh
  ! Note that either the file LesHouches.in or the file HighScale.in
  ! must exist.
  !--------------------------------------------------------------------------
  Call ReadingData(kont)
+
  !---------------------------------------------
  ! parameters for branching ratio calculations
  !---------------------------------------------
@@ -151,21 +152,21 @@ Implicit None
   Call Model_bilinear_Rparity(add_Rparity, HighScaleModel, delta_mass, epsI     &
        & , deltaM, ratioWoM, m32, grav_fac, CalcTBD, Ecms, Pm, Pp, ISR, Beam    &
        & , SigSup , SigSdown, SigC, SigChi0, SigS0, SigSP, SigHp, M_GUT, kont)
-
+  
  Else If (RP_trilinear) Then ! trilinear RP
   HighScaleModel = "RPexplicit"
   Call Model_trilinearL_Rparity(delta_mass, epsI, deltaM, ratioWoM    &
        & , m32, grav_fac, CalcTBD, Ecms, Pm, Pp, ISR, Beam            &
        & , SigSup , SigSdown, SigC, SigChi0, SigS0, SigSP, SigHp, kont)
-
+  
  Else If (kont.Eq.0) Then  ! models with MSSM particle content
-                           ! at the electroweak scale
+                           ! at the electroweak scale 
   Call Initialize_MSSM(GenerationMixing, id_gl, id_ph, id_Z, id_W      &
                     & , id_nu, id_l, id_d, id_u, id_grav)
   !---------------------------------------------------------------------------
   ! calculation of the spectrum, the following parameters can be changed
   ! with the help of the SLHA input file LesHouches.in or the file Control.in
-  !
+  ! 
   !---------------------------------------------------------------------------
    If (l_SM_decoupling) then
     Call CalculateSpectrum_decoupling(n_run, delta_mass, WriteOut, kont, tanb  &
@@ -186,12 +187,10 @@ Implicit None
    End If
 
    Q_in = Sqrt(GetRenormalizationScale())
-
    If (kont.Eq.0) Then
     Chi0%m2 = Chi0%m**2
     ChiPm%m2 = ChiPm%m**2
     Glu%m2 = Glu%m**2
-
     Call Low_Energy_Constraints_MSSM(Q_in, gauge, Y_l, Y_d, Y_u, A_l, A_d, A_u &
      & , Mi, mu, M2_E, M2_L, M2_D, M2_Q, M2_U, M2_H, B, tanb_Q, P0%m2, S0%m2   &
      & , Spm%m2, CKM, kont, GenerationMixing, rho_parameter, DeltaMBd          &
@@ -200,19 +199,21 @@ Implicit None
      & , a_e, a_mu, a_tau, d_e, d_mu, d_tau, BrMutoEGamma, BrTautoEGamma       &
      & , BrTautoMuGamma, BrMu3e, BrTau3e, BrTau3Mu, BR_Z_e_mu, BR_Z_e_tau      &
      & , BR_Z_mu_tau, d_N)
+
    End If
 
    !----------------------------------------------
    ! reorder state identification if necessary
    !----------------------------------------------
-   If ((.Not.GenerationMixing).And.(kont.Eq.0)) Then
-    Call Swap_Order_Sf(RSlepton(1,1), Slepton(1)%id, Slepton(2)%id, id_p, c_name)
-    Call Swap_Order_Sf(RSlepton(3,3), Slepton(3)%id, Slepton(4)%id, id_p, c_name)
-    Call Swap_Order_Sf(RSdown(1,1), Sdown(1)%id, Sdown(2)%id, id_p, c_name)
-    Call Swap_Order_Sf(RSdown(3,3), Sdown(3)%id, Sdown(4)%id, id_p, c_name)
-    Call Swap_Order_Sf(RSup(1,1), Sup(1)%id, Sup(2)%id, id_p, c_name)
-    Call Swap_Order_Sf(RSup(3,3), Sup(3)%id, Sup(4)%id, id_p, c_name)
+  If ((.Not.GenerationMixing).And.(kont.Eq.0)) Then
+    Call Swap_Order_Sf(RSlepton(1,1), Slepton(1)%id, Slepton(2)%id, id_p, c_name)    
+    Call Swap_Order_Sf(RSlepton(3,3), Slepton(3)%id, Slepton(4)%id, id_p, c_name)    
+    Call Swap_Order_Sf(RSdown(1,1), Sdown(1)%id, Sdown(2)%id, id_p, c_name)    
+    Call Swap_Order_Sf(RSdown(3,3), Sdown(3)%id, Sdown(4)%id, id_p, c_name)    
+    Call Swap_Order_Sf(RSup(1,1), Sup(1)%id, Sup(2)%id, id_p, c_name)    
+    Call Swap_Order_Sf(RSup(3,3), Sup(3)%id, Sup(4)%id, id_p, c_name)    
    End If
+
  !-------------------------------------------------------------------
  ! Calculation of the branching ratios and widths provided L_BR is
  ! set .TRUE. (default) and that the routine Sugra has finished
@@ -232,8 +233,8 @@ Implicit None
  !---------------------------------------------------------------------------
  ! Calculation of the cross sections in e+ e- annihilation provided L_Cs is
  ! set .TRUE. (default) and that the routine Sugra has finished
- ! correctly (kont.eq.0)
- ! The following input quantities can be specified in the file
+ ! correctly (kont.eq.0) 
+ ! The following input quantities can be specified in the file 
  ! CrossSections.in: Ecms .... c.m.s enerergy in GeV
  !                   Pm ...... degree of longitudinal polarization of incoming
  !                             electron
@@ -263,6 +264,7 @@ Implicit None
 
  End If
 
+
  If (kont.Ne.0) Call WriteNumberOfErrors(ErrCan)
  Call LesHouches_Out(67, kont, id_p, c_name, HighScaleModel, M_GUT         &
       & , BRbtosgamma, Bs_ll, Bd_ll, DeltaMBd, DeltaMBs, BrBToSLL          &
@@ -279,7 +281,6 @@ Implicit None
  !------------------------------------------------------------
  If ((Write_SLHA1).And.(kont.Eq.0)) Call WriteSPhenoOutputLHA1(35, M_GUT)
 
-! call CompareSUSYHD(35)
  Call closing() ! closes the files
  If ((kont.Ne.0).And.Non_Zero_Exit) Stop 99
 
@@ -390,9 +391,9 @@ Contains
 
     i1 = GetYukawaScheme()
     If (i1.Eq.1) Then
-     Y_u = Matmul(Transpose(CKM),Y_u)
+     Y_u = Matmul(Transpose(CKM),Y_u) 
     Else
-     Y_d = Matmul(Conjg(CKM),Y_d)
+     Y_d = Matmul(Conjg(CKM),Y_d) 
     End If
     Call Switch_from_superCKM(Y_d, Y_u, Ad_sckm, Au_sckm, M2D_sckm, M2Q_sckm &
               & , M2U_sckm, A_d, A_u, M2_D, M2_Q, M2_U, .False. )
@@ -422,7 +423,7 @@ Contains
     Call FirstGuess(phase_mu, tanb, Mi, M2_E, M2_L, A_l, M2_D   &
            & , M2_Q, M2_U, A_d, A_u, mu, B, M2_H, gp, g, Y_l  &
            & , Y_d, Y_u, vevSM, mP02, mP0, kont, .True., delta, Trim(Old_data) )
-   Else
+   Else 
     Call FirstGuess(phase_mu, tanb, Mi, M2_E, M2_L, A_l, M2_D   &
            & , M2_Q, M2_U, A_d, A_u, mu, B, M2_H, gp, g, Y_l  &
            & , Y_d, Y_u, vevSM, mP02, mP0, kont)
@@ -430,16 +431,26 @@ Contains
   End If
 
   If (External_Spectrum) Then
+   RP0(2,2) = 1._dp /Sqrt(1._dp+tanb**2)
+   RP0(1,2) = tanb * RP0(2,2)
+   RP0(2,1) = RP0(1,2)
+   RP0(1,1) = - RP0(2,2)
+   RSpm = RP0
+   Do i1=1,3
+    A_u(i1,i1) = Y_u(i1,i1) *  A_u(i1,i1)
+    A_d(i1,i1) = Y_d(i1,i1) *  A_d(i1,i1)
+    A_l(i1,i1) = Y_l(i1,i1) *  A_l(i1,i1)
+   end do
    Iname = Iname - 1
    Return ! using the externaly given spectrum
   End If
 
-  If (HighScaleModel.Eq."MSSMtree") Then
+  If (HighScaleModel.Eq."MSSMtree") Then 
    If (GenerationMixing) Then
     If (At_save.Ne.ZeroC) Au_sckm(3,3) = At_save * Y_u(3,3)
     If (Ab_save.Ne.ZeroC) Ad_sckm(3,3) = Ab_save * Y_d(3,3)
     If (Atau_save.Ne.ZeroC) Al_pmns(3,3) = Atau_save * Y_l(3,3)
-
+    
     Call Switch_from_superCKM(Y_d, Y_u, Ad_sckm, Au_sckm, M2D_sckm, M2Q_sckm &
               & , M2U_sckm, A_d, A_u, M2_D, M2_Q, M2_U, .False. )
     If (Maxval(Abs(MatNu)).Gt.0._dp) Then
@@ -459,7 +470,7 @@ Contains
         &, mN2, N, mSneut, mSneut2, Rsneut, mSlepton, mSlepton2    &
         &, RSlepton, mSdown, mSdown2, RSdown, mSup, mSup2, RSup    &
         &, mP0, mP02, RP0, mS0, mS02, RS0, mSpm, mSpm2, RSpm &
-        &, GenerationMixing, kont, .True.)
+        &, GenerationMixing, kont, .True.) 
 
    If (GenerationMixing) Then
     Call FermionMass(Y_l,vevSM(1),mf_l_mZ,uL_L,uL_R,kont)
@@ -479,9 +490,9 @@ Contains
    mA2_Q = mP02(2)
    vev_Q = Sqrt(vevSM(1)**2 + vevSM(2)**2)
    rho_parameter = 0
-   return
+   return 
 
-  Else
+  Else 
 
    Call TreeMasses(gp, g, vevSM, Mi(1), Mi(2), Mi(3), mu, B        &
         &, tanb, M2_E, M2_L, A_l, Y_l, M2_D, M2_U, M2_Q, A_d       &
@@ -495,11 +506,11 @@ Contains
    mass_old(2:3) = Abs(mC)
    mass_old(4:7) = Abs(mN)
    mass_old(8:9) = mS0
-   mass_old(10) = mP0_T(2)
-   mass_old(11) = mSpm(2)
-   mass_old(12:17) = mSup
-   mass_old(18:23) = mSdown
-   mass_old(24:29) = mSlepton
+   mass_old(10) = mP0_T(2)  
+   mass_old(11) = mSpm(2)  
+   mass_old(12:17) = mSup   
+   mass_old(18:23) = mSdown   
+   mass_old(24:29) = mSlepton 
    mass_old(30:32) = mSneut
   End If
 
@@ -576,9 +587,9 @@ Contains
     gauge(1) = Sqrt(3._dp/5._dp) * gauge(1)
 
     If (GenerationMixing) Then
-     Y_l = Transpose(Y_l)
-     Y_d = Transpose(Y_d)
-     Y_u = Transpose(Y_u)
+     Y_l = Transpose(Y_l) 
+     Y_d = Transpose(Y_d) 
+     Y_u = Transpose(Y_u) 
 
      If (.Not.l_Al) A_l = AoY_l * Y_l
      If (.Not.l_Ad) A_d = AoY_d * Y_d
@@ -587,7 +598,7 @@ Contains
      If (At_save.Ne.ZeroC) Au_sckm(3,3) = At_save * Y_u(3,3)
      If (Ab_save.Ne.ZeroC) Ad_sckm(3,3) = Ab_save * Y_d(3,3)
      If (Atau_save.Ne.ZeroC) Al_pmns(3,3) = Atau_save * Y_l(3,3)
-
+    
      Call Switch_from_superCKM(Y_d, Y_u, Ad_sckm, Au_sckm, M2D_sckm &
               & , M2Q_sckm, M2U_sckm, A_d, A_u, M2_D, M2_Q, M2_U, .False. )
      If (Maxval(Abs(MatNu)).Gt.0._dp) Then
@@ -597,7 +608,7 @@ Contains
       Call Switch_from_superPMNS(Y_l, id3C, Al_pmns, M2E_pmns, M2L_pmns &
                & , A_l, M2_E, M2_L, .False. )
      End If
-
+ 
     Else ! .not.GenerationMixing
 
      A_l = ZeroC
@@ -649,11 +660,11 @@ Contains
     mass_new(2:3) = Abs(mC)
     mass_new(4:7) = Abs(mN)
     mass_new(8:9) = mS0
-    mass_new(10) = mP0(2)
-    mass_new(11) = mSpm(2)
-    mass_new(12:17) = mSup
-    mass_new(18:23) = mSdown
-    mass_new(24:29) = mSlepton
+    mass_new(10) = mP0(2)  
+    mass_new(11) = mSpm(2)  
+    mass_new(12:17) = mSup   
+    mass_new(18:23) = mSdown   
+    mass_new(24:29) = mSlepton 
     mass_new(30:32) = mSneut
 
     diff_m = Abs(mass_new - mass_old)
@@ -825,7 +836,7 @@ Contains
      uD_R = id3C
      uL_L = id3C
      uL_R = id3C
-    Else
+    Else 
      Call BoundaryEW(i1+1,vevSM, mC, U, V, mN, N, mS02, RS0, mP02_T, RP0_T &
        & , mSpm, mSpm2, RSpm, mSdown, mSdown2, RSdown, mSup, mSup2, RSup   &
        & , mSlepton, mSlepton2, RSlepton, mSneut2, RSneut, uU_L, uU_R      &
@@ -855,13 +866,13 @@ Contains
   !-------------------------------------------------------------------------
   ! Iterative procedure to get the 1-loop masses and mixing matrices;
   ! delta is the relative precision required for the masses after two runs
-  ! The procedure is stopped after the i-th iteration
+  ! The procedure is stopped after the i-th iteration 
   ! if delta > |m(i) - m(i-1)|/m(i) for all SUSY. In the case that more than
-  ! 20 iterations are necessary the iteration loop is left and a warning is
+  ! 20 iterations are necessary the iteration loop is left and a warning is 
   ! given.
   !--------------------------------------------------------------------------
    ! In the SPA convention the the renormalization scale is fixed with 1 TeV
-   If (SPA_Convention) Call SetRGEScale(1.e3_dp**2) !
+   If (SPA_Convention) Call SetRGEScale(1.e3_dp**2) ! 
 
    Call Sugra(delta, vevSM, mC, U, V, mN, N, mS0, mS02, RS0 &
      & , mP0, mP02, RP0, mSpm, mSpm2, RSpm, mSdown, mSdown2 &
@@ -887,7 +898,7 @@ Contains
   Q_PDG_out(18:23) = mSdown
   Q_PDG_out(24:29) = mSlepton
   Q_PDG_out(30:32) = mSneut
-  Q_PDG_out(36) = mf_u(3)
+  Q_PDG_out(36) = mf_u(3) 
 
   Iname = Iname - 1
 
@@ -971,9 +982,9 @@ Contains
 
     i1 = GetYukawaScheme()
     If (i1.Eq.1) Then
-     Y_u = Matmul(Transpose(CKM),Y_u)
+     Y_u = Matmul(Transpose(CKM),Y_u) 
     Else
-     Y_d = Matmul(Conjg(CKM),Y_d)
+     Y_d = Matmul(Conjg(CKM),Y_d) 
     End If
     Call Switch_from_superCKM(Y_d, Y_u, Ad_sckm, Au_sckm, M2D_sckm, M2Q_sckm &
               & , M2U_sckm, A_d, A_u, M2_D, M2_Q, M2_U, .False. )
@@ -998,12 +1009,11 @@ Contains
    End If
 
   Else ! high scale model
-
    If (Len(Trim(Old_data)).Ne.0) Then
     Call FirstGuess(phase_mu, tanb, Mi, M2_E, M2_L, A_l, M2_D   &
            & , M2_Q, M2_U, A_d, A_u, mu, B, M2_H, gp, g, Y_l  &
            & , Y_d, Y_u, vevSM, mP02, mP0, kont, .True., delta, Trim(Old_data) )
-   Else
+   Else 
     Call FirstGuess(phase_mu, tanb, Mi, M2_E, M2_L, A_l, M2_D   &
            & , M2_Q, M2_U, A_d, A_u, mu, B, M2_H, gp, g, Y_l  &
            & , Y_d, Y_u, vevSM, mP02, mP0, kont)
@@ -1015,12 +1025,12 @@ Contains
    Return ! using the externaly given spectrum
   End If
 
-  If (HighScaleModel.Eq."MSSMtree") Then
+  If (HighScaleModel.Eq."MSSMtree") Then 
    If (GenerationMixing) Then
     If (At_save.Ne.ZeroC) Au_sckm(3,3) = At_save * Y_u(3,3)
     If (Ab_save.Ne.ZeroC) Ad_sckm(3,3) = Ab_save * Y_d(3,3)
     If (Atau_save.Ne.ZeroC) Al_pmns(3,3) = Atau_save * Y_l(3,3)
-
+    
     Call Switch_from_superCKM(Y_d, Y_u, Ad_sckm, Au_sckm, M2D_sckm, M2Q_sckm &
               & , M2U_sckm, A_d, A_u, M2_D, M2_Q, M2_U, .False. )
     If (Maxval(Abs(MatNu)).Gt.0._dp) Then
@@ -1040,7 +1050,7 @@ Contains
         &, mN2, N, mSneut, mSneut2, Rsneut, mSlepton, mSlepton2    &
         &, RSlepton, mSdown, mSdown2, RSdown, mSup, mSup2, RSup    &
         &, mP0, mP02, RP0, mS0, mS02, RS0, mSpm, mSpm2, RSpm &
-        &, GenerationMixing, kont, .True.)
+        &, GenerationMixing, kont, .True.) 
 
    If (GenerationMixing) Then
     Call FermionMass(Y_l,vevSM(1),mf_l_mZ,uL_L,uL_R,kont)
@@ -1060,9 +1070,9 @@ Contains
    mA2_Q = mP02(2)
    vev_Q = Sqrt(vevSM(1)**2 + vevSM(2)**2)
    rho_parameter = 0
-   return
+   return 
 
-  Else
+  Else 
 
    Call TreeMasses(gp, g, vevSM, Mi(1), Mi(2), Mi(3), mu, B        &
         &, tanb, M2_E, M2_L, A_l, Y_l, M2_D, M2_U, M2_Q, A_d       &
@@ -1076,11 +1086,11 @@ Contains
    mass_old(2:3) = Abs(mC)
    mass_old(4:7) = Abs(mN)
    mass_old(8:9) = mS0
-   mass_old(10) = mP0_T(2)
-   mass_old(11) = mSpm(2)
-   mass_old(12:17) = mSup
-   mass_old(18:23) = mSdown
-   mass_old(24:29) = mSlepton
+   mass_old(10) = mP0_T(2)  
+   mass_old(11) = mSpm(2)  
+   mass_old(12:17) = mSup   
+   mass_old(18:23) = mSdown   
+   mass_old(24:29) = mSlepton 
    mass_old(30:32) = mSneut
   End If
 
@@ -1125,7 +1135,7 @@ Contains
    mZ2_run = mZ2 ! initialisation
    mW2_run = mW2 ! initialisation
    delta_VB_MSSM = 0._dp  ! initialisation
-   lamR = 0.26_dp
+   lamR = 0.26_dp    
    mH_SM2_tree = 126._dp**2
    Do i1=1,n_run
     !---------------------------------------
@@ -1147,7 +1157,7 @@ Contains
     v_mZ = 2._dp * sqrt(mW2_run) / g1(2)
 
     If(i1.Eq.1) Then
-     lamR = 0.26_dp
+     lamR = 0.26_dp 
      muSMR = 0.5_dp*lamR*v_mZ**2
     End If
     ln_v = log(v_mZ)
@@ -1187,7 +1197,7 @@ Contains
     End If
 
     gaugeSM(3) = 1.1666_dp + 0.00314_dp*(alphaS_mZ-0.1184_dp)/0.0007_dp &
-             & - 0.00046_dp * (mf_u(3) - 173.34_dp)
+             & - 0.00046_dp * (mf_u(3) - 173.34_dp)  
 
     Call ParametersToG59(gaugeSM, lamR, Y_u_SM, Y_d_SM, Y_l_SM, ln_v,g4)
 
@@ -1212,7 +1222,7 @@ Contains
 
    gaugeSM(1) = Sqrt(3._dp/5._dp) * gaugeSM(1)
    !--------------------------------------------
-   ! calculating boundary conditions at m_SUSY
+   ! calculating boundary conditions at m_SUSY 
    !---------------------------------------------------------
    ! this part needs to be improved
    If (Atau_save.Ne.ZeroC) A_l(3,3) = Atau_save * Y_l(3,3)
@@ -1225,7 +1235,7 @@ Contains
    Call Boundary_SUSY(mudim, gaugeSM, Y_l_SM, Y_d_SM, Y_u_SM, tanb_Q      &
          &  , Mi, mu, M2_E, M2_L, A_l, M2_D, M2_Q, M2_U, A_d, A_u &
          &  , M2_H, B, gauge, Y_l, Y_d, Y_u, kont, GenerationMixing, v_mSUSY)
-
+    
    If (kont.ne.0) then
     Iname = Iname - 1
     Return
@@ -1284,7 +1294,7 @@ Contains
    !------------------------------------------
    Call Match_lambda_SM(mS02(1), gaugeSM, Y_l_SM, Y_d_SM, Y_u_SM, delta, lamR &
                       & , kont, v_mSUSY)
-
+   
    gaugeSM(1) = Sqrt(5._dp/3._dp) * gaugeSM(1)
 
    Call ParametersToG59(gaugeSM, lamR, Y_u_SM, Y_d_SM , Y_l_SM, ln_v, g4)
@@ -1303,7 +1313,7 @@ Contains
 
    Call SetRGEScale(mf_u2(3))
 
-   If (GenerationMixing) then
+   If (GenerationMixing) then 
     Call FermionMass(Y_l_SM, sqrt2, Yl, UL_L,UL_R,kont)
     Call FermionMass(Y_d_SM, sqrt2, Yd, UD_L,UD_R,kont)
     Call FermionMass(Y_u_SM, sqrt2, Yu, UU_L,UU_R,kont)
@@ -1335,8 +1345,8 @@ Contains
 
    Call SetRGEScale(mudim**2)
     UseFixedScale = .False.
-   mS0(1) = mH_SM
-   mS02(1) = mH_SM2
+   mS0(1) = mH_SM 
+   mS02(1) = mH_SM2 
    mH_SM2_tree = lamR*v_mZ**2
    If (kont.Ne.0) Then
     Iname = Iname - 1
@@ -1347,11 +1357,11 @@ Contains
     mass_new(2:3) = Abs(mC)
     mass_new(4:7) = Abs(mN)
     mass_new(8:9) = mS0
-    mass_new(10) = mP0(2)
-    mass_new(11) = mSpm(2)
-    mass_new(12:17) = mSup
-    mass_new(18:23) = mSdown
-    mass_new(24:29) = mSlepton
+    mass_new(10) = mP0(2)  
+    mass_new(11) = mSpm(2)  
+    mass_new(12:17) = mSup   
+    mass_new(18:23) = mSdown   
+    mass_new(24:29) = mSlepton 
     mass_new(30:32) = mSneut
 
     diff_m = Abs(mass_new - mass_old)
@@ -1388,13 +1398,13 @@ Contains
   !-------------------------------------------------------------------------
   ! Iterative procedure to get the 1-loop masses and mixing matrices;
   ! delta is the relative precision required for the masses after two runs
-  ! The procedure is stopped after the i-th iteration
+  ! The procedure is stopped after the i-th iteration 
   ! if delta > |m(i) - m(i-1)|/m(i) for all SUSY. In the case that more than
-  ! 20 iterations are necessary the iteration loop is left and a warning is
+  ! 20 iterations are necessary the iteration loop is left and a warning is 
   ! given.
   !--------------------------------------------------------------------------
    ! In the SPA convention the the renormalization scale is fixed with 1 TeV
-   If (SPA_Convention) Call SetRGEScale(1.e3_dp**2) !
+   If (SPA_Convention) Call SetRGEScale(1.e3_dp**2) ! 
 
    Call Sugra_SM_decoupling(delta, vevSM, mC, U, V, mN, N, mS0, mS02, RS0 &
      & , mP0, mP02, RP0, mSpm, mSpm2, RSpm, mSdown, mSdown2 &
@@ -1420,7 +1430,7 @@ Contains
   Q_PDG_out(18:23) = mSdown
   Q_PDG_out(24:29) = mSlepton
   Q_PDG_out(30:32) = mSneut
-  Q_PDG_out(36) = mf_u(3)
+  Q_PDG_out(36) = mf_u(3) 
 
   Iname = Iname - 1
 
@@ -1431,7 +1441,7 @@ Contains
  Subroutine ReadingData(kont)
  !--------------------------------------------------------
  ! reading the input, all routines used can be found in
- ! InputOutput.f90
+ ! InputOutput.f90 
  !--------------------------------------------------------
  Implicit None
   Integer, Intent(out) :: kont
@@ -1489,11 +1499,12 @@ Contains
 
    Write(*,*) "No input file has been found. Please provide one."
    Write(ErrCan,*) "No input file has been found. Please provide one."
-   Call TerminateProgram
+   Call TerminateProgram 
 
   End If
 
  End Subroutine ReadingData
-!include "CompareSUSYHD.f90"
+
+
 End Program SPheno
 

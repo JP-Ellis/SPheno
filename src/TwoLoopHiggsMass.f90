@@ -61,7 +61,7 @@ Contains
   Ft = DT1 - DT2 - 4._dp*c2t**2/(T1-T2)*Dc2t
   Gt = D1t + DT1 + DT2
 
-  Xt = (T1-T2)*s2t/2._dp/Sqrt(t)
+  Xt = (T1-T2)*s2t/2._dp/Sqrt(t)    
   Xb = (B1-B2)*s2b/2._dp/Sqrt(b)
   At = Xt - mu/tanb
   Ab = Xb - mu*tanb
@@ -75,7 +75,7 @@ Contains
     & - 2._dp*mu/s2t/s2b/(T1-T2)/(B1-B2)                                &
     &   * (At*tanb*Dspbmptbspbptt + Ab/tanb*Dsptmpttsptptb+ mu*Dsptmpttspbmptb)
 
-  Call makederiv(b,t,A0,B1,B2,T1,T2,s2b,c2b,s2t,c2t,q,mu,vv,1d0/tanb)
+  Call makederiv(b,t,A0,B1,B2,T1,T2,s2b,c2b,s2t,c2t,q,mu,vv,1d0/tanb) 
 
   F1b = Dtt + DT1T1 + DT2T2 + 2._dp*(DT1t + DT2t + DT1T2) &
     & + (Dcptpb + Dcptmptt + Dcptptb - 2._dp*Dsptmpttsptptb) /4._dp/b**2
@@ -92,10 +92,10 @@ Contains
   F4b = DT1b + DT1B1 + DT1B2 - DT2b - DT2B1 - DT2B2          &
     & - 4._dp*c2b**2/(B1-B2)*(DB1c2t + DB2c2t + Dbc2t)         &
     & - (Dcpbptt + Dsptmpttspbmptb - Dspbmptbspbptt) /t/s2b**2/(B1-B2)
-
+  
   Fb = DT1 - DT2 - 4._dp*c2b**2/(B1-B2)*Dc2t
   Gb = D1t + DT1 + DT2
-
+  
   Contains
 
    Subroutine makederiv(t,b,A0,T1,T2,B1,B2,s2t,c2t,s2b,c2b, q,mu,vv,tanb)
@@ -115,20 +115,20 @@ Contains
      & , delt_A0_T1_T1, abs_mu
    Real(dp), Parameter :: Nc=3._dp
    !      real(dp) Delt,phi,Li2
-
+   
    mt = Sqrt(t)
    mb = Sqrt(b)
    sbe = Sin(Atan(tanb))
    cbe = Cos(Atan(tanb))
-
+   
    ht = Sqrt(2._dp/vv)*mt/sbe
    hb = Sqrt(2._dp/vv)*mb/cbe
-
-   Xt = (T1-T2)*s2t/2._dp/mt
-   Xb = (B1-B2)*s2b/2._dp/mb
+   
+   Xt = (T1-T2)*s2t/2._dp/mt    
+   Xb = (B1-B2)*s2b/2._dp/mb           
    Yt  = Xt - mu/sbe/cbe
    Yb  = Xb - mu/sbe/cbe
-
+   
    mu2 = mu**2
    ! this was a bug in Pietro's file, where on several places Sqrt(mu**2)
    ! appeared instead of
@@ -2614,7 +2614,7 @@ Contains
      &0.5_dp*(tmp227*tmp9) - 0.5_dp*(tmp233*tmp9)
    Return
    End Subroutine makederiv
-
+   
  End Subroutine makefuncs
 
 
@@ -2623,171 +2623,171 @@ Contains
   Implicit None
   Real(dp), intent(in) :: t,b,T1,T2,B1,B2,s2t,c2t,s2b,c2b,q,mu,vv,tanb
   Real(dp), intent(out) :: F1t,F2t,F3t,F4t,F1b,F2b,F3b,F4b,F5,F6,Ft,Fb,Gt,Gb,FAp
-
+  
   F1t = tauF1q(t,b,T1,T2,B1,B2,s2t,s2b,q,vv,tanb)
   F2t = tauF2q(t,b,T1,T2,B1,B2,s2t,c2t,s2b,q,vv,tanb)
   F3t = tauF3q(t,b,T1,T2,B1,B2,s2t,c2t,s2b,q,vv,tanb)
   F4t = tauF4q(t,b,T1,T2,B1,B2,s2t,c2t,s2b,q,vv,tanb)
 
-  F1b = tauF1q(b,t,B1,B2,T1,T2,s2b,s2t,q,vv,tanb)
-  F2b = tauF2q(b,t,B1,B2,T1,T2,s2b,c2b,s2t,q,vv,tanb)
-  F3b = tauF3q(b,t,B1,B2,T1,T2,s2b,c2b,s2t,q,vv,tanb)
-  F4b = tauF4q(b,t,B1,B2,T1,T2,s2b,c2b,s2t,q,vv,tanb)
+  F1b = tauF1q(b,t,B1,B2,T1,T2,s2b,s2t,q,vv,tanb) 
+  F2b = tauF2q(b,t,B1,B2,T1,T2,s2b,c2b,s2t,q,vv,tanb) 
+  F3b = tauF3q(b,t,B1,B2,T1,T2,s2b,c2b,s2t,q,vv,tanb) 
+  F4b = tauF4q(b,t,B1,B2,T1,T2,s2b,c2b,s2t,q,vv,tanb) 
 
   F5 = tauF5q(t,b,T1,T2,B1,B2,s2t,c2t,s2b,c2b,q,vv,tanb)
   F6 = tauF6q(t,b,T1,T2,B1,B2,s2t,s2b,vv,tanb)
 
   Ft = tauFq(t,b,T1,T2,B1,B2,s2t,c2t,s2b,q,vv,tanb)
   Gt = tauGq(t,b,T1,T2,B1,B2,s2t,s2b,q,vv,tanb)
-
+  
   Fb = tauFq(b,t,B1,B2,T1,T2,s2b,c2b,s2t,q,vv,tanb)
   Gb = tauGq(b,t,B1,B2,T1,T2,s2b,s2t,q,vv,tanb)
-
+  
   FAp = tauFAq(t,b,T1,T2,B1,B2,s2t,s2b,q,mu,vv,tanb)
 
  Contains
 
   Function tauF1q(t,b,T1,T2,B1,B2,s2t,s2b,q,vv,tanb)
   Implicit None
-
+  
   Real(dp) :: tauF1q
   Real(dp) :: t,b,T1,T2,B1,B2,s2t,s2b,q,vv,tanb
   Real(dp) :: ht,hb,pippob
   pippob = B1*(Log(B1/q)-1._dp) - B2*(Log(B2/q)-1._dp)
-
+  
   ht = Sqrt(2._dp*t/vv)/Cos(Atan(tanb))
   hb = Sqrt(2._dp*b/vv)/Cos(Atan(tanb))
   tauF1q = -0.5_dp*ht*hb*s2t*s2b*(T1-T2)/T1/T2*pippob
 
   End Function tauF1q
-
-
+  
+  
   Function tauF2q(t,b,T1,T2,B1,B2,s2t,c2t,s2b,q,vv,tanb)
-
+  
   Implicit None
-
+  
   Real(dp) :: tauF2q
   Real(dp) :: t,b,T1,T2,B1,B2,s2t,c2t,s2b,q,vv,tanb
   Real(dp) :: ht,hb,pippob
   pippob = B1*(Log(B1/q)-1._dp) - B2*(Log(B2/q)-1._dp)
-
+  
   ht = Sqrt(2._dp*t/vv)/Cos(Atan(tanb))
   hb = Sqrt(2._dp*b/vv)/Cos(Atan(tanb))
   tauF2q =0.5_dp*ht*hb*s2b/s2t/T1/T2/(T1-T2)*pippob* &
       & (s2t**2*(T1**2-T2**2) + 2._dp*c2t**2*T1*T2*Log(T1/T2))
-
+  
   End Function tauF2q
-
-
+  
+  
   Function tauF3q(t,b,T1,T2,B1,B2,s2t,c2t,s2b,q,vv,tanb)
-
+  
   Implicit None
   Real(dp) :: tauF3q
   Real(dp) :: t,b,T1,T2,B1,B2,s2t,c2t,s2b,q,vv,tanb
   Real(dp) :: ht,hb,pippob
   pippob = B1*(Log(B1/q)-1._dp) - B2*(Log(B2/q)-1._dp)
-
+  
   ht = Sqrt(2._dp*t/vv)/Cos(Atan(tanb))
   hb = Sqrt(2._dp*b/vv)/Cos(Atan(tanb))
-
+  
   tauF3q = -0.5_dp*ht*hb*s2b/s2t/T1/T2/(T1-T2)**2*pippob* &
     ((T1-T2)*(s2t**2*(T1+T2)**2 - 8d0*c2t**2*T1*T2) &
     -2._dp*(3d0*s2t**2 - 2._dp)*T1*T2*(T1+T2)*Log(T1/T2))
 
   End Function tauF3q
-
-
+  
+  
   Function tauF4q(t,b,T1,T2,B1,B2,s2t,c2t,s2b,q,vv,tanb)
-
+  
   Implicit None
   Real(dp) :: tauF4q
   Real(dp) :: t,b,T1,T2,B1,B2,s2t,c2t,s2b,q,vv,tanb
   Real(dp) :: ht,hb,pippot
   pippot = T1*(Log(T1/q)-1._dp) - T2*(Log(T2/q)-1._dp)
-
+  
   ht = Sqrt(2._dp*t/vv)/Cos(Atan(tanb))
   hb = Sqrt(2._dp*b/vv)/Cos(Atan(tanb))
-
+  
   tauF4q =0.5_dp*ht*hb*s2b/s2t/(T1-T2)*Log(B1/B2)* &
     (2._dp*c2t**2*pippot + s2t**2*(T1-T2)*Log(T1*T2/q**2))
-
+  
   End Function tauF4q
-
-
+  
+  
   Function tauF5q(t,b,T1,T2,B1,B2,s2t,c2t,s2b,c2b,q,vv,tanb)
-
+  
   Implicit None
   Real(dp) :: tauF5q
   Real(dp) :: t,b,T1,T2,B1,B2,s2t,c2t,s2b,c2b,q,vv,tanb
   Real(dp) :: ht,hb,pippob,pippot
   pippob = B1*(Log(B1/q)-1._dp) - B2*(Log(B2/q)-1._dp)
   pippot = T1*(Log(T1/q)-1._dp) - T2*(Log(T2/q)-1._dp)
-
+  
   ht = Sqrt(2._dp*t/vv)/Cos(Atan(tanb))
   hb = Sqrt(2._dp*b/vv)/Cos(Atan(tanb))
-
+  
   tauF5q =0.5_dp*hb*ht/s2b/s2t*  &
     (-4._dp*pippob*pippot/(B1-B2)/(T1-T2)*(1._dp-c2b**2*c2t**2) &
     + 2._dp*pippot*s2b**2*c2t**2/(T1-T2)*Log(B1*B2/q**2) &
     + 2._dp*pippob*s2t**2*c2b**2/(B1-B2)*Log(T1*T2/q**2) &
     + s2t**2*s2b**2*(Log(B1/q)*Log(T1/q) + Log(B1/q)*Log(T2/q) &
     + Log(B2/q)*Log(T1/q) + Log(B2/q)*Log(T2/q)))
-
+  
   End Function tauF5q
-
-
+  
+  
   Function tauF6q(t,b,T1,T2,B1,B2,s2t,s2b,vv,tanb)
-
+  
   Implicit None
   Real(dp) :: tauF6q
   Real(dp) :: t,b,T1,T2,B1,B2,s2t,s2b,vv,tanb
   Real(dp) :: ht,hb
-
+  
   ht = Sqrt(2._dp*t/vv)/Cos(Atan(tanb))
   hb = Sqrt(2._dp*b/vv)/Cos(Atan(tanb))
-
+  
   tauF6q =0.5_dp*ht*hb*s2t*s2b*Log(B1/B2)*Log(T1/T2)
-
+  
   Return
   End Function tauF6q
-
-
+  
+  
   Function tauFq(t,b,T1,T2,B1,B2,s2t,c2t,s2b,q,vv,tanb)
-
+  
   Implicit None
   Real(dp) :: tauFq
   Real(dp) :: t,b,T1,T2,B1,B2,s2t,c2t,s2b,q,vv,tanb
   Real(dp) :: ht,hb,pippob,pippot
   pippob = B1*(Log(B1/q)-1._dp) - B2*(Log(B2/q)-1._dp)
   pippot = T1*(Log(T1/q)-1._dp) - T2*(Log(T2/q)-1._dp)
-
+  
   ht = Sqrt(2._dp*t/vv)/Cos(Atan(tanb))
   hb = Sqrt(2._dp*b/vv)/Cos(Atan(tanb))
-
+  
   tauFq =0.5_dp*ht*hb*s2b/s2t/(T1-T2)*pippob* &
     (2._dp*c2t**2*pippot + s2t**2*(T1-T2)*Log(T1*T2/q**2))
-
+  
   End Function tauFq
 
-
+  
   Function tauGq(t,b,T1,T2,B1,B2,s2t,s2b,q,vv,tanb)
-
+  
   Implicit None
   Real(dp) :: tauGq
   Real(dp) :: t,b,T1,T2,B1,B2,s2t,s2b,q,vv,tanb
   Real(dp) :: ht,hb,pippob
   pippob = B1*(Log(B1/q)-1._dp) - B2*(Log(B2/q)-1._dp)
-
+  
   ht = Sqrt(2._dp*t/vv)/Cos(Atan(tanb))
   hb = Sqrt(2._dp*b/vv)/Cos(Atan(tanb))
-
+  
   tauGq =0.5_dp*hb*ht*s2b*s2t*pippob*Log(T1/T2)
-
+  
   End Function tauGq
-
-
+  
+  
   Function tauFAq(t,b,T1,T2,B1,B2,s2t,s2b,q,mu,vv,tanb)
-
+  
   Implicit None
   Real(dp) :: tauFAq
   Real(dp) :: t,b,T1,T2,B1,B2,s2t,s2b,q,mu,vv,tanb
@@ -2796,21 +2796,21 @@ Contains
 
   pippob = B1*(Log(B1/q)-1._dp) - B2*(Log(B2/q)-1._dp)
   pippot = T1*(Log(T1/q)-1._dp) - T2*(Log(T2/q)-1._dp)
-
+  
   ht = Sqrt(2._dp*t/vv)/Cos(Atan(tanb))
   hb = Sqrt(2._dp*b/vv)/Cos(Atan(tanb))
-  Xt = (T1-T2)*s2t/2._dp/Sqrt(t)
+  Xt = (T1-T2)*s2t/2._dp/Sqrt(t)    
   Xb = (B1-B2)*s2b/2._dp/Sqrt(b)
   At = Xt - mu*tanb
   Ab = Xb - mu*tanb
-
+  
   tauFAq = 2._dp*ht*hb*Sqrt(t*b)*tanb*(Ab-At)**2    &
       &  * mu**2/s2b/s2t/(T1-T2)**2/(B1-B2)**2*pippot*pippob
-
+  
   End Function tauFAq
 
  End Subroutine makefuncstau
-
+  
 
  Subroutine PiPseudoScalar2(gs, mg, mA2, vevs, mD2, mU2, mQ2, ME2, ML2, A_b &
              & , A_t, A_tau, Y_b, Y_t, Y_tau, mu, PiA02, kont)
@@ -2838,7 +2838,7 @@ Contains
  !   mu .................. mu-parameter
  ! output:
  !  PiA02 ....... two-loop contribution to pseudoscalar mass
- !  kont ........ is 0 if everything is o.k., otherwise it gets a negative
+ !  kont ........ is 0 if everything is o.k., otherwise it gets a negative 
  !                value
  ! written by Werner Porod, 13.12.02
  ! 11.06.03: implementing alpha_b alpha_t + alpha^2_b corrections
@@ -2846,7 +2846,7 @@ Contains
  ! 04.03.04: - implementing alpha_b alpha_tau part
  !------------------------------------------------------------------
  Implicit None
-  Integer, Intent(inout) :: kont
+  Integer, Intent(inout) :: kont 
   Real(dp), Intent(in) :: gs, mg, mA2, vevs(2), mQ2, mU2, mD2, ML2, ME2
   Complex(dp), Intent(in) :: A_b, A_t, Y_t, Y_b, mu, A_tau, Y_tau
   Real(dp), Intent(out) :: PiA02
@@ -2866,7 +2866,7 @@ Contains
   PiA02 = 0._dp
   kont = 0
   !------------------------------------------------------------------------
-  ! first the (s)fermion, please note, that the papers by P.Slavich et al.
+  ! first the (s)fermion, please note, that the papers by P.Slavich et al. 
   ! the ordering of the sfermions is reversed to compared to my odering
   !------------------------------------------------------------------------
   Call SfermionMass(MQ2, MU2, A_t, mu, vevs, Y_t, 0.5_dp, YL, YRu,   &
@@ -2879,7 +2879,7 @@ Contains
    Call AddError(601)
    Iname = Iname - 1
    Return
-  End If
+  End If 
   mt2 = 0.5_dp * Abs(Y_t*vevs(2))**2
 
   Call SfermionMass(MQ2, MD2, A_b, mu, vevs, Y_b, -0.5_dp, YL, YRd,   &
@@ -2892,7 +2892,7 @@ Contains
    Call AddError(602)
    Iname = Iname - 1
    Return
-  End If
+  End If 
 
   mb2 = 0.5_dp * Abs(Y_b*vevs(1))**2
 
@@ -2906,7 +2906,7 @@ Contains
    Call AddError(603)
    Iname = Iname - 1
    Return
-  End If
+  End If 
 
   mtau2 = 0.5_dp * Abs(Y_tau*vevs(1))**2
   s2tau = - 2._dp * Real( Rstau(1,1) * Rstau(1,2), dp)
@@ -2930,29 +2930,29 @@ Contains
   tanb = vevs(2) / vevs(1)
   cb = 1._dp / Sqrt(1._dp + tanb**2)
   sb = tanb * cb
-
+ 
   At = Real(A_t/Y_t, dp)
   Ab = Real(A_b/Y_b, dp)
   Atau = Real(A_tau/Y_tau, dp)
   muR = - Real(mu, dp) ! different sign convention
 
   !-----------------
-  ! alpha_s alpha_t
+  ! alpha_s alpha_t  
   !-----------------
   Call strfuncsodd(mt2, mg, mStop2(2), mStop2(1), s2t, Q, At, FA, FA_A)
   If (At.Eq.0._dp) Then
- !     the function FA has poles in A=0.
+ !     the function FA has poles in A=0. 
  !     when necessary we consider the residues which is zero:
    PiA02 = ht2 * muR/ ((mStop2(2)-mStop2(1)) *sb *cb) * FA_A
   Else
    PiA02 = ht2 *At *muR / ((mStop2(2)-mStop2(1))*sb*cb) * FA
   End If
   !-----------------
-  ! alpha_s alpha_b
+  ! alpha_s alpha_b 
   !-----------------
   Call strfuncsodd(mb2, mg, mSbottom2(2), mSbottom2(1), s2b, Q, Ab, FA, FA_A)
   If (Ab.Eq.0._dp) Then
- !     the function FA has poles in A=0.
+ !     the function FA has poles in A=0. 
  !     when necessary we consider the residues, which is zero
    PiA02 = PiA02 + hb2 * muR/ ((mSbottom2(2)-mSbottom2(1)) *sb *cb) * FA_A
   Else
@@ -2962,7 +2962,7 @@ Contains
   PiA02 = 4._dp * gs**2 * PiA02 ! gs^2 CF Nc
 
   !-----------------------
-  ! (alpha_t = alpha_b)^2
+  ! (alpha_t = alpha_b)^2  
   !-----------------------
   vv = vevs(1)**2 + vevs(2)**2
 
@@ -2992,7 +2992,7 @@ Contains
   If(Atau/=0d0) Then
     DMB = htau2*muR*Atau/(mStau2(2) - mStau2(1))/(sb*cb) * FB
   Else
-  !     the function FA has poles in A=0.
+  !     the function FA has poles in A=0. 
   !     when necessary we consider the residues:
     DMB = htau2*muR/(mStau2(2) - mStau2(1))/(sb*cb) * FB_A
   Endif
@@ -3002,7 +3002,7 @@ Contains
 
   Iname = Iname - 1
 
- Contains
+ Contains 
 
   Subroutine strfuncsodd(t,mg,T1,T2,s2t,q,A,FA,FA_A)
   Implicit None
@@ -3017,7 +3017,7 @@ Contains
     FA = strFAab(T1,T2,s2t,q) + strFAc(t,mg,T1,T2,s2t,A,q) &
      & - strFAc(t,mg,T2,T1,-s2t,A,q)
    End If
-
+   
   End Subroutine strfuncsodd
 
   Real(dp) Function strresFAc(t,mg,T1,T2,q)
@@ -3028,14 +3028,14 @@ Contains
 
    g = mg**2
    del = g**2 + t**2 + T1**2 - 2*(g*t + g*T1 + t*T1)
-
+   
    strresFAc = - mg*(T1+T2)*Pi**2/6._dp                                 &
     &   - 2._dp*mg*(T1*(6._dp- 5._dp*Log(T1/q))+ T2*(1._dp- Log(T2/q))) &
     &     - mg*(T1*Log(T1/q)**2 + T2*Log(T2/q)**2)                      &
     &     + 2._dp*mg*T1*Log(g/q)*Log(t/q)                               &
     &     - 2._dp*mg*((g-t)*Log(g/t)+ T1*Log(t*g/q**2))*Log(T1/q)       &
     &     - 2._dp*del/mg*phi(t, T1, g)
-
+   
   End Function strresFAc
 
   Real(dp) Function strFAab(T1,T2,s2t,q)
@@ -3046,7 +3046,7 @@ Contains
     &     *(T1*(1._dp - Log(T1/q)) - T2*(1._dp - Log(T2/q)))        &
     &     + 2._dp*(T1*Log(T1/q)**2 - T2*Log(T2/q)**2)             &
     &     + 2._dp/(T1-T2)*(T1*Log(T1/q) - T2*Log(T2/q))**2
-
+   
   End Function strFAab
 
   Real(dp) Function strFAc(t,mg,T1,T2,s2t,A,q)
@@ -3076,20 +3076,20 @@ Contains
 
   End Function strFAc
 
-
+  
   Subroutine taufuncsodd(t,A0,BL,T1,T2,s2t,c2t,cb,sb,q,mu,FA,FA_A)
   Implicit None
   Real(dp) :: t,A0,BL,T1,T2,s2t,c2t,cb,sb,q,mu
   Real(dp) :: FA,FA_A
   FA = tauFAab(T1,T2,Q) + tauFAc(t,A0,BL,T1,T2,s2t,c2t,cb,sb,q,mu) &
    & - tauFAc(t,A0,BL,T2,T1,-s2t,-c2t,cb,sb,q,mu)
-
+  
   FA_A = tauresFAc(t,A0,BL,T1,T2,s2t,cb,sb,q,mu) &
      & - tauresFAc(t,A0,BL,T2,T1,-s2t,cb,sb,q,mu)
-
+  
   End Subroutine taufuncsodd
-
-
+  
+  
   Function tauFAab(T1,T2,Q)
   Implicit None
   Real(dp) :: T1,T2,Q
@@ -3099,7 +3099,7 @@ Contains
     &T2*(1.-Log(T2/q)+Log(T2/q)**2/2))
 
   End Function tauFAab
-
+  
 
   Function tauFAc(t,A0,BL,T1,T2,s2t,c2t,cb,sb,q,mu)
   Implicit None
@@ -3191,7 +3191,7 @@ Contains
     & - T1*((4+3*c2t**2)*T1+c2t*(3+2*c2t)*T2)/4/(T1-T2)-(3+Nc)*T1/2)
 
   End Function tauFAc
-
+  
 
   Function tauresFAc(t,A0,BL,T1,T2,s2t,cb,sb,q,mu)
   Implicit None
@@ -3205,10 +3205,10 @@ Contains
     & + Log(BL/q)*Log(T1/q)*(cb**2*(A0-BL-T1)*Yt/2-BL*sb**2*Xt) &
     & - cb**2*Log(A0/q)*Log(T1/q)*(3*A0-BL+T1)*Yt/2&
     &+cb**2*Log(A0/q)*Log(BL/q)*T1*Yt/2+Log(T1/q)**2*cb**2*Yt*(A0-BL+T1)/2
-
+  
 
   End Function tauresFAc
-
+  
  End Subroutine PiPseudoScalar2
 
 
@@ -3235,13 +3235,13 @@ Contains
  !   mu .................. mu-parameter
  ! output:
  !  PiS2 ........ two-loop contribution to the scalar mass matrix
- !  kont ........ is 0 if everything is o.k., otherwise it gets a negative
+ !  kont ........ is 0 if everything is o.k., otherwise it gets a negative 
  !                value
  ! written by Werner Porod, 04.03.03
  !-----------------------------------------------------------------------------
  Implicit None
   Integer, intent(in) :: i_os
-  Integer, Intent(inout) :: kont
+  Integer, Intent(inout) :: kont 
   Real(dp), Intent(in) :: Q2, gSU3, mglu, mA2, vevs(2), mQ2, mU2, mD2, ML2, ME2
   Complex(dp), Intent(in) :: A_b, A_t, Y_t, Y_b, mu, A_tau, Y_tau
   Real(dp), Intent(out) :: PiS2(2,2)
@@ -3264,7 +3264,7 @@ Contains
   kont = 0
 
  !------------------------------------------------------------------------
- ! first the (s)fermion, please note, that the papers by P.Slavich et al.
+ ! first the (s)fermion, please note, that the papers by P.Slavich et al. 
  ! the ordering of the sfermions is reversed to compared to my odering
  !------------------------------------------------------------------------
   Call SfermionMass(MQ2, MU2, A_t, mu, vevs, Y_t, 0.5_dp, YL, YRu,   &
@@ -3277,7 +3277,7 @@ Contains
    Call AddError(604)
    Iname = Iname - 1
    Return
-  End If
+  End If 
   mt2 = 0.5_dp * Abs(Y_t*vevs(2))**2
 
   Call SfermionMass(MQ2, MD2, A_b, mu, vevs, Y_b, -0.5_dp, YL, YRd,   &
@@ -3290,7 +3290,7 @@ Contains
    Call AddError(605)
    Iname = Iname - 1
    Return
-  End If
+  End If 
 
   mb2 = 0.5_dp * Abs(Y_b*vevs(1))**2
 
@@ -3304,7 +3304,7 @@ Contains
    Call AddError(606)
    Iname = Iname - 1
    Return
-  End If
+  End If 
 
   mtau2 = 0.5_dp * Abs(Y_tau*vevs(1))**2
   mtau = Sqrt(mtau2)
@@ -3329,7 +3329,7 @@ Contains
   tanb = vevs(2) / vevs(1)
   cb = 1._dp / Sqrt(1._dp + tanb**2)
   sb = tanb * cb
-
+ 
   At = Real(A_t/Y_t, dp)
   Ab = Real(A_b/Y_b, dp)
   Atau = Real(A_tau/Y_tau, dp)
@@ -3359,23 +3359,23 @@ Contains
    sF2 = sF2 + i_os * DsF2
    sF3 = sF3 + i_os * DsF3
    PiS2(1,1) = 0.5_dp * ht2 * muR**2 * s2t**2 * F3 ! eq. (25)
-
+     
    PiS2(1,2) = 0.5_dp * ht2 * muR * At * s2t**2 * (F3 + sF3)  &! eq. (26)
            & + ht2 * mt * muR * s2t * F2
-
+     
    PiS2(2,2) = 0.5_dp * ht2 * At**2 * s2t**2 * (F3 + 2._dp*sF3)  &! eq. (27)
            & + 2._dp * ht2 * ( mt * At * s2t * (F2 + sF2) + mt2 * F1 )
 
-  !     some of the functions have poles in s2t=0 or in A=0.
-  !     when necessary we consider the residues:
+  !     some of the functions have poles in s2t=0 or in A=0. 
+  !     when necessary we consider the residues:     
   Else If ((s2t.Eq.0._dp).And.(At.Eq.0._dp)) Then
    F1 = F1 + i_os * DF1
    PiS2(1,1) = 0._dp
    PiS2(1,2) = 0._dp
    PiS2(2,2) = 2._dp * ht2 * mt2 * F1
 
-  Else If ((s2t.Eq.0._dp).And.(At.Ne.0._dp)) Then
-   Call strresfuncs(mt2, mglu, mst2(2), mst2(1), q2, F2_s, sF2_A, sF3_A)
+  Else If ((s2t.Eq.0._dp).And.(At.Ne.0._dp)) Then 
+   Call strresfuncs(mt2, mglu, mst2(2), mst2(1), q2, F2_s, sF2_A, sF3_A)     
    F1 = F1 + i_os * DF1
    F2_s = F2_s + i_os * DF2
    PiS2(1,1) = 0._dp
@@ -3383,7 +3383,7 @@ Contains
    PiS2(2,2) = 2._dp * ht2 * (mt2 * F1 + mt * At * F2_s)
 
   Else If ((s2t.Ne.0._dp).And.(At.Eq.0._dp)) Then
-   Call strresfuncs(mt2, mglu, mst2(2), mst2(1), q2, F2_s, sF2_A, sF3_A)
+   Call strresfuncs(mt2, mglu, mst2(2), mst2(1), q2, F2_s, sF2_A, sF3_A)     
    F1 = F1 + i_os * DF1
    F2 = F2 + i_os * DF2
    F3 = F3 + i_os * DF3
@@ -3392,7 +3392,7 @@ Contains
    PiS2(1,1) = 0.5_dp * ht2 * muR**2 * s2t**2 * F3
    PiS2(1,2) = 0.5_dp * ht2 * muR * s2t**2 * sF3_A + ht2 * mt * muR * s2t * F2
    PiS2(2,2) = 2._dp * ht2 * (mt2 * F1 + mt * s2t * sF2_A)
-
+ 
   End If
 
   PiS2(2,1) = PiS2(1,2)
@@ -3423,24 +3423,24 @@ Contains
    sF2 = sF2 + i_os * DsF2
    sF3 = sF3 + i_os * DsF3
    Pi2Sa(2,2) = 0.5_dp * hb2 * muR**2 * s2b**2 * F3 ! eq. (25)
-
+     
    Pi2Sa(1,2) = 0.5_dp * hb2 * muR * Ab * s2b**2 * (F3 + sF3)  &! eq. (26)
             & + hb2 * mb * muR * s2b * F2
-
+     
    Pi2Sa(1,1) = 0.5_dp * hb2 * Ab**2 * s2b**2 * (F3 + 2._dp*sF3) &! eq. (27)
             & + 2._dp * hb2 * ( mb * Ab * s2b * (F2 + sF2) + mb2 * F1 )
 
-!     some of the functions have poles in s2t=0 or in A=0.
-!     when necessary we consider the residues:
+!     some of the functions have poles in s2t=0 or in A=0. 
+!     when necessary we consider the residues:     
   Else If ((s2b.Eq.0._dp).And.(Ab.Eq.0._dp)) Then
-
+     
    F1 = F1 + i_os * DF1
    Pi2Sa(2,2) = 0._dp
    Pi2Sa(1,2) = 0._dp
    Pi2Sa(1,1) = 2._dp * hb2 * mb2 * F1
 
-  Else If ((s2b.Eq.0._dp).And.(Ab.Ne.0._dp)) Then
-   Call strresfuncs(mb2, mglu, msb2(2), msb2(1), q2, F2_s, sF2_A, sF3_A)
+  Else If ((s2b.Eq.0._dp).And.(Ab.Ne.0._dp)) Then 
+   Call strresfuncs(mb2, mglu, msb2(2), msb2(1), q2, F2_s, sF2_A, sF3_A)     
    F1 = F1 + i_os * DF1
    F2_s = F2_s + i_os * DF2
    Pi2Sa(2,2) = 0._dp
@@ -3449,7 +3449,7 @@ Contains
 
   Else If ((s2b.Ne.0._dp).And.(Ab.Eq.0._dp)) Then
 
-   Call strresfuncs(mb2, mglu, msb2(2), msb2(1), q2, F2_s, sF2_A, sF3_A)
+   Call strresfuncs(mb2, mglu, msb2(2), msb2(1), q2, F2_s, sF2_A, sF3_A)     
    F1 = F1 + i_os * DF1
    F2 = F2 + i_os * DF2
    F3 = F3 + i_os * DF3
@@ -3459,7 +3459,7 @@ Contains
    Pi2Sa(2,2) = 0.5_dp * hb2 * muR**2 * s2b**2 * F3
    Pi2Sa(1,2) = 0.5_dp * hb2 * muR * s2b**2 * sF3_A + hb2 * mb * muR * s2b * F2
    Pi2Sa(1,1) = 2._dp * hb2 * (mb2 * F1 + mb * s2b * sF2_A)
-
+ 
   Endif
   Pi2Sa(2,1) = Pi2Sa(1,2)
   PiS2 = PiS2 + 4._dp * gSU3**2 * Pi2Sa ! gs^2 CF Nc
@@ -3467,7 +3467,7 @@ Contains
  !---------------------------------------------
  ! (alpha_t + alpha_b)^2
  !---------------------------------------------
-  vv = vevs(1)**2 + vevs(2)**2
+  vv = vevs(1)**2 + vevs(2)**2 
   Call makefuncs(mt2, mb2, mA2, mst2(2), mst2(1), msb2(2), msb2(1) &
               & , s2t ,c2t, s2b, c2b, q2, muR, vv, tanb                &
               & , F1t,F2t,F3t,F4t,F1b,F2b,F3b,F4b,F5,F6,Ft,Fb,Gt,Gb,FAp)
@@ -3483,7 +3483,7 @@ Contains
            & + hb2*muR*mb*s2b*F2b + 0.5_dp*hb2*Ab*muR*s2b**2*F3b       &
            & + hthb*mb*At*s2t*F4t + hthb*mt*Ab*s2b*F4b                &
            & + 0.5_dp*hthb*s2t*s2b*(At*Ab+muR**2)*F5+2._dp*hthb*mt*mb*F6
-
+ 
   Pi2Sa(2,2) = 0.5_dp*hb2*muR**2*s2b**2*F3b                         &
            & + 2._dp*ht2*mt**2*F1t + 2._dp*ht2*At*mt*s2t*F2t       &
            & + 0.5_dp*ht2*At**2*s2t**2*F3t                         &
@@ -3491,7 +3491,7 @@ Contains
 
   Pi2Sa(2,1) = Pi2Sa(1,2)
   PiS2 = PiS2 + 3._dp * Pi2Sa
-
+  
  !---------------------------------------------
  ! alpha_tau * alpha_b
  !---------------------------------------------
@@ -3543,27 +3543,27 @@ Contains
   If(s2tau/=0._dp.And.Atau/=0._dp) Then
     Pi2Sa(1,1) = 0.5_dp * htau2 * muR**2 * s2tau**2 &
       & * (F3 + 2._dp*dmuF3 + i_os*(DF3 + 2._dp*DdmuF3))
-
+    
     Pi2Sa(1,2) = 0.5_dp * htau2 * muR * Atau  * s2tau**2                            &
       &          * (F3 + dmuF3 + dAtF3 + i_os*(DF3 + DdmuF3 + DdAtF3)) &
       &  + htau2 * mtau * muR * s2tau * (F2 + dmuF2 + i_os*(DF2 + DdmuF2))
-
+    
     Pi2Sa(2,2) = 0.5_dp * htau2 * Atau**2 * s2tau**2                          &
       &          * (F3 + 2._dp*dAtF3 + i_os*(DF3 + 2._dp*DdAtF3)) &
       & + 2._dp * htau2 * mtau * Atau * s2tau                            &
       &         * (F2 + dAtF2 + i_os*(DF2 + DdAtF2))              &
       & + 2._dp * htau2 * mtau2 * (F1 + i_os*DF1)
-
-  !     some of the functions have poles in s2tau=0 or in Atau=0.
+    
+  !     some of the functions have poles in s2tau=0 or in Atau=0. 
   !     when necessary we consider the residues:
-
+    
   Elseif(s2tau==0._dp.And.Atau==0._dp) Then
-
+    
     Pi2Sa(1,1) = 0._dp
     Pi2Sa(1,2) = 0._dp
     Pi2Sa(2,2) = 2 * htau2 * mtau2 * (F1 + i_os*DF1)
 
-  Elseif(s2tau==0._dp.And.Atau/=0._dp) Then
+  Elseif(s2tau==0._dp.And.Atau/=0._dp) Then 
     Call tauresfuncs(mtau2, mA2, mSneu2, mStau2(2), mStau2(1), s2tau, c2tau &
                    & , sb, cb, Q2, muR, F2_s)
     Pi2Sa(1,1) = 0._dp
@@ -3577,9 +3577,9 @@ Contains
       & + htau2 * mtau * muR * s2tau * (F2 + dmuF2 +i_os*(DF2 + DdmuF2))
     Pi2Sa(2,2) = 2._dp * htau2 * mtau2 * (F1 + i_os*DF1) &
              & + 2._dp * htau2 * mtau * s2tau * i_os*DdAtF2
-
+    
   Endif
-
+  
   Pi2Sa(2,2) = Pi2Sa(1,1)
   Pi2Sa(1,2) = Pi2Sa(1,2) + DM12
   Pi2Sa(1,1) = Pi2Sa(2,2) + DM22
@@ -3605,7 +3605,7 @@ Contains
 
    F1 = strF1ab(t,T1,T2,s2t,c2t,q) + strF1c(t,mg,T1,s2t,q)   &
       & + strF1c(t,mg,T2,-s2t,q)
-
+  
    F2 = strF2ab(T1,T2,s2t,c2t,q) + strF2c(t,mg,T1,T2,s2t,q)   &
       & - strF2c(t,mg,T2,T1,-s2t,q)
 
@@ -3614,9 +3614,9 @@ Contains
 
   End Subroutine strfuncs
 
-  Subroutine strdfuncs(t,mg,T1,T2,s2t,c2t,q,At,X,DF1,DF2,DF3,DsF2,DsF3)
+  Subroutine strdfuncs(t,mg,T1,T2,s2t,c2t,q,At,X,DF1,DF2,DF3,DsF2,DsF3) 
   !     shift of the parameters from DRbar to On-Shell scheme
-  Implicit None
+  Implicit None      
    Real(dp), Intent(in) ::  t,mg,T1,T2,s2t,c2t,q,At,X
    Real(dp), Intent(out) ::  DF1,DF2,DF3,DsF2,DsF3
    Real(dp) :: F1o,F2o,F3o,dm1,dm2,dmt,dAt,dth,ds2t,mt, g
@@ -3626,7 +3626,7 @@ Contains
    mt = Sqrt(t)
 
    F1o = Log(T1/q) + Log(T2/q) - 2._dp*Log(t/q) ! eq. (31)
-   F2o = Log(T1/q) - Log(T2/q)
+   F2o = Log(T1/q) - Log(T2/q) 
    F3o = 2._dp - (T1+T2)/(T1-T2)*(Log(T1/q) - Log(T2/q))
 
    dmt = mt*(3*Log(t/q) + msdr + 1./2.*(2*g/t*(Log(g/q)-1)   & ! eq. (B2)
@@ -3638,16 +3638,16 @@ Contains
      & - s2t**2*T2/T1*(Log(T2/q)-1) + 2*(                    &
      &   g/T1*(Log(g/q)-1) + t/T1*(Log(t/q)-1)               &
      & + (T1-g-t + 2*s2t*mg*mt)/T1*B0(T1,t,g)))
-
+  
    dm2 = T2*(3*Log(T2/q) - 7 - c2t**2*(Log(T2/q)-1)          & ! eq. (B4)
      & - s2t**2*T1/T2*(Log(T1/q)-1) + 2*(                    &
      &   g/T2*(Log(g/q)-1) + t/T2*(Log(t/q)-1)               &
      & + (T2-g-t - 2*s2t*mg*mt)/T2*B0(T2,t,g)))
 
-   !     On-Shell theta-stop: eq. (B6)-(B7) of DSZ
+   !     On-Shell theta-stop: eq. (B6)-(B7) of DSZ 
    dth = (4._dp*mg*mt*c2t*(B0(T1,t,g)+B0(T2,t,g)) +            &
      &     2._dp*c2t*s2t*(T2*(1._dp-Log(T2/q))-T1*(1._dp-Log(T1/q)))) &
-     &   / 2._dp/(T1-T2)
+     &   / 2._dp/(T1-T2)      
 
    ds2t = 2._dp*c2t*dth
 
@@ -3679,12 +3679,12 @@ Contains
   Implicit None
    Real(dp), Intent(in) :: t,T1,T2,s2t,c2t,q
 
-   strF1ab =                                                   & ! eq. (32)
+   strF1ab =                                                   & ! eq. (32) 
     &     -6*(1-Log(t/q))+5*Log(T1*T2/t**2)+Log(T1*T2/t**2)**2   &
     &     +8*Log(t/q)**2-4*Log(T1/q)**2-4*Log(T2/q)**2           &
     &     -c2t**2*(2-Log(T1/q)-Log(T2/q)-Log(T1/T2)**2)          &
     &     -s2t**2*(T1/T2*(1-Log(T1/q))+T2/T1*(1-Log(T2/q)))
-
+  
   End Function strF1ab
 
   Real(dp) Function strF1c(t,mg,T1,s2t,q)
@@ -3695,7 +3695,7 @@ Contains
    g = mg**2
    mt = Sqrt(t)
    del = g**2 + t**2 + T1**2 - 2*(g*t + g*T1 + t*T1)
-
+  
    strF1c =                                                      & ! eq. (A1)
     &     +4*(t+g-mg*mt*s2t)/T1*(1-Log(g/q))                   &
     &     +4*Log(t/g) - 2*Log(T1/g)                                &
@@ -3719,7 +3719,7 @@ Contains
     &     -(T1+T2)/(T1-T2)*Log(T1/T2)**2                        &
     &     -2/(T1-T2)*(T1*Log(T1/q)-T2*Log(T2/q))*Log(T1/T2))    &
     &     +s2t**2*(T1/T2*(1-Log(T1/q))-T2/T1*(1-Log(T2/q)))
-
+  
   End Function strF2ab
 
   Real(dp) Function strF2c(t,mg,T1,T2,s2t,q)
@@ -3730,7 +3730,7 @@ Contains
    g = mg**2
    mt = Sqrt(t)
    del = g**2 + t**2 + T1**2 - 2*(g*t + g*T1 + t*T1)
-
+  
    strF2c =                                                      & ! eq. (A2)
     &     4*(t+g)/T1-4*mg/mt*s2t/(T1-T2)*(3*T1-t*T2/T1)        &
     &     +2*mg/mt*s2t/(T1-T2)*(                               &
@@ -3775,7 +3775,7 @@ Contains
    g = mg**2
    mt = Sqrt(t)
    del = g**2 + t**2 + T1**2 - 2*(g*t + g*T1 + t*T1)
-
+  
    strF3c =                                                        & ! eq. (A3)
    &     -4*T2/T1/(T1-T2)*(g+t)                                     &
    &     +4*mg*mt*s2t/(T1-T2)**2*(21*T1-T2**2/T1)               &
@@ -3805,16 +3805,16 @@ Contains
    Real(dp), Intent(out) :: sF2,sF3
 
    sF2  = mg/A * 2._dp*(Log(T2/q)**2 - Log(T1/q)**2) ! eq. (35)
-
+  
    sF3  = mg/A *                                              & ! eq. (36)
     &     (8._dp - 2._dp*(T1+T2)/(T1-T2)*(Log(T2/q)**2 - Log(T1/q)**2)  &
     &  + 8._dp/(T1-T2)*(T2*Log(T2/q) - T1*Log(T1/q)))
-
+  
   End Subroutine strsfuncs
 
   Subroutine strresfuncs(t,mg,T1,T2,q,F2_s,sF2_A,sF3_A)
  !     residues of some singular functions for s2t=0 and for A=0
-  Implicit None
+  Implicit None      
    Real(dp), Intent(in) :: t,mg,T1,T2,q
    Real(dp), Intent(out) :: sF2_A,sF3_A,F2_s
    Real(dp) :: g, mt
@@ -3825,9 +3825,9 @@ Contains
    F2_s =  -8*mg*mt/(T1-T2)*(                           &
      &     (Log(T1/q)-Log(t/q)*Log(T1/q)+phi(t,T1,g))-     &
      &     (Log(T2/q)-Log(t/q)*Log(T2/q)+phi(t,T2,g)))
-
+  
    sF2_A = mg * 2._dp*(Log(T2/q)**2 - Log(T1/q)**2)
-
+  
    sF3_A = mg * (8._dp-2._dp*(T1+T2)/(T1-T2)*(Log(T2/q)**2-Log(T1/q)**2) &
       & + 8._dp/(T1-T2)*(T2*Log(T2/q) - T1*Log(T1/q)))
 
@@ -3841,7 +3841,7 @@ Contains
   F1 = tauF1ab(t,A0,BL,T1,T2,cb,sb,q,mu) &
    & + tauF1c(t,A0,BL,T1,T2,s2t,c2t,cb,sb,q,mu)  &
    & + tauF1c(t,A0,BL,T2,T1,-s2t,-c2t,cb,sb,q,mu)
-
+  
   F2 = tauF2ab(T1,T2,q)                          &
    & + tauF2c(t,A0,BL,T1,T2,s2t,c2t,cb,sb,q,mu)  &
    & - tauF2c(t,A0,BL,T2,T1,-s2t,-c2t,cb,sb,q,mu)
@@ -3851,8 +3851,8 @@ Contains
    & + tauF3c(t,A0,BL,T2,T1,-s2t,-c2t,cb,sb,q,mu)
 
   End Subroutine taufuncs
-
-
+  
+  
   Function tauF1ab(t,A0,BL,T1,T2,cb,sb,q,mu)
   Implicit None
   Real(dp) :: tauF1ab
@@ -3885,15 +3885,15 @@ Contains
     & - 3._dp*log_tq**2-2._dp*log_t1q**2-2._dp*log_t2q**2
 
   End Function tauF1ab
-
-
+  
+  
   Function tauF1c(t,A0,BL,T1,T2,s2t,c2t,cb,sb,q,mu)
   Implicit None
   Real(dp) :: t,mu2,A0,BL,T1,T2,s2t,c2t,cb,sb,q,mu
   Real(dp) :: Xt,Yt,st2,ct2,mt
   Real(dp) :: tauF1c
   Real(dp) :: d_T1mu2t, log_tq, log_t1q, log_t2q, log_BLq, log_A0q, d_A0T1T2 &
-     & , d_A0T1BL
+     & , d_A0T1BL  
 
   mu2 = mu**2
   If(mu2==0._dp) mu2 = Epsilon(1._dp)
@@ -3903,7 +3903,7 @@ Contains
   Yt  = s2t*(T1-T2)/2._dp/mt - mu/sb/cb
   ct2 = (1._dp+c2t)/2._dp
   st2 = (1._dp-c2t)/2._dp
-
+  
   d_T1mu2t = delt(T1,mu2,t)
   d_A0T1T2 = delt(A0,T1,T2)
   d_A0T1BL = delt(A0,T1,BL)
@@ -3969,18 +3969,18 @@ Contains
        & +log_BLq*log_t1q-log_A0q*log_BLq)
 
   End Function tauF1c
-
+  
 
   Function tauF2ab(T1,T2,q)
-
+  
   Implicit None
   Real(dp) :: T1,T2,q
   Real(dp) :: tauF2ab
-
+  
   tauF2ab = -0.5_dp*(Log(T1/q)**2-Log(T2/q)**2)
 
   End Function tauF2ab
-
+  
 
   Function tauF2c(t,A0,BL,T1,T2,s2t,c2t,cb,sb,q,mu)
   Implicit None
@@ -3988,7 +3988,7 @@ Contains
   Real(dp) :: ct2,st2,Xt,Yt,At, mt
   Real(dp) :: tauF2c
   Real(dp) :: d_T1mu2t, log_t1q, log_t2q, log_BLq, log_A0q, d_A0T1T2 &
-     & , d_A0T1BL
+     & , d_A0T1BL  
 
   mu2 = mu**2
   If(mu2==0._dp) mu2 = Epsilon(1._dp)
@@ -4045,7 +4045,7 @@ Contains
        & - (1+c2t**2)*sb**2*(T1-T2)*Xt**2/4._dp/T1/T2+(1+c2t**2-s2t**2)*T2/4._dp/T1 &
        & + (1+c2t**2)*(sb**2*Xt**2+cb**2*Yt**2)/4._dp/T2)                           &
        & - (1+c2t**2)*cb**2*Yt**2*(A0**2*T1+(T1-T2)**3-A0*(2*T1**2+3*T1*T2-T2**2))  &
-       &     /4._dp/T1/T2/d_A0T1T2*Log(T2*T1/q**2)
+       &     /4._dp/T1/T2/d_A0T1T2*Log(T2*T1/q**2) 
    tauf2c = tauf2c                                                                 &
        & +log_t1q*(4*mu2*(mu2+t-T1)/d_T1mu2t                                       &
        & +2*(1+c2t**2)*cb**2*Yt**2*A0*(A0-T1-3*T2)/4._dp/T2/d_A0T1T2               &
@@ -4080,8 +4080,8 @@ Contains
        & +c2t**2*(sb**2*Xt**2+cb**2*Yt**2)/(T1-T2))*log_t1q*log_t2q
 
   End Function tauF2c
-
-
+  
+  
   Function tauF3ab(T1,T2,q)
   Implicit None
   Real(dp) :: T1,T2,q
@@ -4089,8 +4089,8 @@ Contains
    tauF3ab = 1.5_dp*(2.-Log(T1/q)-Log(T2/q)) *(2.-(T1+T2)/(T1-T2)*Log(T1/T2))
 
   End Function tauF3ab
-
-
+  
+  
   Function tauF3c(t,A0,BL,T1,T2,s2t,c2t,cb,sb,q,mu)
   Implicit None
   Real(dp) :: t,mu2,A0,BL,T1,T2,s2t,c2t,cb,sb,q,mu
@@ -4144,7 +4144,7 @@ Contains
        & -9*2._dp*T1*c2t**2/(T1-T2)-3*T1*(2*T1+3*T2)/(T1-T2)**2*c2t&
        & -(28+6)*T1/2./(T1-T2) +Log(t/q)*(-t/T1) &
        & - Log(t*T1/q**2)*t*((t-T1)**2-mu2**2)/T1/delt(T1,mu2,t) &
-       & + Log(mu2/q)*(-6*mu2*(3*mu2-T2)*c2t/(T1-T2)**2-(2-c2t)*mu2/T1)
+       & + Log(mu2/q)*(-6*mu2*(3*mu2-T2)*c2t/(T1-T2)**2-(2-c2t)*mu2/T1) 
    tauf3c = tauf3c &
        & - Log(mu2*T1/q**2)*mu2*(T1**2+mu2**2-t**2-2*mu2*T1) &
        &  /T1/delt(T1,mu2,t)+Log(BL/q)*(12*BL*c2t*T1/(T1-T2)**2&
@@ -4168,7 +4168,7 @@ Contains
        & - 2._dp*(T1-T2)/4._dp/T1*c2t**2+T2*(2*T1+T2)/(T1-T2)**2*c2t&
        & -T2*((7+3)*T1)/2./(T1-T2)**2 -(-(3-Nc)*T2)/2./(T1-T2)) &
        & + Log(T2*T1/q**2)*(1+c2t**2)*cb**2*Yt**2/4._dp/T1/T2/delt(A0,T1,T2) &
-       & * (A0**2*T1+(T1-T2)**3-2*T2*(T1**2-T2**2) -A0*(2*T1**2+T1*T2+T2**2))
+       & * (A0**2*T1+(T1-T2)**3-2*T2*(T1**2-T2**2) -A0*(2*T1**2+T1*T2+T2**2)) 
    tauf3c = tauf3c &
        & + Log(T1/q)*(2*(mu2+t-T1)**2/delt(T1,mu2,t) &
        & - cb**2*(1+c2t**2)*Yt**2/2./T2/delt(A0,T1,T2) &
@@ -4206,7 +4206,7 @@ Contains
        & + Log(BL/T1)*Log(A0/T1)*cb**2*(2*mt*Yt/(T1-T2)**2/s2t&
        &      *((A0+BL)*(1-3*c2t**2)-(1-2*c2t**2)*T1+c2t**2*T2) &
        & + s2t*mt*Yt/(T1-T2)+(t+Yt**2)/2./(T1-T2) &
-       & + 3*c2t*(2*A0+2*BL-T1-T2)*(t-Yt**2)/2./(T1-T2)**2)
+       & + 3*c2t*(2*A0+2*BL-T1-T2)*(t-Yt**2)/2./(T1-T2)**2) 
    tauf3c = tauf3c &
        & + Log(T1/q)*Log(T2/q)*(2*c2t**2*2._dp*(T1+T2)**2/(T1-T2)**2 &
        & + ((1+5*c2t**2)*T1&
@@ -4234,7 +4234,7 @@ Contains
        & +T2*(2*2._dp*T1+(2-Nc)*T2)/2./(T1-T2)**2)
 
   End Function tauF3c
-
+  
 
   Subroutine tauresfuncs(t,A0,BL,T1,T2,s2t,c2t,cb,sb,q,mu,F2_s)
   Implicit None
@@ -4246,7 +4246,7 @@ Contains
   Xt = s2t*(T1-T2)/2._dp/mt
   Yt = Xt - mu/cb/sb
   At = sb**2*Xt+cb**2*Yt
-
+  
   F2_s = 2*c2t**2*sb**2*mt*Xt/(T1-T2)*Li2(1-BL/T1) &
       & - 2*c2t**2*sb**2*mt*Xt/(T1-T2)*Li2(1-BL/T2) &
       & - c2t**2*cb**2*mt*Yt/(T1-T2)*Log(A0/T1)*Log(BL/T1) &
@@ -4260,11 +4260,11 @@ Contains
       & /T2/(T1-T2)*phi(A0,T2,T2)
 
   End Subroutine tauresfuncs
-
+  
 
   Subroutine tausfuncs(t,T1,T2,s2t,q,mu,At,ht,          &
                      & dmuF2,dmuF3,dAtF2,dAtF3,DM12,DM22)
-
+  
   Implicit None
   Real(dp) :: t,T1,T2,s2t,q,mu,At,ht
   Real(dp) :: Nc=1._dp ! color factor !!!
@@ -4277,34 +4277,34 @@ Contains
   DM12 = ht**2*s2t*mu*mt/4._dp*(Log(T1/q)**2-Log(T2/q)**2) &
      & +ht**2*s2t**2*mu*At/8.*(Log(T1/q)+Log(T2/q)-2.) &
      &  *(2.-(T1+T2)/(T1-T2)*Log(T1/T2))
-
+  
   DM22 = ht**2*t*(Log(T1/q)**2+Log(T2/q)**2-2._dp*Log(t/q)**2) &
      & +ht**2*s2t*At*mt*(Log(T1/q)**2-Log(T2/q)**2) &
      & +ht**2*s2t**2*At**2/4._dp*(Log(T1/q)+Log(T2/q)-2.) &
      &   *(2.-(T1+T2)/(T1-T2)*Log(T1/T2))
-
+  
   End Subroutine tausfuncs
-
+  
 
   Subroutine taudfuncs(t,mA2,BL,T1,T2,s2t,c2t,cb,sb,q,mu,A,v2, &
-    DF1,DF2,DF3,DdmuF2,DdmuF3,DdAtF2,DdAtF3)
+    DF1,DF2,DF3,DdmuF2,DdmuF3,DdAtF2,DdAtF3)  
   !     shift of the parameters from DRbar to On-Shell scheme
-  Implicit None
+  Implicit None      
   Real(dp) :: t,mu2,mA2,BL,T1,T2,s2t,c2t,cb,sb,q,A,mu,Xt,Yt
   Real(dp) :: DF1,DF2,DF3,DdmuF2,DdmuF3,DdAtF2,DdAtF3
   Real(dp) :: mt,ct2,st2,v2,v22,Nc=1._dp ! color factor !!!
   Real(dp) :: F1o,F2o,F3o,dm1,dm2,dmt,dAt,dth,ds2t,dv2,dv22,dmu,dcotb
   Real(dp) :: pi12_1,pi12_2, A0_t, A0_T1, A0_T2, A0_mu2, A0_BL, A0_mA2
-
+  
   mu2 = mu**2
   Xt = A + mu*cb/sb
   Yt = A - mu*sb/cb
   ct2 = (1._dp+c2t)/2._dp
   st2 = (1._dp-c2t)/2._dp
   v22 = v2*sb**2
-
+  
   mt = Sqrt(t)
-  A0_t = A0(t)
+  A0_t = A0(t)  
   A0_T1 = A0(T1)
   A0_T2 = A0(T2)
   A0_BL = A0(BL)
@@ -4320,7 +4320,7 @@ Contains
 !  B0_T2_T2_A = B0(T2,T2,mA2)
 
   F1o = Log(T1/q) + Log(T2/q) - 2._dp*Log(t/q)
-  F2o = Log(T1/q) - Log(T2/q)
+  F2o = Log(T1/q) - Log(T2/q) 
   F3o = 2._dp - (T1+T2)/(T1-T2)*(Log(T1/q) - Log(T2/q))
   !     counterterms:
   dv2 = v22 /2._dp* (2._dp *Log(t/q) - 1._dp - BL/t + &
@@ -4336,7 +4336,7 @@ Contains
     +T2/t*(1._dp-Log(T2/q))+(t-T2+mu2)/t*B0(t,mu2,T2) &
     +BL/t*(1._dp-Log(BL/q))+(t-BL+mu2)/t*B0(t,mu2,BL))/2._dp)
   dmu = 0._dp                 ! mu DRbar
-
+  
   dm1 = ((T1-t-mu2)*B0(T1,t,mu2) - A0_t &
     + st2*(T1-mu2)*B0(T1,0._dp,mu2) - (1._dp+st2)*A0_mu2 &
     + cb**2*(1._dp+st2)* A0_mA2 + st2* A0_BL + &
@@ -4348,7 +4348,7 @@ Contains
     &cb**2*(1._dp+c2t**2)*Yt**2*B0(T1,T2,mA2)) +&
     &sb**2*(ct2*t+s2t*mt*Xt+st2*Xt**2)*B0(T1,BL,0._dp) +&
     &cb**2*(ct2*t+s2t*mt*Yt+st2*Yt**2)*B0(T1,BL,mA2))
-
+  
   dm2 = ((T2-t-mu2)*B0(T2,t,mu2) - A0_t &
     + ct2*(T2-mu2)*B0(T2,0._dp,mu2) - (1._dp+ct2)*A0_mu2 &
     + cb**2* (1._dp+ct2)*A0_mA2 + ct2* A0_BL + &
@@ -4385,24 +4385,24 @@ Contains
   DF2 = dm1/T1 - dm2/T2 + (3d0*dmt/mt - dv22/v22 + ds2t/s2t)*F2o
   DF3 = (2._dp*T1*T2/(T1-T2)**2*Log(T1/T2) - (T1+T2)/(T1-T2)) &
     &*(dm1/T1-dm2/T2) + (2._dp*dmt/mt-dv22/v22+2._dp*ds2t/s2t)*F3o
-  DdmuF2 = dmu/mu * F2o
-  DdmuF3 = dmu/mu * F3o
-  DdAtF2 = dAt/A * F2o
-  DdAtF3 = dAt/A * F3o
+  DdmuF2 = dmu/mu * F2o       
+  DdmuF3 = dmu/mu * F3o       
+  DdAtF2 = dAt/A * F2o       
+  DdAtF3 = dAt/A * F3o       
   !     residues of some singular functions for s2t=0 and for A=0
-  If(s2t==0._dp) Then
+  If(s2t==0._dp) Then         
     DF2 = ds2t*F2o
     DdAtF2 = ds2t*Xt/A
   Endif
   If(mu==0._dp) Then
-    DdmuF2 = dmu * F2o
-    DdmuF3 = dmu * F3o
+    DdmuF2 = dmu * F2o       
+    DdmuF3 = dmu * F3o       
   Endif
   If(A==0._dp) Then
-    DdAtF2 = dAt * F2o
-    DdAtF3 = dAt * F3o
+    DdAtF2 = dAt * F2o       
+    DdAtF3 = dAt * F3o       
   Endif
-
+  
   End Subroutine taudfuncs
 
  End Subroutine PiScalar2
@@ -4432,7 +4432,7 @@ Contains
  !   mu .................. mu-parameter
  ! output:
  !  tadpole ..... 2-loop tadpole contributions
- !  kont ........ is 0 if everything is o.k., otherwise it gets a negative
+ !  kont ........ is 0 if everything is o.k., otherwise it gets a negative 
  !                value
  ! written by Werner Porod, 13.12.02
  ! 11.06.03: implementing alpha_b alpha_t + alpha^2_b corrections
@@ -4440,11 +4440,11 @@ Contains
  ! 04.03.04: - implementing alpha_b alpha_tau part
  !---------------------------------------------------------------------------
  Implicit None
-  Integer, Intent(inout) :: kont
+  Integer, Intent(inout) :: kont 
   Real(dp), Intent(in) :: gs, mg, mA2, vevs(2), mQ2, mU2, mD2, ML2, ME2
   Complex(dp), Intent(in) :: A_b, A_t, Y_t, Y_b, mu, A_tau, Y_tau
   Real(dp), Intent(out) :: tadpole(2)
-
+  
   Real(dp) :: parts(2,5), s2t, c2t, s2b, c2b, F2l, G2l, Q, mt, tanb, mb          &
        & , sb, cb, mStop(2), mStop2(2), mt2, mb2, muR                            &
        & , mSbottom(2), mSbottom2(2), At, Ab, gs2, vv, Atau, mStau(2), mStau2(2) &
@@ -4461,7 +4461,7 @@ Contains
   parts = 0._dp
   kont = 0
   !------------------------------------------------------------------------
-  ! first the (s)fermion, please note, that the papers by P.Slavich et al.
+  ! first the (s)fermion, please note, that the papers by P.Slavich et al. 
   ! the ordering of the sfermions is reversed to compared to my odering
   !------------------------------------------------------------------------
   Call SfermionMass(MQ2, MU2, A_t, mu, vevs, Y_t, 0.5_dp, YL, YRu,   &
@@ -4474,7 +4474,7 @@ Contains
    Call AddError(607)
    Iname = Iname - 1
    Return
-  End If
+  End If 
   mt2 = 0.5_dp * Abs(Y_t*vevs(2))**2
   mt = Sqrt(mt2)
   s2t = - 2._dp * Real( Rstop(1,1) * Rstop(1,2), dp)
@@ -4490,7 +4490,7 @@ Contains
    Call AddError(608)
    Iname = Iname - 1
    Return
-  End If
+  End If 
 
   mb2 = 0.5_dp * Abs(Y_b*vevs(1))**2
   mb = Sqrt(mb2)
@@ -4507,7 +4507,7 @@ Contains
    Call AddError(609)
    Iname = Iname - 1
    Return
-  End If
+  End If 
 
   mtau2 = 0.5_dp * Abs(Y_tau*vevs(1))**2
   mtau = Sqrt(mtau2)
@@ -4524,7 +4524,7 @@ Contains
   tanb = vevs(2) / vevs(1)
   cb = 1._dp / Sqrt(1._dp + tanb**2)
   sb = tanb * cb
-
+ 
   At = Real(A_t/Y_t, dp)
   Ab = Real(A_b/Y_b, dp)
   Atau = Real(A_tau/Y_tau, dp)
@@ -4575,7 +4575,7 @@ Contains
   Call tautadfuncs(mtau2,mA2,mSneu2, mStau2(2), mStau2(1), s2tau, c2tau, Q, muR &
                  &, cb, sb, F2l, G2l)
   parts(1,5) = mtau * Atau * s2tau * F2l + 2._dp * mtau2 * G2l
-  parts(2,5) = mtau * muR * tanb * s2tau * F2l
+  parts(2,5) = mtau * muR * tanb * s2tau * F2l 
   parts(:,5) = Abs(Y_tau)**2 * parts(:,5) / vevs**2
 
   tadpole(1) = oo16pi2**2 * Sum( parts(1,:) )
@@ -4584,7 +4584,7 @@ Contains
   Iname = Iname - 1
 
  Contains
-
+  
   Subroutine tautadfuncs(t,A0,BL,T1,T2,s2t,c2t,q,mu,sb,cb,F2l,G2l)
   Implicit None
   real(dp) :: t,A0,BL,T1,T2,s2t,c2t,q,mu,mu2,sb,cb,sb2,cb2
@@ -4599,7 +4599,7 @@ Contains
   Xt = s2t*(T1-T2)/2._dp/mt
   Yt = Xt - mu/cb/sb
   At = sb2*Xt+cb2*Yt
-
+  
   F2l = (delt(mu2,t,T1)+2*mu2*t)/T1*phi(mu2,t,T1) &
     & - (delt(mu2,t,T2)+2*mu2*t)/T2*phi(mu2,t,T2) &
     & + A0*cb2*(2*mt+s2t*Yt)/4/s2t/T1/(T1-T2)* &
@@ -4638,7 +4638,7 @@ Contains
     &+(-c2t**2*(T1+T2)/(T1-T2)*(sb2*Xt**2+cb2*Yt**2) &
     & + c2t**2*cb2*A0*Yt**2/(T1-T2)-2*(1+Nc)*c2t**2*T1*T2/(T1-T2) &
     & + ((1+Nc)*s2t**2-2)/2*(T1-T2))*Log(T1/q)*Log(T2/q) &
-    & + (T1-mu2-t)*Log(t/q)*Log(T1/q)-(T2-mu2-t)*Log(t/q)*Log(T2/q)
+    & + (T1-mu2-t)*Log(t/q)*Log(T1/q)-(T2-mu2-t)*Log(t/q)*Log(T2/q) 
   F2l = F2l &
     & + ((T1-mu2-t)-c2t*mu2**2/(T1-T2))*Log(mu2/q)*Log(T1/q) &
     & - ((T2-mu2-t)-c2t*mu2**2/(T1-T2))*Log(mu2/q)*Log(T2/q) &
@@ -4717,7 +4717,7 @@ Contains
     & + (cb2*s2t*(3*A0-BL+2*t+T1)*Yt/4/mt+cb2/4*(1-c2t)*Yt**2&
     &-cb2/4*((1+c2t)*(BL-t-T1)-(11-c2t)*A0))*Log(A0/q)*Log(T1/q) &
     & + (-cb2*s2t*(3*A0-BL+2*t+T2)*Yt/4/mt+cb2/4*(1+c2t)*Yt**2&
-    &-cb2/4*((1-c2t)*(BL-t-T2)-(11+c2t)*A0))*Log(A0/q)*Log(T2/q)
+    &-cb2/4*((1-c2t)*(BL-t-T2)-(11+c2t)*A0))*Log(A0/q)*Log(T2/q) 
   G2l = G2l &
     & + (cb2*s2t*Yt/4/mt*(BL-A0+2*t+T1) &
     & + sb2*s2t*Xt/2/mt*(2*t+T1)+sb2/2*(1-c2t)*Xt**2&
@@ -4737,7 +4737,7 @@ Contains
     & + 18*t*Log(t/q)+BL/2+3./2.*A0*cb2-3*mu2+35./4.*(T1+T2-2*t)-c2t/4*(T1-T2)
 
   End Subroutine tautadfuncs
-
+  
   Subroutine strfuncs1(t,mg,T1,T2,s2t,c2t,q,F2l,G2l)
   Implicit None
    Real(dp), Intent(in) :: t, mg, T1, T2, s2t, c2t, q
@@ -4759,7 +4759,7 @@ Contains
      & + (4._dp*g - s2t*mg/mt * (T1-T2)) * Log(g/q) * Log(t/q)      &
      & + s2t**2 * (T1+T2) * Log(T1/q) * Log(T2/q)                   &
      & + strG2lc(t,mg,T1,T2,s2t,q) + strG2lc(t,mg,T2,T1,-s2t,q)
-
+  
   End Subroutine strfuncs1
 
   Real(dp) Function strF2lc(t,mg,T1,T2,s2t,c2t,q)
@@ -4771,7 +4771,7 @@ Contains
    mt = Sqrt(t)
 
    del = g**2 + t**2 + T1**2 - 2*(g*t + g*T1 + t*T1)
-
+  
    strF2lc = (4._dp*(g+t+2*T1)-s2t**2*(3._dp*T1+T2)-4._dp*s2t*mg*mt    &
          & -16._dp*mg*mt*T1*c2t**2/s2t/(T1-T2))*Log(T1/q)              &
          & +T1/(T1-T2)*(s2t**2*(T1+T2)-2*(2*T1-T2))*Log(T1/q)**2       &
@@ -4792,7 +4792,7 @@ Contains
    mt = Sqrt(t)
 
    del = g**2 + t**2 + T1**2 - 2*(g*t + g*T1 + t*T1)
-
+  
    strG2lc = (4._dp*(g+t+2._dp*T1)+s2t**2*(T1-T2)                       &
          &     -4._dp*mg/mt*s2t*(t+T1))*Log(T1/q)                       &
          &     +(mg/mt*s2t*(5*t-g+T1)-2._dp*(g+2*t))*Log(t/q)*Log(T1/q) &
@@ -4804,6 +4804,6 @@ Contains
   End Function strG2lc
 
  End Subroutine Two_Loop_Tadpoles_MSSM
-
+  
 
 End Module TwoLoopHiggsMass

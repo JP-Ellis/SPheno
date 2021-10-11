@@ -2,10 +2,11 @@ Module Chargino3Decays
 
 ! load modules
 Use Control
+Use StandardModel, Only: m_pi0, m_pip
 Use ThreeBodyPhaseSpace
 
 ! for check, if there is a numerical problem in the 3-body decays
- Real(dp), Private :: p_test
+ Real(dp), Private :: p_test 
  Real(dp), Private, Parameter :: prec=100._dp*Epsilon(1._dp)
 
 ! load modules
@@ -26,7 +27,7 @@ Contains
     & , c_NuNSn_R, c_CLSn_L, c_CLSn_R, Slept, c_LNSl_L, c_LNSl_R, c_CNuSl_L    &
     & , c_CNuSl_R, GenerationMixing, k_neut, epsI, deltaM, Check_Real_States)
  !------------------------------------------------------------------
- ! calculates all 3-body decays of a chargino into fermions
+ ! calculates all 3-body decays of a chargino into fermions 
  ! in case of spontaneous R-parity
  ! violation also the decays into majoron are included. The idea is that the
  ! couplings are calculated in another subroutine and that this routine
@@ -62,8 +63,10 @@ Contains
  !  gT .................. total width
  !  BR(i) ............... branching ratios, optional
  ! written by Werner Porod, 16.05.2001
- !  - taking the code from the Routine NeutralinoDecays.f as basis
+ !  - taking the code from the Routine NeutralinoDecays.f as basis 
  !  13.09.03: including the possiblity to check for real intermediates states
+ !  24.07.19: checking in case of decays into hadrons, that the kinematics
+ !            allow at least for 2 pions in the final state
  !------------------------------------------------------------------
  Implicit None
 
@@ -103,7 +106,7 @@ Contains
      & , n_ZSf8, n_S0P04, n_S0Sf8, n_CSf4, n_Sf8, n_W4, n_WSpm, n_WSf8, n_Z8 &
      & , n_ZS08, n_S0P08, n_W8, n_ZW8, n_WSpm8, n_WSpm4, i_c
   Real(dp) :: factor(3), m_nu(3),  gCff(3,3), gNffp(3,3), gCCC, gCNN, diffM &
-     & , gW_in, gZ_in, gS0_in(n_s0), gP0_in(n_P0)  &
+     & , gW_in, gZ_in, gS0_in(n_s0), gP0_in(n_P0), dm2Pi  &
      & , gSpm_in(n_Spm), g_Su(n_su), g_Sd(n_sd), g_Sl(n_sle), g_Sn(n_snu)
   Real(dp), Allocatable :: IntegralsZ4(:,:), IntegralsS04(:,:)      &
      & , IntegralsSf4(:,:), IntegralsW4(:,:)
@@ -112,7 +115,7 @@ Contains
       & , IntegralsSf8(:,:), IntegralsWSpm4(:,:), IntegralsWSf8(:,:)     &
       & , IntegralsZ8(:,:), IntegralsZS08(:,:), IntegralsS0P08(:,:)      &
       & , IntegralsW8(:,:), IntegralsZW8(:,:), IntegralsWSpm8(:,:)
-  logical :: check
+  Logical :: check
 
   Iname = Iname + 1
   NameOfUnit(Iname) = 'CharginoThreeBodyDecays'
@@ -144,8 +147,8 @@ Contains
     ChiPm(i1)%bi3 = 0._dp
    End Do
 
-  Else If ( (n_in.Ge.1).And.(n_in.Le.n_c) ) Then
-   i_start = n_in
+  Else If ( (n_in.Ge.1).And.(n_in.Le.n_c) ) Then 
+   i_start = n_in 
    i_end = n_in
    ChiPm(n_in)%gi3 = 0._dp
    ChiPm(n_in)%bi3 = 0._dp
@@ -182,8 +185,8 @@ Contains
    gP0_in = 0._dp
    gSpm_in = 0._dp
    g_Su = 0._dp
-   g_Sd = 0._dp
-   g_Sl = 0._dp
+   g_Sd = 0._dp 
+   g_Sl = 0._dp 
    g_Sn =  0._dp
   Else
    gZ_in = gZ
@@ -226,6 +229,8 @@ Contains
    !--------------------------------------
    i_c = 1
    Do i1 = 1, i_run - 1
+    ! required phase space to have at least 2 pions for hadronic final states
+    dm2pi = Abs(mC(i_run)) - Abs(mC(i1)) - m_pi0 -m_pip
     n_Z4 = 0
     n_W4 = 0
     n_S04 = 0
@@ -245,17 +250,22 @@ Contains
     n_S0Sf8 = 0
     n_CSf4 = 0
     n_Sf8 = 0
-    Call ChimToChimff(i_run, i1, ' u u ', mC, mZ, gZ_in, C_CCZ_L, C_CCZ_R &
-     & , n_u, mf_u, L_u, R_u, IntegralsZ4, n_Z4, mS0, gS0_in, c_CCS0_L    &
-     & , c_CCS0_R, c_UUS0_L, c_UUS0_R, IntegralsS04, n_S04, mP0, gP0_in   &
-     & , c_CCP0_L, c_CCP0_R, c_UUP0_L, c_UUP0_R, mDSquark, g_Sd           &
-     & , c_CUSd_L, c_CUSd_R, IntegralsSf4, n_Sf4, IntegralsZS04, n_ZS04   &
-     & , IntegralsZSf8, n_ZSf8, IntegralsS0P04, n_S0P04, IntegralsS0Sf8   &
-     & , n_S0Sf8, IntegralsCSf4, n_CSf4, deltaM, epsI, GenerationMixing   &
-     & , check, factor(2), gCff)
+    If (dm2pi.Gt.0._dp) Then
+     Call ChimToChimff(i_run, i1, ' u u ', mC, mZ, gZ_in, C_CCZ_L, C_CCZ_R &
+      & , n_u, mf_u, L_u, R_u, IntegralsZ4, n_Z4, mS0, gS0_in, c_CCS0_L    &
+      & , c_CCS0_R, c_UUS0_L, c_UUS0_R, IntegralsS04, n_S04, mP0, gP0_in   &
+      & , c_CCP0_L, c_CCP0_R, c_UUP0_L, c_UUP0_R, mDSquark, g_Sd           &
+      & , c_CUSd_L, c_CUSd_R, IntegralsSf4, n_Sf4, IntegralsZS04, n_ZS04   &
+      & , IntegralsZSf8, n_ZSf8, IntegralsS0P04, n_S0P04, IntegralsS0Sf8   &
+      & , n_S0Sf8, IntegralsCSf4, n_CSf4, deltaM, epsI, GenerationMixing   &
+      & , check, factor(2), gCff)
+    Else
+     gCff = 0._dp
+    End If
+
     Do i2=1,n_u
      Do i3=i2,n_u
-      If (i2.eq.i3) then
+      If (i2.Eq.i3) Then
        ChiPm(i_run)%gi3(i_c) = gCff(i2,i3)
        ChiPm(i_run)%id3(i_c,1) = ChiPm(i1)%id
        ChiPm(i_run)%id3(i_c,2) = id_u(i2)
@@ -275,17 +285,22 @@ Contains
      End Do
     End Do
 
-    Call ChimToChimff(i_run, i1, ' d d ', mC, mZ, gZ_in, C_CCZ_L, C_CCZ_R &
-     & , n_d, mf_d, L_d, R_d, IntegralsZ4, n_Z4, mS0, gS0_in, c_CCS0_L    &
-     & , c_CCS0_R, c_DDS0_L, c_DDS0_R, IntegralsS04, n_S04, mP0, gP0_in   &
-     & , c_CCP0_L, c_CCP0_R, c_DDP0_L, c_DDP0_R, mUSquark, g_Su           &
-     & , c_CDSu_L, c_CDSu_R, IntegralsSf4, n_Sf4, IntegralsZS04, n_ZS04   &
-     & , IntegralsZSf8, n_ZSf8, IntegralsS0P04, n_S0P04, IntegralsS0Sf8   &
-     & , n_S0Sf8, IntegralsCSf4, n_CSf4, deltaM, epsI, GenerationMixing   &
-     & , check, factor(2), gCff)
+    If (dm2pi.Gt.0._dp) Then
+     Call ChimToChimff(i_run, i1, ' d d ', mC, mZ, gZ_in, C_CCZ_L, C_CCZ_R &
+      & , n_d, mf_d, L_d, R_d, IntegralsZ4, n_Z4, mS0, gS0_in, c_CCS0_L    &
+      & , c_CCS0_R, c_DDS0_L, c_DDS0_R, IntegralsS04, n_S04, mP0, gP0_in   &
+      & , c_CCP0_L, c_CCP0_R, c_DDP0_L, c_DDP0_R, mUSquark, g_Su           &
+      & , c_CDSu_L, c_CDSu_R, IntegralsSf4, n_Sf4, IntegralsZS04, n_ZS04   &
+      & , IntegralsZSf8, n_ZSf8, IntegralsS0P04, n_S0P04, IntegralsS0Sf8   &
+      & , n_S0Sf8, IntegralsCSf4, n_CSf4, deltaM, epsI, GenerationMixing   &
+      & , check, factor(2), gCff)
+    Else
+     gCff = 0._dp
+    End If
+
     Do i2=1,n_d
      Do i3=i2,n_d
-      If (i2.eq.i3) then
+      If (i2.Eq.i3) Then
        ChiPm(i_run)%gi3(i_c) = gCff(i2,i3)
        ChiPm(i_run)%id3(i_c,1) = ChiPm(i1)%id
        ChiPm(i_run)%id3(i_c,2) = id_d(i2)
@@ -305,7 +320,7 @@ Contains
      End Do
     End Do
 
-    If (n_l.ge.1) Then
+    If (n_l.Ge.1) Then
      Call ChimToChimff(i_run, i1, ' l l ', mC, mZ, gZ_in, C_CCZ_L      &
       & , C_CCZ_R, n_l, mf_l, L_e, R_e, IntegralsZ4, n_Z4, mS0, gS0_in &
       & , c_CCS0_L, c_CCS0_R, c_LLS0_L, c_LLS0_R, IntegralsS04, n_S04  &
@@ -316,7 +331,7 @@ Contains
       & , deltaM, epsI, GenerationMixing, check, factor(1), gCff)
      Do i2=1,n_l
       Do i3=i2,n_l
-       If (i2.eq.i3) then
+       If (i2.Eq.i3) Then
         ChiPm(i_run)%gi3(i_c) = gCff(i2,i3)
         ChiPm(i_run)%id3(i_c,1) = ChiPm(i1)%id
         ChiPm(i_run)%id3(i_c,2) = id_l(i2)
@@ -337,7 +352,7 @@ Contains
      End Do
     End If
 
-    If (n_nu.ge.1) Then
+    If (n_nu.Ge.1) Then
      Call  ChimToChimNuNu(i_run, i1, mC, mZ, gZ_in, C_CCZ_L, C_CCZ_R, n_nu &
       & , L_nu, R_nu, IntegralsZ4, n_Z4, mSlepton, g_Sl, c_CNuSl_L         &
       & , c_CNuSl_R, IntegralsSf4, n_Sf4, IntegralsZSf8, n_ZSf8            &
@@ -356,6 +371,8 @@ Contains
    ! decay into neutralinos + 2 SM fermions
    !--------------------------------------
    Do i1=1,n_n
+    ! required phase space to have at least 2 pions for hadronic final states
+    dm2pi = Abs(mC(i_run)) - Abs(mN(i1)) - 0.3
     n_Z4 = 0
     n_W4 = 0
     n_S04 = 0
@@ -376,15 +393,20 @@ Contains
     n_CSf4 = 0
     n_Sf8 = 0
     If (Abs(mC(i_run)).Gt.Abs(mN(i1))) Then
-     Call ChimToChi0ffp(i_run, i1, mC, mN, 3, mf_d, mf_u, mW, gW_in         &
-      & , C_CNW_L, C_CNW_R, C_UDW, mSpm, gSpm_in, C_SmpCN_L                 &
-      & , C_SmpCN_R, C_SmpDU_L, C_SmpDU_R, mDSquark, g_Sd, c_DNSd_L         &
-      & , c_DNSD_R, c_CUSd_L, c_CUSd_R, mUSquark, g_Su, c_UNSu_L            &
-      & , c_UNSu_R, c_CDSu_L, c_CDSu_R, IntegralsW4, n_W4                   &
-      & , IntegralsS04, n_S04, IntegralsSf4, n_Sf4, IntegralsWSpm4, n_WSpm  &
-      & , IntegralsWSf8, n_WSf8, IntegralsS0P04, n_S0P04, IntegralsS0Sf8    &
-      & , n_S0Sf8, IntegralsCSf4, n_CSf4, IntegralsSf8, n_Sf8, deltaM, epsI &
-      & , GenerationMixing, check, factor(2), gNffp)
+     If (dm2pi.Gt.0._dp) Then
+      Call ChimToChi0ffp(i_run, i1, mC, mN, 3, mf_d, mf_u, mW, gW_in         &
+       & , C_CNW_L, C_CNW_R, C_UDW, mSpm, gSpm_in, C_SmpCN_L                 &
+       & , C_SmpCN_R, C_SmpDU_L, C_SmpDU_R, mDSquark, g_Sd, c_DNSd_L         &
+       & , c_DNSD_R, c_CUSd_L, c_CUSd_R, mUSquark, g_Su, c_UNSu_L            &
+       & , c_UNSu_R, c_CDSu_L, c_CDSu_R, IntegralsW4, n_W4                   &
+       & , IntegralsS04, n_S04, IntegralsSf4, n_Sf4, IntegralsWSpm4, n_WSpm  &
+       & , IntegralsWSf8, n_WSf8, IntegralsS0P04, n_S0P04, IntegralsS0Sf8    &
+       & , n_S0Sf8, IntegralsCSf4, n_CSf4, IntegralsSf8, n_Sf8, deltaM, epsI &
+       & , GenerationMixing, check, factor(2), gNffp)
+     Else
+      gNffp = 0._dp
+     End If
+
      Do i2=1,n_d
       Do i3=1,n_u
        ChiPm(i_run)%gi3(i_c) = gNffp(i2,i3)
@@ -395,7 +417,7 @@ Contains
       End Do
      End Do
 
-     If ((n_nu.Gt.0).and.(n_l.gt.0)) Then
+     If ((n_nu.Gt.0).And.(n_l.Gt.0)) Then
       Call ChimToChi0ffp(i_run, i1, mC, mN, n_l, mf_l, m_nu, mW, gW_in   &
        & , C_CNW_L, C_CNW_R, C_NuLW, mSpm, gSpm_in, C_SmpCN_L            &
        & , C_SmpCN_R, C_SmpLNu_L, C_SmpLNu_R, mSlepton, g_Sl             &
@@ -420,10 +442,11 @@ Contains
     End If
    End Do
 
-   !--------------------------------------
-   ! decay into a gluino + 2 quarks
-   !--------------------------------------
-   If (Abs(mC(i_run)).Gt.Abs(mglu)) Then
+   !-----------------------------------------------------------
+   ! decay into a gluino + 2 quarks, requiring at least phase
+   ! for two pions
+   !-----------------------------------------------------------
+   If (Abs(mC(i_run)).Gt.(Abs(mglu)+0.3_dp)) Then
     Call ChimToGffp(i_run, mC, mGlu, mf_d, mf_u, mDSquark, g_Sd       &
     & , c_DGSd_L, c_DGSD_R, c_CUSd_L, c_CUSd_R, mUSquark, g_Su &
     & , c_UGSu_L, c_UGSu_R, c_CDSu_L, c_CDSu_R                     &
@@ -462,7 +485,7 @@ Contains
     n_Sf8 = 0
     !-------------------------------
     ! decay into 3 charginos
-    !-------------------------------
+    !-------------------------------  
     Do i1=1,i_run-1
      Do i2=1,i1
       Do i3=1,i2
@@ -531,7 +554,7 @@ Contains
    End If ! k_neut
 
    ChiPm(i_run)%g = Sum(ChiPm(i_run)%gi2) + Sum(ChiPm(i_run)%gi3)
-   If (ChiPm(i_run)%g.ne.0._dp) then
+   If (ChiPm(i_run)%g.Ne.0._dp) Then
     ChiPm(i_run)%bi2 = ChiPm(i_run)%gi2 / ChiPm(i_run)%g
     ChiPm(i_run)%bi3 = ChiPm(i_run)%gi3 / ChiPm(i_run)%g
    End If
@@ -564,7 +587,7 @@ Contains
  !           are calculated if the intermediated states are off-shell
  !--------------------------------------------------------------------------
  Implicit None
-  Character(len=5), Intent(in) :: state
+  Character(len=5), Intent(in) :: state 
   Integer, Intent(in) :: i_in, i_out, n_f
   Integer, Intent(inout) :: n_Z4, n_S04, n_Sf4, n_ZS04, n_ZSf8, n_S0P04 &
      & , n_S0Sf8, n_CSf4
@@ -605,7 +628,7 @@ Contains
   Isum = (1 + n_S0 + n_P0 + n_Sfp)**2
   Allocate( gCffSum(n_f, n_f, Isum) )
   Allocate( Contribution(n_f, n_f, Isum) )
-
+   
   gCffSum = 0._dp
   Contribution = ' '
 
@@ -635,7 +658,7 @@ Contains
    Isum = Isum + 1
    Boson2(1) = mS0(i1)
    Boson2(2) = gS0(i1)
-   coup1(1) = cpl_CCS0_L(i_out,i_in,i1)
+   coup1(1) = cpl_CCS0_L(i_out,i_in,i1) 
    coup1(2) = cpl_CCS0_R(i_out,i_in,i1)
    Do i2=1,n_f
     coup1(3) = cpl_FFS0_L(i2,i2,i1)
@@ -656,7 +679,7 @@ Contains
    Isum = Isum + 1
    Boson2(1) = mP0(i1)
    Boson2(2) = gP0(i1)
-   coup1(1) = cpl_CCP0_L(i_out,i_in,i1)
+   coup1(1) = cpl_CCP0_L(i_out,i_in,i1) 
    coup1(2) = cpl_CCP0_R(i_out,i_in,i1)
    Do i2=1,n_f
     coup1(3) = cpl_FFP0_L(i2,i2,i1)
@@ -686,7 +709,7 @@ Contains
       coup1(4) = Conjg(cpl_CFSfp_L(i_out,i3,i2))
       mass(2) = mf(i1)
       mass(3) = - mf(i3)
-      mass(4) = mC(i_out)
+      mass(4) = mC(i_out)        
       Call IntegrateScalarSS(Boson2, mass, coup1, deltaM, epsI &
                            &, IntegralsSf4, n_Sf4, resR, check)
       gCffSum(i1,i3,Isum) = resR
@@ -707,7 +730,7 @@ Contains
      coup1(4) = Conjg(cpl_CFSfp_L(i_out,i1,i2))
      mass(2) = mf(i1)
      mass(3) = - mf(i1)
-     mass(4) = mC(i_out)
+     mass(4) = mC(i_out)        
      Call IntegrateScalarSS(Boson2, mass, coup1, deltaM, epsI &
                           &, IntegralsSf4, n_Sf4, resR, check)
      gCffSum(i1,i1,Isum) = resR
@@ -725,7 +748,7 @@ Contains
     coup1(4) = Conjg(cpl_CFSfp_L(i_out,i2,i2))
     mass(2) = mf(i2)
     mass(3) = - mf(i2)
-    mass(4) = mC(i_out)
+    mass(4) = mC(i_out)        
     Call IntegrateScalarSS(Boson2, mass, coup1, deltaM, epsI &
                          &, IntegralsSf4, n_Sf4, resR, check)
     gCffSum(i2,i2,Isum) = resR
@@ -738,7 +761,7 @@ Contains
   !--------
   Boson4(1) = mZ
   Boson4(2) = gZ
-  Do i1=1,n_S0
+  Do i1=1,n_S0 
    Isum = Isum + 1
    Boson4(3) = mS0(i1)
    Boson4(4) = gS0(i1)
@@ -764,7 +787,7 @@ Contains
   !--------
   ! Z - P0
   !--------
-  Do i1=1,n_P0
+  Do i1=1,n_P0 
    Isum = Isum + 1
    Boson4(3) = mP0(i1)
    Boson4(4) = gP0(i1)
@@ -788,7 +811,7 @@ Contains
   End Do
 
   !--------------------------
-  ! Z boson - Sfermion_{xyz}
+  ! Z boson - Sfermion_{xyz} 
   !-------------------------
   Boson4(1) = mZ
   Boson4(2) = gZ
@@ -922,7 +945,7 @@ Contains
   End Do
 
   !--------------------------------------
-  ! S0 boson  s-channel - S-fermion_{xyz}
+  ! S0 boson  s-channel - S-fermion_{xyz} 
   !--------------------------------------
   If (GenerationMixing) Then
    Do i1 = 1,n_S0
@@ -1043,7 +1066,7 @@ Contains
   End Do
 
   !--------------------------------------
-  ! P0 boson  s-channel - S-fermion_{xyz}
+  ! P0 boson  s-channel - S-fermion_{xyz} 
   !--------------------------------------
   If (GenerationMixing) Then
    Do i1 = 1,n_P0
@@ -1323,7 +1346,7 @@ Contains
   Isum = (1 + n_Sfp)**2
   Allocate( gCffSum(n_f, n_f, Isum) )
   Allocate( Contribution(n_f, n_f, Isum) )
-
+   
   gCffSum = 0._dp
   Contribution = ' '
 
@@ -1352,7 +1375,7 @@ Contains
   !-----------------------------
   mass(2) = 0._dp
   mass(3) = 0._dp
-  mass(4) = mC(i_out)
+  mass(4) = mC(i_out)        
   If (GenerationMixing) Then
    Do i2=1,2*n_f
     Isum = Isum + 1
@@ -1403,7 +1426,7 @@ Contains
   End If    ! GenerationMixing
 
   !--------------------------
-  ! Z boson - Sfermion_{xyz}
+  ! Z boson - Sfermion_{xyz} 
   !-------------------------
   Boson4(1) = mZ
   Boson4(2) = gZ
@@ -1623,7 +1646,7 @@ Contains
   Integer, Intent(in) :: i_in, i_out, n_f
   Integer, Intent(inout) :: n_W4, n_Spm4, n_Sf4, n_WSpm, n_WSf8, n_SpmC4 &
      & , n_SpmSf8, n_SfC4, n_Sf8
-
+  
   Real(dp), Intent(in) :: mN(:), mC(:), mf(:), mfp(:), mW, gW, mSpm(:)     &
       & , gSpm(:), mSf(:), gSf(:), mSfp(:), gSfp(:), deltaM, epsI, fac
   Real(dp), Intent(inout) :: IntegralsW4(:,:), IntegralsSpm4(:,:)         &
@@ -1711,7 +1734,7 @@ Contains
    Do i2=1,n_f
     mass(2) = mN(i_out)
     mass(3) = -mfp(i2)
-    coup1(3) = Conjg(cpl_FpFW(i2,i2))
+    coup1(3) = Conjg(cpl_FpFW(i2,i2)) 
     mass(4) = mf(i2)
     Call IntegrateGaugeSS(Boson2, mass, coup1, deltaM, epsI, IntegralsW4 &
                          &, n_W4, resR, check)
@@ -1765,7 +1788,7 @@ Contains
   !-------------------
   ! Sfp Sfp, diagonal
   !-------------------
-
+  
   If (GenerationMixing) Then
    Do i2=1,n_Sfp
     Isum = Isum + 1
@@ -1874,7 +1897,7 @@ Contains
   coup2(6) = 0._dp
 
   If (GenerationMixing) Then
-   Do i1=1,n_Spm
+   Do i1=1,n_Spm 
     Isum = Isum + 1
     Boson4(3) = mSpm(i1)
     Boson4(4) = gSpm(i1)
@@ -1899,7 +1922,7 @@ Contains
    End Do
 
   Else
-   Do i1=1,n_Spm
+   Do i1=1,n_Spm 
     Isum = Isum + 1
     Boson4(3) = mSpm(i1)
     Boson4(4) = gSpm(i1)
@@ -1928,7 +1951,7 @@ Contains
   !---------------------------------
   coup2(1) = Conjg( Cpl_CNW_L(i_in,i_out) )
   coup2(2) = Conjg( Cpl_CNW_R(i_in,i_out) )
-  coup2(6) = 0._dp
+  coup2(6) = 0._dp 
 
   If (GenerationMixing) Then
    Do i2=1,n_Sfp
@@ -1991,7 +2014,7 @@ Contains
   !---------------------------------
   coup2(1) = Conjg( Cpl_CNW_L(i_in,i_out) )
   coup2(2) = Conjg( Cpl_CNW_R(i_in,i_out) )
-  coup2(5) = 0._dp
+  coup2(5) = 0._dp 
 
   If (GenerationMixing) Then
    Do i2=1,2*n_f
@@ -2008,7 +2031,7 @@ Contains
       mass(3) = -mfp(i1)
       mass(4) = mN(i_out)
 
-      coup2(6) = cpl_FpFW(i3,i1)
+      coup2(6) = cpl_FpFW(i3,i1) 
       coup2(7) = Conjg( cpl_FNSf_R(i1, i_out, i2) )
       coup2(8) = Conjg( cpl_FNSf_L(i1, i_out, i2) )
       Call IntegrateGaugeSscalarT(Boson4, Mass, coup2, deltaM, epsI &
@@ -2034,7 +2057,7 @@ Contains
 
     coup2(3) = cpl_CFpSf_L(i_in, i1, i2)
     coup2(4) = cpl_CFpSf_R(i_in, i1, i2)
-    coup2(6) = cpl_FpFW(i1,i1)
+    coup2(6) = cpl_FpFW(i1,i1) 
     coup2(7) = Conjg( cpl_FNSf_R(i1, i_out, i2) )
     coup2(8) = Conjg( cpl_FNSf_L(i1, i_out, i2) )
     Call IntegrateGaugeSscalarT(Boson4, Mass, coup2, deltaM, epsI &
@@ -2198,7 +2221,7 @@ Contains
        coup2(8) = Conjg(cpl_FNSf_L(i3, i_out, i2))
        Call IntegrateScalarST(Boson4, Mass, coup2, deltaM, epsI &
                             &, IntegralsSpmSf8, n_SpmSf8, resC, check)
-       gNffpSum(i3,i4,Isum) = - 2._dp * Real(resC,dp)
+       gNffpSum(i3,i4,Isum) = - 2._dp * Real(resC,dp)      
        Contribution(i3,i4,Isum) = &
         & 'S^-_'//Bu(i1)//' Sf_'//Bu(i2)//' f_'//Bu(i3)//' fp_'//Bu(i4)
       End Do
@@ -2231,7 +2254,7 @@ Contains
      coup2(8) = Conjg(cpl_FNSf_L(i3, i_out, i2))
      Call IntegrateScalarST(Boson4, Mass, coup2, deltaM, epsI &
                           &, IntegralsSpmSf8, n_SpmSf8, resC, check)
-     gNffpSum(i3,i3,Isum) = - 2._dp * Real(resC,dp)
+     gNffpSum(i3,i3,Isum) = - 2._dp * Real(resC,dp)      
      Contribution(i3,i3,Isum) = &
       & 'S^-_'//Bu(i1)//' Sf_'//Bu(i2)//' f_'//Bu(i3)//' fp_'//Bu(i3)
     End Do
@@ -2340,7 +2363,7 @@ Contains
     End Do
    End Do
 
-  Else
+  Else 
    Do i1= 1,n_Sfp
     Boson4(1) = mSfp(i1)
     Boson4(2) = gSfp(i1)
@@ -2532,7 +2555,7 @@ Contains
   Iname = Iname - 1
 
  End Subroutine ChimToChi0ffp
-
+ 
  Subroutine ChimToChim2Chi0(i_in, i1, i2, i3, mC, mN, mZ, gZ, cpl_CCZ_L    &
     & , cpl_CCZ_R, cpl_NNZ_L, cpl_NNZ_R, mW, gW, cpl_CNW_L, cpl_CNW_R, mSpm   &
     & , gSpm, cpl_SmpCN_L, cpl_SmpCN_R, mS0, gS0, cpl_CCS0_L, cpl_CCS0_R      &
@@ -2600,7 +2623,7 @@ Contains
   Isum = (3 + 2 * n_Spm + n_S0 + n_P0)**2
   Allocate( gCNNSum(Isum) )
   Allocate( Contribution(Isum) )
-
+   
   gCNNSum = 0._dp
   Contribution = ' '
 
@@ -2612,7 +2635,7 @@ Contains
   Boson2(2) = gZ
   mass(2) = mC(i1)
   mass(3) = -mN(i3)
-  mass(4) = mN(i2)
+  mass(4) = mN(i2) 
   coup1(1) = Cpl_CCZ_L(i1,i_in)
   coup1(2) = Cpl_CCZ_R(i1,i_in)
   coup1(3) = Cpl_NNZ_L(i2,i3)
@@ -2637,7 +2660,7 @@ Contains
   coup1(4) = Cpl_CNW_R(i1,i2)
   mass(2) = mN(i3)
   mass(3) = -mN(i2)
-  mass(4) = mC(i1)
+  mass(4) = mC(i1)                 
   Call IntegrateGaugeSS(Boson2, mass, coup1, deltaM, epsI, IntegralsW4 &
                        &, n_W4, resR, check)
   !---------------
@@ -2649,14 +2672,14 @@ Contains
   coup1(4) = Cpl_CNW_R(i1,i3)
   mass(2) = mN(i2)
   mass(3) = -mN(i3)
-  mass(4) = mC(i1)
+  mass(4) = mC(i1)                 
   Call IntegrateGaugeSS(Boson2, mass, coup1, deltaM, epsI, IntegralsW4 &
                        &, n_W4, resRa, check)
   gCNNSum(Isum) = resR+resRa
   Contribution(Isum) = 'W'
 
   !---------------------------------------------
-  ! decays via S^\pm, without interference part
+  ! decays via S^\pm, without interference part 
   !---------------------------------------------
   Do n1=1,n_Spm
    Isum = Isum + 1
@@ -2786,7 +2809,7 @@ Contains
   coup2(2) = Cpl_CCZ_R(i1,i_in)
   coup2(5) = Cpl_NNZ_L(i2,i3)
   coup2(6) = Cpl_NNZ_R(i2,i3)
-  Do n1=1,n_S0
+  Do n1=1,n_S0 
    Isum = Isum + 1
    Boson4(3) = mS0(n1)
    Boson4(4) = gS0(n1)
@@ -2803,7 +2826,7 @@ Contains
   !-------------------------------
   ! Z boson - P^0 boson  s-channel
   !-------------------------------
-  Do n1=1,n_P0
+  Do n1=1,n_P0 
    Isum = Isum + 1
    Boson4(3) = mP0(n1)
    Boson4(4) = gP0(n1)
@@ -2822,7 +2845,7 @@ Contains
   !---------------------------------
   coup2(1) = Cpl_CCZ_L(i1, i_in)
   coup2(2) = Cpl_CCZ_R(i1, i_in)
-  Do n1=1,n_Spm
+  Do n1=1,n_Spm  
    Isum = Isum + 1
    Boson4(3) = mSpm(n1)
    Boson4(4) = gSpm(n1)
@@ -2886,7 +2909,7 @@ Contains
   !---------------------------------
   ! W boson - S+ boson  same-channel
   !---------------------------------
-  Do n1=1,n_Spm
+  Do n1=1,n_Spm 
    Isum = Isum + 1
    Boson4(3) = mSpm(n1)
    Boson4(4) = gSpm(n1)
@@ -2929,7 +2952,7 @@ Contains
   !---------------------------------
   ! W boson - S+ boson  t-u channel
   !---------------------------------
-  Do n1=1,n_Spm
+  Do n1=1,n_Spm  
    Isum = Isum + 1
    Boson4(3) = mSpm(n1)
    Boson4(4) = gSpm(n1)
@@ -2972,7 +2995,7 @@ Contains
   !---------------------------------
   ! W boson - S0 boson  t-s channel
   !---------------------------------
-  Do n1=1,n_S0
+  Do n1=1,n_S0  
    Isum = Isum + 1
    Boson4(3) = mS0(n1)
    Boson4(4) = gS0(n1)
@@ -3015,7 +3038,7 @@ Contains
   !---------------------------------
   ! W boson - P0 boson  t-s channel
   !---------------------------------
-  Do n1=1,n_P0
+  Do n1=1,n_P0  
    Isum = Isum + 1
    Boson4(3) = mP0(n1)
    Boson4(4) = gP0(n1)
@@ -3295,7 +3318,7 @@ Contains
     coup2(8) = Conjg(Cpl_SmpCN_L(n2,i1,i3))
     Call IntegrateScalarST(Boson4, Mass, coup2, deltaM, epsI &
                          &, IntegralsS0P08, n_S0P08, resC, check)
-    gCNNSum(Isum) = - 2._dp * Real(resC,dp)
+    gCNNSum(Isum) = - 2._dp * Real(resC,dp) 
     Contribution(Isum) = 'S-_'//Bu(n1)//'S-_'//Bu(n2)//' t-u'
    End Do
   End Do
@@ -3328,7 +3351,7 @@ Contains
   If (Present(WriteContribution).And.Present(n_out)) Then
 
    gCNNSum = gCNNSum * fac
-
+ 
    Write (n_out,*) &
      & 'Gamma(Chi_'//Bu(i_in)//' -> Chi_'//Bu(i1)//' Chi^-_'//Bu(i2)// &
      & ' Chi^-_'//Bu(i3)//') :',i_in,i1,i2,i3
@@ -3339,11 +3362,11 @@ Contains
   End If
 
   Deallocate( gCNNSum, Contribution )
-
+   
   Iname = Iname - 1
 
  End Subroutine ChimToChim2Chi0
-
+ 
  Subroutine ChimToGffp(i_in, mC, mGlu, mf, mfp, mSf, gSf                 &
     & , cpl_FGSf_L, cpl_FGSf_R, cpl_CFpSf_L, cpl_CFpSf_R, mSfp, gSfp     &
     & , cpl_FpGSfp_L, cpl_FpGSfp_R, cpl_CFSfp_L, cpl_CFSfp_R             &
@@ -3359,7 +3382,7 @@ Contains
  Implicit None
   Integer, Intent(in) :: i_in
   Integer, Intent(inout) :: n_Sf4, n_SfC4, n_Sf8
-
+  
   Real(dp), Intent(in) :: mC(:), mGlu, mf(:), mfp(:), mSf(:), gSf(:) &
       & , mSfp(:), gSfp(:), deltaM, epsI, fac
   Real(dp), Intent(inout) :: IntegralsSf4(:,:)
@@ -3395,7 +3418,7 @@ Contains
   ! Sfp Sfp, diagonal
   !-------------------
   Isum = 0
-
+    
   If (GenerationMixing) Then
    Do i2=1,6
     Isum = Isum + 1
@@ -3525,7 +3548,7 @@ Contains
     End Do
    End Do
 
-  Else
+  Else 
    Do i1=1,5,2
     i2 = i1+1
     Isum = Isum + 1
@@ -3591,7 +3614,7 @@ Contains
     End Do
    End Do
 
-  Else
+  Else 
    Do i1= 1,6
     Boson4(1) = mSfp(i1)
     Boson4(2) = gSfp(i1)
@@ -3835,7 +3858,7 @@ Contains
   Isum = 4 * (1 + n_S0 + n_P0)**2
   Allocate( gCCCSum(Isum) )
   Allocate( Contribution(Isum) )
-
+   
   gCCCSum = 0._dp
   Contribution = ' '
 
@@ -3855,7 +3878,7 @@ Contains
    coup1(4) = Cpl_CCZ_R(i3,i2)
    mass(2) = mC(i1)
    mass(3) = -mC(i2)
-   mass(4) = mC(i3)
+   mass(4) = mC(i3)       
    Call IntegrateGaugeSS(Boson2, mass, coup1, deltaM, epsI, IntegralsZ4 &
                        &, n_Z4, resR, check)
    !--------------
@@ -3867,7 +3890,7 @@ Contains
    coup1(4) = Cpl_CCZ_R(i1,i2)
    mass(2) = mC(i3)
    mass(3) = -mC(i2)
-   mass(4) = mC(i1)
+   mass(4) = mC(i1)       
    Call IntegrateGaugeSS(Boson2, mass, coup1, deltaM, epsI, IntegralsZ4 &
                        &, n_Z4, resRa, check)
    gCCCSum(Isum) = resR + resRa
@@ -3916,7 +3939,7 @@ Contains
    Isum = Isum + 1
    Boson2(1) = mP0(n1)
    Boson2(2) = gP0(n1)
-
+    
    !--------------
    ! s-channel
    !--------------
@@ -3978,7 +4001,7 @@ Contains
    Boson4(1) = mZ
    Boson4(2) = gZ
 
-   Do n1=1,n_S0
+   Do n1=1,n_S0 
     Isum = Isum + 1
     Boson4(3) = mS0(n1)
     Boson4(4) = gS0(n1)
@@ -4024,7 +4047,7 @@ Contains
    Boson4(1) = mZ
    Boson4(2) = gZ
 
-   Do n1=1,n_S0
+   Do n1=1,n_S0 
     Isum = Isum + 1
     Boson4(3) = mS0(n1)
     Boson4(4) = gS0(n1)
@@ -4070,7 +4093,7 @@ Contains
    Boson4(1) = mZ
    Boson4(2) = gZ
 
-   Do n1=1,n_P0
+   Do n1=1,n_P0 
     Isum = Isum + 1
     Boson4(3) = mP0(n1)
     Boson4(4) = gP0(n1)
@@ -4116,7 +4139,7 @@ Contains
    Boson4(1) = mZ
    Boson4(2) = gZ
 
-   Do n1=1,n_P0
+   Do n1=1,n_P0 
     Isum = Isum + 1
     Boson4(3) = mP0(n1)
     Boson4(4) = gP0(n1)
@@ -4423,9 +4446,9 @@ Contains
   End If
 
   !----------------------------------------------
-  ! symmetry
+  ! symmetry 
   !----------------------------------------------
-  If (i1.Eq.i3) gCCC = 0.5_dp * gCCC
+  If (i1.Eq.i3) gCCC = 0.5_dp * gCCC 
 
   gCCC = fac * gCCC
 
@@ -4435,7 +4458,7 @@ Contains
   If (Present(WriteContribution).And.Present(n_out)) Then
 
    gCCCSum = gCCCSum * fac
-
+ 
    Write (ErrCan,*) &
      & 'Gamma(Chi_'//Bu(i_in)//' -> Chi_'//Bu(i1)//Bu(i2)//Bu(i3)//') :' &
      & ,i_in,i1,i2,i3
@@ -4446,7 +4469,7 @@ Contains
   End If
 
   Deallocate( gCCCSum, Contribution )
-
+   
   Iname = Iname - 1
 
  End Subroutine ChimToChimChipChim

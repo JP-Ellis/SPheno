@@ -12,7 +12,7 @@ Use Control
  End Interface
 
  Interface CompareMatrices
-  Module Procedure CompareMatricesC, CompareMatricesI, CompareMatricesR
+  Module Procedure CompareMatricesC, CompareMatricesI, CompareMatricesR 
  End Interface
 
  Interface Diag2
@@ -22,6 +22,18 @@ Use Control
  Interface EigenSystem
   Module Procedure ComplexEigenSystem, RealEigenSystem
  End Interface
+
+ Interface InvMat
+  Module Procedure InvMat_r, InvMat_c
+ End Interface
+
+ Interface LuBkSb
+  Module Procedure LuBkSb_r, LuBkSb_c
+ End Interface
+
+ Interface LuDcmp
+  Module Procedure LuDcmp_r, LuDcmp_c
+ End Interface 
 
  Interface MatMul2
   Module Procedure MatMul2R3, MatMul2C3, MatVec2R3, MatVec2C3, VecVec2R3     &
@@ -173,7 +185,7 @@ Contains
     Where (h4.Eq.0.0_dp) h4 = EPS4
     xph4 = xsav4+h4
     h4 = xph4-xsav4
-
+        
     Do i1 = 1,n
      x(i1) = xph4(i1)
      r(:,i1) = (funcv(x)-fvec)/h4(i1)
@@ -213,7 +225,7 @@ Contains
     End do
 
     Do k = 1,n-1
-     If (c(k).Ne.0.0_dp) &
+     If (c(k).Ne.0.0_dp) & 
       & qt(k:n,:) = qt(k:n,:)-outerprod(r(k:n,k),Matmul(r(k:n,k),qt(k:n,:)))/c(k)
     End Do
 
@@ -223,7 +235,7 @@ Contains
      r(i1,i1) = d(i1)
     End Do
 
-   Else ! .not.restrt
+   Else ! .not.restrt 
     s = x - xold
     Do i = 1,n
      t(i) = Dot_product(r(i,i:n),s(i:n))
@@ -512,7 +524,7 @@ Contains
   NameOfUnit(Iname) = "bsstep"
 
   kont = 0
-  len1 = Size(y)
+  len1 = Size(y) 
   If ((len1.Ne.Size(dydx)).Or.(len1.Ne.Size(yscal))) Then
    Write(ErrCan,*) "Problem in routine bsstep, size of vectors"
    Write(ErrCan,*) "does not conincide:",len1,Size(dydx),Size(yscal)
@@ -523,7 +535,7 @@ Contains
    hnext = -1.0e29_dp     ! 'impossible' values
    xnew = -1.0e29_dp
    eps1 = SAFE1*eps
-
+   
    a(1) = nseq(1) + 1     ! working coefficients A_k
    Do i1=1,kmaxx
     a(i1+1) = a(i1) + nseq(i1+1)
@@ -586,7 +598,7 @@ Contains
      Iname = Iname - 1
      Return
     End If
-
+    
     If (k /= 1) Then
      errmax=Maxval(Abs(yerr / yscal ))
      errmax=Max(my_tiny,errmax)/eps
@@ -596,7 +608,7 @@ Contains
 
     If (k /= 1 .And. (k >= kopt-1 .Or. first)) Then  ! in order window
      If (errmax < 1.0) Exit main_loop          ! converged
-     If (k == kmax .Or. k == kopt+1) Then      ! check for possible stepsize reduction
+     If (k == kmax .Or. k == kopt+1) Then      ! check for possible stepsize reduction    
       red=SAFE2/err(km)
       Exit
      Else If (k == kopt) Then
@@ -689,7 +701,7 @@ Contains
  !--------------------------------------------------------------
  !     routine for the complex dilogarithm function
  !--------------------------------------------------------------
- Implicit None
+ Implicit None      
   !-------
   ! input
   !-------
@@ -807,11 +819,11 @@ Contains
  !---------------------------------------------------------------------
  Implicit None
   Complex(dp), Intent(inout) :: vec(:)
-
+  
   Integer :: len, i1
   Real(dp) :: re, im, max1
   Real(dp), Parameter :: eps = 100._dp * Epsilon(1._dp)
-
+  
   max1 = eps * Maxval( Abs(vec) )
 
   len = Size(vec)
@@ -832,11 +844,11 @@ Contains
  !---------------------------------------------------------------------
  Implicit None
   Complex(dp), Intent(inout) :: mat(:,:)
-
+  
   Integer :: len1, len2, i1 ,i2
   Real(dp) :: re, im, max1
   Real(dp), Parameter :: eps = 100._dp * Epsilon(1._dp)
-
+  
   max1 = eps * Maxval( Abs(mat) )
 
   len1 = Size(mat,dim=1)
@@ -886,7 +898,7 @@ Contains
 
   CompareMatricesC = .True.
 
-  diff1 = Abs( diff )  ! to be sure
+  diff1 = Abs( diff )  ! to be sure 
 
   Do i1 = 1, N1
    Do i2 = 1, N2
@@ -971,7 +983,7 @@ Contains
 
   CompareMatricesR = .True.
 
-  diff1 = Abs( diff )  ! to be sure
+  diff1 = Abs( diff )  ! to be sure 
 
   Do i1 = 1, N1
    Do i2 = 1, N2
@@ -1032,17 +1044,17 @@ Contains
    Return
   End If
 
-  If (Is_NaN(Real(Matrix,dp)).or.Is_NaN(Aimag(Matrix))) Then !
+  If (Is_NaN(Real(Matrix,dp)).or.Is_NaN(Aimag(Matrix))) Then !  
    Write(ErrCan,*) 'Error in Subroutine '//NameOfUnit(Iname)
    Write(ErrCan,*) 'matrix contains NaN'
    If (ErrorLevel.Ge.-1) Call TerminateProgram
    kont = -31
    Call AddError(31)
    Iname = Iname - 1
-   Return
+   Return 
   End If
 
-  Allocate(AR(N1,N1))
+  Allocate(AR(N1,N1)) 
   Allocate(AI(N1,N1))
   Allocate(Ctest(N1,N1))
   Allocate(Ctest2(N1,N1))
@@ -1068,7 +1080,7 @@ Contains
    Do n2=1,n1-1
     Do n3=n2+1,n1
      If (wr(n2).Gt.wr(n3)) Then
-      work(1) = wr(n2)
+      work(1) = wr(n2) 
       wr(n2) = wr(n3)
       wr(n3) = work(1)
       work = ar(:,n2)
@@ -1080,7 +1092,7 @@ Contains
 
    EigenValues = WR
    Ctest = Ar
-   EigenVectors = Transpose(AR)
+   EigenVectors = Transpose(AR) 
 
   Else ! complex matrix
    l_complex = .True.
@@ -1104,12 +1116,12 @@ Contains
     Return
    End If
    Call HTRIBK(AR, AI, WORK2, ZR, ZI)
-
+   
 
    Do n2=1,n1-1
     Do n3=n2+1,n1
      If (wr(n2).Gt.wr(n3)) Then
-      work(1) = wr(n2)
+      work(1) = wr(n2) 
       wr(n2) = wr(n3)
       wr(n3) = work(1)
       work = zr(:,n2)
@@ -1154,7 +1166,7 @@ Contains
      kont = -14
      Call AddError(14)
     End If
-   Else
+   Else 
     If ( (test(2)/test(1)).Gt.MinimalPrecision) then
      kont = -14
      Call AddError(14)
@@ -1207,12 +1219,12 @@ Contains
   If ((x.eq.z).and.(y.eq.z)) then
    delt = -3._dp * Z**2
   Else If (x.eq.y) then
-   delt = z * (z - 4._dp * y)
+   delt = z * (z - 4._dp * y) 
   Else If (x.eq.z) then
-   delt = y * (y - 4._dp * z)
+   delt = y * (y - 4._dp * z) 
   Else If (y.eq.z) then
-   delt = x * (x - 4._dp * z)
-  Else
+   delt = x * (x - 4._dp * z) 
+  Else 
    delt = x**2 + y**2 + z**2 - 2._dp*(x*y + x*z + y*z)
   End If
 
@@ -1231,7 +1243,7 @@ Contains
  ! 1.10.2000: porting it to f90
  !----------------------------------------------------------------------
   Implicit None
-
+      
   Interface
    Function f(pt)
    Use Control
@@ -1273,7 +1285,7 @@ Contains
   DGAUSS=0._dp
 
   If(B.Eq.A) Return
-
+      
   CONST=0.005_dp/(B-A)
   BB=A
   !----------------------
@@ -1310,8 +1322,8 @@ Contains
       End If
       Return
     Endif
-   End Do ! while ( 1._dp+ABS(CONST*C2) .NE. 1._dp)
-
+   End Do ! while ( 1._dp+ABS(CONST*C2) .NE. 1._dp) 
+    
   DGAUSS=DGAUSS+S16
  End Do ! while (BB.NE.B)
 
@@ -1382,7 +1394,7 @@ Contains
        &         0.2816035507792589132304605015_dp,       &
        &         0.09501250983763744018531933543_dp  /)
 
-   erg = 0._dp
+   erg = 0._dp 
 
    If(B.Eq.A) Return
 
@@ -1438,12 +1450,12 @@ Contains
       Deallocate(work,s8,s16)
       Return
     Endif
-   End Do ! while ( 1._dp+Abs(CONST*C2) .NE. 1._dp)
-
+   End Do ! while ( 1._dp+Abs(CONST*C2) .NE. 1._dp) 
+   
    erg = erg + S16
   End Do ! while (BB.NE.B)
 
-
+ 
   Deallocate(work,s8,s16)
 
  End Subroutine DgaussInt
@@ -1457,7 +1469,7 @@ Contains
   Real(dp) :: sumI, det, ct, st
   Complex(dp) :: phase
 
-  sumI = Real(mat(1,1) + mat(2,2),dp)
+  sumI = Real(mat(1,1) + mat(2,2),dp) 
   det = Sqrt( Abs(mat(1,1) - mat(2,2))**2 + 4._dp * Abs(mat(1,2))**2 )
   eig(1) = 0.5_dp * (sumI - det)
   eig(2) = 0.5_dp * (sumI + det)
@@ -1479,7 +1491,7 @@ Contains
   rsf(2,2) = Conjg(phase) * ct
 
  End Subroutine Diag2_C
-
+ 
  Real(dp) Function dTrace(A)
  Implicit None
 
@@ -1585,7 +1597,7 @@ Contains
     F=F*U
    End Do
   End If
-
+     
   H=U+U-7
   ALFA=H+H
   B1=0
@@ -1603,7 +1615,7 @@ Contains
 
  Subroutine gaussj(kont, a,n,np,b,m)
  Implicit None
-
+ 
  Integer :: n,np,NMAX,kont
   Integer, Optional :: m
   Complex(dP) :: a(np,np)
@@ -1628,7 +1640,7 @@ Contains
               icol=k
             Endif
           Else If (ipiv(k)>1) Then
-          ! singular matrix
+          ! singular matrix 
             kont = -24
             Call AddError(24)
             Return
@@ -1654,7 +1666,7 @@ Contains
     indxr(i)=irow
     indxc(i)=icol
     If (a(icol,icol)==0._dp) Then
-        ! singular matrix
+        ! singular matrix 
         kont = -24
         Call AddError(24)
         Return
@@ -1695,7 +1707,7 @@ Contains
   Enddo
 
   End Subroutine gaussj
-
+  
   Subroutine HTRIBK(AR, AI, TAU, ZR, ZI)
   Implicit None
    Real(dp) :: AR(:,:), AI(:,:), TAU(:,:), ZR(:,:), ZI(:,:)
@@ -2031,6 +2043,358 @@ Contains
   LI2=H
 
  End Function Li2
+ 
+ Subroutine LuBkSb_c(a,indx,b)
+ !------------------------------------------
+ ! taking Numerical recipies as example
+ ! written by Werner Porod, 13.03.03
+ !------------------------------------------
+ Implicit None
+  Complex(dp), Dimension(:,:), Intent(IN) :: a
+  Integer, Dimension(:), Intent(IN) :: indx
+  Complex(dp), Dimension(:), Intent(INOUT) :: b
+
+  Integer :: i,n,ii,ll
+  Complex(dP) :: summ
+
+  Iname = Iname + 1
+  NameOfUnit(Iname) = "LuBkSb_c"
+
+  n = Size(a,1)
+  If ((n.Ne.Size(a,2)).Or.(n.Ne.Size(indx))) Then
+   Write(Errcan,*) "Error in routine "//NameOfUnit(Iname)
+   Write(ErrCan,*) "sizes of matrix and vector are not consisten: a_1,a_2,b" &
+     & ,n,Size(a,2),Size(indx)
+   Call TerminateProgram
+  End If
+
+  ii=0
+  Do i=1,n
+    ll=indx(i)
+    summ=b(ll)
+    b(ll)=b(i)
+    If (ii /= 0) Then
+    !--------------------------------------------------------------
+    ! need an extra conjg to compensate for the complex conjugation
+    ! in Dot_product
+    !--------------------------------------------------------------
+      summ=summ-Dot_product(Conjg(a(i,ii:i-1)),b(ii:i-1))
+    Else If (summ /= 0.0_dp) Then
+      ii=i
+    End If
+    b(i)=summ
+  End Do
+  Do i=n,1,-1
+    !--------------------------------------------------------------
+    ! need an extra conjg to compensate for the complex conjugation
+    ! in Dot_product
+    !--------------------------------------------------------------
+    b(i) = (b(i)-Dot_product(Conjg(a(i,i+1:n)),b(i+1:n)))/a(i,i)
+  End Do
+
+  Iname = Iname - 1
+
+ End Subroutine LuBkSb_c
+  
+ Subroutine lubksb_r(a,indx,b)
+ !------------------------------------------
+ ! taking Numerical recipies as example
+ ! written by Werner Porod, 13.03.03
+ !------------------------------------------
+ Implicit None
+  Real(dp), Dimension(:,:), Intent(IN) :: a
+  Integer, Dimension(:), Intent(IN) :: indx
+  Real(dp), Dimension(:), Intent(INOUT) :: b
+
+  Integer :: i,n,ii,ll
+  Real(dP) :: summ
+
+  Iname = Iname + 1
+  NameOfUnit(Iname) = "LuBkSb_r"
+
+  n = Size(a,1)
+  If ((n.Ne.Size(a,2)).Or.(n.Ne.Size(indx))) Then
+   Write(Errcan,*) "Error in routine "//NameOfUnit(Iname)
+   Write(ErrCan,*) "sizes of matrix and vector are not consisten: a_1,a_2,b" &
+     & ,n,Size(a,2),Size(indx)
+   Call TerminateProgram
+  End If
+
+  ii=0
+  Do i=1,n
+    ll=indx(i)
+    summ=b(ll)
+    b(ll)=b(i)
+    If (ii /= 0) Then
+      summ=summ-Dot_product(a(i,ii:i-1),b(ii:i-1))
+    Else If (summ /= 0.0_dp) Then
+      ii=i
+    End If
+    b(i)=summ
+  End Do
+  Do i=n,1,-1
+    b(i) = (b(i)-Dot_product(a(i,i+1:n),b(i+1:n)))/a(i,i)
+  End Do
+
+  Iname = Iname - 1
+
+ End Subroutine LuBkSb_r
+  
+ Subroutine LuDcmp_c(a,indx,d)
+ !------------------------------------------
+ ! taking Numerical recipies as example
+ ! written by Werner Porod, 13.03.03
+ !------------------------------------------
+  Implicit None
+  Complex(DP), Dimension(:,:), Intent(INOUT) :: a
+  Integer, Dimension(:), Intent(OUT) :: indx
+  Real(DP), Intent(OUT) :: d
+
+  Complex(DP), Dimension(Size(a,1)) :: dum
+  Real(DP), Dimension(Size(a,1)) :: vv
+  Real(DP), Parameter :: TINY=1.0e-20_dp
+  Integer :: j,n,imax, imaxvec(1)
+
+  Iname = Iname + 1
+  NameOfUnit(Iname) = "LuDcmp_c"
+
+  n = Size(a,1)
+  If ((n.Ne.Size(a,2)).Or.(n.Ne.Size(indx))) Then
+   Write(Errcan,*) "Error in routine "//NameOfUnit(Iname)
+   Write(ErrCan,*) "sizes of matrix and vector are not consisten: a_1,a_2,b" &
+     & ,n,Size(a,2),Size(indx)
+   Call TerminateProgram
+  End If
+
+  d=1.0_dp
+
+  vv=Maxval(Abs(a),dim=2)
+  If (Any(vv == 0.0_dp)) Then
+    Write(Errcan,*) "Singular matrix in "//NameOfUnit(Iname)
+    Call TerminateProgram
+  End If
+
+  vv=1.0_dp/vv
+
+  Do j=1,n
+    imaxvec = Maxloc(vv(j:n)*Abs(a(j:n,j)))
+    imax=(j-1)+imaxvec(1)
+    If (j /= imax) Then
+      dum = a(imax,:)
+      a(imax,:) = a(j,:)
+      a(j,:) = dum
+      d=-d
+      vv(imax)=vv(j)
+    End If
+    indx(j)=imax
+    If (a(j,j) == 0.0_dp) a(j,j)=TINY
+    a(j+1:n,j)=a(j+1:n,j)/a(j,j)
+    a(j+1:n,j+1:n)=a(j+1:n,j+1:n)-outerprod(a(j+1:n,j),a(j,j+1:n))
+  End Do
+
+  Iname = Iname - 1
+
+ End Subroutine LuDcmp_c
+
+ Subroutine LuDcmp_r(a,indx,d)
+ !------------------------------------------
+ ! taking Numerical recipies as example
+ ! written by Werner Porod, 13.03.03
+ !------------------------------------------
+ Implicit None
+  Real(DP), Dimension(:,:), Intent(INOUT) :: a
+  Integer, Dimension(:), Intent(OUT) :: indx
+  Real(DP), Intent(OUT) :: d
+
+  Real(DP), Dimension(Size(a,1)) :: vv, dum
+  Real(DP), Parameter :: TINY=1.0e-20_dp
+  Integer :: j,n,imax, imaxvec(1)
+
+  Iname = Iname + 1
+  NameOfUnit(Iname) = "LuDcmp_r"
+
+  n = Size(a,1)
+  If ((n.Ne.Size(a,2)).Or.(n.Ne.Size(indx))) Then
+   Write(Errcan,*) "Error in routine "//NameOfUnit(Iname)
+   Write(ErrCan,*) "sizes of matrix and vector are not consisten: a_1,a_2,b" &
+     & ,n,Size(a,2),Size(indx)
+   Call TerminateProgram
+  End If
+
+  d=1.0_dp
+
+  vv=Maxval(Abs(a),dim=2)
+  If (Any(vv == 0.0_dp)) Then
+    Write(Errcan,*) "Singular matrix in "//NameOfUnit(Iname)
+    Call TerminateProgram
+  End If
+
+  vv=1.0_dp/vv
+
+  Do j=1,n
+    imaxvec = Maxloc(vv(j:n)*Abs(a(j:n,j)))
+    imax=(j-1)+imaxvec(1)
+    If (j /= imax) Then
+      dum = a(imax,:)
+      a(imax,:) = a(j,:)
+      a(j,:) = dum
+      d=-d
+      vv(imax)=vv(j)
+    End If
+    indx(j)=imax
+    If (a(j,j) == 0.0_dp) a(j,j)=TINY
+    a(j+1:n,j)=a(j+1:n,j)/a(j,j)
+    a(j+1:n,j+1:n)=a(j+1:n,j+1:n)-outerprod(a(j+1:n,j),a(j,j+1:n))
+  End Do
+
+  Iname = Iname - 1
+
+ End Subroutine LuDcmp_r
+
+ Subroutine InvMat_c(mat, n, invmat, kont)
+ !----------------------------------------------------------
+ ! calculates the inverse of a n times n matrix using 
+ ! LU-decomposition
+ ! input:  n ............. dimension of matrix
+ !         mat(n,n) ...... n times n matrix
+ ! output:
+ !         invmat(n,n) ... inverse of matrix mat
+ ! in-/output:
+ !         kont .......... control variable
+ !----------------------------------------------------------
+ Implicit none
+  Integer, Intent(in) :: n
+  Integer, Intent(inout) :: kont
+  Complex(dp), Intent(in) :: mat(n,n)
+  Complex(dp), Intent(out) :: invmat(n,n)
+
+  Integer :: i1, indx(n)
+  Real(dp) :: d
+  Complex(dp) :: smat(n,n)  ! this will be used for calculation, gets
+                         ! changed by LU-decomposition
+
+  Iname = Iname + 1
+  NameOfUnit(Iname) = "InvMat_c"
+  
+  kont = 0
+  !---------------------------
+  ! initialize identiy matrix
+  !---------------------------
+  invmat = ZeroC
+  Forall (i1=1:n) invmat(i1,i1) = Cmplx(1._dp,0._dp,dp)
+  !---------------------------
+  ! LU-decomposition
+  !---------------------------
+  smat = mat
+  Call LuDcmp(smat,indx,d)
+  !---------------------------
+  ! inverse matrix
+  !---------------------------
+  Do i1=1,n
+   Call lubksb(smat,indx,invmat(:,i1))
+  End do
+  !----------------------------------
+  ! now the tests
+  !----------------------------------
+  smat = Matmul(mat,invmat)
+  Forall (i1=1:n) smat(i1,i1) = smat(i1,i1) - 1._dp
+  d = maxval(abs(smat))
+  If (d.gt.MinimalPrecision) then
+   Write(ErrCan,*) "Potential Problem in InvMat_c"
+   Write(ErrCan,*) "precision not achieved in 1st test"
+   Write(ErrCan,*) d,MinimalPrecision
+   kont = -32
+   Call AddError(32)
+  End If
+
+  smat = Matmul(invmat,mat)
+  Forall (i1=1:n) smat(i1,i1) = smat(i1,i1) - 1._dp
+  d = maxval(abs(smat))
+  If (d.gt.MinimalPrecision) then
+   Write(ErrCan,*) "Potential Problem in InvMat_c"
+   Write(ErrCan,*) "precision not achieved in 2nd test"
+   Write(ErrCan,*) d,MinimalPrecision
+   kont = -32
+   Call AddError(32)
+  End If
+
+  Iname = Iname - 1
+
+ End Subroutine InvMat_c
+ 
+
+ Subroutine InvMat_r(mat, n, invmat, kont)
+ !----------------------------------------------------------
+ ! calculates the inverse of a n times n matrix using 
+ ! LU-decomposition
+ ! input:  n ............. dimension of matrix
+ !         mat(n,n) ...... n times n matrix
+ ! output:
+ !         invmat(n,n) ... inverse of matrix mat
+ ! in-/output:
+ !         kont .......... control variable
+ !----------------------------------------------------------
+ Implicit none
+  Integer, Intent(in) :: n
+  Integer, Intent(inout) :: kont
+  Real(dp), Intent(in) :: mat(n,n)
+  Real(dp), Intent(out) :: invmat(n,n)
+
+  Integer :: i1, indx(n)
+  Real(dp) :: d
+  Real(dp) :: smat(n,n)  ! this will be used for calculation, gets
+                         ! changed by LU-decomposition
+
+  Iname = Iname + 1
+  NameOfUnit(Iname) = "InvMat_r"
+  
+  kont = 0
+  !---------------------------
+  ! initialize identiy matrix
+  !---------------------------
+  invmat = 0._dp
+  Forall (i1=1:n) invmat(i1,i1) = 1._dp
+  !---------------------------
+  ! LU-decomposition
+  !---------------------------
+  smat = mat
+  Call LuDcmp(smat,indx,d)
+  !---------------------------
+  ! inverse matrix
+  !---------------------------
+  Do i1=1,n
+   Call lubksb(smat,indx,invmat(:,i1))
+  End do
+  !----------------------------------
+  ! now the tests
+  !----------------------------------
+  smat = Matmul(mat,invmat)
+  Forall (i1=1:n) smat(i1,i1) = smat(i1,i1) - 1._dp
+  d = maxval(abs(smat))
+  If (d.gt.MinimalPrecision) then
+   Write(ErrCan,*) "Potential Problem in InvMat_r"
+   Write(ErrCan,*) "precision not achieved in 1st test"
+   Write(ErrCan,*) d,MinimalPrecision
+   kont = -33
+   Call AddError(33)
+  End If
+
+  smat = Matmul(invmat,mat)
+  Forall (i1=1:n) smat(i1,i1) = smat(i1,i1) - 1._dp
+  d = maxval(abs(smat))
+  If (d.gt.MinimalPrecision) then
+   Write(ErrCan,*) "Potential Problem in InvMat_r"
+   Write(ErrCan,*) "precision not achieved in 2nd test"
+   Write(ErrCan,*) d,MinimalPrecision
+   kont = -33
+   Call AddError(33)
+  End If
+
+  Iname = Iname - 1
+
+
+ End Subroutine InvMat_r
+ 
 
 
  Function MatMul2C3(A, B, OnlyDiagonal) Result(D)
@@ -2196,7 +2560,7 @@ Contains
   Iname = Iname + 1
   NameOfUnit(Iname) = "mmid"
 
-  len1 = Size(y)
+  len1 = Size(y) 
   If ((len1.Ne.Size(dydx)).Or.(len1.Ne.Size(yout))) Then
    Write(ErrCan,*) "Problem in routine mmid, size of vectors"
    Write(ErrCan,*) "does not conincide:",len1,Size(dydx),Size(yout)
@@ -2674,7 +3038,7 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
     xout = x
     Iname = Iname - 1
     Return
-   !Else If (y(1).Gt.y(2)) Then
+   !Else If (y(1).Gt.y(2)) Then 
    Else If (greater) Then
     y = y_old
     x = x_old
@@ -3021,7 +3385,7 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
  ! polynomial interpolation
  ! written by Werner Porod, 23.05.2001
  !---------------------------------------------------------------------------
- Use Control
+ Use Control 
  Implicit None
   Real(dp), Dimension(:), Intent(IN) :: xa, ya
   Real(dp), Intent(IN) :: x
@@ -3103,7 +3467,7 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
    Iname = Iname - 1
    Return
   End If
-
+   
   If (nv /= nvold) Then
    If (Allocated(qcol)) Deallocate(qcol)
    Allocate(qcol(nv,IEST_MAX))
@@ -3143,7 +3507,7 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
  ! Output
  !  EigenValues ..... n sorted EigenValues: |m_1| < |m_2| < .. < |m_n|
  !  EigenVectors .... n times n matrix with the eigenvectors
- ! written by Werner Porod, 11.11.2000
+ ! written by Werner Porod, 11.11.2000 
  !---------------------------------------------------------------------
  Implicit None
   Real(Dp), Intent(in) :: Matrix(:,:)
@@ -3166,17 +3530,17 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
    kont = -15
    Call AddError(15)
    Iname = Iname - 1
-   Return
+   Return 
   End If
-
-  If (Is_NaN(Matrix)) then !
+  
+  If (Is_NaN(Matrix)) then !  
    Write(ErrCan,*) 'Error in Subroutine '//NameOfUnit(Iname)
    Write(ErrCan,*) 'matrix contains NaN'
    If (ErrorLevel.Ge.-1) Call TerminateProgram
    kont = -30
    Call AddError(30)
    Iname = Iname - 1
-   Return
+   Return 
   End If
 
   Allocate(AR(N1,N1))
@@ -3185,14 +3549,14 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
   Allocate(Work(N1))
 
   AR = Matrix
-
+ 
   Call Tred2A(AR, WR, Work)
   Call TQLi(KONT,WR,WORK,AR)
 
   Do n2=1,n1-1
    Do n3=n2+1,n1
     If (wr(n2).Gt.wr(n3)) Then
-     work(1) = wr(n2)
+     work(1) = wr(n2) 
      wr(n2) = wr(n3)
      wr(n3) = work(1)
      work = ar(:,n2)
@@ -3203,12 +3567,12 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
   End Do
 
   EigenValues = WR
-  EigenVectors = Transpose(AR)
+  EigenVectors = Transpose(AR) 
 
   !-------------------------
   ! test of diagonalisation
   !-------------------------
-  AR2 = Matmul(Matrix, AR)
+  AR2 = Matmul(Matrix, AR) 
   Ar = Matmul(Eigenvectors, AR2 )
 
   test = 0._dp
@@ -3668,11 +4032,11 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
   Real(dp), Dimension(NDMX,MXDIM), Save :: d, di, xi
   Real(dp), Dimension(MXDIM), Save :: dt, dx, x
   Real(dp), Dimension(NDMX), Save :: r, xin
-  Real(dp), Save :: schi, si, si2, swgt
+  Real(dp), Save :: schi, si, si2, swgt 
 
   If (.Not.Present(sd)) sd = 0
   If (.Not.Present(chi2a)) chi2a = 0
-
+ 
   ndim = Size(region)/2
   !-------------------------------------------------------------------
   ! Normal entry, enter here on a cold start. Change mds=0 to disable
@@ -3784,7 +4148,7 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
      kg(k) = Mod(kg(k),ng)+1
      If (kg(k) /=  1) Cycle iterate
     End Do
-    Exit iterate
+    Exit iterate 
    End Do iterate
    !------------------------------------------
    ! Compute final result for this iteration
@@ -3866,7 +4230,7 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
     Real(dp), Dimension(:), Intent(INOUT) :: xi
 
     Integer :: i,k
-    Real(dp) :: dr,xn,xo
+    Real(dp) :: dr,xn,xo   
 
     k = 0
     xo = 0._dp
@@ -3888,6 +4252,1045 @@ Subroutine odeintB2(ystart, len, x1, x2, eps, h1, hmin, derivs,checks, xout, kon
   End Subroutine rebin
 
  End Subroutine Vegas1
+
+ Subroutine Seesaw(mat, mFv, UFv, kont)
+ !---------------------------------------------------
+ ! general routine to calculate n neutrino masses and
+ ! their mixing matrices using several times the seesaw
+ ! formula
+ ! written by Werner Porod, 03.04.2019
+ !---------------------------------------------------
+ Implicit None
+  Complex(dp), Intent(in) :: mat(:,:)   ! n times n neutrino mass matrix
+  Complex(dp), Intent(out) :: UFv(:,:)  ! neutrino mixing matrix
+  Integer, Intent(inout) :: kont        ! control variable for error system
+  Real(dp), Intent(out) :: mFv(:)       ! neutrino masses
+
+  !-----------------------------------------
+  ! local variables 
+  !-----------------------------------------
+  Integer :: len, n_l, n_h, i_c, len1, len2, i1, len3
+  Integer, Allocatable, Dimension(:,:) :: Isort0, Isort1, Isort2, Isort3
+  Real(dp) :: test(2)
+  Complex(dp) :: phaseM
+  !-----------------------------------------
+  ! allocatable variables for the real case
+  !-----------------------------------------
+  Real(dp), Allocatable, Dimension(:,:) :: UR, matR0, matR1, XiR1, XiR3 &
+   & , ULR1, UHR1, matR2, matLR, XiR2, ULR2, UHR2, matR3, ULR3, UHR3
+  Real(dp), Allocatable, Dimension(:) :: mFL
+  !-----------------------------------------
+  ! allocatable variables for the complex case
+  !-----------------------------------------
+  Complex(dp), Allocatable, Dimension(:,:) :: UC, matC1, XiC1, XiC3  &
+   & , ULC1, UHC1, matC2, matLC, XiC2, ULC2, UHC2, matC3, ULC3, UHC3 &
+   & , mat2, matC4, XiC4, UHC4, ULC4
+  Real(dp), Allocatable, Dimension(:) :: mF2
+
+  Iname = Iname + 1
+  NameOfUnit(Iname) = "Seesaw"
+
+  len = Size(mFv)
+  !-----------------------------------
+  ! consistency check
+  !-----------------------------------
+  kont = 0
+  If (   (len.Ne.Size(mat,dim=1)).Or.(len.Ne.Size(mat,dim=2)) &
+   & .Or.(len.Ne.Size(UFv,dim=1)).Or.(len.Ne.Size(UFv,dim=2)) ) Then
+   kont = -2345
+   Write(ErrCan,*) "Problem in routine Seesaw:"
+   Write(ErrCan,*) " size of mass matrix",Size(mat,dim=1),Size(mat,dim=2)
+   Write(ErrCan,*) " size of MFv        ",len
+   Write(ErrCan,*) " size of UFv        ",Size(UFv,dim=1),Size(UFv,dim=2)
+   Return
+  End If
+  !-------------------------------------------------
+  ! check if matrix is real or complex
+  !-------------------------------------------------
+  If (Maxval(Abs(Aimag(mat))).Eq.0._dp) Then ! real mass matrix
+
+   Allocate( UR(len,len), matR0(len,len), matR1(len,len) )
+   Allocate( Isort0(len, len) )
+   matR0 = Real(mat,dp)
+
+   Call EigenSystem(matR0, mFv, UR, kont, test)
+   !--------------------------------------------------------------------
+   ! some eigenvalues could be negative, need to resort them
+   ! according to their modulus and also the mixing matrix;
+   ! afterwards, check if there are numerical zeros in the eigenvalues
+   !--------------------------------------------------------------------
+   Call SortMassesAndMixings(mFv,UR)
+   Call CheckHierarchy(Abs(mFv), matR0, UR, matR1, n_l, Isort0)
+
+   Deallocate(matR0)
+
+   i_c = 0
+   !-------------------------------------------------
+   ! now start the iterative procedure to calculate
+   ! need first to identify the substructes
+   !-------------------------------------------------
+   If (n_l.Gt.0) Then 
+    n_h = len - n_l ! number of heavy states
+    i_c = 1 ! counts how many times one needs the seesaw
+
+    Allocate( XiR1(n_l,n_H), ULR1(n_l,n_l))
+    Allocate(UHR1(n_h,n_h), matR2(n_l,n_l), matLR(n_l,n_l) )
+    Allocate(mFL(n_l))
+    Allocate(Isort1(n_l,n_l))
+   !---------------------------------------------------
+   ! calculate the masses of the heavy neutrinos
+   ! and initialise the off-diagonal structure
+   ! create mass matrix for ,,light'' states and diagonalize    
+   !---------------------------------------------------
+    Call BuiltSeesawR(n_l, n_h, matR1, mFv, XiR1, matLR, UHR1, kont)
+
+    Call EigenSystem(matLR, mFL, ULR1, kont, test)
+    Call SortMassesAndMixings(mFL, ULR1)
+    len1 = n_l 
+    If (n_l.Gt.3) Then
+     Call CheckHierarchy(Abs(mFL), matLR, ULR1, matR2, n_l, Isort1)
+    Else
+     mFv(1:n_l) = mFL
+     n_l = 0
+    End If
+    Deallocate(matLR, mFL, matR1)
+   End If ! (n_l.eq.0)
+
+   !-------------------------------------------------
+   ! there might still be an additional step required
+   !-------------------------------------------------
+   If (n_l.Gt.0) Then
+    n_h = len1 - n_l ! number of heavy states
+    i_c = 2 ! counts how many times one needs the seesaw
+
+    Allocate(XiR2(n_l,n_H), ULR2(n_l,n_l), matR3(n_l,n_l) )
+    Allocate(UHR2(n_h,n_h), matLR(n_l,n_l))
+    Allocate(mFL(n_l))
+    Allocate(Isort2(n_l,n_l))
+   !---------------------------------------------------
+   ! calculate the masses of the heavy neutrinos
+   ! and initialise the off-diagonal structure
+   ! create mass matrix for ,,light'' states and diagonalize    
+   !---------------------------------------------------
+    Call BuiltSeesawR(n_l, n_h, matR2, mFv, XiR2, matLR, UHR2, kont)
+
+    Call EigenSystem(matLR, mFL, ULR2, kont, test)
+    Call SortMassesAndMixings(mFL, ULR2)
+    len2 = n_l 
+    If (n_l.Gt.3) Then
+     Call CheckHierarchy(Abs(mFL), matLR, ULR2, matR3, n_l, Isort2)
+    Else
+     mFv(1:n_l) = mFL
+     n_l = 0
+    End If
+    Deallocate(matLR, mFL, matR2)
+   End If ! (n_l.eq.0)
+
+   !-------------------------------------------------
+   ! there might still be one more step required
+   !-------------------------------------------------
+   If (n_l.Gt.0) Then
+    n_h = len2 - n_l ! number of heavy states
+    i_c = 3 ! counts how many times one needs the seesaw
+
+    Allocate(XiR3(n_l,n_H), ULR3(n_l,n_l), matR3(n_l,n_l) )
+    Allocate(UHR3(n_h,n_h), matLR(n_l,n_l) )
+    Allocate(mFL(n_l))
+   !---------------------------------------------------
+   ! calculate the masses of the heavy neutrinos
+   ! and initialise the off-diagonal structure
+   ! create mass matrix for ,,light'' states and diagonalize    
+   !---------------------------------------------------
+    Call BuiltSeesawR(n_l, n_h, matR3, mFv, XiR3, matLR, UHR3, kont)
+
+    Call EigenSystem(matLR, mFL, ULR3, kont, test)
+    Call SortMassesAndMixings(mFL, ULR3)
+    mFv(1:n_l) = mFL
+
+    Deallocate(matLR, mFL,matR3)
+   End If ! (n_l.eq.0)
+
+   !----------------------------------------------------------
+   ! building up the mixing matrix, starting from the lighter
+   ! to the heavier states
+   !----------------------------------------------------------
+   If (i_c.Eq.3) Then
+    Call BuiltMixingMatrixR(ULR3, UHR3, XiR3, Isort2, ULR2)
+    Deallocate(ULR3,UHR3,XiR3,Isort2)
+   End If
+
+   If (i_c.Ge.2) Then
+    Call BuiltMixingMatrixR(ULR2, UHR2, XiR2, Isort1, ULR1)
+    Deallocate(ULR2,UHR2,XiR2,Isort1)
+   End If
+
+
+   If (i_c.Ge.1) Then
+    Call BuiltMixingMatrixR(ULR1, UHR1, XiR1, Isort0, UR)
+    Deallocate(ULR1,UHR1,XiR1,Isort0)
+   End If
+
+   UFv = UR
+   Deallocate(UR)
+
+  Else ! complex mass matrix
+
+   Allocate( mat2(len,len), mF2(len), matC1(len,len) )
+   Allocate( UC(len,len) )
+   Allocate( Isort0(len,len) )
+
+   mat2 = Matmul(Transpose(Conjg(mat)), mat )
+
+   Call TakagiDiagonalisation(mat, mF2, UC, kont)
+
+   Call CheckHierarchyC(mF2, mat, UC, matC1, n_l, Isort0)
+
+   !-----------------------------------------------------------
+   ! check if there is a hierachy at all, it not, we are done
+   ! only a phase redefinition is needed now
+   !-----------------------------------------------------------
+   If (n_l.eq.0) then
+    mat2 = Matmul(Matmul(Conjg(UC),mat),Transpose(Conjg(UC)) )
+    Do i1=1,len
+     mFv(i1) = Abs(mat2(i1,i1))
+     If (mFv(i1).Ne.0._dp) Then
+      phaseM =   Sqrt( mat2(i1,i1)   / mFv(i1) )
+     Else
+      phaseM = 1._dp
+     End If
+     UC(i1,:) = phaseM * UC(i1,:)
+    End Do
+
+    Ufv = UC
+    Deallocate(mF2, mat2, matC1, UC, Isort0)
+    Iname = Iname - 1
+    return
+   End if
+
+   Deallocate(mF2)
+
+   i_c = 0
+   !-------------------------------------------------
+   ! now start the iterative procedure to calculate
+   ! need first to identify the substructes
+   !-------------------------------------------------
+   If (n_l.Gt.0) Then 
+    n_h = len - n_l ! number of heavy states
+    i_c = 1 ! counts how many times one needs the seesaw
+
+    Allocate(XiC1(n_l,n_H), ULC1(n_l,n_l))
+    Allocate(UHC1(n_h,n_h), matC2(n_l,n_l), matLC(n_l,n_l) )
+    Allocate(mFL(n_l))
+    Allocate(Isort1(n_l,n_l))
+   !---------------------------------------------------
+   ! calculate the masses of the heavy neutrinos
+   ! and initialise the off-diagonal structure
+   ! create mass matrix for ,,light'' states and diagonalize    
+   !---------------------------------------------------
+    Call BuiltSeesawC2(n_l, n_h, matC1, mFv, XiC1, matLC, UHC1, kont)
+
+    Call TakagiDiagonalisation(matLC, mFL, ULC1, kont)
+    len1 = n_l 
+    If (n_l.Gt.3) Then
+     Call CheckHierarchyC(Abs(mFL), matLC, ULC1, matC2, n_l, Isort1)
+    Else
+     mFv(1:n_l) = mFL
+     n_l = 0
+    End If
+    Deallocate(matLC, mFL, matC1)
+   End If ! (n_l.eq.0)
+   Deallocate(mat2)
+   !-------------------------------------------------
+   ! a potential 2nd step
+   !-------------------------------------------------
+   If (n_l.Gt.0) Then 
+    n_h = len1 - n_l ! number of heavy states
+    i_c = 2 ! counts how many times one needs the seesaw
+
+    Allocate(mat2(n_l,n_l), XiC2(n_l,n_H), ULC2(n_l,n_l))
+    Allocate(UHC2(n_h,n_h), matC3(n_l,n_l), matLC(n_l,n_l) )
+    Allocate(mFL(n_l))
+    Allocate(Isort2(n_l,n_l))
+   !---------------------------------------------------
+   ! calculate the masses of the heavy neutrinos
+   ! and initialise the off-diagonal structure
+   ! create mass matrix for ,,light'' states and diagonalize    
+   !---------------------------------------------------
+    Call BuiltSeesawC2(n_l, n_h, matC2, mFv, XiC2, matLC, UHC2, kont)
+
+    Call TakagiDiagonalisation(matLC, mFL, ULC2, kont)
+
+    len2 = n_l 
+    If (n_l.Gt.3) Then
+     Call CheckHierarchyC(Abs(mFL), matLC, ULC2, matC3, n_l, Isort2)
+    Else
+     mFv(1:n_l) = mFL
+     n_l = 0
+    End If
+    Deallocate(matLC, mFL, mat2, matC2)
+   End If ! (n_l.eq.0)
+   !-------------------------------------------------
+   !  a potential 3rd step
+   !-------------------------------------------------
+   If (n_l.Gt.0) Then 
+    n_h = len2 - n_l ! number of heavy states
+    i_c = 3 ! counts how many times one needs the seesaw
+
+    Allocate(mat2(n_l,n_l), XiC3(n_l,n_H), ULC3(n_l,n_l))
+    Allocate(UHC3(n_h,n_h), matC4(n_l,n_l), matLC(n_l,n_l) )
+    Allocate(mFL(n_l))
+    Allocate(Isort3(n_l,n_l))
+   !---------------------------------------------------
+   ! calculate the masses of the heavy neutrinos
+   ! and initialise the off-diagonal structure
+   ! create mass matrix for ,,light'' states and diagonalize    
+   !---------------------------------------------------
+    Call BuiltSeesawC2(n_l, n_h, matC3, mFv, XiC3, matLC, UHC3, kont)
+
+    Call TakagiDiagonalisation(matLC, mFL, ULC3, kont)
+
+    len3 = n_l 
+    If (n_l.Gt.3) Then
+     Call CheckHierarchyC(Abs(mFL), matLC, ULC3, matC4, n_l, Isort3)
+    Else
+     mFv(1:n_l) = mFL
+     n_l = 0
+    End If
+    Deallocate(matLC, mFL, mat2, matC3)
+   End If ! (n_l.eq.0)
+   !-------------------------------------------------
+   !  a potential 4th step and last step
+   !-------------------------------------------------
+   If (n_l.Gt.0) Then 
+    n_h = len3 - n_l ! number of heavy states
+    i_c = 4 ! counts how many times one needs the seesaw
+
+    Allocate(mat2(n_l,n_l), XiC4(n_l,n_H), ULC4(n_l,n_l))
+    Allocate(UHC4(n_h,n_h), matLC(n_l,n_l) )
+    Allocate(mFL(n_l))
+   !---------------------------------------------------
+   ! calculate the masses of the heavy neutrinos
+   ! and initialise the off-diagonal structure
+   ! create mass matrix for ,,light'' states and diagonalize    
+   !---------------------------------------------------
+    Call BuiltSeesawC2(n_l, n_h, matC4, mFv, XiC4, matLC, UHC4, kont)
+
+    Call TakagiDiagonalisation(matLC, mFL, ULC4, kont)
+
+    mFv(1:n_l) = mFL
+    n_l = 0
+
+    Deallocate(matLC, mFL, mat2, matC4)
+   End If ! (n_l.eq.0)
+
+   !----------------------------------------------------------
+   ! building up the mixing matrix, starting from the lighter
+   ! to the heavier states
+   !----------------------------------------------------------
+   If (i_c.Ge.4) Then
+    Call BuiltMixingMatrixC(ULC4, UHC4, XiC4, Isort3, ULC3)
+    Deallocate(ULC4,UHC4,XiC4,Isort3)
+   End If
+
+   If (i_c.Ge.3) Then
+    Call BuiltMixingMatrixC(ULC3, UHC3, XiC3, Isort2, ULC2)
+    Deallocate(ULC3,UHC3,XiC3,Isort2)
+   End If
+
+   If (i_c.Ge.2) Then
+    Call BuiltMixingMatrixC(ULC2, UHC2, XiC2, Isort1, ULC1)
+    Deallocate(ULC2,UHC2,XiC2,Isort1)
+   End If
+
+
+   If (i_c.Ge.1) Then
+    Call BuiltMixingMatrixC(ULC1, UHC1, XiC1, Isort0, UC)
+    Deallocate(ULC1,UHC1,XiC1,Isort0)
+   End If
+
+   Allocate(mat2(len,len), mFL(len))
+
+   mat2 = Matmul(Matmul(Conjg(UC),mat),Transpose(Conjg(UC)) )
+   Do i1=1,len
+    mFL(i1) = Abs(mat2(i1,i1))
+    If (mFL(i1).Ne.0._dp) Then
+     phaseM =   Sqrt( mat2(i1,i1)   / mFL(i1) )
+    Else
+     phaseM = 1._dp
+    End If
+    UC(i1,:) = phaseM * UC(i1,:)
+   End Do
+
+   UFv = UC
+
+   Deallocate(mat2, mFL, UC)
+
+  End If ! check if mass matrix is real or complex
+
+  Iname = Iname - 1
+
+ End Subroutine Seesaw
+
+
+ Subroutine BuiltSeesawC2(n_l, n_h, mat, mF, Xi, matL, UH, kont)
+ Implicit None
+  Integer, Intent(in) :: n_l, n_h
+  Complex(dp), Intent(in) :: mat(:,:)
+  Integer, Intent(inout) :: kont
+  Real(dp), Intent(inout) :: mF(:)
+  Complex(dp), Intent(out) :: Xi(:,:), UH(:,:), matL(:,:)
+
+  Integer :: len1
+  Complex(dp), Allocatable, Dimension(:,:) :: mD, mDT, mH, mHinv
+  Real(dp), Allocatable :: mFH(:)
+
+  len1 = n_h+n_l
+
+  Allocate(mD(n_l,n_h), mDT(n_h,n_l), mH(n_h,n_h), mHinv(n_h,n_h))
+  Allocate( mFH(n_h) )
+
+  mD = mat(1:n_l,(n_l+1):len1 )
+  mDT = Transpose(mD)
+  mH = mat((n_l+1):len1 , (n_l+1):len1 )
+
+  Call TakagiDiagonalisation(mH, mFH, UH, kont)
+
+  Call InvMat(mH, n_h, mHinv,kont)
+
+  mF(n_l+1:len1) = mFH
+  !----------------------------------------------------------
+  ! create mass matrix for ,,light'' states and diagonalize    
+  !----------------------------------------------------------
+  Xi = Matmul(mD,mHinv)
+  matL = mat(1:n_l,1:n_l) - Matmul(Xi,mDT)
+
+  Deallocate(mD, mDt, mH, mHinv, mFH)
+
+ End Subroutine BuiltSeesawC2
+
+
+ Subroutine CheckHierarchy(mI, mat_i, U_i, mat_o, n_l, Isort)
+ !------------------------------------------------------------------
+ ! checks if some of the given values in mI are numerical zeros and
+ ! reorders the mass matrix accordingly
+ !------------------------------------------------------------------
+  Implicit None
+  Real(dp), Intent(in) :: mI(:), mat_i(:,:), U_i(:,:)
+  Integer, Intent(out) :: n_l, Isort(:,:)
+  Real(dp), Intent(out) :: mat_o(:,:)
+
+  Integer :: len, k1, k2
+  Real(dp) :: Mmax, Umax
+  Real(dp), Allocatable :: U_o(:,:) 
+  Real(dp), Parameter :: MinPrec = 1.e6_dp * Epsilon(1._dp)
+ 
+  Mmax = Maxval(mI)
+  len = Size( mI )
+
+  mat_o = 0._dp
+  Allocate(U_o(len,len))
+  U_o = U_i
+  n_l = 0 ! number of numerical zeros
+  ISort = 0
+  Do k1=1,len
+   Umax = Maxval(Abs(U_o(k1,:)))
+   If ((mI(k1)/Mmax).Lt.MinPrec) n_l = n_l + 1
+   position: Do k2=1,len
+    If (Umax.Eq.Abs(U_o(k1,k2))) Then
+     Isort(k2,k1) = 1
+     U_o(:,k2) = 0._dp
+     Exit position
+    End If
+   End Do position
+ 
+  End Do
+
+  mat_o = Matmul(mat_i,Isort)
+  mat_o = Matmul(Transpose(Isort), mat_o)
+
+  Deallocate(U_o)
+
+ End Subroutine CheckHierarchy
+
+
+ Subroutine CheckHierarchyC(mI2, mat_i, U_i, mat_o, n_l, Isort)
+ !------------------------------------------------------------------
+ ! checks if some of the given values in mI2 are numerical zeros and
+ ! reorders the mass matrix accordingly
+ !------------------------------------------------------------------
+  Implicit None
+  Real(dp), Intent(in) :: mI2(:)
+  Complex(dp), Intent(in) ::  mat_i(:,:), U_i(:,:)
+  Integer, Intent(out) :: n_l, Isort(:,:)
+  Complex(dp), Intent(out) :: mat_o(:,:)
+
+  Integer :: len, k1, k2
+  Real(dp) :: Mmax, Umax
+  Complex(dp), Allocatable :: U_o(:,:)
+  Real(dp), Parameter :: MinPrec = 1.e6_dp * Epsilon(1._dp)
+ 
+  Mmax = Maxval(mI2)
+  len = Size( mI2 )
+  Allocate(  U_o(len,len) ) 
+ 
+  mat_o = 0._dp
+  U_o = U_i
+  n_l = 0 ! number of numerical zeros
+  ISort = 0
+  Do k1=1,len
+   Umax = Maxval(Abs(U_o(k1,:)))
+   If ((mI2(k1)/Mmax).Lt.MinPrec) n_l = n_l + 1
+   position: Do k2=1,len
+    If (Umax.Eq.Abs(U_o(k1,k2))) Then
+     Isort(k2,k1) = 1
+     U_o(:,k2) = 0._dp
+     Exit position
+    End If
+   End Do position
+ 
+  End Do
+
+  mat_o = Matmul(mat_i,Isort)
+  mat_o = Matmul(Transpose(Isort), mat_o)
+
+  Deallocate(  U_o ) 
+
+ End Subroutine CheckHierarchyC
+
+ Subroutine SortMassesAndMixings(mF, U)
+ !----------------------------------------------------------
+ ! In case of real fermion masses, it can happen that same
+ ! eigenvalues are negative implying a wrong ordering. This
+ ! is sorted out by this routine.
+ ! Written by W.P., 18.03.2019
+ !----------------------------------------------------------
+ Implicit None
+  Real(dp), Intent(inout) :: mF(:), U(:,:)
+
+  Integer :: len, k1, k2
+  Real(dp) :: s1
+  Real(dp), Allocatable :: vec(:)
+
+  len = Size(mF)
+  Allocate( vec(len) )
+
+  Do k1=1,len-1
+   Do k2=k1+1,len
+    If (Abs(mF(k1)).Gt.Abs(mF(k2))) Then
+     s1 = mF(k1)
+     mF(k1) = mF(k2)
+     mF(k2) = s1
+     vec = U(k1,:)
+     U(k1,:) = U(k2,:)
+     U(k2,:) = vec
+    End If
+   End Do
+  End Do
+
+  Deallocate( vec )
+
+ End Subroutine SortMassesAndMixings
+
+ Subroutine TestComplexMatrix(io,mat,R,kont,l_w)
+ Implicit None
+
+  Integer, Intent(in) :: io
+  Complex(dp), Intent(in) :: mat(:,:), R(:,:)
+  Integer, Intent(inout) :: kont
+  Logical, Intent(in) :: l_w
+
+  Integer :: len,i1
+  Real(dp) :: maxR
+  Complex(dp), Allocatable :: t1(:,:), t2(:,:)
+
+  Iname = Iname + 1
+  NameOfUnit(Iname) = "TestComplexMatrix"
+
+  len = Size(mat, dim=1)
+  Allocate(t1(len,len), t2(len,len))
+
+  If (l_w) Write(Io,*) "Begin TestComplexMatrix"
+
+  If (l_w) Then
+   Write(Io,*) "R"
+   Do i1=1,len
+    Write(Io,*) Cmplx(R(i1,:))
+   End Do
+   Write(10,*) " "
+  End If
+
+  t1 = Matmul(mat,Transpose(Conjg(R)))
+  t2 = Matmul(Conjg(R),t1)
+  kont = 0
+  Call CheckDiagonalMatrix_NumericalZeros(Abs(t2),kont)
+  If (l_w) Then
+   Write(Io,*) "M_diag C",kont
+   Do i1=1,len
+    Write(Io,*) Cmplx(t2(i1,:))
+   End Do
+   Write(io,*) " "
+  End If
+
+  t1 = Matmul(R,Transpose(Conjg(R)))
+  maxR = Maxval(Abs(t1)) 
+  kont = 0
+  Call CheckDiagonalMatrix_NumericalZeros(Abs(t1),kont)
+  If (l_w) Then
+   Write(Io,*) "R R^dag",kont,maxR
+   Do i1=1,len
+    Write(Io,*) Cmplx(t1(i1,:))
+   End Do
+   Write(Io,*) " "
+  End If
+
+  t1 = Matmul(Transpose(Conjg(R)),R)
+  maxR = Maxval(Abs(t1)) 
+  kont = 0
+  Call CheckDiagonalMatrix_NumericalZeros(Abs(t1),kont)
+  If (l_w) Then
+   Write(Io,*) "R^dag R",kont,maxR
+   Do i1=1,len
+    Write(Io,*) Cmplx(t1(i1,:))
+   End Do
+   Write(Io,*) " "
+  End If
+
+  Deallocate(t1, t2)
+  If (l_w) Write(Io,*) "End TestComplexMatrix"
+  Iname = Iname - 1
+
+ End Subroutine TestComplexMatrix
+
+
+ Subroutine TestRealMatrix(io,mat,R,kont,l_w)
+ Implicit None
+
+  Integer, Intent(in) :: io
+  Real(dp), Intent(in) :: mat(:,:), R(:,:)
+  Integer, Intent(inout) :: kont
+  Logical, Intent(in) :: l_w
+
+  Integer :: len,i1
+  Real(dp) ::  maxR
+  Real(dp), Allocatable :: t1(:,:), t2(:,:)
+
+  Iname = Iname + 1
+  NameOfUnit(Iname) = "TestRealMatrix"
+
+  len = Size(mat, dim=1)
+  Allocate(t1(len,len), t2(len,len))
+
+  If (l_w) Write(Io,*) "Begin TestRealMatrix"
+
+  If (l_w) Then
+   Write(Io,*) "R"
+   Do i1=1,len
+    Write(Io,*) Real(Real(R(i1,:)))
+   End Do
+   Write(10,*) " "
+  End If
+
+  t1 = Matmul(mat,Transpose(R))
+  t2 = Matmul(R,t1)
+  kont = 0
+  Call CheckDiagonalMatrix_NumericalZeros(t2,kont)
+  If (l_w) Then
+   Write(Io,*) "M_diag R",kont
+   Do i1=1,len
+    Write(Io,*) Real(t2(i1,:))
+   End Do
+   Write(io,*) " "
+  End If
+
+  t1 = Matmul(R,Transpose(R))
+  maxR = Maxval(Abs(t1)) 
+  kont = 0
+  Call CheckDiagonalMatrix_NumericalZeros(t1,kont)
+  If (l_w) Then
+   Write(Io,*) "R R^T",kont,maxR
+   Do i1=1,len
+    Write(Io,*) Real(t1(i1,:))
+   End Do
+   Write(Io,*) " "
+  End If
+
+  t1 = Matmul(Transpose(R),R)
+  maxR = Maxval(Abs(t1)) 
+  kont = 0
+  Call CheckDiagonalMatrix_NumericalZeros(t1,kont)
+  If (l_w) Then
+   Write(Io,*) "R^T R",kont,maxR
+   Do i1=1,len
+    Write(Io,*) Real(t1(i1,:))
+   End Do
+   Write(Io,*) " "
+  End If
+
+  Deallocate(t1, t2)
+  If (l_w) Write(Io,*) "End TestRealMatrix"
+  Iname = Iname - 1
+
+ End Subroutine TestRealMatrix
+
+ Subroutine CheckDiagonalMatrix_NumericalZeros(mat, kont)
+ Implicit None
+  Real(dp), Intent(in) :: mat(:,:)
+  Integer, Intent(inout) :: kont
+
+  Integer :: len, i1, i2
+  Real(dp) :: val, max_val, eps
+
+  eps = 10._dp *Epsilon(1._dp)
+
+  len = Size(mat, dim=1)
+
+  max_val = Maxval(Abs(mat))
+
+  Do i1=1,len
+   Do i2=1,len
+    If (i1.Ne.i2) Then
+     val = Abs(mat(i1,i2))
+     If ( (val/max_val) .Gt. eps ) kont = 12345
+    End If    
+   End Do
+  End Do
+
+ End Subroutine CheckDiagonalMatrix_NumericalZeros
+
+ Subroutine BuiltMixingMatrixR(UL, UH, Xi, Isort, UR)
+ Implicit None
+  Integer, Intent(in) :: Isort(:,:)
+  Real(dp), Intent(in) :: UL(:,:), UH(:,:), Xi(:,:)
+  Real(dp), Intent(out) :: UR(:,:)
+
+  Integer :: len, n_l, n_h, i1
+  Real(dp), Allocatable :: URa(:,:), XiT(:,:)
+
+  len = Size(UR, dim=1)
+  n_l = Size(UL, dim=1)
+  n_h = len - n_l
+  Allocate( URa(len,len), XiT(n_h,n_l) )
+  XiT = Transpose(Xi)
+  
+  UR(1:len,1:len) = 0._dp
+  Forall(i1=1:len) UR(i1,i1) = 1._dp
+  UR(1:n_l,1:n_L) = UR(1:n_l,1:n_L) - 0.5_dp * Matmul(Xi, XiT)
+  UR(1:n_l,n_l+1:len) = - Xi
+  UR(n_l+1:len,1:n_l) = XiT
+  UR(n_l+1:len,n_l+1:len) = UR(n_l+1:len,n_l+1:len) &
+                          & - 0.5_dp * Matmul(XiT, Xi)
+    
+  UR = Matmul(UR, Transpose(Isort))
+  URa = 0._dp
+  URa(1:n_l,1:n_l) = UL
+  URa(n_l+1:len,n_l+1:len) = UH
+  UR = Matmul(URa, UR)
+
+  Deallocate(URa, XiT)
+
+ End Subroutine BuiltMixingMatrixR
+
+ Subroutine BuiltSeesawC(n_l, n_h, mat, mF, Xi, matL, UH, kont)
+ Implicit None
+  Integer, Intent(in) :: n_l, n_h
+  Complex(dp), Intent(in) :: mat(:,:)
+  Integer, Intent(inout) :: kont
+  Real(dp), Intent(inout) :: mF(:)
+  Complex(dp), Intent(out) :: Xi(:,:), UH(:,:), matL(:,:)
+
+  Integer :: len, i1
+  Real(dp) :: test(2)
+  Complex(dp) :: phaseM
+  Complex(dp), Allocatable, Dimension(:,:) :: mD, mDT, mH, mHinv, mH2
+  Real(dp), Allocatable :: mFH(:)
+
+  len = n_h+n_l
+
+  Allocate(mD(n_l,n_h), mDT(n_h,n_l), mH(n_h,n_h), mHinv(n_h,n_h))
+  Allocate( mFH(n_h), mH2(n_h,n_h) )
+
+  mD = mat(1:n_l,(n_l+1):len )
+  mDT = Transpose(mD)
+  mH = mat((n_l+1):len , (n_l+1):len )
+  mH2 = Matmul(Transpose(Conjg(mH)), mH )
+  !------------------------------------------------------
+  ! diagonalisation of mass matrix for heavy neutrinos
+  !------------------------------------------------------
+  Call EigenSystem(mH2, mFH, UH, kont, test)
+  
+  mH2 = Matmul(Matmul(Conjg(UH),mH),Transpose(Conjg(UH)))
+  Do i1=1,n_h
+   mFH(i1) = Abs(mH2(i1,i1))
+   If (mFH(i1).Ne.0._dp) Then
+    phaseM =   Sqrt( mH2(i1,i1)   / mFH(i1) )
+    UH(i1,:) = phaseM * UH(i1,:)
+   End If
+  End Do
+
+  Call InvMat(mH, n_h, mHinv,kont)
+
+  mF(n_l+1:len) = mFH
+  !----------------------------------------------------------
+  ! create mass matrix for ,,light'' states and diagonalize    
+  !----------------------------------------------------------
+  Xi = Matmul(mD,mHinv)
+  matL = mat(1:n_l,1:n_l) - Matmul(Xi,mDT)
+
+  Deallocate(mD, mDt, mH, mHinv, mFH, mH2)
+
+ End Subroutine BuiltSeesawC
+
+
+ Subroutine BuiltMixingMatrixC(UL, UH, Xi, Isort, UC)
+ Implicit None
+  Integer, Intent(in) :: Isort(:,:)
+  Complex(dp), Intent(in) :: UL(:,:), UH(:,:), Xi(:,:)
+  Complex(dp), Intent(out) :: UC(:,:)
+
+  Integer :: len, n_l, n_h, i1
+  Complex(dp), Allocatable :: UCa(:,:), XiA(:,:) !, XiAXi(:,:), XiXiA(:,:)
+
+  len = Size(UC, dim=1)
+  n_l = Size(UL, dim=1)
+  n_h = len - n_l
+  Allocate( UCa(len,len), XiA(n_h,n_l) )
+  XiA = Conjg(Transpose(Xi))
+  
+  UC(1:len,1:len) = 0._dp
+  Forall(i1=1:len) UC(i1,i1) = 1._dp
+  UC(1:n_l,1:n_L) = UC(1:n_l,1:n_L) - 0.5_dp * Matmul(Xi, XiA)
+  UC(1:n_l,n_l+1:len) = - Xi
+  UC(n_l+1:len,1:n_l) = XiA
+  UC(n_l+1:len,n_l+1:len) = UC(n_l+1:len,n_l+1:len) &
+                          & - 0.5_dp * Matmul(XiA, Xi)
+    
+  UC = Matmul(UC, Transpose(Isort))
+  UCa = 0._dp
+  UCa(1:n_l,1:n_l) = Conjg(UL)
+  UCa(n_l+1:len,n_l+1:len) = Conjg(UH)
+  UC = Matmul(UCa, UC)
+
+  UC = Conjg(UC)
+
+  Deallocate(UCa, XiA)
+
+ End Subroutine BuiltMixingMatrixC
+
+ Subroutine BuiltSeesawR(n_l, n_h, mat, mF, Xi, matL, UHR, kont)
+ Implicit None
+  Integer, Intent(in) :: n_l, n_h
+  Real(dp), Intent(in) :: mat(:,:)
+  Integer, Intent(inout) :: kont
+  Real(dp), Intent(inout) :: mF(:)
+  Real(dp), Intent(out) :: Xi(:,:), UHR(:,:), matL(:,:)
+
+  Integer :: len
+  Real(dp) :: test(2)
+  Real(dp), Allocatable, Dimension(:,:) :: mD, mDT, mH, mHinv
+  Real(dp), Allocatable :: mFH(:)
+
+  len = n_h+n_l
+
+  Allocate(mD(n_l,n_h), mDT(n_h,n_l), mH(n_h,n_h), mHinv(n_h,n_h))
+  Allocate( mFH(n_h) )
+
+  mD = mat(1:n_l,(n_l+1):len )
+  mDT = Transpose(mD)
+  mH = mat((n_l+1):len , (n_l+1):len )
+  !------------------------------------------------------
+  ! diagonalisation of mass matrix for heavy neutrinos
+  !------------------------------------------------------
+  Call EigenSystem(mH, mFH, UHR, kont, test)
+  Call SortMassesAndMixings(mFH, UHR)
+  Call InvMat(mH, n_h, mHinv,kont)
+  mF(n_l+1:len) = mFH
+  !----------------------------------------------------------
+  ! create mass matrix for ,,light'' states and diagonalize    
+  !----------------------------------------------------------
+  Xi = Matmul(mD,mHinv)
+  matL = mat(1:n_l,1:n_l) - Matmul(Xi,mDT)
+
+  Deallocate(mD, mDt, mH, mHinv, mFH)
+
+ End Subroutine BuiltSeesawR
+
+
+ Subroutine TakagiDiagonalisation(mat_i, eig, U, kont)
+ !------------------------------------------------------
+ ! diagonalises a complex symmetric mass matrix using
+ ! the method developed by Takagi
+ ! 
+ !------------------------------------------------------
+ Implicit None
+  Complex(dp), Intent(in) :: mat_i(:,:)
+
+  Real(dp), Intent(out) :: eig(:)
+  Complex(dp), Intent(out) :: U(:,:)
+  Integer, Intent(inout) :: kont
+
+  Integer :: len1, i1, i2, i3, i4
+  Real(dp) :: resc, off, thresh, si2i3, si2i2, t, invc
+  Complex(dp) ::  f, x, y
+  Complex(dp), Allocatable :: mat(:,:), Vmat(:,:)
+  Logical :: l_check
+
+  Real(dp), Parameter :: my_eps = 2._dp**(-102)
+
+  Iname = Iname + 1
+  NameOfUnit(Iname) = "TakagiDiagonalisation"
+  kont = 0
+  len1 = Size(mat_i, dim=1)
+  
+  If (len1.Gt.16) Then
+   Write(ErrCan,*) "potential problem in "//NameOfUnit(Iname)
+   Write(ErrCan,*) "size of input matrix potentially too large",len1
+   Write(ErrCan,*) "results might be inaccurate"
+   kont = -12
+  End If
+
+  Allocate(mat(len1,len1), Vmat(2,len1) )
+  mat = mat_i
+
+  Vmat(1,:) = ZeroC  
+  Forall (i1=1:len1) Vmat(2,i1) = mat(i1,i1)
+
+  U = zeroC 
+  Forall (i1=1:len1) U(i1,i1) = 1._dp
+
+  resc = 0.04_dp/len1**4
+  !-------------------------------------------------
+  ! bad convergence if still true at the end of
+  ! the following loop
+  !-------------------------------------------------
+  l_check = .True. 
+  
+  Do i1=1,50
+   !--------------------------------------
+   ! checking if sum |mat(i2,i3)|^2 < eps
+   !--------------------------------------
+   off = 0._dp
+   Do i2 = 2,len1
+    Do i3 = 1,i2-1
+     off = off + Abs(mat(i3,i2))**2
+    End Do
+   End Do
+
+   If (off.Le.my_eps) Then
+    l_check = .False.
+    Exit
+   End If
+
+   thresh = 0._dp
+   If (i1.Lt.4) thresh = off*resc
+
+   Do i2=2,len1
+    Do i3=1,i2-1
+     off = Abs(mat(i3,i2))**2
+     si2i3 = Abs(Vmat(2,i3))**2
+     si2i2 = Abs(Vmat(2,i2))**2
+
+     If ((i1.Gt.4).And.(off.Lt.my_eps*(si2i3 + si2i2))) Then
+      mat(i3,i2) = 0
+
+     Else If (off.Gt.thresh) Then
+      t = 0.5_dp*Abs(si2i3 - si2i2)
+      If (t.Gt.0._dp) Then
+       f = Sign(1._dp, si2i3 - si2i2)       &
+         & * ( Vmat(2,i2)*Conjg(mat(i3,i2)) &
+         &   + Conjg(Vmat(2,i3))*mat(i3,i2) )
+      Else
+       f = 1._dp
+       If (si2i3.Ne.0._dp) f = Sqrt(Vmat(2,i2)/Vmat(2,i3))
+      End If
+
+      t = t + Sqrt(t**2 + Abs(f)**2)
+      f = f/t
+
+      Vmat(1,i3) = Vmat(1,i3) + mat(i3,i2)*Conjg(f)
+      Vmat(2,i3) = mat(i3,i3) + Vmat(1,i3)
+      Vmat(1,i2) = Vmat(1,i2) - mat(i3,i2)*f
+      Vmat(2,i2) = mat(i2,i2) + Vmat(1,i2)
+
+      t = Abs(f)**2
+      invc = Sqrt(t + 1)
+      f = f/invc
+      t = t/(invc*(invc + 1))
+
+      Do i4=1,i3 - 1
+       x = mat(i4,i3)
+       y = mat(i4,i2)
+       mat(i4,i3) = x + (Conjg(f)*y - t*x)
+       mat(i4,i2) = y - (f*x + t*y)
+      End Do
+
+      Do i4= i3+1, i2-1
+       x = mat(i3,i4)
+       y = mat(i4,i2)
+       mat(i3,i4) = x + (Conjg(f)*y - t*x)
+       mat(i4,i2) = y - (f*x + t*y)
+      End Do
+
+      Do i4 = i2+1, len1
+       x = mat(i3,i4)
+       y = mat(i2,i4)
+       mat(i3,i4) = x + (Conjg(f)*y - t*x)
+       mat(i2,i4) = y - (f*x + t*y)
+      End Do
+
+      mat(i3,i2) = 0
+
+      Do i4 = 1,len1
+       x = U(i3,i4)
+       y = U(i2,i4)
+       U(i3,i4) = x + (f*y - t*x)
+       U(i2,i4) = y - (Conjg(f)*x + t*y)
+      End Do
+     End If
+
+    End Do ! i3
+   End Do ! i2
+
+   Do i2=1,len1
+    Vmat(1,i2) = 0
+    mat(i2,i2) = Vmat(2,i2)
+   End Do
+
+  End Do ! i1
+
+  If (l_check) Then
+   Write(ErrCan,*) "Bad convergence in "//NameOfUnit(Iname) 
+   kont = -123
+  End If
+
+  !----------------------------------------
+  ! diagonal elements >= 0
+  !----------------------------------------
+  Do i1 = 1, len1
+   eig(i1) = Abs(mat(i1,i1))
+   If (eig(i1).Gt.0._dp) Then
+    f = Sqrt(mat(i1,i1)/eig(i1))
+    U(i1,:) = U(i1,:)*f
+   End If
+  End Do
+  !--------------------------------
+  !  sorting the eigenvalues
+  !--------------------------------
+  Do i1=1,len1-1
+   Do i2=i1+1,len1
+    If (eig(i1).Gt.eig(i2)) Then
+     x = eig(i1)
+     eig(i1) = eig(i2)
+     eig(i2) = x
+     Vmat(1,:) = U(i1,:)
+     U(i1,:) = U(i2,:)
+     U(i2,:) = Vmat(1,:)
+    End If
+   End Do
+  End Do
+
+  Iname = Iname - 1
+
+ End Subroutine TakagiDiagonalisation
 
 End Module Mathematics
 

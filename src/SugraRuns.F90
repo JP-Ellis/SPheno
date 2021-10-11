@@ -54,9 +54,9 @@ Logical, Save :: Off_GMSB=.False.
 Logical, Save :: Ynu_at_MR3 = .False.
 ! check if in the super CKM basis are given
 Logical, Save :: l_Au=.False., l_Ad=.False., l_Al=.False., l_MD = .False. &
-    & , l_MQ = .False., l_MU = .False., l_ME = .False. , l_ML = .False.
+    & , l_MQ = .False., l_MU = .False., l_ME = .False. , l_ML = .False. 
 ! quick and dirty way to implement model by Suchita Kulkarni
-Logical, Save :: Model_Suchita = .False.
+Logical, Save :: Model_Suchita = .False.      
 ! use 3-loop m_t corrections
 Logical, Save :: l_mt_3loop = .False.
 ! switch on SM decoupling
@@ -116,7 +116,7 @@ Contains
   Real(dp) :: mC2( Size(mC) ), mN2(Size(mN) ), D_mat(3,3)
   Real(dp) :: test, alphaMZ, alpha3, gSU2, rho, delta_rho, sinW2_DR, vev2    &
     & , mZ2_mZ, CosW2SinW2, gauge(3), delta, sinW2_old, delta_r     &
-    & , p2, gSU3, tanb, xt2, fac(2), SigQCD, delta_rw, sinW2, cosW2
+    & , p2, gSU3, tanb, xt2, fac(2), SigQCD, delta_rw, sinW2, cosW2 
   Real(dp), Dimension(3) :: mf_d_DR, mf_l_DR, mf_u_DR, mf_d2, mf_l2, mf_u2
   Complex(dp) :: dmZ2, dmW2, dmW2_0, yuk_tau, yuk_t, yuk_b, SigLep, Sigdown  &
     & , SigUp
@@ -185,6 +185,12 @@ Contains
    mf_d2 = mf_d2**2
    mf_u2 = mf_u2**2
   End If
+  !-------------------------------------------------------------------------------
+  ! arXiv:hep-ph/9606211 and arXiv:hep-ph/9212285 require the use of the onshell
+  ! top mass in the calculation of m_W
+  !-------------------------------------------------------------------------------
+  mf_u2(3) = mf_u(3)**2 
+
   !-----------
   ! alpha(mZ)
   !-----------
@@ -199,13 +205,13 @@ Contains
   !--------------------
    xt2 = 3._dp * (G_F * mf_u2(3) * oo8pi2 * oosqrt2)**2        &
       & * Abs(RS0(1,2))**2 * rho_2(Sqrt(mS02(1))/mf_U(3))     &
-      & * ((1._dp+tanb**2)/tanb**2)
+      & * ((1._dp+tanb**2)/tanb**2) 
    fac(1) = alphaMZ * alphaS_mZ * oo4pi                                    &
         & * (2.145_dp * mf_u2(3)/mZ2 + 0.575 * Log(mf_u(3)/mZ) - 0.224_dp  &
         &   - 0.144_dp * mZ2 / mf_u2(3)) / Pi
    fac(2) = alphamZ * alphaS_mZ * oo4pi                                    &
        & * (-2.145_dp * mf_u2(3)/mW2 + 1.262 * Log(mf_u(3)/mZ) - 2.24_dp  &
-       &   - 0.85_dp * mZ2 / mf_u2(3)) / Pi
+       &   - 0.85_dp * mZ2 / mf_u2(3)) / Pi 
 
   Do i1=1,100
    !------------------------------
@@ -223,7 +229,7 @@ Contains
    If (mZ2_mZ.Lt.0._dp) Then
     Iname = Iname - 1
     kont = -402
-    Call AddError(402)
+    Call AddError(402) 
     Return
    End If
    mZ2_run = mZ2_mZ
@@ -250,7 +256,7 @@ Contains
    If (mZ2_mZ.Lt.0._dp) Then
     Iname = Iname - 1
     kont = -402
-    Call AddError(402)
+    Call AddError(402) 
     Return
    End If
    mZ2_run = mZ2_mZ
@@ -274,7 +280,7 @@ Contains
          & , CKM, mN, mN2, N, mC, mC2, U, V, mZ2_mZ, mW2_run, dmW2_0)
 
    rho = (1._dp + Real(dmZ2,dp)/mZ2) / (1._dp + Real(dmW2,dp) / mW2)
-   delta_rho = 1._dp - 1._dp / rho
+   delta_rho = 1._dp - 1._dp / rho 
 
    CosW2SinW2 = (1._dp - sinW2_DR) * sinW2_DR
    Call delta_VB(gSU2, sinW2, sinW2_DR, rho, mC, mC2, U, V, mN, mN2, N &
@@ -297,7 +303,8 @@ Contains
    !-----------------------------------------------------------------
    If ((Abs(sinW2_DR-sinW2_old).Lt. 0.1_dp*delta0).And.(i1.Gt.1)) Exit
    sinW2_old = sinW2_DR
-   delta_rw = delta_rho*(1._dp-delta_r) + delta_r
+!   delta_rw = delta_rho*(1._dp-delta_r) + delta_r
+   delta_rw = (delta_rho+fac(2)/sinW2_DR+xt2)*(1._dp-delta_r) + delta_r
    If ((0.25_dp-alphamz*pi/(sqrt2*G_F*mz2*rho*(1._dp-delta_rw))).Lt.0._dp) Then
     If (Errorlevel.Ge.0) Then
      Write(Errcan,*) "Problem in subroutine "//NameofUnit(Iname)
@@ -322,15 +329,10 @@ Contains
    cosW2 = mW2 / mZ2
    sinW2 = 1._dp - cosW2
   End Do
+
   mSpm2(1) = mW2
-  !--------------------------------------------------------------------------
-  ! recalcuating m_W and sin^2_W, the formula for m_W is base on Eq.25 of
-  ! G.Degrassi et al., NPB351, 49 (1991)
-  !--------------------------------------------------------------------------
-  delta_rw = delta_rho*(1._dp-delta_r) + delta_r
-  mW2 = mZ2 * rho * ( 0.5_dp &
-      &         +Sqrt(0.25_dp-alphamz*pi/(sqrt2*G_F*mz2*rho*(1._dp-delta_rw))))
   mW = Sqrt(mW2)
+
   cosW2 = mW2 / mZ2
   sinW2 = 1._dp - cosW2
   !---------------------------
@@ -384,7 +386,7 @@ Contains
    ! Yukawa couplings
    !--------------------------------------------------------------------
    Y_d = 0._dp
-   Y_u = 0._dp
+   Y_u = 0._dp 
    Y_l = 0._dp
    Do i1=1,3
     Y_u(i1,i1) = sqrt2 * mf_u_DR_SM(i1) / vevs_DR(2)
@@ -393,9 +395,9 @@ Contains
    End Do
    If (GenerationMixing) Then
     If (YukawaScheme.Eq.1) Then
-     Y_u = Matmul(Transpose(uU_L),Y_u)
+     Y_u = Matmul(Transpose(uU_L),Y_u) 
     Else
-     Y_d = Matmul(Transpose(uD_L),Y_d)
+     Y_d = Matmul(Transpose(uD_L),Y_d) 
     End If
    End If
    !--------------------------------------------
@@ -407,7 +409,7 @@ Contains
    uD_R_T = uD_R
    uL_L_T = uL_L
    uL_R_T = uL_R
-  Else
+  Else 
    !--------------------------------------------------------------------------
    ! take Yukawas from previous run
    !--------------------------------------------------------------------------
@@ -420,7 +422,7 @@ Contains
   End If ! i_run.eq.1
 
   !---------------------------------------------
-  ! shifting mixing matrices to superCKM basis
+  ! shifting mixing matrices to superCKM basis 
   !---------------------------------------------
   rot = 0._dp
   rot(1:3,1:3) = Conjg(uU_L_T)
@@ -593,7 +595,7 @@ Contains
       mf_l_DR(i1) = mf_l_DR_SM(i1) + Real(SigLep,dp)
      End If
      Y_l(i1,i1)  = sqrt2 * mf_l_DR(i1) / vevs_DR(1)
-
+    
     End Do
 
     If (    (      Abs((yuk_tau-y_l(3,3))/y_l(3,3)).Lt. 0.1_dp*delta0) &
@@ -675,7 +677,7 @@ Contains
        & - Pi * Sqrt(r) * (4._dp - 1.5_dp * r + 3._dp * r2/32._dp  &
        &                  + r3/256._dp)                            &
        & - Pi2 * (2._dp - 2._dp * r + 0.5_dp * r2)                 &
-       & - Log(r) * (3._dp * r - 0.5_dp * r2)
+       & - Log(r) * (3._dp * r - 0.5_dp * r2) 
   End  Function rho_2
 
   Subroutine Yukawas(mf, vev, uL, uR, SigS, SigL, SigR, Y, ReSum, kont)
@@ -750,15 +752,15 @@ Contains
  !-----------------------------------------------------------------------
  Implicit None
   Integer, Intent(in) :: i_run
-  Logical, Intent(in) :: GenerationMixing ! if generation mixing has to
+  Logical, Intent(in) :: GenerationMixing ! if generation mixing has to 
                                           ! be included
-  Logical, Intent(in) :: resum ! if the resummation of chirally enhanced
+  Logical, Intent(in) :: resum ! if the resummation of chirally enhanced 
                                ! correction should be done
   Real(dp), Intent(in) :: Q    ! scale where calculation should be done
   Real(dp), Intent(in) :: tanb ! tan(beta)
   Complex(dp), Intent(in) :: Mi(3) ! gaugino mass parameters
   Complex(dp), Dimension(3,3), Intent(in) :: T_l, T_u, T_d & ! trilinears
-    & , M2_E, M2_L, M2_D, M2_Q, M2_U                  ! soft masses squared
+    & , M2_E, M2_L, M2_D, M2_Q, M2_U                  ! soft masses squared 
   Complex(dp), Intent(in) :: mu  ! mu and the corresponding soft-parameter
   Real(dp), Intent(in) :: mA     ! mass of pseudoscalar boson
   Real(dp), Intent(in) :: delta0 ! relative precision which should be achived
@@ -766,7 +768,7 @@ Contains
   Real(dp), Intent(out) :: mZ2_run, mW2_run ! running vector boson masses
   Real(dp), Intent(out) :: g1(57)  ! vector containg gauge and Yukawa couplings
   Integer, Intent(inout) :: kont   ! for error message system
-
+                                          
 
   Real(dp) :: mSpm2(2), mP02(2), mC(2), mN(4), mSpm(2), mSup(6), mSdown(6) &
     & , mSlept(6), mSup2(6), mSdown2(6), mSlept2(6), mSneut2(3), mS02(2)   &
@@ -792,7 +794,7 @@ Contains
   Real(dp) :: D_mat(3,3), mf(3), mf2(3)
   Real(dp) :: alphaMZ, alpha3, rho, delta_rho    &
     & , mZ2_mZ, CosW2SinW2, gauge(3), delta, sinW2_old, delta_r     &
-    & , p2, gSU3, xt2, fac(2), SigQCD, delta_rw, sinW2, cosW2
+    & , p2, gSU3, xt2, fac(2), SigQCD, delta_rw, sinW2, cosW2 
   Complex(dp) :: dmZ2, dmW2, dmW2_0, yuk_tau, yuk_t, yuk_b, SigLep, Sigdown  &
     & , SigUp, M2Q_ckm(3,3), V0ckmAd(3,3), Tu_ckm(3,3), TestC(3,3),ephi
   Complex(dp), Dimension(3,3) :: SigS_u, sigR_u, SigL_u, SigS_d, SigR_d    &
@@ -894,7 +896,7 @@ Contains
       If (ErrorLevel.Eq.2) Call TerminateProgram
       kont = 0
     End If
-
+  
     If (kont.Ne.0) Then
      Write(ErrCan,*) 'Problems with the diagonalization of sneutrinos'
      Write(ErrCan,*) 'in routine ',NameOfUnit(Iname),'. kont = ',kont
@@ -925,7 +927,7 @@ Contains
    ! Sleptons
    !--------------
     Call SfermionMass(M2_L, M2_E, T_l, mu, vevSM, Y_l, T3_d, YL_l, YR_l &
-                    & , gSU2, gp, kont, mSlept, mSlept2, Rslept)
+                    & , gSU2, gp, kont, mSlept, mSlept2, Rslept) 
    If (kont.Ne.0) Then
     Iname = Iname - 1
     Return
@@ -934,7 +936,7 @@ Contains
    ! D-squarks
    !--------------
    Call SfermionMass(M2_Q, M2_D, T_d, mu, vevSM, Y_d, T3_d, YL_q, YR_d &
-                    & , gSU2, gp, kont, mSdown, mSdown2, Rsdown)
+                    & , gSU2, gp, kont, mSdown, mSdown2, Rsdown) 
    If (kont.Ne.0) Then
     Iname = Iname - 1
     Return
@@ -943,7 +945,7 @@ Contains
    ! U-squarks
    !--------------
    Call SfermionMass(M2Q_ckm, M2_U, Tu_ckm, mu, vevSM, Y_u, T3_u, YL_q, YR_u &
-                    & , gSU2, gp, kont, mSup, mSup2, Rsup)
+                    & , gSU2, gp, kont, mSup, mSup2, Rsup) 
    If (kont.Ne.0) Then
     Iname = Iname - 1
     Return
@@ -1041,8 +1043,8 @@ Contains
    mP02(1) = mZ2
    mP02(2) = mA**2
    RP0(1,1) = - cosb
-   RP0(1,2) = sinb
-   RP0(2,1) = sinb
+   RP0(1,2) = sinb 
+   RP0(2,1) = sinb 
    RP0(2,2) = cosb
   !---------------
   ! charged
@@ -1076,18 +1078,23 @@ Contains
   !-----------------
   ! sin(theta_W)^2
   !-----------------
+  !-------------------------------------------------------------------------------
+  ! arXiv:hep-ph/9606211 and arXiv:hep-ph/9212285 require the use of the onshell
+  ! top mass in the calculation of m_W
+  !-------------------------------------------------------------------------------
+  mf_u2(3) = mf_u(3)**2 
   !--------------------
   ! for 2-loop parts
   !--------------------
   xt2 = 3._dp * (G_F * mf_u2(3) * oo8pi2 * oosqrt2)**2        &
       & * Abs(RS0(1,2))**2 * rho_2(Sqrt(mS02(1))/mf_U(3))     &
-      & * ((1._dp+tanb**2)/tanb**2)
+      & * ((1._dp+tanb**2)/tanb**2) 
   fac(1) = alphaMZ * alphaS_mZ * oo4pi                                    &
         & * (2.145_dp * mf_u2(3)/mZ2 + 0.575 * Log(mf_u(3)/mZ) - 0.224_dp &
         &   - 0.144_dp * mZ2 / mf_u2(3)) / Pi
   fac(2) = alphamZ * alphaS_mZ * oo4pi                                    &
        & * (-2.145_dp * mf_u2(3)/mW2 + 1.262 * Log(mf_u(3)/mZ) - 2.24_dp  &
-       &   - 0.85_dp * mZ2 / mf_u2(3)) / Pi
+       &   - 0.85_dp * mZ2 / mf_u2(3)) / Pi 
 
   Call PiZZT1(mZ2, gSU2, sinW2_DR, vevSM, mZ2, mW2, mS02, RS0, mP02, RP0    &
     & , mSpm2, RSpm, mSneut2, RSneut, mSlept2, RSlept, mSup2, RSup, mSdown2 &
@@ -1097,7 +1104,7 @@ Contains
   If (mZ2_mZ.Lt.0._dp) Then
    Iname = Iname - 1
    kont = -402
-   Call AddError(402)
+   Call AddError(402) 
    Return
   End If
   mZ2_run = mZ2_mZ
@@ -1143,7 +1150,7 @@ Contains
    If (mZ2_mZ.Lt.0._dp) Then
     Iname = Iname - 1
     kont = -402
-    Call AddError(402)
+    Call AddError(402) 
     Return
    End If
    mZ2_run = mZ2_mZ
@@ -1167,7 +1174,7 @@ Contains
          & , CKM, mN, mN2, N, mC, mC2, U, V, mZ2_mZ, mW2_run, dmW2_0)
 
    rho = (1._dp + Real(dmZ2,dp)/mZ2) / (1._dp + Real(dmW2,dp) / mW2)
-   delta_rho = 1._dp - 1._dp / rho
+   delta_rho = 1._dp - 1._dp / rho 
 
    CosW2SinW2 = (1._dp - sinW2_DR) * sinW2_DR
    Call delta_VB(gSU2, sinW2, sinW2_DR, rho, mC, mC2, U, V, mN, mN2, N     &
@@ -1191,7 +1198,8 @@ Contains
    If ((Abs(sinW2_DR-sinW2_old).Lt. 0.1_dp*delta0).And.(i1.Gt.1)) Exit
 
    sinW2_old = sinW2_DR
-   delta_rw = delta_rho*(1._dp-delta_r) + delta_r
+!   delta_rw = delta_rho*(1._dp-delta_r) + delta_r
+   delta_rw = (delta_rho+fac(2)/sinW2_DR+xt2)*(1._dp-delta_r) + delta_r
    If ((0.25_dp-alphamz*pi/(sqrt2*G_F*mz2*rho*(1._dp-delta_rw))).Lt.0._dp) Then
     If (Errorlevel.Ge.0) Then
      Write(Errcan,*) "Problem in subroutine "//NameofUnit(Iname)
@@ -1215,14 +1223,8 @@ Contains
    cosW2 = mW2 / mZ2
    sinW2 = 1._dp - cosW2
   End Do
+
   mSpm2(1) = mW2
-  !--------------------------------------------------------------------------
-  ! recalcuating m_W and sin^2_W, the formula for m_W is base on Eq.25 of
-  ! G.Degrassi et al., NPB351, 49 (1991)
-  !--------------------------------------------------------------------------
-  delta_rw = delta_rho*(1._dp-delta_r) + delta_r
-  mW2 = mZ2 * rho * ( 0.5_dp &
-      &         +Sqrt(0.25_dp-alphamz*pi/(sqrt2*G_F*mz2*rho*(1._dp-delta_rw))))
   mW = Sqrt(mW2)
   cosW2 = mW2 / mZ2
   sinW2 = 1._dp - cosW2
@@ -1263,7 +1265,7 @@ Contains
    ! Yukawa couplings
    !--------------------------------------------------------------------
    Y_d = 0._dp
-   Y_u = 0._dp
+   Y_u = 0._dp 
    Y_l = 0._dp
    Do i1=1,3
     Y_u(i1,i1) = sqrt2 * mf_u_DR_SM(i1) / vevSM(2)
@@ -1339,7 +1341,7 @@ Contains
      If (kont.ne.0) then
       Iname = Iname - 1
       return
-     End If
+     End If 
     End If
 
     !---------------------------------------------------------
@@ -1419,7 +1421,7 @@ Contains
     !--------------------------------------------
     CKM0(1,:) = CKM0(1,:) * Conjg(CKM0(1,1))/Abs(CKM0(1,1))
     CKM0(:,2) = CKM0(:,2) * Conjg(CKM0(1,2))/Abs(CKM(1,2))
-    s13 = Abs(CKM0(1,3))
+    s13 = Abs(CKM0(1,3))   
     c13 = sqrt(1._dp - s13**2)
     s23 = Abs(CKM0(2,3))/c13
     s12 = Abs(CKM0(1,2))/c13
@@ -1585,7 +1587,7 @@ Contains
     If (kont.ne.0) then
      Iname = Iname - 1
      return
-    End If
+    End If 
    End If
 
    Do i1=1,3
@@ -1632,7 +1634,7 @@ Contains
       mf_l_DR(i1) = mf_l_DR_SM(i1) + Real(SigLep,dp)
      End If
      Y_l(i1,i1)  = sqrt2 * mf_l_DR(i1) / vevSM(1)
-
+    
     End Do
 
     If (    (      Abs((yuk_tau-y_l(3,3))/y_l(3,3)).Lt. delta0) &
@@ -1682,9 +1684,9 @@ Contains
   !----------------------------------------------------------------
    If (GenerationMixing) Then
     If (YukawaScheme.Eq.1) Then
-     Y_u = Matmul(Transpose(CKM0),Y_u)
+     Y_u = Matmul(Transpose(CKM0),Y_u) 
     Else
-     Y_d = Matmul(Conjg(CKM0),Y_d)
+     Y_d = Matmul(Conjg(CKM0),Y_d) 
     End If
    End If
 
@@ -1721,7 +1723,7 @@ Contains
        & - Pi * Sqrt(r) * (4._dp - 1.5_dp * r + 3._dp * r2/32._dp  &
        &                  + r3/256._dp)                            &
        & - Pi2 * (2._dp - 2._dp * r + 0.5_dp * r2)                 &
-       & - Log(r) * (3._dp * r - 0.5_dp * r2)
+       & - Log(r) * (3._dp * r - 0.5_dp * r2) 
   End  Function rho_2
 
   Subroutine Yukawas(mf, vev, tanb, SigS, SigL, SigR, Y, eps)
@@ -1751,7 +1753,7 @@ Contains
    !----------------------------------------
    Yold = Y
    Y0 = Y * vev * oosqrt2
-   Y = mass + SigS
+   Y = mass + SigS 
    If (Present(eps)) Then ! resummation included
     Do i1=1,3
      Y(i1,i1) = ( Y(i1,i1) + oosqrt2 * eps(i1) * vev * tanb  * Yold(i1,i1)) &
@@ -1767,7 +1769,7 @@ Contains
    Y(3,1) = 0._dp
    Y(3,2) = 0._dp
    ! this is possible as I can always rotate the R-fields
-   Y = sqrt2 * Abs(Y) / vev
+   Y = sqrt2 * Abs(Y) / vev 
 
   End Subroutine Yukawas
 
@@ -1786,10 +1788,10 @@ Contains
  !    the string scenario B: eqs. (3.11), (3.16) and (3.20)
  !    from P.Binetruy at al., NPB 604, 32 (2001), hep-ph/0011081
  ! 31.10.02: including AMSB
- ! 06.12.02: including OI model of
+ ! 06.12.02: including OI model of 
  !           P.Binetruy at al., NPB 604, 32 (2001), hep-ph/0011081
  !       -  Note, that I do have the opposite sign convention concerning
- !          the anomalous dimensions
+ !          the anomalous dimensions 
  !       - It is assumed that all terms of the form Ln(mu_R) vanish
  !-----------------------------------------------------------------------
   Implicit None
@@ -1813,7 +1815,7 @@ Contains
     &            Source = (/ (1._dp,0._dp), ZeroC, ZeroC, ZeroC, (2._dp,0._dp)  &
     &                        , ZeroC, ZeroC, ZeroC, (3._dp,0._dp) /), &
     &                     Shape = (/3, 3/)  )
-
+ 
   Iname = Iname + 1
   NameOfUnit(Iname) = 'BoundaryHS'
 
@@ -1852,7 +1854,7 @@ Contains
   Else If (Size(g1).Eq.115) Then ! Seesaw II (SARAH)
    Call GToParameters115(g1, g10_H15,g20_H15,g30_H15, Yu0_H15, Yd0_H15, Ye0_H15 &
      & , Yt_H15,Ys_H15,Yz_H15,Lambda1,Lambda2)
-   gauge_0(1) = g10_H15
+   gauge_0(1) = g10_H15   
    gauge_0(2) = g20_H15
    gauge_0(3) = g30_H15
    Y_l_0 = Ye0_H15
@@ -1864,7 +1866,7 @@ Contains
    Call GToParameters111(g1, g10_H24,g20_H24,g30_H24, Yu0_H24, Yd0_H24, Ye0_H24 &
     & , Yb3_H24,Yw3_H24,Yx3_H24)
 
-   gauge_0(1) = g10_H24
+   gauge_0(1) = g10_H24   
    gauge_0(2) = g20_H24
    gauge_0(3) = g30_H24
    Y_l_0 = Ye0_H24
@@ -1879,7 +1881,7 @@ Contains
    Write(ErrCan,*) "Error in routine BoundaryHS"
    Write(ErrCan,*) "Size of g1",Size(g1)
    Call TerminateProgram
-  End If
+  End If  
 
   !--------------------------------------------------
   ! the following models need anomalous dimensions
@@ -1907,30 +1909,30 @@ Contains
    GammaGH1(2) = - oo16pi2 * 1.5_dp * gauge2(2)
    GammaGH1(3) = 0._dp
    GammaGH2 = GammaGH1
-   GammaGE(1,:) = - oo16pi2 * 1.2_dp * gauge2(1)
+   GammaGE(1,:) = - oo16pi2 * 1.2_dp * gauge2(1) 
    GammaGE(2,:) = 0._dp
-   GammaGL(1,:) = GammaGH1(1)
+   GammaGL(1,:) = GammaGH1(1) 
    GammaGL(2,:) = GammaGH1(2)
    GammaGD(1,:) = - oo16pi2 * 0.4_dp * gauge2(1) / 3._dp
    GammaGD(2,:) = 0._dp
-   GammaGD(3,:) = - oo16pi2 * 8._dp * gauge2(3) / 3._dp
+   GammaGD(3,:) = - oo16pi2 * 8._dp * gauge2(3) / 3._dp 
    GammaGU(1,:) = - oo16pi2 * 1.6_dp * gauge2(1) / 3._dp
    GammaGU(2,:) = 0._dp
    GammaGU(3,:) = GammaGD(3,:)
    GammaGQ(1,:) = - oo16pi2 * 0.1_dp * gauge2(1) / 3._dp
    GammaGQ(2,:) = GammaGL(2,:)
    GammaGQ(3,:) = GammaGD(3,:)
-
+ 
    GammaH1 =  Sum(GammaGH1)
    GammaH2 = GammaH1
-   GammaE = GammaYE
-   GammaL = GammaYL
-   GammaD = GammaYD
-   GammaU = GammaYU
-   GammaQ = GammaYQ
+   GammaE = GammaYE 
+   GammaL = GammaYL 
+   GammaD = GammaYD 
+   GammaU = GammaYU 
+   GammaQ = GammaYQ 
    Do i1=1,3
     GammaH1 = GammaH1 + 3._dp * GammaYQd(i1,i1) + GammaYL(i1,i1)
-    GammaH2 = GammaH2 + 3._dp * GammaYQu(i1,i1)
+    GammaH2 = GammaH2 + 3._dp * GammaYQu(i1,i1) 
     GammaE(i1,i1) = GammaE(i1,i1) + Sum(GammaGE(:,i1))
     GammaL(i1,i1) = GammaL(i1,i1) + Sum(GammaGL(:,i1))
     GammaD(i1,i1) = GammaD(i1,i1) + Sum(GammaGD(:,i1))
@@ -1993,7 +1995,7 @@ Contains
    m32p = oo16pi2 * m32 ! rescaled gravitino mass
    m32p2 = m32p**2
    !----------------------------------
-   ! gaugino mass parameters
+   ! gaugino mass parameters 
    !----------------------------------
    Mi_0 = m32p * (alpha_mir + b_1 * gauge2)
    !----------------------------------------------------------------------
@@ -2029,7 +2031,7 @@ Contains
    M2_U_0 = ZeroC
    M2_H_0 = ZeroC
    !---------------------------------------------------------------------
-   ! everything but the Yukawa contributions to the alpha xi_i part,
+   ! everything but the Yukawa contributions to the alpha xi_i part, 
    ! easily adjusted from the AMSB model
    !---------------------------------------------------------------------
    M02 = cm_mir * alpha_mir**2 * m32p2
@@ -2045,7 +2047,7 @@ Contains
     Do i1=1,3
      M2_E_0(i1,i1) = M2_E_0(i1,i1) + M02              &
          & - m32p2 * (198._dp / 25._dp * gauge4(1)    &
-         &           + 2.4_dp * alpha_mir * gauge2(1) )
+         &           + 2.4_dp * alpha_mir * gauge2(1) )                           
      M2_L_0(i1,i1) = M2_L_0(i1,i1) + M02                                      &
          & -  m32p2 * (99._dp / 50._dp * gauge4(1) + 1.5_dp * gauge4(2) &
          &             )
@@ -2069,12 +2071,12 @@ Contains
          & - m32p2 * (99._dp / 50._dp * gauge4(1) + 1.5_dp * gauge4(2)    &
          &           + alpha_mir * (3._dp * gauge2(2) + 0.6_dp * gauge2(1) ) ) &
          & - m32p * Y_l_0(i1,i1) * A_l_0(i1,i1)        &
-         & + 6._dp *m32p2 * alpha_mir * Abs(Y_l_0(i1,i1))**2
+         & + 6._dp *m32p2 * alpha_mir * Abs(Y_l_0(i1,i1))**2 
      M2_D_0(i1,i1) = M02                                                      &
          & - m32p2 * (22._dp / 25._dp * gauge4(1) - 8._dp * gauge4(3)  &
          &           + alpha_mir * (4._dp / 15._dp * gauge2(1)             &
                                + 16._dp / 3._dp * gauge2(3) ) )        &
-         & - m32p * 2._dp * Y_d_0(i1,i1) * A_d_0(i1,i1)
+         & - m32p * 2._dp * Y_d_0(i1,i1) * A_d_0(i1,i1) 
      M2_Q_0(i1,i1) = M02                                                     &
          & - m32p2 * (11._dp / 50._dp * gauge4(1)  + 1.5_dp * gauge4(2)     &
          &             - 8._dp * gauge4(3)                                  &
@@ -2098,7 +2100,7 @@ Contains
 
    M2_H_0 =  - m32p2 * (99._dp / 50._dp * gauge4(1) + 1.5_dp * gauge4(2) &
           &     + alpha_mir * (3._dp * gauge2(2) + 0.6_dp  * gauge2(1) ) )
-   M2_H_0(1) = M2_H_0(1) + m32p2 * cHd_mir * alpha_mir**2
+   M2_H_0(1) = M2_H_0(1) + m32p2 * cHd_mir * alpha_mir**2  
    M2_H_0(2) = M2_H_0(2) + m32p2 * cHu_mir * alpha_mir**2
    If (GenerationMixing) Then
    Else
@@ -2109,7 +2111,7 @@ Contains
               &  * (3._dp *Abs(Y_d_0(i1,i1))**2 + Abs(Y_l_0(i1,i1))**2))
      M2_H_0(2) = M2_H_0(2) - m32p * (3._dp *Y_u_0(i1,i1) *A_u_0(i1,i1) &
               &           - 18._dp* m32p*alpha_mir*Abs(Y_u_0(i1,i1))**2)
-    End Do
+    End Do  
    End If
    !--------------------------------------------------------
    ! A parameter, second part, adding moduli contributions
@@ -2131,7 +2133,7 @@ Contains
    A_d_0 = ZeroC
    A_u_0 = ZeroC
    !----------------------------------
-   ! gaugino mass parameters
+   ! gaugino mass parameters 
    !----------------------------------
    Mi_0 = 0._dp
    Do i1=1,3
@@ -2225,7 +2227,7 @@ Contains
     M2_H_0(1) = M2_H_0(1) - oo16pi2 * m_32 * (3._dp *Y_d_0(i1,i1) *A_d_0(i1,i1) &
              &                             +  Y_l_0(i1,i1) * A_l_0(i1,i1)  )
     M2_H_0(2) = M2_H_0(2) - oo16pi2 * m_32 * 3._dp * Y_u_0(i1,i1) * A_u_0(i1,i1)
-   End Do
+   End Do  
 
   Else If (HighScaleModel.Eq.'Str_A') Then
    !----------------------------------------
@@ -2250,8 +2252,8 @@ Contains
    AoY_d_0 = ZeroC
    AoY_u_0 = ZeroC
 
-   wert = - oosqrt3 * k_s * sinT * oosqrt_k_ss
-
+   wert = - oosqrt3 * k_s * sinT * oosqrt_k_ss 
+  
    Do i1=1,3
     AoY_l_0(i1,i1) = -m32 * (GammaL(i1,i1) + GammaE(i1,i1) + GammaH1 + wert)
     AoY_d_0(i1,i1) = -m32 * (GammaQ(i1,i1) + GammaD(i1,i1) + GammaH1 + wert)
@@ -2269,7 +2271,7 @@ Contains
 
    fac = sqrt3 * sinT * oosqrt_k_ss
    Do i1=1,3
-    M2_E_0(i1,i1) = sinT2 - GammaE(i1,i1)
+    M2_E_0(i1,i1) = sinT2 - GammaE(i1,i1) 
     M2_L_0(i1,i1) = sinT2 - GammaL(i1,i1)
     M2_D_0(i1,i1) = sinT2 - GammaD(i1,i1)
     M2_Q_0(i1,i1) = sinT2 - GammaQ(i1,i1)
@@ -2326,7 +2328,7 @@ Contains
      &   + 0.5_dp * GammaYH1 * ( k_s * Conjg(phase_s) + k_sb * phase_s )
     M2_H_0(1) = M2_H_0(1) + fac * wert
 
-    wert = - Real( phase_s,dp )                                         &
+    wert = - Real( phase_s,dp )                                         & 
      &   * ( gauge2(1) * GammaGH2(1) + gauge2(2) * GammaGH2(2) )   &
      &   + 0.5_dp * GammaYH2 * ( k_s * Conjg(phase_s) + k_sb * phase_s )
     M2_H_0(2) = M2_H_0(2) + fac * wert
@@ -2358,7 +2360,7 @@ Contains
    AoY_d_0 = ZeroC
    AoY_u_0 = ZeroC
 
-   wert = - k_s * sinT * oosqrt_k_ss
+   wert = - k_s * sinT * oosqrt_k_ss 
    LnG2 = 0.5_dp * (Log( Gauge2 ) - 1._dp)
    i2 = 1
    Do i1=1,3
@@ -2382,7 +2384,7 @@ Contains
      &             + (GammaYD(i1,i1) + GammaYQ(i1,i1) + GammaH1) * k_s &
      &                *  LnReDedekind(i2)                              &
      &             ) * oosqrt_k_ss
-    AoY_u_0(i1,i1) = (GammaQ(i1,i1) + GammaU(i1,i1) + GammaH2)         &
+    AoY_u_0(i1,i1) = (GammaQ(i1,i1) + GammaU(i1,i1) + GammaH2)         & 
      &             * (1._dp + cosT * ReG2ThetaT(i2) ) / Sqrt3         &
      &    - sinT * ( (GammaGU(1,i1) + GammaGQ(1,i1) +  GammaGH2(1))    &
      &                  * gauge2(1) * ( LnG2(1)  -  LnReDedekind(i2) ) &
@@ -2525,7 +2527,7 @@ Contains
       &   + 0.5_dp * GammaYH1 * ( k_s * Conjg(phase_s) + k_sb * phase_s )
      M2_H_0(1) = M2_H_0(1) + fac * wert
 
-     wert = - Real( phase_s, dp )                                         &
+     wert = - Real( phase_s, dp )                                         & 
       &   * ( gauge2(1) * GammaGH2(1) + gauge2(2) * GammaGH2(2) )   &
       &   + 0.5_dp * GammaYH2 * ( k_s * Conjg(phase_s) + k_sb * phase_s )
      M2_H_0(2) = M2_H_0(2) + fac * wert
@@ -2678,7 +2680,7 @@ Contains
       wert = wert + GammaYL(i1,i1) * (nE_ai(1,i1)+nL_ai(1,i1)+nH1_ai(1)+3) &
         &  + 3._dp * GammaYD(i1,i1) * (nD_ai(1,i1)+nQ_ai(1,i1)+nH1_ai(1)+3)
      End Do
-     M2_H_0(1) = M2_H_0(1) + cosT * ReG2ThetaT(1) * wert + CosT2 * nH1_ai(1)
+     M2_H_0(1) = M2_H_0(1) + cosT * ReG2ThetaT(1) * wert + CosT2 * nH1_ai(1) 
 
      wert = - gauge2(1) * GammaGH2(1) * Real( phase_s, dp)    &
         & - gauge2(2) * GammaGH2(2) * Real( phase_s, dp)      &
@@ -2690,7 +2692,7 @@ Contains
       wert = wert &
         &  + 3._dp * GammaYU(i1,i1) * (nU_ai(1,i1)+nQ_ai(1,i1)+nH2_ai(1)+3)
      End Do
-     M2_H_0(2) = M2_H_0(2) + cosT * ReG2ThetaT(1) * wert + CosT2 * nH2_ai(1)
+     M2_H_0(2) = M2_H_0(2) + cosT * ReG2ThetaT(1) * wert + CosT2 * nH2_ai(1) 
 
    End Do
 
@@ -2703,7 +2705,7 @@ Contains
    A_l_0 = AoY_l_0 * Y_l_0
    A_d_0 = Matmul(AoY_q_0, Y_d_0) + Matmul(Y_d_0, AoY_d_0)
    A_u_0 = Matmul(AoY_q_0, Y_u_0) + Matmul(Y_u_0, AoY_u_0)
-  Else If (HighScaleModel.Eq.'AMSB') Then
+  Else If (HighScaleModel.Eq.'AMSB') Then 
    AoY_l_0 = 0._dp
    AoY_d_0 = 0._dp
    AoY_u_0 = 0._dp
@@ -2711,9 +2713,9 @@ Contains
    Where(Abs(Y_d_0).Ne.0._dp) AoY_d_0 = A_d_0 / Y_d_0
    Where(Abs(Y_u_0).Ne.0._dp) AoY_u_0 = A_u_0 / Y_u_0
   Else  If ((HighScaleModel.Ne.'GMSB').And.(HighScaleModel(1:3).Ne.'Str') &
-         & .And.(HighScaleModel.Ne.'Mirage')) Then
+         & .And.(HighScaleModel.Ne.'Mirage')) Then 
    !--------------------------------------------------------------
-   ! check if parameters in the super CKM/PMNS basis are given
+   ! check if parameters in the super CKM/PMNS basis are given 
    !--------------------------------------------------------------
    If (GenerationMixing) Then
     If (.Not.l_Al) Al_0_pmns = 0
@@ -2734,9 +2736,9 @@ Contains
     Call Switch_from_superPMNS(Y_l_0, MnuL5a, Al_0_pmns, M2E_0_pmns, M2L_0_pmns &
       & , A_l_0, M2_E_0, M2_L_0, .True. )
 
-    If (.Not.l_Al) A_l_0 = AoY_l_0 * Y_l_0
-    If (.Not.l_Ad) A_d_0 = AoY_d_0 * Y_d_0
-    If (.Not.l_Au) A_u_0 = AoY_u_0 * Y_u_0
+    If (.Not.l_Al) A_l_0 = AoY_l_0 * Y_l_0 
+    If (.Not.l_Ad) A_d_0 = AoY_d_0 * Y_d_0 
+    If (.Not.l_Au) A_u_0 = AoY_u_0 * Y_u_0 
 
     Call Chop(M2_D_0)
     Call Chop(M2_E_0)
@@ -2757,7 +2759,7 @@ Contains
     A_l_0 = AoY_l_0 * Y_l_0
     A_d_0 = AoY_d_0 * Y_d_0
     A_u_0 = AoY_u_0 * Y_u_0
-
+ 
    End If
 
   End If
@@ -2819,7 +2821,7 @@ Contains
     A_T_0 = AoT_0 * d3
     A_S_0 = AoT_0 * d3a
     A_Z_0 = AoT_0 * d3b
-
+    
     Call ParametersToG5(gauge_0, y_l_0, d3, y_d_0, y_u_0, d3a, d3b     &
        & , lam12_0(1), lam12_0(2), Mi_0, A_l_0, A_T_0, A_d_0, A_u_0, A_S_0 &
        & , A_Z_0, Alam12_0(1), Alam12_0(2), M2_E_0, M2_L_0, M2_D_0, M2_Q_0 &
@@ -2834,7 +2836,7 @@ Contains
     Call ParametersToG5(gauge_0, y_l_0, Yeff, y_d_0, y_u_0, Yeff, Yeff     &
        & , lam12_0(1), lam12_0(2), Mi_0, A_l_0, A_T_0, A_d_0, A_u_0, A_T_0 &
        & , A_T_0, Alam12_0(1), Alam12_0(2), M2_E_0, M2_L_0, M2_D_0, M2_Q_0 &
-       & , M2_U_0, M2_H_0, M2_T_0, M2_T_0, M2_T_0, M15(1), M15(1), M15(1)  &
+       & , M2_U_0, M2_H_0, M2_T_0, M2_T_0, M2_T_0, M15(1), M15(1), M15(1)  &   
        & , mu_0, B_0, MnuL5, g2)
    End If
 
@@ -2898,14 +2900,14 @@ Contains
    AMBM3 = AMWM3
 
    Call ParametersToG555(g10_H24,g20_H24,g30_H24, Yu0_H24,Yd0_H24,Ye0_H24      &
-      & ,Yb3_H24,Yw3_H24,Yx3_H24,mu_0,MXM3, MWM3,MGM3, MBM3,A_u_0,A_d_0,A_l_0  &
+      & ,Yb3_H24,Yw3_H24,Yx3_H24,mu_0,MXM3, MWM3,MGM3, MBM3,A_u_0,A_d_0,A_l_0  & 
       & ,AYb3_H24,AYw3_H24,AYx3_H24, B_0,AMXM3,AMWM3,AMGM3,AMBM3,M2_Q_0,M2_L_0 &
-      & ,M2_H_0(1),M2_H_0(2),M2_D_0, M2_U_0,M2_E_0,mHw32,mHg32,mHb32,mHx32     &
+      & ,M2_H_0(1),M2_H_0(2),M2_D_0, M2_U_0,M2_E_0,mHw32,mHg32,mHb32,mHx32     & 
       & ,mHxb32,Mi_0(1),Mi_0(2),Mi_0(3),zero33c,g2)
 # endif SEESAWIII
 ! Florian Staub Seesaw II+III
 
-  Else
+  Else 
    Write(ErrCan,*) "Error in routine BoundaryHS"
    Write(ErrCan,*) "Size of g2",Size(g2)
    Call TerminateProgram
@@ -2928,10 +2930,10 @@ Contains
  !    the string scenario B: eqs. (3.11), (3.16) and (3.20)
  !    from P.Binetruy at al., NPB 604, 32 (2001), hep-ph/0011081
  ! 31.10.02: including AMSB
- ! 06.12.02: including OI model of
+ ! 06.12.02: including OI model of 
  !           P.Binetruy at al., NPB 604, 32 (2001), hep-ph/0011081
  !       -  Note, that I do have the opposite sign convention concerning
- !          the anomalous dimensions
+ !          the anomalous dimensions 
  !       - It is assumed that all terms of the form Ln(mu_R) vanish
  !-----------------------------------------------------------------------
   Implicit None
@@ -2951,7 +2953,7 @@ Contains
     &            Source = (/ (1._dp,0._dp), ZeroC, ZeroC, ZeroC, (2._dp,0._dp)  &
     &                        , ZeroC, ZeroC, ZeroC, (3._dp,0._dp) /), &
     &                     Shape = (/3, 3/)  )
-
+ 
   Iname = Iname + 1
   NameOfUnit(Iname) = 'BoundaryHS2'
 
@@ -2973,7 +2975,7 @@ Contains
 
   Else If (Size(g1).Eq.285) Then
 
-   If (Ynu_at_MR3) Then
+   If (Ynu_at_MR3) Then 
     Call GToParameters3(g1, gauge_0, y_l_0, Y_nu_0, y_d_0, y_u_0, Mi, A_l &
        & , A_nu_0, A_d, A_u, M2_E, M2_L, M2_R, M2_D, M2_Q, M2_U, M2_H, mu &
        & , B, MnuL5)
@@ -3003,7 +3005,7 @@ Contains
      & , A_l,AYt_h15,AYs_h15,AYz_h15,ALambda1,ALambda2,B,AMTM,AMZM,AMSM     &
      & ,M2_Q,M2_L,M2_H(1),M2_H(2),M2_D,M2_U,M2_E,mt2_H15,mtb2_H15 &
      & ,ms2_H15,msb2_H15,mz2_H15,mzb2_H15,Mi(1),Mi(2),Mi(3),MnuL5a)
-   gauge_0(1) = g10_H15
+   gauge_0(1) = g10_H15   
    gauge_0(2) = g20_H15
    gauge_0(3) = g30_H15
    Y_l_0 = Ye0_H15
@@ -3012,12 +3014,12 @@ Contains
 
   Else If (Size(g1).Eq.555) Then ! Seesaw III (SARAH)
    Call GToParameters555(g1, g10_H24,g20_H24,g30_H24, Yu0_H24, Yd0_H24, Ye0_H24 &
-    & , Yb3_H24,Yw3_H24,Yx3_H24,mu,MXM3, MWM3,MGM3, MBM3,A_u,A_d,A_l  &
+    & , Yb3_H24,Yw3_H24,Yx3_H24,mu,MXM3, MWM3,MGM3, MBM3,A_u,A_d,A_l  & 
       & ,AYb3_H24,AYw3_H24,AYx3_H24, B,AMXM3,AMWM3,AMGM3,AMBM3,M2_Q,M2_L &
-      & ,M2_H(1),M2_H(2),M2_D, M2_U,M2_E,mHw32,mHg32,mHb32,mHx32     &
+      & ,M2_H(1),M2_H(2),M2_D, M2_U,M2_E,mHw32,mHg32,mHb32,mHx32     & 
       & ,mHxb32,Mi(1),Mi(2),Mi(3),MnuL5a)
 
-   gauge_0(1) = g10_H24
+   gauge_0(1) = g10_H24   
    gauge_0(2) = g20_H24
    gauge_0(3) = g30_H24
    Y_l_0 = Ye0_H24
@@ -3031,7 +3033,7 @@ Contains
    Write(ErrCan,*) "Error in routine BoundaryHS2"
    Write(ErrCan,*) "Size of g1",Size(g1)
    Call TerminateProgram
-  End If
+  End If  
 
   !--------------------------------------------------
   ! now the boundary conditions
@@ -3047,7 +3049,7 @@ Contains
    Call BoundaryHS(g1(1:57),g2)
    Call GToParameters(g2, gauge_0, Y_l_0, Y_d_0, Y_u_0, Mi_0, A_l_0, A_d_0 &
           & , A_u_0, M2_E_0, M2_L_0, M2_D_0, M2_Q_0, M2_U_0, M2_H_0, mu_0, B_0)
-
+   
   Else If (GenerationMixing) Then
    If (.Not.l_Al) Al_0_pmns = 0
    If (.Not.l_Ad) Ad_0_sckm = 0
@@ -3059,9 +3061,9 @@ Contains
    Call Switch_from_superPMNS(Y_l_0, MnuL5a, Al_0_pmns, M2E_0_pmns, M2L_0_pmns &
      & , A_l_0, M2_E_0, M2_L_0, .True. )
 
-   If (.Not.l_Al) A_l_0 = AoY_l_0 * Y_l_0
-   If (.Not.l_Ad) A_d_0 = AoY_d_0 * Y_d_0
-   If (.Not.l_Au) A_u_0 = AoY_u_0 * Y_u_0
+   If (.Not.l_Al) A_l_0 = AoY_l_0 * Y_l_0 
+   If (.Not.l_Ad) A_d_0 = AoY_d_0 * Y_d_0 
+   If (.Not.l_Au) A_u_0 = AoY_u_0 * Y_u_0 
 
   Else
    M2_D_0 = M2D_0_sckm
@@ -3154,7 +3156,7 @@ Contains
     A_T_0 = AoT_0 * d3
     A_S_0 = AoT_0 * d3a
     A_Z_0 = AoT_0 * d3b
-
+    
     Call ParametersToG5(gauge_0, y_l_0, d3, y_d_0, y_u_0, d3a, d3b     &
        & , lam12_0(1), lam12_0(2), Mi_0, A_l_0, A_T_0, A_d_0, A_u_0, A_S_0 &
        & , A_Z_0, Alam12_0(1), Alam12_0(2), M2_E_0, M2_L_0, M2_D_0, M2_Q_0 &
@@ -3169,7 +3171,7 @@ Contains
     Call ParametersToG5(gauge_0, y_l_0, Yeff, y_d_0, y_u_0, Yeff, Yeff     &
        & , lam12_0(1), lam12_0(2), Mi_0, A_l_0, A_T_0, A_d_0, A_u_0, A_T_0 &
        & , A_T_0, Alam12_0(1), Alam12_0(2), M2_E_0, M2_L_0, M2_D_0, M2_Q_0 &
-       & , M2_U_0, M2_H_0, M2_T_0, M2_T_0, M2_T_0, M15(1), M15(1), M15(1)  &
+       & , M2_U_0, M2_H_0, M2_T_0, M2_T_0, M2_T_0, M15(1), M15(1), M15(1)  &   
        & , mu_0, B_0, MnuL5, g2)
    End If
 
@@ -3231,14 +3233,14 @@ Contains
    AMBM3 = AMWM3
 
    Call ParametersToG555(g10_H24,g20_H24,g30_H24, Yu0_H24,Yd0_H24,Ye0_H24      &
-      & ,Yb3_H24,Yw3_H24,Yx3_H24,mu_0,MXM3, MWM3,MGM3, MBM3,A_u_0,A_d_0,A_l_0  &
+      & ,Yb3_H24,Yw3_H24,Yx3_H24,mu_0,MXM3, MWM3,MGM3, MBM3,A_u_0,A_d_0,A_l_0  & 
       & ,AYb3_H24,AYw3_H24,AYx3_H24, B_0,AMXM3,AMWM3,AMGM3,AMBM3,M2_Q_0,M2_L_0 &
-      & ,M2_H_0(1),M2_H_0(2),M2_D_0, M2_U_0,M2_E_0,mHw32,mHg32,mHb32,mHx32     &
+      & ,M2_H_0(1),M2_H_0(2),M2_D_0, M2_U_0,M2_E_0,mHw32,mHg32,mHb32,mHx32     & 
       & ,mHxb32,Mi_0(1),Mi_0(2),Mi_0(3),zero33c,g2)
 # endif SEESAWIII
 ! Florian Staub Seesaw II+III
 
-  Else
+  Else 
    Write(ErrCan,*) "Error in routine BoundaryHS2"
    Write(ErrCan,*) "Size of g2",Size(g2)
    Call TerminateProgram
@@ -3448,7 +3450,7 @@ Contains
   DeltaAlpha = 0.5_dp - 2._dp * Log(mf_u_DR(3)/Q ) / 3._dp &
            & - sumI / 6._dp  - 2._dp * Log(mGlu /Q)
   DeltaAlpha = AlphaSDR * DeltaAlpha / ( 2._dp * Pi)
-
+  
   AlphaS_5 = AlphaSDR / (1._dp + DeltaAlpha)
   !-----------------
   ! vevs
@@ -3466,7 +3468,7 @@ Contains
   If (mZ2_mZ.Lt.0._dp) Then
    Iname = Iname - 1
    kont = -413
-   Call AddError(413)
+   Call AddError(413) 
    Return
   End If
   mZ2_run = mZ2_mZ
@@ -3504,7 +3506,7 @@ Contains
   If (mZ2_mZ.Lt.0._dp) Then
     Iname = Iname - 1
     kont = -413
-    Call AddError(413)
+    Call AddError(413) 
     Return
   End If
   mZ2_run = mZ2_mZ
@@ -3545,7 +3547,7 @@ Contains
     Iname = Iname - 1
     Return
    End If
-
+   
    mf_u_SM(3) = mf_u_DR_SM(3)- SigQCD
    ! d-quarks
    Call Sigma_Fermion3(p2, mf_d_DR, Y_d, uD_L_T, uD_R_T, gSU2, gSU3, sinW2 &
@@ -3620,7 +3622,7 @@ Contains
         & , V, mS02, RS0, mP02, RP0, mSpm2, RSpm, mZ2_run, mW2_run           &
         & , .False., .True., SigLep)
     mf_l_DR_SM(i1) = mf_l_DR(i1) * (1- Real(SigLep,dp) / mf_l_DR(i1) )
-
+    
    End Do
   End If ! GenerationMixing
 
@@ -3655,7 +3657,7 @@ Contains
    dt = tz / 50._dp
    Call odeint(g10, 10, 0._dp, tz, 1.e-7_dp, dt, 0._dp, RGE10_SM, kont)
    as_nf_d_Pi = oo4pi * g10(1)**2 / Pi
-   mb_check = g10(10) * (1._dp + as_nf_d_Pi**2 * (c_m(1) + c_m(2)*as_nf_d_Pi))
+   mb_check = g10(10) * (1._dp + as_nf_d_Pi**2 * (c_m(1) + c_m(2)*as_nf_d_Pi)) 
 
    If ((Abs(mb_guess-mb_check) / mb_guess).Lt.1.e-5_dp) Then
     converge = .True.
@@ -3666,7 +3668,7 @@ Contains
 
   If (.Not.converge) Then
     kont = -413
-    Call AddError(413)
+    Call AddError(413) 
   End If
 
   g9 = g10(1:9)
@@ -3677,11 +3679,11 @@ Contains
   !---------------------------
   ! thresholds
   !------------
-  g9(6:9) = g9(6:9) * (1._dp + as_nf_d_Pi**2 * (c_m(1) + c_m(2)*as_nf_d_Pi))
+  g9(6:9) = g9(6:9) * (1._dp + as_nf_d_Pi**2 * (c_m(1) + c_m(2)*as_nf_d_Pi)) 
   as_nf = oo4pi * g10(1)**2
   as_nf_minus_1 = as_nf *(1._dp+ as_nf_d_pi**2 *(c_as(1) +c_as(2)*as_nf_d_pi))
   g9(1) = Sqrt(4._dp * Pi * as_nf_minus_1)
-  tz = Log(2._dp/mb_check)
+  tz = Log(2._dp/mb_check) 
   dt = tz / 50._dp
 
   Call odeint(g9, 9, 0._dp, tz, 1.e-7_dp, dt, 0._dp, RGE10_SM, kont)
@@ -3768,7 +3770,7 @@ Contains
 
   Real(dp) :: gauge(3), vev, g1(57), g0(213), mgut, mudim, cosW2, sinW2
   Real(dp), Parameter ::    e_d = -1._dp / 3._dp,  e_u = -2._dp * e_d   &
-    & , oo2pi = 1._dp/(2._dp*pi), oo6pi = oo2pi / 3._dp
+    & , oo2pi = 1._dp/(2._dp*pi), oo6pi = oo2pi / 3._dp 
 
   Integer :: set_mod_par(45)=0, i_par, id
   Logical :: TwoLoopRGE_save, read_data
@@ -3798,8 +3800,8 @@ Contains
    A_d = 0._dp
    A_u = 0._dp
    mu = 0._dp
-   BImu = 0._dp
-   Y_l = 0._dp
+   BImu = 0._dp 
+   Y_l = 0._dp 
    Y_d = 0._dp
    Y_u = 0._dp
 
@@ -3815,7 +3817,7 @@ Contains
      If (read_line(7:11).Eq."MSOFT") Then
      Backspace(99)
      Read(99,*) c1, c2, c3,mudim,c4
-     Do
+     Do 
       Read(99,*,End=200) read_line
 !     Write(*,*) trim(read_line)
       If (read_line(1:1).Eq."#") Cycle ! this loop
@@ -3824,70 +3826,70 @@ Contains
 
       Read(99,*) i_par,wert,read_line
 
-     If ((i_par.Ge.1).And.(i_par.Le.3)) Then
+     If ((i_par.Ge.1).And.(i_par.Le.3)) Then 
       Mi(i_par) = wert
       set_mod_par(i_par) = 1
-     Else If (i_par.Eq.21) Then
+     Else If (i_par.Eq.21) Then 
       M2_H(1) = wert
       set_mod_par(4) = 1
 
-     Else If (i_par.Eq.22) Then
+     Else If (i_par.Eq.22) Then 
       M2_H(2) = wert
       set_mod_par(5) = 1
 
-     Else If (i_par.Eq.31) Then
+     Else If (i_par.Eq.31) Then 
       M2_L(1,1) = wert**2
       set_mod_par(6) = 1
-     Else If (i_par.Eq.32) Then
+     Else If (i_par.Eq.32) Then 
       M2_L(2,2) = wert**2
       set_mod_par(7) = 1
-     Else If (i_par.Eq.33) Then
+     Else If (i_par.Eq.33) Then 
       M2_L(3,3) = wert**2
       set_mod_par(8) = 1
-     Else If (i_par.Eq.34) Then
+     Else If (i_par.Eq.34) Then 
       M2_E(1,1) = wert**2
       set_mod_par(9) = 1
-     Else If (i_par.Eq.35) Then
+     Else If (i_par.Eq.35) Then 
       M2_E(2,2) = wert**2
       set_mod_par(10) = 1
-     Else If (i_par.Eq.36) Then
+     Else If (i_par.Eq.36) Then 
       M2_E(3,3) = wert**2
       set_mod_par(11) = 1
-     Else If (i_par.Eq.41) Then
+     Else If (i_par.Eq.41) Then 
       M2_Q(1,1) = wert**2
       set_mod_par(12) = 1
-     Else If (i_par.Eq.42) Then
+     Else If (i_par.Eq.42) Then 
       M2_Q(2,2) = wert**2
       set_mod_par(13) = 1
-     Else If (i_par.Eq.43) Then
+     Else If (i_par.Eq.43) Then 
       M2_Q(3,3) = wert**2
       set_mod_par(14) = 1
-     Else If (i_par.Eq.44) Then
+     Else If (i_par.Eq.44) Then 
       M2_U(1,1) = wert**2
       set_mod_par(15) = 1
-     Else If (i_par.Eq.45) Then
+     Else If (i_par.Eq.45) Then 
       M2_U(2,2) = wert**2
       set_mod_par(16) = 1
-     Else If (i_par.Eq.46) Then
+     Else If (i_par.Eq.46) Then 
       M2_U(3,3) = wert**2
       set_mod_par(17) = 1
-     Else If (i_par.Eq.47) Then
+     Else If (i_par.Eq.47) Then 
       M2_D(1,1) = wert**2
       set_mod_par(18) = 1
-     Else If (i_par.Eq.48) Then
+     Else If (i_par.Eq.48) Then 
       M2_D(2,2) = wert**2
       set_mod_par(19) = 1
-     Else If (i_par.Eq.49) Then
+     Else If (i_par.Eq.49) Then 
       M2_D(3,3) = wert**2
       set_mod_par(20) = 1
 
        End If
 !     Write(errcan,*) i_par,wert
-      End Do  ! i_par
+      End Do  ! i_par 
 
      Else If  (read_line(7:10).Eq."HMIX") Then
 
-     Do
+     Do 
       Read(99,*,End=200) read_line
 !     Write(*,*) trim(read_line)
       If (read_line(1:1).Eq."#") Cycle ! this loop
@@ -3907,7 +3909,7 @@ Contains
      End Do
 
      Else If  (read_line(7:11).Eq."GAUGE") Then
-     Do
+     Do 
       Read(99,*,End=200) read_line
 !     Write(*,*) trim(read_line)
       If (read_line(1:1).Eq."#") Cycle ! this loop
@@ -3922,7 +3924,7 @@ Contains
       End Do
 
      Else If  (read_line(7:8).Eq."YU") Then
-     Do
+     Do 
       Read(99,*,End=200) read_line
 !     Write(*,*) trim(read_line)
       If (read_line(1:1).Eq."#") Cycle ! this loop
@@ -3937,7 +3939,7 @@ Contains
       End Do
 
      Else If  (read_line(7:8).Eq."YD") Then
-     Do
+     Do 
       Read(99,*,End=200) read_line
 !     Write(*,*) trim(read_line)
       If (read_line(1:1).Eq."#") Cycle ! this loop
@@ -3952,7 +3954,7 @@ Contains
       End Do
 
      Else If  (read_line(7:8).Eq."YE") Then
-     Do
+     Do 
       Read(99,*,End=200) read_line
 !     Write(*,*) trim(read_line)
       If (read_line(1:1).Eq."#") Cycle ! this loop
@@ -3967,7 +3969,7 @@ Contains
       End Do
 
      Else If  (read_line(7:8).Eq."AU") Then
-     Do
+     Do 
       Read(99,*,End=200) read_line
 !     Write(*,*) trim(read_line)
       If (read_line(1:1).Eq."#") Cycle ! this loop
@@ -3982,7 +3984,7 @@ Contains
       End Do
 
      Else If  (read_line(7:8).Eq."AD") Then
-     Do
+     Do 
       Read(99,*,End=200) read_line
 !     Write(*,*) trim(read_line)
       If (read_line(1:1).Eq."#") Cycle ! this loop
@@ -3997,7 +3999,7 @@ Contains
       End Do
 
      Else If  (read_line(7:8).Eq."AE") Then
-     Do
+     Do 
       Read(99,*,End=200) read_line
 !     Write(*,*) trim(read_line)
       If (read_line(1:1).Eq."#") Cycle ! this loop
@@ -4012,7 +4014,7 @@ Contains
       End Do
 
      Else If  (read_line(7:11).Eq."MASS") Then
-     Do
+     Do 
       Read(99,*,End=200) read_line
 !     Write(*,*) trim(read_line)
       If (read_line(1:1).Eq."#") Cycle ! this loop
@@ -4092,7 +4094,7 @@ Contains
     If (i1.Eq.3) Then ! top and bottom are special
 !     y_u(i1,i1) = sqrt2 * mf_U(i1)  / vevS(2) &
 !               & * (1._dp - oo3pi *alphas_mZ *(5._dp +3._dp*Log(mZ2/mf_u2(3))))
-     y_u(3,3) = 0.9_dp ! using a fixed value as initialisation for the first run,
+     y_u(3,3) = 0.9_dp ! using a fixed value as initialisation for the first run, 
                        ! this is more stable in the decoupling regime
                        ! the final result depends hardly on this choice
                        ! the variation is within the required numerical precsion
@@ -4131,7 +4133,7 @@ Contains
    If (UseFixedGUTScale) Then
     Call RunRGE(kont, 0.001_dp, vevS, g1, g0, mGUT)
 
-   Else
+   Else 
     GUT_scale = mZ * Sqrt( Exp( 20._dp * Pi2  &
               &          * (1._dp/gauge(1)**2 - 1._dp/gauge(2)**2) / 7._dp) )
     UseFixedGUTScale = .True.
@@ -4185,8 +4187,8 @@ Contains
    mP0(2) = Sqrt(mP02(2))
    Bimu = mP02(2) * tanb / (1 + tanb*tanb)
 
-   gU1 =  Sqrt(3._dp / 5._dp ) * gauge(1)
-   gSU2 = gauge(2)
+   gU1 =  Sqrt(3._dp / 5._dp ) * gauge(1)    
+   gSU2 = gauge(2)    
 
   End If ! Take_old_data
 
@@ -4199,7 +4201,7 @@ Contains
    If (m2.Le.0._dp) Then
     my_a0 = 0._dp
    Else
-    my_a0 = m2 * (1._dp - Log(m2/mudim))
+    my_a0 = m2 * (1._dp - Log(m2/mudim)) 
    End If
   End  Function my_a0
 
@@ -4245,15 +4247,15 @@ Contains
   Subroutine fv_boundary(YuGUT, YdGUT, YeGUT, M02, A0 &
            & , MSQ2IN, MSU2IN, MSD2IN, TUIN, TDIN, TEIN)
   Implicit None
-
+  
   Real(dp), Intent(in) :: YuGUT(3), YdGUT(3), YeGUT(3), M02
   Complex(dp), Intent(in) :: A0
   Complex(dp), Intent(out), Dimension(3,3) ::  MSQ2IN, MSU2IN, MSD2IN &
       &      , TUIN, TDIN, TEIN
 !  Real :: A0, m0  ! I assume they are global variables
-
+    
   Integer :: i
-
+    
 ! initiate the trilinears and soft terms to zero
    TUIN = ZeroC
    TDIN = ZeroC
@@ -4262,7 +4264,7 @@ Contains
    MSU2IN = ZeroC
    MSD2IN = ZeroC
 
-! set the soft mass terms
+! set the soft mass terms  
   Do  i = 1,3
 !   Do j = 1,3
      MSQ2IN(i,i) = (1 - 0.9/(YuGUT(3)*YuGUT(3))*(YuGUT(i)*YuGUT(i)))*m02
@@ -4274,7 +4276,7 @@ Contains
 !   End Do
   End Do
 
-
+ 
 ! set the diagonal parts of trilinears
   Do  i = 1,3
    TUIN(i,i) = A0*YuGUT(i)
@@ -4286,25 +4288,25 @@ Contains
 !----------------------
 ! by Suchita Kulkarni
 !----------------------
-
+ 
 
  Subroutine GetInputScale(scale)
  Implicit None
   Real(dp), Intent(out) :: scale
 
   If (InputScale.gt.0._dp) then ! has been defined for fixed  value
-   scale = InputScale
+   scale = InputScale 
   Else  ! use scale EWSB = sqrt(m_st_1 m_st_2)
    scale = Sqrt(GetRenormalizationScale())
   End If
-
+ 
  End Subroutine GetInputScale
 
 
  Integer Function GetYukawaScheme()
  !-----------------------------------------------------------------------
  ! Sets the parameter YukawaScheme, which controls wheter the top (=1) or the
- ! down (=2) Yukawa couplings stay diagonal at the low scale
+ ! down (=2) Yukawa couplings stay diagonal at the low scale 
  ! written by Werner Porod, 20.11.01
  !-----------------------------------------------------------------------
  Implicit None
@@ -4322,7 +4324,7 @@ Contains
  ! 07.03.2001: including right handed neutrinos
  ! 24.09.01: portation to f90
  ! 27.03.02: including a check if perturbation theory is valid
- ! 16.09.02: the electroweak scale is now set entirely outside, either
+ ! 16.09.02: the electroweak scale is now set entirely outside, either 
  !           in the main program or in the routine sugra(...)
  !-----------------------------------------------------------------------
  Implicit None
@@ -4331,7 +4333,7 @@ Contains
   Real(dp), Intent(in) :: delta, vevSM(2)
   Real(dp), Intent(inout) :: g1(57)
   Real(dp), Intent(out) :: g2(213), mGUT
-
+  
   Integer:: i1, i2, SumI
   Real(dp) :: g1a(93), g2a(285), g5_a(59), g5_b(180), g1b(75), g2b(267) &
       & , g1c(79), g2c(277), g1d(118), g2d(356), g1f(111), g2f(573)     &
@@ -4413,14 +4415,14 @@ Contains
    Iname = Iname - 1
    Return
   End If
-
+    
   !---------------------------
   ! looking for the GUT scale
   !---------------------------
   If (   (HighScaleModel.Eq.'SUGRA').Or.(HighScaleModel.Eq.'Oscar') &
    & .Or.(HighScaleModel.Eq.'Str_A').Or.(HighScaleModel.Eq.'Str_B') &
    & .Or.(HighScaleModel.Eq.'Str_C').Or.(HighScaleModel.Eq.'AMSB')  &
-   & .Or.(HighScaleModel.Eq.'Mirage') ) Then
+   & .Or.(HighScaleModel.Eq.'Mirage') ) Then 
 
    If (.Not.UseFixedGUTScale) Then
     tz = Log(m_lo/1.e18_dp)
@@ -4442,7 +4444,7 @@ Contains
       If ((g1(i1).Ne.0._dp).Or.(g1_h(i1).Ne.0._dp)) &
                  & Write(ErrCan,*) i1,g1_h(i1),g1(i1)
      End Do
-     Write(ErrCan,*) " "
+     Write(ErrCan,*) " " 
      Iname = Iname - 1
      Return
     End If
@@ -4462,7 +4464,7 @@ Contains
    m_hi = MnuR(2)
    If (MnuR(1).Ne.MnuR(2)) Then
     tz = Log(m_lo / m_hi)
-    dt = - tz / 50._dp
+    dt = - tz / 50._dp  
     Call odeint(g1a, 93, tz, 0._dp, delta, dt, 0._dp, rge93, kont)
    End If
 
@@ -4478,7 +4480,7 @@ Contains
    m_hi = MnuR(3)
    If (m_lo.Ne.MnuR(3)) Then
     tz = Log(m_lo / m_hi)
-    dt = - tz / 50._dp
+    dt = - tz / 50._dp  
 
     Call odeint(g1a, 93, tz, 0._dp, delta, dt, 0._dp, rge93, kont)
    End If
@@ -4491,7 +4493,7 @@ Contains
     Y_l_mR(3,:,:) = Matmul( Matmul(Conjg(ZER), Y_l_mR(1,:,:)) &
                   &       , Transpose(Conjg(ZEL)))
     Y_nu_mR(3,:,:) = Y_nu_0
-   Else
+   Else 
     Y_l_mR(3,:,:) = Y_l_mR(1,:,:)
    End If
 
@@ -4515,7 +4517,7 @@ Contains
     If (g1a(1).Lt.g1a(2)) Then ! I am still below GUT scale
      tz = Log(MnuR(3)/1.e18_dp)
      dt = - tz / 50._dp
-     Call odeintB(g1a, 93, tz, 0._dp, delta, dt, 0._dp, rge93, t_out, kont)
+     Call odeintB(g1a, 93, tz, 0._dp, delta, dt, 0._dp, rge93, t_out, kont) 
      If (kont.Eq.0) Then
       FoundUnification = .True.
       mGUT = 1.e18_dp * Exp(t_out)
@@ -4597,7 +4599,7 @@ Contains
              & , Y_u_mR(1,:,:), g1a)
 
     tz = Log(mGUT/GUT_scale)
-    dt = tz / 50._dp
+    dt = tz / 50._dp  
 
    If (UseFixedGUTScale) Then
     tz = Log(mGUT/GUT_scale)
@@ -4682,7 +4684,7 @@ Contains
     Delta_b_1 = 7._dp
     If (TwoLoopRGE) Then
      Delta_b_2(1,1) = 181._dp/15._dp
-     Delta_b_2(1,2) = 29.4_dp
+     Delta_b_2(1,2) = 29.4_dp 
      Delta_b_2(1,3) = 656._dp/15._dp
      Delta_b_2(2,1) = 9.8_dp
      Delta_b_2(2,2) = 69._dp
@@ -4710,7 +4712,7 @@ Contains
      Y_l_mH3 = Matmul( Matmul(Conjg(ZER), Y_l_mH3), Transpose(Conjg(ZEL)))
      Call CouplingsToG5(gauge_mH3, Y_l_mH3, Y_T_0, Y_d_mH3, Y_u_mH3 &
                  & , Y_T_0, Y_T_0, lam12_MH3(1), lam12_MH3(2), M15, g1d )
-    Else
+    Else 
      Call CouplingsToG5(gauge_mH3, Y_l_mH3, Y_T_mH3, Y_d_mH3, Y_u_mH3 &
                  & , Y_Z_mH3, Y_S_mH3, lam12_MH3(1), lam12_MH3(2), M15, g1d )
     End If
@@ -4730,7 +4732,7 @@ Contains
      If (g1d(1).Lt.g1d(2)) Then ! I am still below GUT scale
       tz = Log(m_lo/1.e18_dp)
       dt = - tz / 50._dp
-      Call odeintB(g1d, 118, tz, 0._dp, delta, dt, 0._dp, rge118, t_out, kont)
+      Call odeintB(g1d, 118, tz, 0._dp, delta, dt, 0._dp, rge118, t_out, kont) 
 
       If (kont.Eq.0) Then
        FoundUnification = .True.
@@ -4752,7 +4754,7 @@ Contains
       If (StrictUnification) g1d(3) = gGUT
 
      End If
-
+ 
     End If
 
    End If ! check if below or above GUT scale
@@ -4774,7 +4776,7 @@ Contains
     Delta_b_1(2) = 4._dp
 
     Delta_b_2(1,1) = 8.64_dp
-    Delta_b_2(1,2) = 28.8_dp
+    Delta_b_2(1,2) = 28.8_dp 
     Delta_b_2(2,1) = 9.6_dp
     Delta_b_2(2,2) = 48._dp
 
@@ -4793,7 +4795,7 @@ Contains
     If (g1c(1).Lt.g1c(2)) Then ! I am still below GUT scale
      tz = Log(m_lo/1.e18_dp)
      dt = - tz / 50._dp
-     Call odeintB(g1c, 79, tz, 0._dp, delta, dt, 0._dp, rge79, t_out, kont)
+     Call odeintB(g1c, 79, tz, 0._dp, delta, dt, 0._dp, rge79, t_out, kont) 
 
      If (kont.Eq.0) Then
       FoundUnification = .True.
@@ -4882,10 +4884,10 @@ Contains
        & ,Ye_H24,Yb30_H24(3,:,:),Yw30_H24(3,:,:),Yx30_H24(3,:,:),g1f)
 
     NGHb3 = 3._dp
-    NGHg3 = 3._dp
-    NGHw3 = 3._dp
-    NGHx3 = 3._dp
-    NGHxb3 = 3._dp
+    NGHg3 = 3._dp 
+    NGHw3 = 3._dp 
+    NGHx3 = 3._dp 
+    NGHxb3 = 3._dp 
     ThresholdCrossed = 3
 
    Else
@@ -4911,11 +4913,11 @@ Contains
     MWM3 = MWM3running(1,:,:)
 
     NGHb3 = 1._dp
-    NGHg3 = 1._dp
-    NGHw3 = 1._dp
-    NGHx3 = 1._dp
-    NGHxb3 = 1._dp
-    ThresholdCrossed = 1
+    NGHg3 = 1._dp 
+    NGHw3 = 1._dp 
+    NGHx3 = 1._dp 
+    NGHxb3 = 1._dp 
+    ThresholdCrossed = 1 
 
     Call ParametersToG111(gauge_H24(1),gauge_H24(2),gauge_H24(3),Yu_H24,Yd_H24 &
       &  ,Ye_H24,Yb30_H24(1,:,:),Yw30_H24(1,:,:),Yx30_H24(1,:,:),g1f)
@@ -4924,7 +4926,7 @@ Contains
     If (MWM30(1,1).Ne.MWM30(2,2)) Then
      m_hi = MWM30(2,2)
      tz = Log(m_lo / m_hi)
-     dt = - tz / 50._dp
+     dt = - tz / 50._dp  
      Call odeint(g1f, 111, tz, 0._dp, delta, dt, 0._dp, rge111, kont)
 
      Call GToParameters111(g1f,gauge_H24(1),gauge_H24(2),gauge_H24(3),Yu_H24 &
@@ -4966,13 +4968,13 @@ Contains
        & ,Ye_H24,Yb30_H24(3,:,:),Yw30_H24(3,:,:),Yx30_H24(3,:,:),g1f)
 
      NGHb3 = 3._dp
-     NGHg3 = 3._dp
-     NGHw3 = 3._dp
-     NGHx3 = 3._dp
-     NGHxb3 = 3._dp
-     ThresholdCrossed = 3
+     NGHg3 = 3._dp 
+     NGHw3 = 3._dp 
+     NGHx3 = 3._dp 
+     NGHxb3 = 3._dp 
+     ThresholdCrossed = 3 
 
-    Else
+    Else   
      MWM3 = MWM3running(2,:,:)
     !-----------------------------------------------------
     ! adding shifts to gauge couplings
@@ -4993,17 +4995,17 @@ Contains
         &  ,Ye_H24,Yb30_H24(2,:,:),Yw30_H24(2,:,:),Yx30_H24(2,:,:),g1f)
 
      NGHb3 = 2._dp
-     NGHg3 = 2._dp
-     NGHw3 = 2._dp
-     NGHx3 = 2._dp
-     NGHxb3 = 2._dp
-     ThresholdCrossed = 2
+     NGHg3 = 2._dp 
+     NGHw3 = 2._dp 
+     NGHx3 = 2._dp 
+     NGHxb3 = 2._dp 
+     ThresholdCrossed = 2 
 
      m_lo = MWM30(2,2)
      If (MWM30(2,2).Ne.MWM30(3,3)) Then
       m_hi = MWM30(3,3)
       tz = Log(m_lo / m_hi)
-      dt = - tz / 50._dp
+      dt = - tz / 50._dp  
       Call odeint(g1f, 111, tz, 0._dp, delta, dt, 0._dp, rge111, kont)
 
       Call GToParameters111(g1f,gauge_H24(1),gauge_H24(2),gauge_H24(3),Yu_H24  &
@@ -5044,11 +5046,11 @@ Contains
 
 
       NGHb3 = 3._dp
-      NGHg3 = 3._dp
-      NGHw3 = 3._dp
-      NGHx3 = 3._dp
-      NGHxb3 = 3._dp
-      ThresholdCrossed = 3
+      NGHg3 = 3._dp 
+      NGHw3 = 3._dp 
+      NGHx3 = 3._dp 
+      NGHxb3 = 3._dp 
+      ThresholdCrossed = 3 
 
      Else
 
@@ -5059,11 +5061,11 @@ Contains
       MWM3 = MWM3running(3,:,:)
 
       NGHb3 = 3._dp
-      NGHg3 = 3._dp
-      NGHw3 = 3._dp
-      NGHx3 = 3._dp
-      NGHxb3 = 3._dp
-      ThresholdCrossed = 3
+      NGHg3 = 3._dp 
+      NGHw3 = 3._dp 
+      NGHx3 = 3._dp 
+      NGHxb3 = 3._dp 
+      ThresholdCrossed = 3 
 
      !-----------------------------------------------------
      ! adding shifts to gauge couplings
@@ -5077,7 +5079,7 @@ Contains
        gauge_h24(3) = gauge_h24(3) * (1._dp - oo16pi2 * gauge_h24(3)**2        &
                 &                       * (Log(MassMXM3(3)/MWM30(3,3)) &
                 &                        + 3._dp*Log(MassMGM3(3)/MWM30(3,3)) ) )
-
+      
       End If
 
       If (Ynu_at_MR3) Then
@@ -5245,7 +5247,7 @@ Contains
      If (g1g(1).Lt.g1g(2)) Then ! I am still below GUT scale
       tz = Log(m_lo/1.e18_dp)
       dt = - tz / 50._dp
-      Call odeintB(g1g, 115, tz, 0._dp, delta, dt, 0._dp, rge115, t_out, kont)
+      Call odeintB(g1g, 115, tz, 0._dp, delta, dt, 0._dp, rge115, t_out, kont) 
 
       If (kont.Eq.0) Then
        FoundUnification = .True.
@@ -5267,7 +5269,7 @@ Contains
       If (StrictUnification) g1g(3) = gGUT
 
      End If
-
+ 
     End If
 
 
@@ -5338,7 +5340,7 @@ Contains
   Else
    Call BoundaryHS(g1,g2)
   End If
-
+  
   !--------------------------------------
   ! running down to the electroweak scale
   !--------------------------------------
@@ -5423,7 +5425,7 @@ Contains
      End Do
     End If
 
-
+    
    !------------------------
    ! m_GUT -> m_nuR_3
    !------------------------
@@ -5589,7 +5591,7 @@ Contains
     Iname = Iname - 1
     Return
    End If
-
+   
    !-------------------------
    ! run only if m_H < m_GUT
    !-------------------------
@@ -5687,7 +5689,7 @@ Contains
     Iname = Iname - 1
     Return
    End If
-
+   
    !-------------------------
    ! run only if m_H < m_GUT
    !-------------------------
@@ -5743,7 +5745,7 @@ Contains
 
 ! Florian Staub Seesaw II+III
 # ifdef SEESAWIII
-  Else If (HighScaleModel.Eq.'SEESAW_III_3G') Then
+  Else If (HighScaleModel.Eq.'SEESAW_III_3G') Then 
    !---------------
    ! GUT -> 3
    !---------------
@@ -5768,13 +5770,13 @@ Contains
    MXM3Running(3,:,:)=MXM3
 
    NGHb3 = 2._dp
-   NGHg3 = 2._dp
-   NGHw3 = 2._dp
-   NGHx3 = 2._dp
-   NGHxb3 = 2._dp
+   NGHg3 = 2._dp 
+   NGHw3 = 2._dp 
+   NGHx3 = 2._dp 
+   NGHxb3 = 2._dp 
    ThresholdCrossed = 2
 
-   Call FermionMass(MWM3,sqrt2,EigMWM3,RotWL, RotWR,kont)
+   Call FermionMass(MWM3,sqrt2,EigMWM3,RotWL, RotWR,kont)  
    Call FermionMass(MXM3,sqrt2,EigMXM3,RotXL, RotXR,kont)
    Call FermionMass(MGM3,sqrt2,EigMGM3,RotGL, RotGR,kont)
    Call FermionMass(MBM3,sqrt2,EigMBM3,RotBL, RotBR,kont)
@@ -5789,10 +5791,10 @@ Contains
    MGM3 = Matmul(Conjg(Transpose(RotGR)),Matmul(MGM3,RotGL))
    MXM3 = Matmul(Conjg(Transpose(RotXR)),Matmul(MXM3,RotXL))
    MBM3 = Matmul(Conjg(Transpose(RotBR)),Matmul(MBM3,RotBL))
-   mHx32 = Matmul(Conjg(Transpose(RotXL)),Matmul(mHx32,RotXL))
-   mHxb32 = Matmul(Conjg(Transpose(RotXR)),Matmul(mHxb32,RotXR))
-   mHg32 = Matmul(Conjg(Transpose(RotGL)),Matmul(mHg32,RotGL))
-   mHb32 = Matmul(Conjg(Transpose(RotBL)),Matmul(mHb32,RotBL))
+   mHx32 = Matmul(Conjg(Transpose(RotXL)),Matmul(mHx32,RotXL)) 
+   mHxb32 = Matmul(Conjg(Transpose(RotXR)),Matmul(mHxb32,RotXR))  
+   mHg32 = Matmul(Conjg(Transpose(RotGL)),Matmul(mHg32,RotGL)) 
+   mHb32 = Matmul(Conjg(Transpose(RotBL)),Matmul(mHb32,RotBL))  
    mHw32 = Matmul(Conjg(Transpose(RotWL)),Matmul(mHw32,RotWL))
 
    MassMWM3(3) = Maxval(EigMWM3)
@@ -5804,7 +5806,7 @@ Contains
     Do i1=1,3
      Do i2=1,3
       MnuL5(i1,i2) = 0.5_dp*Yw3_H24(3,i1)*Yw3_H24(3,i2)/MassMWM3(3) + &
-                   & 0.3_dp*Yb3_H24(3,i1)*Yb3_H24(3,i2)/MassMBM3(3)
+                   & 0.3_dp*Yb3_H24(3,i1)*Yb3_H24(3,i2)/MassMBM3(3) 
      End Do
     End Do
     If (TwoLoopRGE) Then
@@ -5827,12 +5829,12 @@ Contains
                 &                        + 3._dp*Log(MassMGM3(3)/MWM30(3,3)) ) )
     End If
 
-   Else
+   Else 
 
     Do i1=1,3
      Do i2=1,3
       MnuL5(i1,i2) = 0.5_dp * Yw3_H24(3,i1)*Yw3_H24(3,i2)/MWM30(3,3) + &
-                   & 0.3_dp * Yb3_H24(3,i1)*Yb3_H24(3,i2)/MWM30(3,3)
+                   & 0.3_dp * Yb3_H24(3,i1)*Yb3_H24(3,i2)/MWM30(3,3) 
      End Do
     End Do
 
@@ -5856,16 +5858,16 @@ Contains
    MBM3(:,3) = 0._dp
    MBM3(3,:) = 0._dp
 
-   mHx32(3,:) = 0._dp
-   mHx32(:,3) = 0._dp
-   mHxb32(3,:) = 0._dp
-   mHxb32(:,3) = 0._dp
-   mHg32(3,:) = 0._dp
-   mHg32(:,3) = 0._dp
-   mHb32(3,:) = 0._dp
-   mHb32(:,3) = 0._dp
-   mHw32(3,:) = 0._dp
-   mHw32(:,3) = 0._dp
+   mHx32(3,:) = 0._dp 
+   mHx32(:,3) = 0._dp 
+   mHxb32(3,:) = 0._dp 
+   mHxb32(:,3) = 0._dp 
+   mHg32(3,:) = 0._dp 
+   mHg32(:,3) = 0._dp 
+   mHb32(3,:) = 0._dp 
+   mHb32(:,3) = 0._dp 
+   mHw32(3,:) = 0._dp 
+   mHw32(:,3) = 0._dp 
 
    Call ParametersToG555(g1_H24,g2_H24,g3_H24,Yu_H24,Yd_H24,Ye_H24,Yb3_H24   &
       & ,Yw3_H24,Yx3_H24,mu_H24,MXM3,MWM3,MGM3,MBM3,AYu_H24,AYd_H24,AYe_H24  &
@@ -5896,10 +5898,10 @@ Contains
    MXM3Running(2,:,:)=MXM3
 
    NGHb3 = 1._dp
-   NGHg3 = 1._dp
-   NGHw3 = 1._dp
-   NGHx3 = 1._dp
-   NGHxb3 = 1._dp
+   NGHg3 = 1._dp 
+   NGHw3 = 1._dp 
+   NGHx3 = 1._dp 
+   NGHxb3 = 1._dp 
    ThresholdCrossed = 1
 
    RotWR = 0._dp
@@ -5946,12 +5948,12 @@ Contains
    MGM3 = Matmul(Conjg(Transpose(RotGR)),Matmul(MGM3,RotGL))
    MXM3 = Matmul(Conjg(Transpose(RotXR)),Matmul(MXM3,RotXL))
    MBM3 = Matmul(Conjg(Transpose(RotBR)),Matmul(MBM3,RotBL))
-   mHx32 = Matmul(Conjg(Transpose(RotXL)),Matmul(mHx32,RotXL))
-   mHxb32 = Matmul(Conjg(Transpose(RotXR)),Matmul(mHxb32,RotXR))
-   mHg32 = Matmul(Conjg(Transpose(RotGL)),Matmul(mHg32,RotGL))
-   mHb32 = Matmul(Conjg(Transpose(RotBL)),Matmul(mHb32,RotBL))
+   mHx32 = Matmul(Conjg(Transpose(RotXL)),Matmul(mHx32,RotXL)) 
+   mHxb32 = Matmul(Conjg(Transpose(RotXR)),Matmul(mHxb32,RotXR))  
+   mHg32 = Matmul(Conjg(Transpose(RotGL)),Matmul(mHg32,RotGL)) 
+   mHb32 = Matmul(Conjg(Transpose(RotBL)),Matmul(mHb32,RotBL))  
    mHw32 = Matmul(Conjg(Transpose(RotWL)),Matmul(mHw32,RotWL))
-
+  
    MassMWM3(2) = Sqrt(EigMWM3(2))
    MassMXM3(2) = Sqrt(EigMXM3(2))
    MassMGM3(2) = Sqrt(EigMGM3(2))
@@ -5963,7 +5965,7 @@ Contains
      Do i2=1,3
       MnuL5(i1,i2) = MnuL5(i1,i2) &
                 & + 0.5_dp * Yw3_H24(2,i1)*Yw3_H24(2,i2)/MassMWM3(2)  &
-                & + 0.3_dp * Yb3_H24(2,i1)*Yb3_H24(2,i2)/MassMBM3(2)
+                & + 0.3_dp * Yb3_H24(2,i1)*Yb3_H24(2,i2)/MassMBM3(2) 
      End Do
     End Do
 
@@ -5971,7 +5973,7 @@ Contains
      g1_h24 = g1_h24 * (1._dp + oo16pi2 * g1_h24**2           &
                 &                   * 5._dp/2._dp*Log( MassMXM3(2)/MWM30(2,2)) )
      g2_h24 = g2_h24 * (1._dp + oo16pi2 * g2_h24**2           &
-                &                    *( 1.5_dp *Log(MassMXM3(2)/MWM30(2,2)) + &
+                &                    *( 1.5_dp *Log(MassMXM3(2)/MWM30(2,2)) + & 
                 &                      2._dp *Log(MassMWM3(2)/MWM30(2,2))) )
      g3_h24 = g3_h24 * (1._dp + oo16pi2 * g3_h24**2           &
                 &                     * (Log( MassMXM3(2)/MWM30(2,2)) &
@@ -5987,13 +5989,13 @@ Contains
                 &                       + 3._dp*Log( MassMGM3(2)/MWM30(2,2)) ) )
     End If
 
-   Else
+   Else 
 
     Do i1=1,3
      Do i2=1,3
       MnuL5(i1,i2) = MnuL5(i1,i2)   &
                  & + 0.5_dp * Yw3_H24(2,i1)*Yw3_H24(2,i2)/mGut  &
-                 & + 0.3_dp * Yb3_H24(2,i1)*Yb3_H24(2,i2)/mGut
+                 & + 0.3_dp * Yb3_H24(2,i1)*Yb3_H24(2,i2)/mGut 
      End Do
     End Do
 
@@ -6017,16 +6019,16 @@ Contains
    MBM3(:,2) = 0._dp
    MBM3(2,:) = 0._dp
 
-   mHx32(2,:) = 0._dp
-   mHx32(:,2) = 0._dp
-   mHxb32(2,:) = 0._dp
-   mHxb32(:,2) = 0._dp
-   mHg32(2,:) = 0._dp
-   mHg32(:,2) = 0._dp
-   mHb32(2,:) = 0._dp
-   mHb32(:,2) = 0._dp
-   mHw32(2,:) = 0._dp
-   mHw32(:,2) = 0._dp
+   mHx32(2,:) = 0._dp 
+   mHx32(:,2) = 0._dp 
+   mHxb32(2,:) = 0._dp 
+   mHxb32(:,2) = 0._dp 
+   mHg32(2,:) = 0._dp 
+   mHg32(:,2) = 0._dp 
+   mHb32(2,:) = 0._dp 
+   mHb32(:,2) = 0._dp 
+   mHw32(2,:) = 0._dp 
+   mHw32(:,2) = 0._dp 
 
    Call ParametersToG555(g1_H24,g2_H24,g3_H24,Yu_H24,Yd_H24,Ye_H24,Yb3_H24 &
       & ,Yw3_H24,Yx3_H24,mu_H24,MXM3,MWM3,MGM3,MBM3,AYu_H24,AYd_H24,AYe_H24    &
@@ -6058,10 +6060,10 @@ Contains
    MXM3Running(1,:,:)=MXM3
 
    NGHb3 = 0._dp
-   NGHg3 = 0._dp
-   NGHw3 = 0._dp
-   NGHx3 = 0._dp
-   NGHxb3 = 0._dp
+   NGHg3 = 0._dp 
+   NGHw3 = 0._dp 
+   NGHx3 = 0._dp 
+   NGHxb3 = 0._dp 
    ThresholdCrossed = 0
 
    MassMWM3(1) = Abs(MWM3(1,1))
@@ -6072,7 +6074,7 @@ Contains
    Yb30_H24(1,:,:) = Yb3_H24
    Yw30_H24(1,:,:) = Yw3_H24
    Yx30_H24(1,:,:) = Yx3_H24
-
+ 
    gauge_h24(1) = g1_h24
    gauge_h24(2) = g2_h24
    gauge_h24(3) = g3_h24
@@ -6103,22 +6105,22 @@ Contains
                 &                     * (0.5_dp*Log( MassMXM3(1)/MWM30(1,1)) &
                 &                       + 3._dp*Log( MassMGM3(1)/MWM30(1,1)) ) )
     End If
-
+ 
     Do i1=1,3
      Do i2=1,3
       MnuL5(i1,i2) = MnuL5(i1,i2) &
                 & + 0.5_dp * Yw3_H24(1,i1)*Yw3_H24(1,i2)/ MassMWM3(1)  &
-                & + 0.3_dp * Yb3_H24(1,i1)*Yb3_H24(1,i2)/ MassMBM3(1)
+                & + 0.3_dp * Yb3_H24(1,i1)*Yb3_H24(1,i2)/ MassMBM3(1) 
      End Do
     End Do
 
-   Else
+   Else 
 
     Do i1=1,3
      Do i2=1,3
       MnuL5(i1,i2) = MnuL5(i1,i2)   &
                 & + 0.5_dp * Yw3_H24(1,i1)*Yw3_H24(1,i2)/Abs(MWM30(1,1))  &
-                & + 0.3_dp * Yb3_H24(1,i1)*Yb3_H24(1,i2)/Abs(MWM30(1,1))
+                & + 0.3_dp * Yb3_H24(1,i1)*Yb3_H24(1,i2)/Abs(MWM30(1,1)) 
      End Do
     End Do
 
@@ -6166,7 +6168,7 @@ Contains
     !---------------------------------------------------
     ! heavy states are to be included
     !---------------------------------------------------
-
+    
 
     mudim = Abs(MTM_GUT)**2
     tz = 0.5_dp * Log(mudim/mGUT**2)
@@ -6286,7 +6288,7 @@ Contains
  ! 07.03.2001: including right handed neutrinos
  ! 24.09.01: portation to f90
  ! 27.03.02: including a check if perturbation theory is valid
- ! 16.09.02: the electroweak scale is now set entirely outside, either
+ ! 16.09.02: the electroweak scale is now set entirely outside, either 
  !           in the main program or in the routine sugra(...)
  !-----------------------------------------------------------------------
  Implicit None
@@ -6296,7 +6298,7 @@ Contains
   Real(dp), Intent(in) :: delta, Qin
   Real(dp), Intent(inout) :: g1(213)
   Real(dp), Intent(out) :: g2(213), mGUT
-
+  
   Integer:: i1, i2
   Real(dp) :: g1a(285), g2a(285), g1b(75), g2b(267) &
       & , g2c(277), g1d(356), g2d(356), g1f(573), g2f(573)     &
@@ -6374,11 +6376,11 @@ Contains
    Iname = Iname - 1
    Return
   End If
-
+    
   !---------------------------
   ! looking for the GUT scale
   !---------------------------
-  If ((HighScaleModel.Eq.'SUGRA').or.(HighScaleModel.Eq.'Mirage')) Then
+  If ((HighScaleModel.Eq.'SUGRA').or.(HighScaleModel.Eq.'Mirage')) Then 
 
    If (.Not.UseFixedGUTScale) Then
     tz = Log(m_lo/1.e18_dp)
@@ -6400,7 +6402,7 @@ Contains
       If ((g1(i1).Ne.0._dp).Or.(g1_h(i1).Ne.0._dp)) &
                  & Write(ErrCan,*) i1,g1_h(i1),g1(i1)
      End Do
-     Write(ErrCan,*) " "
+     Write(ErrCan,*) " " 
      Iname = Iname - 1
      Return
     End If
@@ -6425,7 +6427,7 @@ Contains
    m_hi = MnuR(2)
    If (MnuR(1).Ne.MnuR(2)) Then
     tz = Log(m_lo / m_hi)
-    dt = - tz / 50._dp
+    dt = - tz / 50._dp  
     Call odeint(g1a, 285, tz, 0._dp, delta, dt, 0._dp, rge285, kont)
    End If
 
@@ -6448,7 +6450,7 @@ Contains
    m_hi = MnuR(3)
    If (m_lo.Ne.MnuR(3)) Then
     tz = Log(m_lo / m_hi)
-    dt = - tz / 50._dp
+    dt = - tz / 50._dp  
 
     Call odeint(g1a, 285, tz, 0._dp, delta, dt, 0._dp, rge285, kont)
    End If
@@ -6503,7 +6505,7 @@ Contains
     If (g1a(1).Lt.g1a(2)) Then ! I am still below GUT scale
      tz = Log(MnuR(3)/1.e18_dp)
      dt = - tz / 50._dp
-     Call odeintB(g1a, 285, tz, 0._dp, delta, dt, 0._dp, rge285, t_out, kont)
+     Call odeintB(g1a, 285, tz, 0._dp, delta, dt, 0._dp, rge285, t_out, kont) 
      If (kont.Eq.0) Then
       FoundUnification = .True.
       mGUT = 1.e18_dp * Exp(t_out)
@@ -6569,7 +6571,7 @@ Contains
       & , MnuL5, g1a)
 
    tz = Log(mGUT/GUT_scale)
-   dt = tz / 50._dp
+   dt = tz / 50._dp  
 
    If (UseFixedGUTScale) Then
     tz = Log(mGUT/GUT_scale)
@@ -6665,7 +6667,7 @@ Contains
     Delta_b_1 = 7._dp
     If (TwoLoopRGE) Then
      Delta_b_2(1,1) = 181._dp/15._dp
-     Delta_b_2(1,2) = 29.4_dp
+     Delta_b_2(1,2) = 29.4_dp 
      Delta_b_2(1,3) = 656._dp/15._dp
      Delta_b_2(2,1) = 9.8_dp
      Delta_b_2(2,2) = 69._dp
@@ -6720,7 +6722,7 @@ Contains
      If (g1d(1).Lt.g1d(2)) Then ! I am still below GUT scale
       tz = Log(m_lo/1.e18_dp)
       dt = - tz / 50._dp
-      Call odeintB(g1d, 356, tz, 0._dp, delta, dt, 0._dp, rge356, t_out, kont)
+      Call odeintB(g1d, 356, tz, 0._dp, delta, dt, 0._dp, rge356, t_out, kont) 
 
       If (kont.Eq.0) Then
        FoundUnification = .True.
@@ -6742,7 +6744,7 @@ Contains
       If (StrictUnification) g1d(3) = gGUT
 
      End If
-
+ 
     End If
 
    End If ! check if below or above GUT scale
@@ -6815,10 +6817,10 @@ Contains
       & , mHb32, mHx32, mHxb32, Mi_H24(1), Mi_H24(2), Mi_H24(3), MnuL5, g1f)
 
     NGHb3 = 3._dp
-    NGHg3 = 3._dp
-    NGHw3 = 3._dp
-    NGHx3 = 3._dp
-    NGHxb3 = 3._dp
+    NGHg3 = 3._dp 
+    NGHw3 = 3._dp 
+    NGHx3 = 3._dp 
+    NGHxb3 = 3._dp 
     ThresholdCrossed = 3
 
    Else
@@ -6846,11 +6848,11 @@ Contains
     MWM3 = MWM3running(1,:,:)
 
     NGHb3 = 1._dp
-    NGHg3 = 1._dp
-    NGHw3 = 1._dp
-    NGHx3 = 1._dp
-    NGHxb3 = 1._dp
-    ThresholdCrossed = 1
+    NGHg3 = 1._dp 
+    NGHw3 = 1._dp 
+    NGHx3 = 1._dp 
+    NGHxb3 = 1._dp 
+    ThresholdCrossed = 1 
 
     If (i_in.Eq.1) Then ! a first initialisation, later take saved values
      AMBM3 = 0._dp
@@ -6881,7 +6883,7 @@ Contains
     If (MWM30(1,1).Ne.MWM30(2,2)) Then
      m_hi = MWM30(2,2)
      tz = Log(m_lo / m_hi)
-     dt = - tz / 50._dp
+     dt = - tz / 50._dp  
      Call odeint(g2f, 555, tz, 0._dp, delta, dt, 0._dp, rge555, kont)
 
      Call GToParameters555(g1f, gauge_H24(1),gauge_H24(2),gauge_H24(3),Yu_H24  &
@@ -6952,13 +6954,13 @@ Contains
 !       & ,Ye_H24,Yb30_H24(3,:,:),Yw30_H24(3,:,:),Yx30_H24(3,:,:),g1f)
 
      NGHb3 = 3._dp
-     NGHg3 = 3._dp
-     NGHw3 = 3._dp
-     NGHx3 = 3._dp
-     NGHxb3 = 3._dp
-     ThresholdCrossed = 3
+     NGHg3 = 3._dp 
+     NGHw3 = 3._dp 
+     NGHx3 = 3._dp 
+     NGHxb3 = 3._dp 
+     ThresholdCrossed = 3 
 
-    Else
+    Else   
      MWM3 = MWM3running(2,:,:)
     !-----------------------------------------------------
     ! adding shifts to gauge couplings
@@ -6987,17 +6989,17 @@ Contains
 !        &  ,Ye_H24,Yb30_H24(2,:,:),Yw30_H24(2,:,:),Yx30_H24(2,:,:),g1f)
 
      NGHb3 = 2._dp
-     NGHg3 = 2._dp
-     NGHw3 = 2._dp
-     NGHx3 = 2._dp
-     NGHxb3 = 2._dp
-     ThresholdCrossed = 2
+     NGHg3 = 2._dp 
+     NGHw3 = 2._dp 
+     NGHx3 = 2._dp 
+     NGHxb3 = 2._dp 
+     ThresholdCrossed = 2 
 
      m_lo = MWM30(2,2)
      If (MWM30(2,2).Ne.MWM30(3,3)) Then
       m_hi = MWM30(3,3)
       tz = Log(m_lo / m_hi)
-      dt = - tz / 50._dp
+      dt = - tz / 50._dp  
       Call odeint(g1f, 555, tz, 0._dp, delta, dt, 0._dp, rge555, kont)
 
      Call GToParameters555(g1f, gauge_H24(1),gauge_H24(2),gauge_H24(3),Yu_H24  &
@@ -7082,11 +7084,11 @@ Contains
 
 
       NGHb3 = 3._dp
-      NGHg3 = 3._dp
-      NGHw3 = 3._dp
-      NGHx3 = 3._dp
-      NGHxb3 = 3._dp
-      ThresholdCrossed = 3
+      NGHg3 = 3._dp 
+      NGHw3 = 3._dp 
+      NGHx3 = 3._dp 
+      NGHxb3 = 3._dp 
+      ThresholdCrossed = 3 
 
      Else
 
@@ -7097,11 +7099,11 @@ Contains
       MWM3 = MWM3running(3,:,:)
 
       NGHb3 = 3._dp
-      NGHg3 = 3._dp
-      NGHw3 = 3._dp
-      NGHx3 = 3._dp
-      NGHxb3 = 3._dp
-      ThresholdCrossed = 3
+      NGHg3 = 3._dp 
+      NGHw3 = 3._dp 
+      NGHx3 = 3._dp 
+      NGHxb3 = 3._dp 
+      ThresholdCrossed = 3 
 
      !-----------------------------------------------------
      ! adding shifts to gauge couplings
@@ -7115,7 +7117,7 @@ Contains
        gauge_h24(3) = gauge_h24(3) * (1._dp - oo16pi2 * gauge_h24(3)**2        &
                 &                       * (Log(MassMXM3(3)/MWM30(3,3)) &
                 &                         + 3._dp*Log(MassMGM3(3)/MWM30(3,3)) ) )
-
+      
       End If
 
      Call ParametersToG555(gauge_H24(1),gauge_H24(2),gauge_H24(3),Yu_H24       &
@@ -7144,7 +7146,7 @@ Contains
        If (g1f(1).Lt.g1f(2)) Then ! I am still below GUT scale
         tz = Log(m_lo/1.e18_dp)
         dt = - tz / 50._dp
-        Call odeintB(g1f, 555, tz, 0._dp, delta, dt, 0._dp, rge555, t_out, kont)
+        Call odeintB(g1f, 555, tz, 0._dp, delta, dt, 0._dp, rge555, t_out, kont) 
         If (kont.Eq.0) Then
          FoundUnification = .True.
          mGUT = 1.e18_dp * Exp(t_out)
@@ -7246,7 +7248,7 @@ Contains
 
 !    Call ParametersToG115(gauge_h15(1),gauge_h15(2),gauge_h15(3), &
 !    & Yu_h15,Yd_h15,Ye_h15,Yt0_h15,Ys0_h15,Yz0_h15,Lambda10,Lambda20,g1g)
-
+ 
    Else ! still below the GUT scale
 
 
@@ -7332,7 +7334,7 @@ Contains
      If (g1g(1).Lt.g1g(2)) Then ! I am still below GUT scale
       tz = Log(m_lo/1.e18_dp)
       dt = - tz / 50._dp
-      Call odeintB(g1g, 365, tz, 0._dp, delta, dt, 0._dp, rge365, t_out, kont)
+      Call odeintB(g1g, 365, tz, 0._dp, delta, dt, 0._dp, rge365, t_out, kont) 
 
       If (kont.Eq.0) Then
        FoundUnification = .True.
@@ -7354,7 +7356,7 @@ Contains
       If (StrictUnification) g1g(3) = gGUT
 
      End If
-
+ 
     End If
 
 
@@ -7401,7 +7403,7 @@ Contains
   Else
    Call BoundaryHS2(g1,g2)
   End If
-
+  
   !--------------------------------------
   ! running down to the electroweak scale
   !--------------------------------------
@@ -7560,7 +7562,7 @@ Contains
     Iname = Iname - 1
     Return
    End If
-
+   
    !-------------------------
    ! run only if m_H < m_GUT
    !-------------------------
@@ -7649,7 +7651,7 @@ Contains
 
 ! Florian Staub Seesaw II+III
 # ifdef SEESAWIII
-  Else If (HighScaleModel.Eq.'SEESAW_III_3G') Then
+  Else If (HighScaleModel.Eq.'SEESAW_III_3G') Then 
    !---------------
    ! GUT -> 3
    !---------------
@@ -7674,13 +7676,13 @@ Contains
    MXM3Running(3,:,:)=MXM3
 
    NGHb3 = 2._dp
-   NGHg3 = 2._dp
-   NGHw3 = 2._dp
-   NGHx3 = 2._dp
-   NGHxb3 = 2._dp
+   NGHg3 = 2._dp 
+   NGHw3 = 2._dp 
+   NGHx3 = 2._dp 
+   NGHxb3 = 2._dp 
    ThresholdCrossed = 2
 
-   Call FermionMass(MWM3,sqrt2,EigMWM3,RotWL, RotWR,kont)
+   Call FermionMass(MWM3,sqrt2,EigMWM3,RotWL, RotWR,kont)  
    Call FermionMass(MXM3,sqrt2,EigMXM3,RotXL, RotXR,kont)
    Call FermionMass(MGM3,sqrt2,EigMGM3,RotGL, RotGR,kont)
    Call FermionMass(MBM3,sqrt2,EigMBM3,RotBL, RotBR,kont)
@@ -7695,10 +7697,10 @@ Contains
    MGM3 = Matmul(Conjg(Transpose(RotGR)),Matmul(MGM3,RotGL))
    MXM3 = Matmul(Conjg(Transpose(RotXR)),Matmul(MXM3,RotXL))
    MBM3 = Matmul(Conjg(Transpose(RotBR)),Matmul(MBM3,RotBL))
-   mHx32 = Matmul(Conjg(Transpose(RotXL)),Matmul(mHx32,RotXL))
-   mHxb32 = Matmul(Conjg(Transpose(RotXR)),Matmul(mHxb32,RotXR))
-   mHg32 = Matmul(Conjg(Transpose(RotGL)),Matmul(mHg32,RotGL))
-   mHb32 = Matmul(Conjg(Transpose(RotBL)),Matmul(mHb32,RotBL))
+   mHx32 = Matmul(Conjg(Transpose(RotXL)),Matmul(mHx32,RotXL)) 
+   mHxb32 = Matmul(Conjg(Transpose(RotXR)),Matmul(mHxb32,RotXR))  
+   mHg32 = Matmul(Conjg(Transpose(RotGL)),Matmul(mHg32,RotGL)) 
+   mHb32 = Matmul(Conjg(Transpose(RotBL)),Matmul(mHb32,RotBL))  
    mHw32 = Matmul(Conjg(Transpose(RotWL)),Matmul(mHw32,RotWL))
 
    MassMWM3(3) = Maxval(EigMWM3)
@@ -7710,7 +7712,7 @@ Contains
     Do i1=1,3
      Do i2=1,3
       MnuL5(i1,i2) = 0.5_dp*Yw3_H24(3,i1)*Yw3_H24(3,i2)/MassMWM3(3) + &
-                   & 0.3_dp*Yb3_H24(3,i1)*Yb3_H24(3,i2)/MassMBM3(3)
+                   & 0.3_dp*Yb3_H24(3,i1)*Yb3_H24(3,i2)/MassMBM3(3) 
      End Do
     End Do
     If (TwoLoopRGE) Then
@@ -7733,12 +7735,12 @@ Contains
                 &                         + 3._dp*Log(MassMGM3(3)/MWM30(3,3)) ) )
     End If
 
-   Else
+   Else 
 
     Do i1=1,3
      Do i2=1,3
       MnuL5(i1,i2) = 0.5_dp * Yw3_H24(3,i1)*Yw3_H24(3,i2)/MWM30(3,3) + &
-                   & 0.3_dp * Yb3_H24(3,i1)*Yb3_H24(3,i2)/MWM30(3,3)
+                   & 0.3_dp * Yb3_H24(3,i1)*Yb3_H24(3,i2)/MWM30(3,3) 
      End Do
     End Do
 
@@ -7762,16 +7764,16 @@ Contains
    MBM3(:,3) = 0._dp
    MBM3(3,:) = 0._dp
 
-   mHx32(3,:) = 0._dp
-   mHx32(:,3) = 0._dp
-   mHxb32(3,:) = 0._dp
-   mHxb32(:,3) = 0._dp
-   mHg32(3,:) = 0._dp
-   mHg32(:,3) = 0._dp
-   mHb32(3,:) = 0._dp
-   mHb32(:,3) = 0._dp
-   mHw32(3,:) = 0._dp
-   mHw32(:,3) = 0._dp
+   mHx32(3,:) = 0._dp 
+   mHx32(:,3) = 0._dp 
+   mHxb32(3,:) = 0._dp 
+   mHxb32(:,3) = 0._dp 
+   mHg32(3,:) = 0._dp 
+   mHg32(:,3) = 0._dp 
+   mHb32(3,:) = 0._dp 
+   mHb32(:,3) = 0._dp 
+   mHw32(3,:) = 0._dp 
+   mHw32(:,3) = 0._dp 
 
    Call ParametersToG555(g1_H24,g2_H24,g3_H24,Yu_H24,Yd_H24,Ye_H24,Yb3_H24   &
       & ,Yw3_H24,Yx3_H24,mu_H24,MXM3,MWM3,MGM3,MBM3,AYu_H24,AYd_H24,AYe_H24  &
@@ -7802,10 +7804,10 @@ Contains
    MXM3Running(2,:,:)=MXM3
 
    NGHb3 = 1._dp
-   NGHg3 = 1._dp
-   NGHw3 = 1._dp
-   NGHx3 = 1._dp
-   NGHxb3 = 1._dp
+   NGHg3 = 1._dp 
+   NGHw3 = 1._dp 
+   NGHx3 = 1._dp 
+   NGHxb3 = 1._dp 
    ThresholdCrossed = 1
 
    RotWR = 0._dp
@@ -7852,12 +7854,12 @@ Contains
    MGM3 = Matmul(Conjg(Transpose(RotGR)),Matmul(MGM3,RotGL))
    MXM3 = Matmul(Conjg(Transpose(RotXR)),Matmul(MXM3,RotXL))
    MBM3 = Matmul(Conjg(Transpose(RotBR)),Matmul(MBM3,RotBL))
-   mHx32 = Matmul(Conjg(Transpose(RotXL)),Matmul(mHx32,RotXL))
-   mHxb32 = Matmul(Conjg(Transpose(RotXR)),Matmul(mHxb32,RotXR))
-   mHg32 = Matmul(Conjg(Transpose(RotGL)),Matmul(mHg32,RotGL))
-   mHb32 = Matmul(Conjg(Transpose(RotBL)),Matmul(mHb32,RotBL))
+   mHx32 = Matmul(Conjg(Transpose(RotXL)),Matmul(mHx32,RotXL)) 
+   mHxb32 = Matmul(Conjg(Transpose(RotXR)),Matmul(mHxb32,RotXR))  
+   mHg32 = Matmul(Conjg(Transpose(RotGL)),Matmul(mHg32,RotGL)) 
+   mHb32 = Matmul(Conjg(Transpose(RotBL)),Matmul(mHb32,RotBL))  
    mHw32 = Matmul(Conjg(Transpose(RotWL)),Matmul(mHw32,RotWL))
-
+  
    MassMWM3(2) = Sqrt(EigMWM3(2))
    MassMXM3(2) = Sqrt(EigMXM3(2))
    MassMGM3(2) = Sqrt(EigMGM3(2))
@@ -7869,7 +7871,7 @@ Contains
      Do i2=1,3
       MnuL5(i1,i2) = MnuL5(i1,i2) &
                 & + 0.5_dp * Yw3_H24(2,i1)*Yw3_H24(2,i2)/MassMWM3(2)  &
-                & + 0.3_dp * Yb3_H24(2,i1)*Yb3_H24(2,i2)/MassMBM3(2)
+                & + 0.3_dp * Yb3_H24(2,i1)*Yb3_H24(2,i2)/MassMBM3(2) 
      End Do
     End Do
 
@@ -7893,13 +7895,13 @@ Contains
                 &                        + 3._dp*Log( MassMGM3(2)/MWM30(2,2)) ) )
     End If
 
-   Else
+   Else 
 
     Do i1=1,3
      Do i2=1,3
       MnuL5(i1,i2) = MnuL5(i1,i2)   &
                  & + 0.5_dp * Yw3_H24(2,i1)*Yw3_H24(2,i2)/mGut  &
-                 & + 0.3_dp * Yb3_H24(2,i1)*Yb3_H24(2,i2)/mGut
+                 & + 0.3_dp * Yb3_H24(2,i1)*Yb3_H24(2,i2)/mGut 
      End Do
     End Do
 
@@ -7923,16 +7925,16 @@ Contains
    MBM3(:,2) = 0._dp
    MBM3(2,:) = 0._dp
 
-   mHx32(2,:) = 0._dp
-   mHx32(:,2) = 0._dp
-   mHxb32(2,:) = 0._dp
-   mHxb32(:,2) = 0._dp
-   mHg32(2,:) = 0._dp
-   mHg32(:,2) = 0._dp
-   mHb32(2,:) = 0._dp
-   mHb32(:,2) = 0._dp
-   mHw32(2,:) = 0._dp
-   mHw32(:,2) = 0._dp
+   mHx32(2,:) = 0._dp 
+   mHx32(:,2) = 0._dp 
+   mHxb32(2,:) = 0._dp 
+   mHxb32(:,2) = 0._dp 
+   mHg32(2,:) = 0._dp 
+   mHg32(:,2) = 0._dp 
+   mHb32(2,:) = 0._dp 
+   mHb32(:,2) = 0._dp 
+   mHw32(2,:) = 0._dp 
+   mHw32(:,2) = 0._dp 
 
    Call ParametersToG555(g1_H24,g2_H24,g3_H24,Yu_H24,Yd_H24,Ye_H24,Yb3_H24 &
       & ,Yw3_H24,Yx3_H24,mu_H24,MXM3,MWM3,MGM3,MBM3,AYu_H24,AYd_H24,AYe_H24    &
@@ -7964,10 +7966,10 @@ Contains
    MXM3Running(1,:,:)=MXM3
 
    NGHb3 = 0._dp
-   NGHg3 = 0._dp
-   NGHw3 = 0._dp
-   NGHx3 = 0._dp
-   NGHxb3 = 0._dp
+   NGHg3 = 0._dp 
+   NGHw3 = 0._dp 
+   NGHx3 = 0._dp 
+   NGHxb3 = 0._dp 
    ThresholdCrossed = 0
 
    MassMWM3(1) = Abs(MWM3(1,1))
@@ -7978,7 +7980,7 @@ Contains
    Yb30_H24(1,:,:) = Yb3_H24
    Yw30_H24(1,:,:) = Yw3_H24
    Yx30_H24(1,:,:) = Yx3_H24
-
+ 
    gauge_h24(1) = g1_h24
    gauge_h24(2) = g2_h24
    gauge_h24(3) = g3_h24
@@ -8009,22 +8011,22 @@ Contains
                 &                      * (0.5_dp*Log( MassMXM3(1)/MWM30(1,1)) &
                 &                        + 3._dp*Log( MassMGM3(1)/MWM30(1,1)) ) )
     End If
-
+ 
     Do i1=1,3
      Do i2=1,3
       MnuL5(i1,i2) = MnuL5(i1,i2) &
                 & + 0.5_dp * Yw3_H24(1,i1)*Yw3_H24(1,i2)/ MassMWM3(1)  &
-                & + 0.3_dp * Yb3_H24(1,i1)*Yb3_H24(1,i2)/ MassMBM3(1)
+                & + 0.3_dp * Yb3_H24(1,i1)*Yb3_H24(1,i2)/ MassMBM3(1) 
      End Do
     End Do
 
-   Else
+   Else 
 
     Do i1=1,3
      Do i2=1,3
       MnuL5(i1,i2) = MnuL5(i1,i2)   &
                 & + 0.5_dp * Yw3_H24(1,i1)*Yw3_H24(1,i2)/Abs(MWM30(1,1))  &
-                & + 0.3_dp * Yb3_H24(1,i1)*Yb3_H24(1,i2)/Abs(MWM30(1,1))
+                & + 0.3_dp * Yb3_H24(1,i1)*Yb3_H24(1,i2)/Abs(MWM30(1,1)) 
      End Do
     End Do
 
@@ -8072,7 +8074,7 @@ Contains
     !---------------------------------------------------
     ! heavy states are to be included
     !---------------------------------------------------
-
+    
 
     mudim = Abs(MTM_GUT)**2
     tz = 0.5_dp * Log(mudim/mGUT**2)
@@ -10216,7 +10218,7 @@ Contains
  Integer Function SetYukawaScheme(V1)
  !-----------------------------------------------------------------------
  ! Sets the parameter YukawaScheme, which controls wheter the top (=1) or the
- ! down (=2) Yukawa couplings stay diagonal at the low scale
+ ! down (=2) Yukawa couplings stay diagonal at the low scale 
  ! written by Werner Porod, 20.11.01
  !-----------------------------------------------------------------------
  Implicit None
@@ -10307,6 +10309,11 @@ Contains
    mf_d2 = mf_d_DR**2
    mf_u2 = mf_u_DR**2
   End If
+  !-------------------------------------------------------------------------------
+  ! arXiv:hep-ph/9606211 and arXiv:hep-ph/9212285 require the use of the onshell
+  ! top mass in the calculation of m_W
+  !-------------------------------------------------------------------------------
+  mf_u2(3) = mf_u(3)**2 
 
   !-------------------------------------------------------------------
   ! alpha(mZ), include also m_t part, to get a SU(2) invariant model
@@ -10316,7 +10323,7 @@ Contains
   !-----------
   ! alpha_s(mZ)
   !-----------
-  alpha3 = AlphaS_mZ / ( 1._dp + oo3pi * AlphaS_mZ * Log(mf_u(3)/mZ) )
+  alpha3 = AlphaS_mZ / ( 1._dp + oo3pi * AlphaS_mZ * Log(mf_u(3)/mZ) ) 
   !--------------------
   ! for 2-loop parts
   !--------------------
@@ -10372,7 +10379,7 @@ Contains
 
    Call delta_VB_SM(gSU2, sinW2, sinW2_DR, rho, delta)
 
-   delta = delta + delta_VB_BSM  ! adding contribution from dim-6 operator
+   delta = delta + delta_VB_BSM  ! adding contribution from dim-6 operator 
    delta_r = rho*Real(dmW2_0,dp)/mW2 - Real(dmZ2,dp) / mZ2 + delta
    rho = 1._dp /  (1._dp - delta_rho - fac(2) / sinW2_DR - xt2)
    delta_r = rho*Real(dmW2_0,dp)/mW2 - Real(dmZ2,dp) / mZ2 + delta   &
@@ -10388,7 +10395,8 @@ Contains
 
    If (Abs(sinW2_DR-sinW2_old).Lt. 0.1_dp*delta0) Exit
     sinW2_old = sinW2_DR
-    delta_rw = delta_rho*(1._dp-delta_r) + delta_r
+!    delta_rw = delta_rho*(1._dp-delta_r) + delta_r
+    delta_rw = (delta_rho+fac(2)/sinW2_DR+xt2)*(1._dp-delta_r) + delta_r
     If ((0.25_dp-alphamz*pi/(sqrt2*G_F*mz2*rho*(1._dp-delta_rw))).Lt.0._dp) Then
     kont = -406
     If (Errorlevel.Ge.0) Then
@@ -10412,13 +10420,7 @@ Contains
    cosW2 = mW2 / mZ2
    sinW2 = 1._dp - cosW2
   End Do
-  !--------------------------------------------------------------------------
-  ! recalcuating m_W and sin^2_W, the formula for m_W is base on Eq.25 of
-  ! G.Degrassi et al., NPB351, 49 (1991)
-  !--------------------------------------------------------------------------
-  delta_rw = delta_rho*(1._dp-delta_r) + delta_r
-  mW2 = mZ2 * rho * ( 0.5_dp &
-      &         +Sqrt(0.25_dp-alphamz*pi/(sqrt2*G_F*mz2*rho*(1._dp-delta_rw))))
+
   mW = Sqrt(mW2)
   cosW2 = mW2 / mZ2
   sinW2 = 1._dp - cosW2
@@ -10450,9 +10452,9 @@ Contains
    !-----------------------
    ! Yukawa couplings
    !-----------------------
-   mf_l_DR_SM = mf_l_mZ ! relic of old routine, orginally MS -> DR
-   mf_d_DR_SM = mf_d_mZ ! relic of old routine, orginally MS -> DR
-   mf_u_DR_SM = mf_u_mZ ! relic of old routine, orginally MS -> DR
+   mf_l_DR_SM = mf_l_mZ ! relic of old routine, orginally MS -> DR 
+   mf_d_DR_SM = mf_d_mZ ! relic of old routine, orginally MS -> DR 
+   mf_u_DR_SM = mf_u_mZ ! relic of old routine, orginally MS -> DR 
    logQ = Log(mZ2/mf_u2(3))
    mf_u_DR_SM(3) = mf_u(3)                                                   &
                & * (1._dp - (alpha3 -alphaMZ/3._dp) * (4._dp + 3._dp * LogQ) &
@@ -10670,6 +10672,7 @@ Contains
   Implicit None
    Real(dp), Intent(in) :: Q, gi_SM(3), tanb, M2_H(2), vev
    Complex(dp), Intent(in) :: Mi(3), mu, B
+
    Complex(dp), Intent(in), Dimension(3,3) :: Yl_SM_in, Yd_SM_in, Yu_SM_in &
      & , M2_E_in, M2_L_in, M2_D_in, M2_Q_in, M2_U_in, Tl_in, Td_in, Tu_in
    Logical, Intent(in) :: GenerationMixing
@@ -10722,7 +10725,7 @@ Contains
     cos2b = (1._dp - tanb**2) / (1._dp + tanb**2)
     vev2 = 0.125_dp * (gi_s(1)*vev)**2 * cos2b
     If (GenerationMixing) Then
-     !sleptons
+     !sleptons 
      Call Switch_to_superPMNS(Yl_SM_in, id3C, Tl_in, M2_E_in, M2_L_in &
           & , Tl, M2_E, M2_L, .False.)
      Call SfermionMasses(M2_L , mSl , mSl2 , RSl , kont)
@@ -10746,7 +10749,7 @@ Contains
 
     Else ! no generation mixing
      Do i1=1,3
-      mSl2(i1) = Real(M2_L_in(i1,i1),dp) + vev2
+      mSl2(i1) = Real(M2_L_in(i1,i1),dp) + vev2 
       mSe2(i1) = Real(M2_E_in(i1,i1),dp) - 2._dp * vev2
       mSd2(i1) = Real(M2_D_in(i1,i1),dp) - 2._dp * vev2 / 3._dp
       mSu2(i1) = Real(M2_U_in(i1,i1),dp) + 4._dp * vev2 / 3._dp
@@ -10770,7 +10773,7 @@ Contains
     ! heavy Higgs doublet
     mH2 = 0.5_dp * ( M2_H(1) + M2_H(2) + 2*Abs(mu)**2 &
         &          + Sqrt( (M2_H(1)-M2_H(2))**2 + 4 * Abs(B)**2) ) &
-        & + vev2 ! this works better in case
+        & + vev2 ! this works better in case 
                  ! of low energy spectra
                  ! as this catches the D-Term contribution
 
@@ -10800,10 +10803,10 @@ Contains
 
    gi2_SM =  gi_SM**2
    gi2 = gi2_SM / (1._dp + oo8pi2 * Dalpha * gi2_SM)
-   gi = Sqrt(gi2)
-
+   gi = Sqrt(gi2) 
+ 
    !------------------------------------
-   ! thresholds to Yukawa couplings
+   ! thresholds to Yukawa couplings  
    !------------------------------------
    Yl = Yl_SM / cosb  ! tree-level part
    Yd = Yd_SM / cosb  ! strictly speaking I should substract here the SM part
@@ -10849,7 +10852,7 @@ Contains
         cHSdSq(1,i1,i2) = cHSdSq(1,i1,i2) &
                       & + Td(i4,i3) * RSd(i1,i4) * Conjg( RSq(i2,i3) )
         cHSuSq(2,i1,i2) = cHSuSq(2,i1,i2) &
-                      & + Tu(i4,i3) * RSu(i1,i4) * Conjg( V0RSq(i2,i3) )
+                      & + Tu(i4,i3) * RSu(i1,i4) * Conjg( V0RSq(i2,i3) )  
        End Do
       End Do
      End Do
@@ -10870,13 +10873,13 @@ Contains
        Do i4=1,3
         cR = fakt * V0RSq(i2,i3) * Conjg(RSu(i1,i4))
         C0m = C0_3m(m_g2, mSu2(i4), mSq2(i3))
-        dYu_hol(i1,i2) = dYu_hol(i1,i2) - cHSuSq(2,i4,i3) * cR * C0m
-        dYu_ahol(i1,i2) = dYu_ahol(i1,i2) + cHSuSq(1,i4,i3) * cR * C0m
+        dYu_hol(i1,i2) = dYu_hol(i1,i2) - cHSuSq(2,i4,i3) * cR * C0m 
+        dYu_ahol(i1,i2) = dYu_ahol(i1,i2) + cHSuSq(1,i4,i3) * cR * C0m 
 
         cR = fakt * RSq(i2,i3) * Conjg(RSd(i1,i4))
         C0m = C0_3m(m_g2, mSd2(i4), mSq2(i3))
-        dYd_hol(i1,i2) = dYd_hol(i1,i2) - cHSdSq(1,i4,i3) * cR * C0m
-        dYd_ahol(i1,i2) = dYd_ahol(i1,i2) + cHSdSq(2,i4,i3) * cR * C0m
+        dYd_hol(i1,i2) = dYd_hol(i1,i2) - cHSdSq(1,i4,i3) * cR * C0m 
+        dYd_ahol(i1,i2) = dYd_ahol(i1,i2) + cHSdSq(2,i4,i3) * cR * C0m 
        End Do
       End Do
      End Do
@@ -10887,7 +10890,7 @@ Contains
     cR = - 8._dp * m_g * gi(3)**2 * Conjg(phi)/ 3._dp
     Do i1=1,3
      C0m = C0_3m(m_g2, mSu2(i1), mSq2(i1))
-     dYu_hol(i1,i1) = - Tu(i1,i1) * cR * C0m
+     dYu_hol(i1,i1) = - Tu(i1,i1) * cR * C0m 
      dYu_ahol(i1,i1) = muC * Yu(i1,i1) * cR * C0m
 
      C0m = C0_3m(m_g2, mSd2(i1), mSq2(i1))
@@ -10900,7 +10903,7 @@ Contains
    ! single bino contributions
    !------------------------------------
    phi = Mi(1) / Abs(Mi(1))
-   fakt = -2._dp * gi(1)**2 * Conjg(phi) * m_b
+   fakt = -2._dp * gi(1)**2 * Conjg(phi) * m_b 
    If (GenerationMixing) Then
     Do i1=1,3
      Do i2=1,3
@@ -10908,18 +10911,18 @@ Contains
        Do i4=1,3
         cR = fakt * V0RSq(i2,i3) * Conjg(RSu(i1,i4)) / 9._dp
         C0m = C0_3m(m_b2, mSu2(i4), mSq2(i3))
-        dYu_hol(i1,i2) = dYu_hol(i1,i2) - cHSuSq(2,i4,i3) * cR * C0m
-        dYu_ahol(i1,i2) = dYu_ahol(i1,i2) + cHSuSq(1,i4,i3) * cR * C0m
+        dYu_hol(i1,i2) = dYu_hol(i1,i2) - cHSuSq(2,i4,i3) * cR * C0m 
+        dYu_ahol(i1,i2) = dYu_ahol(i1,i2) + cHSuSq(1,i4,i3) * cR * C0m 
 
         cR = - fakt * RSq(i2,i3) * Conjg(RSd(i1,i4)) / 18._dp
         C0m = C0_3m(m_b2, mSd2(i4), mSq2(i3))
-        dYd_hol(i1,i2) = dYd_hol(i1,i2) - cHSdSq(1,i4,i3) * cR * C0m
-        dYd_ahol(i1,i2) = dYd_ahol(i1,i2) + cHSdSq(2,i4,i3) * cR * C0m
+        dYd_hol(i1,i2) = dYd_hol(i1,i2) - cHSdSq(1,i4,i3) * cR * C0m 
+        dYd_ahol(i1,i2) = dYd_ahol(i1,i2) + cHSdSq(2,i4,i3) * cR * C0m 
 
         cR = - fakt * RSl(i2,i3) * Conjg(RSe(i1,i4)) / 2._dp
         C0m = C0_3m(m_b2, mSe2(i4), mSl2(i3))
-        dYl_hol(i1,i2) = dYl_hol(i1,i2) - cHSeSl(1,i4,i3) * cR * C0m
-        dYl_ahol(i1,i2) = dYl_ahol(i1,i2) + cHSeSl(2,i4,i3) * cR * C0m
+        dYl_hol(i1,i2) = dYl_hol(i1,i2) - cHSeSl(1,i4,i3) * cR * C0m 
+        dYl_ahol(i1,i2) = dYl_ahol(i1,i2) + cHSeSl(2,i4,i3) * cR * C0m 
        End Do
       End Do
      End Do
@@ -10929,7 +10932,7 @@ Contains
     cR = - 2._dp * m_b * gi(2)**2 * Conjg(phi)
     Do i1=1,3
      C0m = C0_3m(m_b2, mSu2(i1), mSq2(i1)) / 9._dp
-     dYu_hol(i1,i1) = dYu_hol(i1,i1) - Tu(i1,i1) * cR * C0m
+     dYu_hol(i1,i1) = dYu_hol(i1,i1) - Tu(i1,i1) * cR * C0m 
      dYu_ahol(i1,i1) = dYu_ahol(i1,i1) + muC * Yu(i1,i1) * cR * C0m
 
      C0m = - C0_3m(m_b2, mSd2(i1), mSq2(i1)) / 18._dp
@@ -10954,13 +10957,13 @@ Contains
        Do i4=1,3
         cR = fakt * Yd(i2,i2) * Yu(i1,i1) * RSd(i2,i3) * Conjg(V0RSq(i1,i4))
         C0m = C0_3m(m_Hino2, mSd2(i3), mSq2(i4))
-        dYu_hol(i1,i2) = dYu_hol(i1,i2) - Conjg(cHSdSq(2,i3,i4)) * cR * C0m
+        dYu_hol(i1,i2) = dYu_hol(i1,i2) - Conjg(cHSdSq(2,i3,i4)) * cR * C0m 
         dYu_ahol(i1,i2) = dYu_ahol(i1,i2) + Conjg(cHSdSq(1,i3,i4)) * cR * C0m
 
         cR = fakt * Yu(i2,i2) * Yd(i1,i1) * RSu(i2,i3) * Conjg(RSq(i1,i4))
         C0m = C0_3m(m_Hino2, mSu2(i3), mSq2(i4))
-        dYd_hol(i1,i2) = dYd_hol(i1,i2) - Conjg(cHSuSq(1,i3,i4)) * cR * C0m
-        dYd_ahol(i1,i2) = dYd_ahol(i1,i2) + Conjg(cHSuSq(2,i3,i4)) * cR * C0m
+        dYd_hol(i1,i2) = dYd_hol(i1,i2) - Conjg(cHSuSq(1,i3,i4)) * cR * C0m 
+        dYd_ahol(i1,i2) = dYd_ahol(i1,i2) + Conjg(cHSuSq(2,i3,i4)) * cR * C0m 
 
        End Do
       End Do
@@ -10971,7 +10974,7 @@ Contains
     cR = m_Hino * Conjg(phi)
     Do i1=1,3
      C0m = Y_u(i1,i1) * Y_d(i1,i1) * C0_3m(m_Hino2, mSd2(i1), mSq2(i1))
-     dYu_hol(i1,i1) = dYu_hol(i1,i1) + mu * Conjg(Yd(i1,i1)) * cR * C0m
+     dYu_hol(i1,i1) = dYu_hol(i1,i1) + mu * Conjg(Yd(i1,i1)) * cR * C0m 
      dYu_ahol(i1,i1) = dYu_ahol(i1,i1) - Conjg(Td(i1,i1)) * cR * C0m
 
      C0m = Y_u(i1,i1) * Y_d(i1,i1) * C0_3m(m_Hino2, mSu2(i1), mSq2(i1))
@@ -10992,15 +10995,15 @@ Contains
       Do i3=1,3
        cR = fakt * Yu(i1,i1) * RSq(i2,i3) * Conjg(V0RSq(i1,i3))
        C0m = C_2(m_Hino2, m_w2, mSq2(i3))
-       dYu_hol(i1,i2) = dYu_hol(i1,i2) - cR * C0m
+       dYu_hol(i1,i2) = dYu_hol(i1,i2) - cR * C0m 
        cR = fakt * Yd(i1,i1) * RSq(i2,i3) * Conjg(RSq(i1,i3))
-       dYd_hol(i1,i2) = dYd_hol(i1,i2) - cR * C0m
+       dYd_hol(i1,i2) = dYd_hol(i1,i2) - cR * C0m 
 
        C0m = m_w * m_Hino * C0_3m(m_Hino2, m_w2, mSq2(i3))
        cR = fakt * Yu(i1,i1) * RSq(i2,i3) * Conjg(V0RSq(i1,i3))
-       dYu_ahol(i1,i2) = dYu_ahol(i1,i2) + cR * C0m
+       dYu_ahol(i1,i2) = dYu_ahol(i1,i2) + cR * C0m 
        cR = fakt * Yd(i1,i1) * RSq(i2,i3) * Conjg(RSq(i1,i3))
-       dYd_ahol(i1,i2) = dYd_ahol(i1,i2) + cR * C0m
+       dYd_ahol(i1,i2) = dYd_ahol(i1,i2) + cR * C0m 
 
        cR = fakt * Yl(i1,i1) * RSl(i2,i3) * Conjg(RSl(i1,i3))
        C0m = C_2(m_Hino2, m_w2, mSl2(i3))
@@ -11015,20 +11018,20 @@ Contains
     Do i1=1,3
      cR = fakt * Yu(i1,i1)
      C0m = C_2(m_Hino2, m_w2, mSq2(i1))
-     dYu_hol(i1,i1) = dYu_hol(i1,i1) - cR * C0m
+     dYu_hol(i1,i1) = dYu_hol(i1,i1) - cR * C0m 
      cR = fakt * Yd(i1,i1)
-     dYd_hol(i1,i1) = dYd_hol(i1,i1) - cR * C0m
+     dYd_hol(i1,i1) = dYd_hol(i1,i1) - cR * C0m 
 
      C0m = m_w * m_Hino * C0_3m(m_Hino2, m_w2, mSq2(i1))
      cR = fakt * Yu(i1,i1)
-     dYu_ahol(i1,i1) = dYu_ahol(i1,i1) + cR * C0m
+     dYu_ahol(i1,i1) = dYu_ahol(i1,i1) + cR * C0m 
      cR = fakt * Yd(i1,i1)
-     dYd_ahol(i1,i1) = dYd_ahol(i1,i1) + cR * C0m
+     dYd_ahol(i1,i1) = dYd_ahol(i1,i1) + cR * C0m 
 
      cR = fakt * Yl(i1,i1)
      C0m = C_2(m_Hino2, m_w2, mSl2(i1))
      dYl_hol(i1,i1) = dYl_hol(i1,i1) - cR * C0m
-     C0m = m_w * m_Hino * C0_3m(m_Hino2, m_w2, mSl2(i1))
+     C0m = m_w * m_Hino * C0_3m(m_Hino2, m_w2, mSl2(i1)) 
      dYl_ahol(i1,i1) = dYl_ahol(i1,i1) + cR * C0m
     End Do
    End If
@@ -11045,34 +11048,34 @@ Contains
        ! L-squarks
        cR = fakt * Yu(i1,i1) * RSq(i2,i3) * Conjg(V0RSq(i1,i3)) / 6._dp
        C0m = C_2(m_Hino2, m_b2, mSq2(i3))
-       dYu_hol(i1,i2) = dYu_hol(i1,i2) - cR * C0m
-       cR = fakt * Yd(i1,i1) * RSq(i2,i3) * Conjg(RSq(i1,i3)) / 6._dp
-       dYd_hol(i1,i2) = dYd_hol(i1,i2) + cR * C0m
+       dYu_hol(i1,i2) = dYu_hol(i1,i2) - cR * C0m 
+       cR = fakt * Yd(i1,i1) * RSq(i2,i3) * Conjg(RSq(i1,i3)) / 6._dp 
+       dYd_hol(i1,i2) = dYd_hol(i1,i2) + cR * C0m 
 
-       cR = fakt * Yu(i1,i1) * RSq(i2,i3) * Conjg(V0RSq(i1,i3)) / 6._dp
+       cR = fakt * Yu(i1,i1) * RSq(i2,i3) * Conjg(V0RSq(i1,i3)) / 6._dp 
        C0m = C_2(m_Hino2, m_b2, mSq2(i3))
-       dYu_ahol(i1,i2) = dYu_ahol(i1,i2) - cR * C0m
-       cR = fakt * Yd(i1,i1) * RSq(i2,i3) * Conjg(RSq(i1,i3)) / 6._dp
-       dYd_ahol(i1,i2) = dYd_ahol(i1,i2) + cR * C0m
+       dYu_ahol(i1,i2) = dYu_ahol(i1,i2) - cR * C0m 
+       cR = fakt * Yd(i1,i1) * RSq(i2,i3) * Conjg(RSq(i1,i3)) / 6._dp 
+       dYd_ahol(i1,i2) = dYd_ahol(i1,i2) + cR * C0m 
 
        ! R-squarks
        cR = 2._dp * fakt * Yu(i1,i1) * RSu(i2,i3) * Conjg(RSu(i1,i3)) / 3._dp
        C0m = C_2(m_Hino2, m_b2, mSu2(i3))
-       dYu_hol(i1,i2) = dYu_hol(i1,i2) - cR * C0m
-       C0m = m_b * m_Hino * C0_3m(m_Hino2, m_b2, mSu2(i3))
-       dYu_ahol(i1,i2) = dYu_ahol(i1,i2) + cR * C0m
+       dYu_hol(i1,i2) = dYu_hol(i1,i2) - cR * C0m 
+       C0m = m_b * m_Hino * C0_3m(m_Hino2, m_b2, mSu2(i3)) 
+       dYu_ahol(i1,i2) = dYu_ahol(i1,i2) + cR * C0m 
 
-       cR = - fakt * Yd(i1,i1) * RSd(i2,i3) * Conjg(RSd(i1,i3)) / 3._dp
+       cR = - fakt * Yd(i1,i1) * RSd(i2,i3) * Conjg(RSd(i1,i3)) / 3._dp 
        C0m = C_2(m_Hino2, m_b2, mSd2(i3))
-       dYd_hol(i1,i2) = dYd_hol(i1,i2) - cR * C0m
+       dYd_hol(i1,i2) = dYd_hol(i1,i2) - cR * C0m 
        C0m = m_b * m_Hino * C0_3m(m_Hino2, m_b2, mSd2(i3))
-       dYd_ahol(i1,i2) = dYd_ahol(i1,i2) + cR * C0m
+       dYd_ahol(i1,i2) = dYd_ahol(i1,i2) + cR * C0m 
 
        ! L-sleptons
        cR = -0.5_dp * fakt * Yl(i1,i1) * RSl(i2,i3) * Conjg(RSl(i1,i3))
        C0m = C_2(m_Hino2, m_b2, mSl2(i3))
        dYl_hol(i1,i2) = dYl_hol(i1,i2) - cR * C0m
-       C0m = m_b * m_Hino * C0_3m(m_Hino2, m_b2, mSl2(i3))
+       C0m = m_b * m_Hino * C0_3m(m_Hino2, m_b2, mSl2(i3)) 
        dYl_ahol(i1,i2) = dYl_ahol(i1,i2) + cR * C0m
 
        ! R-sleptons
@@ -11090,28 +11093,28 @@ Contains
      ! L-squarks
      cR = fakt * Yu(i1,i1) / 6._dp
      C0m = C_2(m_Hino2, m_b2, mSq2(i1))
-     dYu_hol(i1,i1) = dYu_hol(i1,i1) - cR * C0m
-     cR = fakt * Yd(i1,i1) / 6._dp
-     dYd_hol(i1,i1) = dYd_hol(i1,i1) + cR * C0m
+     dYu_hol(i1,i1) = dYu_hol(i1,i1) - cR * C0m 
+     cR = fakt * Yd(i1,i1) / 6._dp 
+     dYd_hol(i1,i1) = dYd_hol(i1,i1) + cR * C0m 
 
      C0m = m_b * m_Hino * C0_3m(m_Hino2, m_b2, mSq2(i1))
      cR = fakt * Yu(i1,i1) / 6._dp
-     dYu_ahol(i1,i1) = dYu_ahol(i1,i1) - cR * C0m
-     cR = fakt * Yd(i1,i1) / 6._dp
-     dYd_ahol(i1,i1) = dYd_ahol(i1,i1) + cR * C0m
+     dYu_ahol(i1,i1) = dYu_ahol(i1,i1) - cR * C0m 
+     cR = fakt * Yd(i1,i1) / 6._dp 
+     dYd_ahol(i1,i1) = dYd_ahol(i1,i1) + cR * C0m 
 
      ! R-squarks
      cR = 2._dp * fakt * Yu(i1,i1) / 3._dp
      C0m = C_2(m_Hino2, m_b2, mSu2(i1))
-     dYu_hol(i1,i1) = dYu_hol(i1,i1) - cR * C0m
+     dYu_hol(i1,i1) = dYu_hol(i1,i1) - cR * C0m 
      C0m = m_b * m_Hino * C0_3m(m_Hino2, m_b2, mSu2(i1))
-     dYu_ahol(i1,i1) = dYu_ahol(i1,i1) + cR * C0m
+     dYu_ahol(i1,i1) = dYu_ahol(i1,i1) + cR * C0m 
 
-     cR = -fakt * Yd(i1,i1) / 3._dp
+     cR = -fakt * Yd(i1,i1) / 3._dp 
      C0m = C_2(m_Hino2, m_b2, mSd2(i1))
-     dYd_hol(i1,i1) = dYd_hol(i1,i1) - cR * C0m
-     C0m = m_b * m_Hino * C0_3m(m_Hino2, m_b2, mSd2(i1))
-     dYd_ahol(i1,i1) = dYd_ahol(i1,i1) + cR * C0m
+     dYd_hol(i1,i1) = dYd_hol(i1,i1) - cR * C0m 
+     C0m = m_b * m_Hino * C0_3m(m_Hino2, m_b2, mSd2(i1)) 
+     dYd_ahol(i1,i1) = dYd_ahol(i1,i1) + cR * C0m 
 
      ! L-sleptons
      cR = -0.5_dp * fakt * Yl(i1,i1)
@@ -11155,12 +11158,12 @@ Contains
    !-----------------------------------
    ! adding missing 1/(16 pi^2) factor
    !-----------------------------------
-   dYl_hol  = oo16Pi2 * dYl_hol
-   dYl_ahol = oo16Pi2 * dYl_ahol
-   dYd_hol  = oo16Pi2 * dYd_hol
-   dYd_ahol = oo16Pi2 * dYd_ahol
-   dYu_hol  = oo16Pi2 * dYu_hol
-   dYu_ahol = oo16Pi2 * dYu_ahol
+   dYl_hol  = oo16Pi2 * dYl_hol 
+   dYl_ahol = oo16Pi2 * dYl_ahol 
+   dYd_hol  = oo16Pi2 * dYd_hol 
+   dYd_ahol = oo16Pi2 * dYd_ahol 
+   dYu_hol  = oo16Pi2 * dYu_hol 
+   dYu_ahol = oo16Pi2 * dYu_ahol 
 
    !---------------------------------------------
    ! resummation
@@ -11170,12 +11173,12 @@ Contains
     Yl(i1,i1) = Yl_SM(i1,i1) / ( 1 + dYl_ahol(i1,i1)*sinb /Yl_SM(i1,i1)) / cosb &
                & - dYl_hol(i1,i1)
     If ( (Abs(Yl(i1,i1)*cosb/Yl_SM(i1,i1)).Lt.0.5_dp) &
-       & .or.(Abs(Yl(i1,i1)*cosb/Yl_SM(i1,i1)).Gt.2._dp) ) then
+       & .or.(Abs(Yl(i1,i1)*cosb/Yl_SM(i1,i1)).Gt.2._dp) ) then 
      Iname = Iname - 1  ! more than 100% loop corrections
      kont = -421
      Call AddError(421)
      Return
-    end if
+    end if 
     Do i2=1,3
      If (i1.Ne.i2) Then
       Yl(i1,i2) = (Yl_SM(i1,i2) - dYl_ahol(i1,i2)*sinb) / cosb - dYl_hol(i1,i2)
@@ -11190,12 +11193,12 @@ Contains
     Yd(i1,i1) = Yd_SM(i1,i1) / ( 1 + dYd_ahol(i1,i1)*sinb /Yd_SM(i1,i1)) / cosb &
               & - dYd_hol(i1,i1)
     If ( (Abs(Yd(i1,i1)*cosb/Yd_SM(i1,i1)).Lt.0.5_dp) &
-       & .or.(Abs(Yd(i1,i1)*cosb/Yd_SM(i1,i1)).Gt.2._dp) ) then
+       & .or.(Abs(Yd(i1,i1)*cosb/Yd_SM(i1,i1)).Gt.2._dp) ) then 
      Iname = Iname - 1  ! more than 100% loop corrections
      kont = -421
      Call AddError(421)
      Return
-    end if
+    end if 
     Do i2=1,3
      If (i1.Ne.i2) Then
       Yd(i1,i2) = (Yd_SM(i1,i2) - dYd_ahol(i1,i2)*sinb) / cosb - dYd_hol(i1,i2)
@@ -11206,12 +11209,12 @@ Contains
    Yu = (Yu_SM - dYu_ahol*cosb) / sinb - dYu_hol
    Do i1=1,3
     If ( (Abs(Yu(i1,i1)*sinb/Yu_SM(i1,i1)).Lt.0.5_dp) &
-       & .or.(Abs(Yu(i1,i1)*sinb/Yu_SM(i1,i1)).Gt.2._dp) ) then
+       & .or.(Abs(Yu(i1,i1)*sinb/Yu_SM(i1,i1)).Gt.2._dp) ) then 
      Iname = Iname - 1  ! more than 100% loop corrections
      kont = -421
      Call AddError(421)
      Return
-    end if
+    end if 
    End Do
 
    !----------------------------------------------------------------
@@ -11228,7 +11231,7 @@ Contains
    End If
    Yu_s = Yu
    gi_s = gi
-
+    
    Iname = Iname - 1
 
   Contains
@@ -11281,7 +11284,7 @@ Contains
     Iname = Iname - 1
 
    End Subroutine SfermionMasses
-
+ 
   End Subroutine Boundary_SUSY
 
 
@@ -11526,7 +11529,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
 !   gaugeSM(2) = 0.64779_dp + 4.e-5_dp * (mf_u(3) - 173.34_dp)  &
 !             & + 1.1e-4_dp * (mW-80.384_dp) / 1.4e-2_dp
     gaugeSM(3) = 1.1666_dp + 0.00314_dp*(alphaS_mZ-0.1184_dp)/0.0007_dp &
-            & - 0.00046_dp * (mf_u(3) - 173.34_dp)
+            & - 0.00046_dp * (mf_u(3) - 173.34_dp)  
 
     gaugeSM(1) = Sqrt(5._dp/3._dp) * gaugeSM(1)
     Call ParametersToG59(gaugeSM, lamR, Y_u_SM, Y_d_SM, Y_l_SM, ln_v,g4)
@@ -11554,7 +11557,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
    If (WriteComment) Write(*,*) "SM running",t2-t1
    t1 = t2
    !--------------------------------------------
-   ! calculating boundary conditions at m_SUSY
+   ! calculating boundary conditions at m_SUSY 
    !--------------------------------------------
    ! including SUSY particles
    !--------------------------
@@ -11570,7 +11573,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
    !---------------------------------------------------
    If ( (Sum(in_extpar(0,:)).Gt.0) .And. &
       & ((Sum(in_extpar(1:3,:))+Sum(in_extpar(21:24,:)) &
-      &  +Sum(in_extpar(26,:))).Gt.0) ) Then  ! some low scale parameters
+      &  +Sum(in_extpar(26,:))).Gt.0) ) Then  ! some low scale parameters 
 
     If (InputScale.Lt.0._dp) Then ! use sqrt(stop-masses) for the input scale
      Q_in = mudim
@@ -11607,7 +11610,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
       dt = tz / 50._dp
       Call odeint(g58, 58, 0._dp, tz,  0.1_dp * delta , dt, 0._dp, rge58, kont)
       tanbQ = Exp( g58(58) )
-
+ 
      Else
       gauge(1) = Sqrt(5._dp/3._dp) * gauge(1)
       Call CouplingsToG(gauge, Y_l, Y_d, Y_u, g1)
@@ -11646,7 +11649,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
     If (Sum(in_extpar(26,:)).Gt.0) &
      & Call Calcualte_MH2(delta, tanbQ, Q_in, gauge, Y_l, Y_d, Y_u, Mi, A_l  &
                      & , A_d, A_u, M2_E, M2_L, M2_D, M2_Q, M2_U, mu, P0(2)%m2 &
-                     & , .True., M2_H, B, kont)
+                     & , .True., M2_H, B, kont) 
 
     If (kont.Ne.0) Then
      Iname = Iname - 1
@@ -11665,7 +11668,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
           & , M2_E, M2_L, M2_D, M2_Q, M2_U, M2_H, mu, B, g2)
 
      Call odeint(g2, 213, 0._dp, tz,  0.1_dp * delta , dt, 0._dp, rge213, kont)
-
+ 
      Call GToParameters(g2, gauge, Y_l, Y_d, Y_u, Mi, A_l, A_d, A_u &
           & , M2_E, M2_L, M2_D, M2_Q, M2_U, M2_H, mu, B)
      gauge(1) = Sqrt(3._dp/5._dp) * gauge(1)
@@ -11724,7 +11727,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
 
     Call CouplingsToG(gauge, Y_l, Y_d, Y_u, g1)
 
-
+ 
     Call RunRGE_from_Msusy(kont, delta, vevSM, mudim, g1, g2, mGUT)
     Call Cpu_time(t2)
     If (WriteComment) Write(*,*) "RunRGE_from_Msusy",t2-t1,kont
@@ -11828,7 +11831,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
   Call SetRGEScale(mf_U2(3))
   UseFixedScale = UseFixedScale_save
 
-   If (GenerationMixing) Then
+   If (GenerationMixing) Then 
     Call FermionMass(Y_l_SM, sqrt2, Yl, UL_L,UL_R,kont)
     Call FermionMass(Y_d_SM, sqrt2, Yd, UD_L,UD_R,kont)
     Call FermionMass(Y_u_SM, sqrt2, Yu, UU_L,UU_R,kont)
@@ -11858,11 +11861,11 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
 
    gaugeSM(1) = Sqrt(3._dp/5._dp)*gaugeSM(1)
    mH_SM2_tree=lamR*v_mZ**2
-      Y_u_SM = Transpose(Y_u_SM)
-      Y_d_SM = Transpose(Y_d_SM)
-      Y_l_SM = Transpose(Y_l_SM)
+   Y_u_SM = Transpose(Y_u_SM)
+   Y_d_SM = Transpose(Y_d_SM)
+   Y_l_SM = Transpose(Y_l_SM)
 
-   If (GenerationMixing) Then
+   If (GenerationMixing) Then 
     Call FermionMass(Y_l_SM, sqrt2, Yl, UL_L,UL_R,kont)
     Call FermionMass(Y_d_SM, sqrt2, Yd, UD_L,UD_R,kont)
     Call FermionMass(Y_u_SM, sqrt2, Yu, UU_L,UU_R,kont)
@@ -11874,8 +11877,8 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
     End Do
    End If
 
-   mS0(1) = mH_SM
-   mS02(1) = mH_SM2
+   mS0(1) = mH_SM 
+   mS02(1) = mH_SM2 
 
    If (kont.Ne.0) Then
     Iname = Iname - 1
@@ -11924,6 +11927,8 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
     End If
     Call SetRGEScale(mudim)
     UseFixedScale = .False.
+   Else
+    Call SetRGEScale(mudim**2)    
    End If
 
    If ((deltag0.Lt.delta).And.(j.Gt.1)) Then ! require at least two iterations
@@ -11962,7 +11967,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
     & , Y_u, Mi, A_l, A_d, A_u, M2_E, M2_L, M2_D, M2_Q, M2_U, M2_H, mu, B     &
     & , mGUT, kont, WriteComment, niter)
  !-----------------------------------------------------------------------
- ! Computes RGE's of the the SUSY parameters
+ ! Computes RGE's of the the SUSY parameters 
  ! Uses Runge-Kutta method to integrate RGE's from M_Z to M_GUT
  ! and back, putting in correct thresholds. For the first iteration
  ! only the first 6 couplings are included and a common threshold
@@ -12028,7 +12033,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
   !-----------------
   ! Inititalization
   !-----------------
-  kont = 0
+  kont = 0 
   FoundResult = .False.
   tanb = vevSM(2) / vevSM(1)
   !--------------------------------------------------------------------
@@ -12066,7 +12071,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
   mass_old(n_tot+1:n_tot+n_Sn) = mSneutrino
 
   !-----------------------------------------------------------------
-  ! first setting of renormalization scale, if it is not yet fixed
+  ! first setting of renormalization scale, if it is not yet fixed 
   ! somewhere else
   ! I take here the geometric mean of the stop masses
   !-----------------------------------------------------------------
@@ -12117,7 +12122,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
     Deallocate(mass_old, mass_new, diff_m  )
     Return
    End If
-  Else
+  Else 
    Unu = id3C
   End If
 
@@ -12136,7 +12141,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
     Al_s = A_l
     Ad_s = A_d
     Au_s = A_u
-    M2E_s = M2_E_mZ
+    M2E_s = M2_E_mZ 
     M2L_s = M2_L_mZ
     M2D_s = M2_D_mZ
     M2Q_s = M2_Q_mZ
@@ -12151,7 +12156,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
     uD_R = id3C
     uL_L = id3C
     uL_R = id3C
-   Else
+   Else 
     Call BoundaryEW(j, vevSM, mC, U, V, mN, N, mS02, RS0, mP02, RP0, mSpm, mSpm2&
      & , RSpm, mDsquark, mDsquark2, RDsquark, mUsquark, mUsquark2, RUsquark     &
      & , mSlepton, mSlepton2, RSlepton, mSneutrino2, RSneutrino, uU_L, uU_R     &
@@ -12167,16 +12172,16 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
    Call Cpu_time(t2)
    If (WriteComment) Write(*,*) "BoundaryEW",t2-t1
    !---------------------------------------------------
-   ! now the running,
+   ! now the running, 
    !---------------------------------------------------
    If ( (Sum(in_extpar(0,:)).Gt.0) .And. &
       & ((Sum(in_extpar(1:3,:))+Sum(in_extpar(21:24,:)) &
-      &  +Sum(in_extpar(26,:))).Gt.0) ) Then  ! some low scale parameters
+      &  +Sum(in_extpar(26,:))).Gt.0) ) Then  ! some low scale parameters 
 
     Call GToCouplings(g1, gauge, Y_l, Y_d, Y_u)
     Call ParametersToG(gauge, Y_l, Y_d, Y_u, Mi, A_l, A_d, A_u &
           & , M2_E, M2_L, M2_D, M2_Q, M2_U, M2_H, mu, B, g2)
-
+    
     Call GetInputScale(mudim)
 
     tz = Log(mudim/mZ)
@@ -12210,14 +12215,14 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
     gauge(1) = Sqrt(3._dp/5._dp) * gauge(1)
 
     If (Sum(in_extpar(24,:)).Gt.0) &
-     & Call Calcualte_MH2(delta, tanbQ, mudim, gauge, Y_l, Y_d, Y_u, Mi, A_l    &
-                        & , A_d, A_u, M2_E, M2_L, M2_D, M2_Q, M2_U, mu, mP02(2) &
-                        & , .False., M2_H, B, kont)
+     & Call Calcualte_MH2(delta, tanbQ, mudim, gauge, Y_l, Y_d, Y_u, Mi, A_l  &
+                      & , A_d, A_u, M2_E, M2_L, M2_D, M2_Q, M2_U, mu, mP02(2) &
+                      & , .False., M2_H, B, kont)
 
     If (Sum(in_extpar(26,:)).Gt.0) &
-     & Call Calcualte_MH2(delta, tanbQ, mudim, gauge, Y_l, Y_d, Y_u, Mi, A_l    &
-                       & , A_d, A_u, M2_E, M2_L, M2_D, M2_Q, M2_U, mu, P0(2)%m2 &
-                       & , .True., M2_H, B, kont)
+     & Call Calcualte_MH2(delta, tanbQ, mudim, gauge, Y_l, Y_d, Y_u, Mi, A_l  &
+                     & , A_d, A_u, M2_E, M2_L, M2_D, M2_Q, M2_U, mu, P0(2)%m2 &
+                     & , .True., M2_H, B, kont) 
 
     If (kont.Ne.0) Then
      Iname = Iname - 1
@@ -12317,7 +12322,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
     Deallocate(mass_old, mass_new, diff_m  )
     Return
    End If
-
+   
    !-------------------
    ! comparing masses
    !-------------------
@@ -12343,7 +12348,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
 
    diff_m = Abs(mass_new - mass_old)
    Where (Abs(mass_old).Gt.0._dp) diff_m = diff_m / Abs(mass_old)
-
+ 
    deltag0 = Maxval( diff_m )
 
    If (WriteComment) Write(*,*) "Sugra,Comparing",deltag0
@@ -12366,7 +12371,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
     dt = tz / 100._dp
 
     !---------------------------------------------------------------
-    ! recalculating scale for later use here, as I am using the
+    ! recalculating scale for later use here, as I am using the 
     ! tree-level stop masses as default
     !---------------------------------------------------------------
     If (.Not.UseFixedScale) Then
@@ -12443,7 +12448,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
     !-------------------------------------------------------------------
     ! checking if at tree level all masses squared are positiv and above
     ! approximately 0.9*m_Z at m_Z (the latter is for numerical stability),
-    ! if not, the on-shell masses will be used
+    ! if not, the on-shell masses will be used 
     !-------------------------------------------------------------------
     If (Min(Minval(mUsquark2_T), Minval(mDSquark2_T), Minval(mSlepton2_T)   &
      &    , Minval(mSneutrino2_T), Minval(mS02_T), Minval(mP02_T)           &
@@ -12490,7 +12495,7 @@ Write(*,*) Real(Y_l_SM(3,3)),  Real(Y_d_SM(3,3)),  Real(Y_u_SM(3,3))
   If (.Not. FoundResult ) Then
    Write (ErrCan,*) 'Warning from subroutine Sugra, no convergence has'
    Write (ErrCan,*) 'has been found after',niter,' iterations.'
-   Write (ErrCan,*) 'required delta',delta
+   Write (ErrCan,*) 'required delta',delta 
    Write (ErrCan,*) 'found delta',deltag0
    kont = -412
    Call AddError(412)
